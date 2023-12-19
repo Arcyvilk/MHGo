@@ -48,11 +48,10 @@
   }
 
   &__image {
-    --img-size: 4.8rem;
-    max-width: var(--img-size);
-    max-height: var(--img-size);
-    width: var(--img-size);
-    height: var(--img-size);
+    max-width: $size-48;
+    max-height: $size-48;
+    width: $size-48;
+    height: $size-48;
   }
 
   &__desc {
@@ -66,14 +65,14 @@
   
   &__title {
     margin: 0;
-    font-size: $size-18;
+    font-size: $size-16;
     font-weight: 600;
     text-align: start;
   }
   
   &__subtitle {
     margin: 0;
-    font-size: $size-16;
+    font-size: $size-14;
     font-weight: 400;
     text-align: start;
   }

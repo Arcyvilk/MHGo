@@ -13,7 +13,7 @@ export const CloseButton = () => {
   return (
     <div className={s.closeButton}>
       <button className={s.closeButton__button} id="close" onClick={onClose}>
-        <Icon icon="X" size={Size.MEDIUM} />
+        <Icon icon="X" size={Size.BIG} />
       </button>
     </div>
   );

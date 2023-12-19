@@ -11,3 +11,17 @@
   padding: $size-32;
   gap: $size-16;
 }
+
+.header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: $size-4;
+  margin-bottom: $size-16;
+
+  &__title {
+    margin: 0;
+    font-size: $size-24;
+  }
+}
