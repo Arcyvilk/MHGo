@@ -1,0 +1,60 @@
+@import '../../styles/index.scss';
+
+.item {
+  all: unset;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: $size-12;
+  max-width: 23%;
+  min-width: 23%;
+
+  &__tile {
+    display: flex;
+    flex-direction: column;
+    align-items:center;
+    position: relative;
+    border: 3px solid gray;
+    border-radius: $size-6;
+    background-color: $color-white;
+  }
+
+  &__name {
+    width: 100%;
+    font-size: $size-14;
+    color: $color-primary-text;
+    text-align: center;
+    line-height: $size-12;
+  }
+}
+
+.tile {
+  &__image {
+    display: flex;
+    max-height: $size-72;
+    object-fit: contain;
+    padding: $size-6;
+  }
+
+  &__rarity {
+    display: flex;
+    width: 100%;
+    font-size: $size-12;
+    background-color: gray;
+    color: $color-white;
+    padding: 2px 4px;
+  }
+
+  &__amount {
+    position: absolute;
+    right: 0;
+    bottom: $size-8;
+    background-color: $color-white;
+    color: $color-primary-text;
+    padding: 2px 6px;
+    border-radius: $size-16;
+    font-size: $size-14;
+    font-weight: 800;
+    box-shadow: 0 0 5px rgba($color-black, 0.7);
+  }
+}

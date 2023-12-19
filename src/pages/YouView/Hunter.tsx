@@ -5,6 +5,7 @@ import qr from '../../assets/qr.png';
 import s from './Hunter.module.scss';
 import { useState } from 'react';
 import { Modal } from '../../components/Modal';
+import { Size } from '../../utils/size';
 
 const MOCK = {
   NAME: 'Szatan',
@@ -34,7 +35,7 @@ export const Hunter = () => {
             onClick={onHunterViewToggle}
             label={
               <div className={s.hunter__button}>
-                <Icon icon="QR" />
+                <Icon icon="QR" size={Size.TINY} />
                 View
               </div>
             }

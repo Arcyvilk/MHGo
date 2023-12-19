@@ -4,11 +4,12 @@
   position: absolute;
   display: flex;
   width: 100%;
-  bottom: $size-32;
-  margin-left: -$size-32;
+  bottom: $size-8;
+  margin-left: -$size-16;
   box-sizing: border-box;
   justify-content: center;
   color: $color-primary-bg;
+  pointer-events: none;
 
   &__button {
     min-width: $size-64;
@@ -16,13 +17,14 @@
     max-width: $size-64;
     max-height: $size-64;
     border-radius: $size-64;
+    pointer-events: all;
 
     display: flex;
     align-items: center;
     justify-content: center;
     border: none;
     outline: none;
-    background-color: rgba(0,0,0,0.4);
+    background-color: rgba(0,0,0,0.6);
     box-shadow: 0 5px 5px rgba($color-black, 0.2);
     color: $color-primary-bg;
     z-index: 999;

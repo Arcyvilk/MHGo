@@ -5,6 +5,7 @@ import s from './App.module.scss';
 import { HomeView, QuestView, YouView } from './pages';
 import { NotImplementedView } from './pages/NotImplementedView';
 import { ShopView } from './pages/ShopView';
+import { ItemBoxView } from './pages/ItemBoxView';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -23,7 +24,7 @@ export const App = () => {
           <Routes>
             <Route path="/" element={<HomeView />} />
             <Route path="/inventory" element={<NotImplementedView />} />
-            <Route path="/items" element={<NotImplementedView />} />
+            <Route path="/items" element={<ItemBoxView />} />
             <Route path="/paintball" element={<NotImplementedView />} />
             <Route path="/shop" element={<ShopView />} />
             <Route path="/quest" element={<QuestView />} />

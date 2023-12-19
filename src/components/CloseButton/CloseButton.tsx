@@ -7,13 +7,13 @@ import { Size } from '../../utils/size';
 export const CloseButton = () => {
   const navigate = useNavigate();
   const onClose = () => {
-    navigate('/');
+    navigate(-1);
   };
 
   return (
     <div className={s.closeButton}>
       <button className={s.closeButton__button} id="close" onClick={onClose}>
-        <Icon icon="X" size={Size.BIG} />
+        <Icon icon="X" size={Size.SMALL} />
       </button>
     </div>
   );

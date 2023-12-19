@@ -41,7 +41,7 @@ type ActionButtonProps = {
 const ActionButton = ({ icon, onClick }: ActionButtonProps) => {
   return (
     <button className={s.actionButton} onClick={onClick}>
-      <Icon icon={icon} size={Size.MEDIUM} />
+      <Icon icon={icon} size={Size.TINY} />
     </button>
   );
 };

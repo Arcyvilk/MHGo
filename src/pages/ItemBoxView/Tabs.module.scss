@@ -1,0 +1,26 @@
+@import '../../styles/index.scss';
+
+.tabs {
+  width: 100%;
+  display: flex;
+  padding: 2px;
+
+  &__tab {
+    cursor: pointer;
+    padding: $size-6;
+    flex: 1 1 100%;
+    font-size: $size-16;
+    font-weight: 800;
+    background-color: $color-primary-bg;
+    color: $color-header-bg;
+    box-sizing: border-box;
+    outline: none;
+    border: none;
+    border-bottom: 3px solid $color-primary-bg;
+
+    &--isActive {
+      border-bottom: 3px solid $color-primary-text;
+      color: $color-primary-text;
+    }
+  }
+}

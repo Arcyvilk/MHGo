@@ -3,6 +3,8 @@
 .modal {
   display: none;
   position: absolute;
+  align-items: center;
+  justify-content: center;
   top: 0;
   left: 0;
   width: 100%;
@@ -19,8 +21,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 80%;
-    height: auto;
+    max-width: 80%;
+    max-height: 80%;
     margin: $size-64;
     padding: $size-16;
     box-sizing: border-box;

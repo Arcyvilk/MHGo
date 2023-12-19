@@ -3,5 +3,6 @@
 .buttons {
   display: grid;
   grid-template-columns: 48% 48%;
-  gap: $size-14 $size-20;
+  gap: $size-10 $size-16;
+  margin-bottom: $size-32;
 }

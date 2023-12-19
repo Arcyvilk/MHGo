@@ -6,7 +6,7 @@ import s from './Experience.module.scss';
 export const Experience = () => {
   return (
     <div className={s.experience}>
-      <Icon icon="Ball" size={Size.SMALL} />
+      <Icon icon="Ball" size={Size.TINY} />
       <span className={s.experience__title}>HRP</span>
       <div className={s.experience__bar}>
         <div className={s.bar__text}>0 / 100</div>

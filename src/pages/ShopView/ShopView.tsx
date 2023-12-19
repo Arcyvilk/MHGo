@@ -1,8 +1,12 @@
 import { CloseButton } from '../../components/CloseButton';
-import { userWealth, currencies } from '../../_mock/wealth'; // TODO replace with API
+import { Icon } from '../../components/Icon';
+import { Size } from '../../utils/size';
 
 import s from './ShopView.module.scss';
-import { Icon } from '../../components/Icon';
+
+// TODO replace with API
+import { currencies } from '../../_mock/wealth';
+import { MOCK_USER_ID, userWealth } from '../../_mock/save';
 
 export const ShopView = () => {
   return (
@@ -23,7 +27,6 @@ const Header = () => {
 };
 
 const Wealth = () => {
-  const MOCK_USER_ID = '1';
   const wealth = useWealth(MOCK_USER_ID);
 
   return (
@@ -39,8 +42,8 @@ const Wealth = () => {
 const Currency = ({ currency }: { currency: any }) => {
   return (
     <div className={s.currency}>
-      <Icon icon={currency.icon} />
-      <span>{currency.amount}</span>
+      <Icon icon={currency.icon} size={Size.TINY} />
+      <span>{currency.amount ?? 0}</span>
     </div>
   );
 };
