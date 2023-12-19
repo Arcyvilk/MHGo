@@ -6,14 +6,14 @@ import { IconType } from '../../assets/icons';
 import { Button } from '../../components/Button';
 
 const BUTTONS: { icon: IconType; label: string; link: string }[] = [
-  { icon: 'Face', label: 'Friends', link: '/404' },
-  { icon: 'Face', label: 'Party', link: '/404' },
-  { icon: 'Face', label: 'Monster Guide', link: '/404' },
-  { icon: 'Face', label: 'News', link: '/404' },
-  { icon: 'Face', label: 'Hunter Medals', link: '/404' },
-  { icon: 'Face', label: 'Item Box', link: '/404' },
-  { icon: 'Face', label: 'Edit Appearance', link: '/404' },
-  { icon: 'Face', label: 'Settings', link: '/404' },
+  { icon: 'Friends', label: 'Friends', link: '/404' },
+  { icon: 'Party', label: 'Party', link: '/404' },
+  { icon: 'Monster', label: 'Monster Guide', link: '/404' },
+  { icon: 'News', label: 'News', link: '/404' },
+  { icon: 'Medal', label: 'Hunter Medals', link: '/404' },
+  { icon: 'ItemBox', label: 'Item Box', link: '/404' },
+  { icon: 'Appearance', label: 'Edit Appearance', link: '/404' },
+  { icon: 'Gear', label: 'Settings', link: '/404' },
 ];
 
 export const Buttons = () => {
@@ -26,6 +26,7 @@ export const Buttons = () => {
     <div className={s.buttons}>
       {BUTTONS.map(b => (
         <Button
+          key={b.label}
           onClick={() => onButtonClick(b.link)}
           label={
             <>

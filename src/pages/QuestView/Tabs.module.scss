@@ -1,0 +1,23 @@
+@import '../../styles/index.scss';
+
+.tabs {
+  width: 100%;
+  display: flex;
+  border: 1px solid $color-header-bg;
+  padding: 6px;
+
+  &__tab {
+    cursor: pointer;
+    padding: 12px;
+    flex: 1 1 100%;
+    font-size: 32px;
+    font-weight: 800;
+    background-color: $color-primary-bg;
+    border: 1px solid $color-header-bg;
+    outline: none;
+
+    &--isActive {
+      background-color: $color-white;
+    }
+  }
+}

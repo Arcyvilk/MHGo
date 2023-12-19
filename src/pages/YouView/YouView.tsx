@@ -10,9 +10,7 @@ export const YouView = () => {
       <Header />
       <Hunter />
       <Buttons />
-      <div className={s.youView__bottom}>
-        <CloseButton />
-      </div>
+      <CloseButton />
     </div>
   );
 };

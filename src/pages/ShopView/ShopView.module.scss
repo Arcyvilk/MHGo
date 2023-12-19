@@ -1,6 +1,4 @@
-@import '../../styles/index.scss';
-
-.youView {
+.shopView {
   position: relative;
   display: flex;
   flex-direction: column;
@@ -24,4 +22,19 @@
     margin: 0;
     font-size: 42px;
   }
+}
+
+.wealth {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+}
+
+.currency {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 28px;
+  gap: 8px;
 }

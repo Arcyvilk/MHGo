@@ -1,21 +1,32 @@
 @import '../../styles/index.scss';
 
 .closeButton {
-  --button-size: 100px;
-  min-width: var(--button-size);
-  min-height: var(--button-size);
-  max-width: var(--button-size);
-  max-height: var(--button-size);
-  border-radius: var(--button-size);
-
+  position: absolute;
   display: flex;
-  align-items: center;
+  width: 100%;
+  bottom: 32px;
+  margin-left: -32px;
+  box-sizing: border-box;
   justify-content: center;
-  border: none;
-  outline: none;
-  background-color: rgba(0,0,0,0.4);
-  box-shadow: 0 5px 5px rgba($color-black, 0.2);
   color: $color-primary-bg;
-  z-index: 999;
-  cursor: pointer;
+
+  &__button {
+    --button-size: 100px;
+    min-width: var(--button-size);
+    min-height: var(--button-size);
+    max-width: var(--button-size);
+    max-height: var(--button-size);
+    border-radius: var(--button-size);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    outline: none;
+    background-color: rgba(0,0,0,0.4);
+    box-shadow: 0 5px 5px rgba($color-black, 0.2);
+    color: $color-primary-bg;
+    z-index: 999;
+    cursor: pointer;
+  }
 }
