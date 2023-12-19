@@ -7,8 +7,10 @@
   "scripts": {
     "dev:frontend": "vite --config vite.config.frontend.ts --port 3091",
     "dev:backend": "vite --config vite.config.backend.ts server/index.ts --port 3092",
-    "dev": "concurrently 'npm:dev:frontend' 'npm:dev:backend'",
-    "build": "tsc && vite build",
+    "dev": "concurrently 'yarn dev:frontend' 'yarn dev:backend'",
+    "build:frontend": "tsc && vite --config vite.config.frontend.ts build",
+    "build:backend": "tsc && vite --config vite.config.backend.ts server/index.ts build",
+    "build": "concurrently 'yarn build:frontend' 'yarn build:backend'",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
