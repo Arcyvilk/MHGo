@@ -4,7 +4,7 @@
   flex-direction: column;
   width: 100%;
   min-height: 100%;
-  overflow-y: scroll;
+  overflow-y: auto;
   box-sizing: border-box;
   border: 1px solid black;
   gap: $size-16;
@@ -24,4 +24,10 @@
 @mixin page-title {
   margin: 0;
   font-size: $size-24;
+}
+
+@mixin ellipsis {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }

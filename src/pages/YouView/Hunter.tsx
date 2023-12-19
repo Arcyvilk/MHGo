@@ -7,13 +7,13 @@ import { useState } from 'react';
 import { Modal } from '../../components/Modal';
 import { Size } from '../../utils/size';
 
-const MOCK = {
-  NAME: 'Szatan',
-  ID: 'szatan666',
-};
+const MOCKNAME = 'SzatanSzatanSzatan';
 
 export const Hunter = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const userName = MOCKNAME;
+  const userId = userName.toLowerCase().replace(' ', '_').concat('666');
 
   const onHunterViewToggle = () => {
     setIsModalOpen(!isModalOpen);
@@ -28,8 +28,8 @@ export const Hunter = () => {
         <div className={s.hunter__top}>TODO top</div>
         <div className={s.hunter__bottom}>
           <div className={s.hunter__info}>
-            <h2 className={s.hunter__name}>{MOCK.NAME}</h2>
-            <h2 className={s.hunter__id}>Niantic ID: {MOCK.ID}</h2>
+            <h2 className={s.hunter__name}>{userName}</h2>
+            <h2 className={s.hunter__id}>Niantic ID: {userId}</h2>
           </div>
           <SimpleButton
             onClick={onHunterViewToggle}

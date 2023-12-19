@@ -1,11 +1,16 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 
+import {
+  HomeView,
+  ItemBoxView,
+  NotImplementedView,
+  QuestView,
+  ShopView,
+  YouView,
+} from './pages';
+
 import s from './App.module.scss';
-import { HomeView, QuestView, YouView } from './pages';
-import { NotImplementedView } from './pages/NotImplementedView';
-import { ShopView } from './pages/ShopView';
-import { ItemBoxView } from './pages/ItemBoxView';
 
 const queryClient = new QueryClient({
   defaultOptions: {
