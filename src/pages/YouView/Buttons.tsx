@@ -40,7 +40,7 @@ export const Buttons = () => {
           onClick={() => onButtonClick(b.link)}
           label={
             <>
-              <Icon icon={b.icon} size={Size.TINY} />
+              <Icon icon={b.icon} size={Size.MICRO} />
               {b.label}
             </>
           }

@@ -8,8 +8,10 @@ export const YouView = () => {
   return (
     <div className={s.youView}>
       <Header />
-      <Hunter />
-      <Buttons />
+      <div className={s.youView__wrapper}>
+        <Hunter />
+        <Buttons />
+      </div>
       <CloseButton />
     </div>
   );

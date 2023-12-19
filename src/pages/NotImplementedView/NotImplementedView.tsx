@@ -5,7 +5,9 @@ import s from './NotImplementedView.module.scss';
 export const NotImplementedView = () => {
   return (
     <div className={s.notImplementedView}>
-      <h1>NOT IMPLEMENTED YET</h1>
+      <div className={s.header}>
+        <div className={s.header__title}>NOT IMPLEMENTED YET</div>
+      </div>
       <CloseButton />
     </div>
   );

@@ -16,11 +16,13 @@ export const ItemBoxView = () => {
   return (
     <div className={s.itemBoxView}>
       <Header />
-      <Tabs activeTab={activeTab} setActiveTab={setActiveTab} />
-      <div className={s.itemBoxView__container}>
-        {userItems.map(userItem => (
-          <Item {...userItem} />
-        ))}
+      <div className={s.itemBoxView__wrapper}>
+        <Tabs activeTab={activeTab} setActiveTab={setActiveTab} />
+        <div className={s.itemBoxView__container}>
+          {userItems.map(userItem => (
+            <Item {...userItem} />
+          ))}
+        </div>
       </div>
       <CloseButton />
     </div>

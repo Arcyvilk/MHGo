@@ -1,0 +1,27 @@
+@mixin page-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 100%;
+  overflow-y: scroll;
+  box-sizing: border-box;
+  border: 1px solid black;
+  gap: $size-16;
+}
+
+@mixin page-header {
+  position: sticky;
+  top: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: $size-16;
+  background-color: $color-primary-bg;
+}
+
+@mixin page-title {
+  margin: 0;
+  font-size: $size-24;
+}

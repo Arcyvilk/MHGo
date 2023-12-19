@@ -5,6 +5,7 @@ export const items = [
     name: 'Potion',
     description: 'B',
     rarity: 1,
+    price: 60,
   },
   {
     id: 'bomb',
@@ -12,6 +13,7 @@ export const items = [
     name: 'Barrel bomb',
     description: 'Blablablablabla',
     rarity: 2,
+    price: 60,
   },
   {
     id: 'pitfall',
@@ -19,6 +21,7 @@ export const items = [
     name: 'Pitfall trap',
     description: 'Blablablabalbal',
     rarity: 3,
+    price: 60,
   },
   {
     id: 'paintball',
@@ -26,6 +29,7 @@ export const items = [
     name: 'Paintball',
     description: 'Bablablablablabalbalbal',
     rarity: 4,
+    price: 60,
   },
   {
     id: 'steak',
@@ -33,5 +37,6 @@ export const items = [
     name: 'Well-done steak',
     description: 'Bbdbfiuewbfiur',
     rarity: 5,
+    price: 60,
   },
 ];

@@ -8,7 +8,7 @@
   box-sizing: border-box;
   background-color: $color-secondary-bg;
   box-shadow: 0 5px 5px rgba($color-black, 0.2);
-  height: 700px;
+  height: 600px;
   width: 100%;
 
   &__top {
@@ -16,7 +16,6 @@
     padding: $size-8;
     box-sizing: border-box;
     flex-grow: 1;
-    max-height: 400px;
   }
 
   &__bottom {
@@ -24,6 +23,7 @@
     justify-content: space-between;
     align-items: center;
     padding: $size-16;
+    height: 130px;
     box-sizing: border-box;
     background-color: $color-tertiary-bg;
     flex: 0 0 20%;
@@ -39,7 +39,7 @@
 
   &__name {
     margin: 0;
-    font-size: $size-24;
+    font-size: $size-22;
   }
 
   &__id {
@@ -47,6 +47,7 @@
     padding: $size-4 $size-6;
     border: 1px solid $color-primary-text;
     border-radius: $size-8;
+    font-size: $size-14;
   }
 
   &__button {

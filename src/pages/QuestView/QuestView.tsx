@@ -9,8 +9,10 @@ export const QuestView = () => {
 
   return (
     <div className={s.questView}>
-      <Tabs activeTab={activeTab} setActiveTab={setActiveTab} />
-      QuestView
+      <div className={s.questView__wrapper}>
+        <Tabs activeTab={activeTab} setActiveTab={setActiveTab} />
+        QuestView
+      </div>
       <CloseButton />
     </div>
   );
