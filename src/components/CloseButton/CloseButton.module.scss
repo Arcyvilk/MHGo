@@ -1,0 +1,20 @@
+@import '../../styles/index.scss';
+
+.closeButton {
+  --button-size: 100px;
+  min-width: var(--button-size);
+  min-height: var(--button-size);
+  max-width: var(--button-size);
+  max-height: var(--button-size);
+  border-radius: var(--button-size);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  outline: none;
+  background-color: rgba(0,0,0,0.4);
+  color: $color-primary-bg;
+  z-index: 999;
+  cursor: pointer;
+}

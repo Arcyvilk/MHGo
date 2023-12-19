@@ -1,5 +1,6 @@
 .icon {
-  display:flex;
+  display: flex;
+  color: inherit;
   
   &--8 {
     --icon-size: 8px;
@@ -58,6 +59,7 @@
     max-height: inherit;
     height: inherit;
     width: inherit;
+    color: inherit;
 
     path {
       fill: currentColor;
