@@ -2,11 +2,11 @@
 
 .button {
   cursor: pointer;
-  font-size: 28px;
+  font-size: $size-28;
   font-weight: 800;
-  padding: 24px;
+  padding: $size-24;
   background-color: $color-white;
-  border-radius: 16px;
+  border-radius: $size-16;
   color: $color-primary-text;
   border: 1px solid $color-primary-text;
 }

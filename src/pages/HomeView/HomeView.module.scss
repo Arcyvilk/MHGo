@@ -1,11 +1,11 @@
-@import '../../styles/colors.scss';
+@import '../../styles/index.scss';
 
 .homeView {
   display: flex;
   flex-direction: column;
   width: 100%;
   height: 100%;
-  padding: 16px;
+  padding: $size-16;
   box-sizing: border-box;
   align-items: center;
   justify-content: space-between;
@@ -18,13 +18,13 @@
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
+  gap: $size-16;
   width: 100%;
 
   &__top {
     display: flex;
     width: 100%;
-    gap: 16px;
+    gap: $size-16;
   }
 }
 
@@ -32,10 +32,10 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px;
+  padding: $size-16;
   width: 100%;
-  gap: 16px;
-  border-radius: 16px;
+  gap: $size-16;
+  border-radius: $size-16;
   border: 3px solid $color-white;
   background-color: rgba($color-white, 0.7);
   backdrop-filter: blur(8px);
@@ -47,7 +47,7 @@
   }
 
   &__image {
-    --img-size: 64px;
+    --img-size: $size-64;
     max-width: var(--img-size);
     max-height: var(--img-size);
     min-width: var(--img-size);
@@ -58,23 +58,23 @@
     flex-direction: column;
     align-items: flex-start;
     width: 100%;
-    gap: 4px;
+    gap: $size-4;
   }
   &__title {
     margin: 0;
-    font-size: 24px;
+    font-size: $size-24;
     font-weight: 800;
   }
   &__subtitle {
     margin: 0;
-    font-size: 22px;
+    font-size: $size-22;
     font-weight: 400;
   }
 }
 
 .actionButton {
   @extend .button;
-  padding: 8px;
-  border-radius: 48px;
+  padding: $size-8;
+  border-radius: $size-48;
   justify-content: center;
 }

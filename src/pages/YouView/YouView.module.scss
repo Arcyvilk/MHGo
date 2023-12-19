@@ -8,8 +8,8 @@
   height: 100%;
   box-sizing: border-box;
   border: 1px solid black;
-  padding: 32px;
-  gap: 16px;
+  padding: $size-32;
+  gap: $size-16;
 }
 
 .header {
@@ -17,11 +17,11 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  padding: 8px;
-  margin-bottom: 32px;
+  padding: $size-8;
+  margin-bottom: $size-32;
 
   &__title {
     margin: 0;
-    font-size: 42px;
+    font-size: $size-42;
   }
 }

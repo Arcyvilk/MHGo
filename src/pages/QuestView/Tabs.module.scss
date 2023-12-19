@@ -4,13 +4,13 @@
   width: 100%;
   display: flex;
   border: 1px solid $color-header-bg;
-  padding: 6px;
+  padding: $size-6;
 
   &__tab {
     cursor: pointer;
-    padding: 12px;
+    padding: $size-12;
     flex: 1 1 100%;
-    font-size: 32px;
+    font-size: $size-32;
     font-weight: 800;
     background-color: $color-primary-bg;
     border: 1px solid $color-header-bg;

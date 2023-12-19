@@ -4,14 +4,14 @@
   position: absolute;
   display: flex;
   width: 100%;
-  bottom: 32px;
-  margin-left: -32px;
+  bottom: $size-32;
+  margin-left: -$size-32;
   box-sizing: border-box;
   justify-content: center;
   color: $color-primary-bg;
 
   &__button {
-    --button-size: 100px;
+    --button-size: $size-100;
     min-width: var(--button-size);
     min-height: var(--button-size);
     max-width: var(--button-size);

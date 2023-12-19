@@ -3,49 +3,49 @@
   color: inherit;
   
   &--8 {
-    --icon-size: 8px;
+    --icon-size: $size-8;
     min-height: var(--icon-size);
     max-height: var(--icon-size);
     height: var(--icon-size);
     width: var(--icon-size);
   }
   &--16 {
-    --icon-size: 16px;
+    --icon-size: $size-16;
     min-height: var(--icon-size);
     max-height: var(--icon-size);
     height: var(--icon-size);
     width: var(--icon-size);
   }
   &--24 {
-    --icon-size: 24px;
+    --icon-size: $size-24;
     min-height: var(--icon-size);
     max-height: var(--icon-size);
     height: var(--icon-size);
     width: var(--icon-size);
   }
   &--32 {
-    --icon-size: 32px;
+    --icon-size: $size-32;
     min-height: var(--icon-size);
     max-height: var(--icon-size);
     height: var(--icon-size);
     width: var(--icon-size);
   }
   &--48 {
-    --icon-size: 48px;
+    --icon-size: $size-48;
     min-height: var(--icon-size);
     max-height: var(--icon-size);
     height: var(--icon-size);
     width: var(--icon-size);
   }
   &--64 {
-    --icon-size: 64px;
+    --icon-size: $size-64;
     min-height: var(--icon-size);
     max-height: var(--icon-size);
     height: var(--icon-size);
     width: var(--icon-size);
   }
   &--128 {
-    --icon-size: 128px;
+    --icon-size: 1$size-28;
     min-height: var(--icon-size);
     max-height: var(--icon-size);
     height: var(--icon-size);

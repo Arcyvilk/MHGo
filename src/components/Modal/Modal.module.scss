@@ -21,10 +21,10 @@
     justify-content: center;
     width: 80%;
     height: auto;
-    margin: 64px;
-    padding: 16px;
+    margin: $size-64;
+    padding: $size-16;
     box-sizing: border-box;
     background-color: $color-white;
-    border-radius: 16px;
+    border-radius: $size-16;
   }
 }

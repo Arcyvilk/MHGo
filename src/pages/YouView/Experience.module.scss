@@ -5,10 +5,10 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  gap: 8px;
+  gap: $size-8;
 
   &__title {
-    font-size: 24px;
+    font-size: $size-24;
   }
 
   &__bar {
@@ -16,11 +16,11 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 175px;
-    height: 28px;
+    width: 17.5rem;
+    height: $size-28;
     box-sizing: border-box;
     border: 2px solid rgba($color-primary-text, 0.5);
-    border-radius: 8px;
+    border-radius: $size-8;
     overflow: hidden;
     padding: 3px;
   }
@@ -31,7 +31,7 @@
     position: absolute;
     color: $color-white;
     text-align: center;
-    font-size: 24px;
+    font-size: $size-24;
     text-shadow: 2px 0 $color-bar, -2px 0 $color-bar, 0 2px $color-bar, 0 -2px $color-bar,
     1px 1px $color-bar, -1px -1px $color-bar, 1px -1px $color-bar, -1px 1px $color-bar;
   }
@@ -40,6 +40,6 @@
     height: 100%;
     box-sizing: border-box;
     background-color: $color-bar;
-    border-radius: 4px;
+    border-radius: $size-4;
   }
 }

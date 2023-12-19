@@ -3,8 +3,8 @@
 .hunter {
   display: flex;
   flex-direction: column;
-  border: 12px solid $color-white;
-  border-radius: 18px;
+  border: $size-12 solid $color-white;
+  border-radius: $size-18;
   box-sizing: border-box;
   background-color: $color-secondary-bg;
   box-shadow: 0 5px 5px rgba($color-black, 0.2);
@@ -13,7 +13,7 @@
 
   &__top {
     display: flex;
-    padding: 16px;
+    padding: $size-16;
     flex-grow: 1;
   }
 
@@ -21,7 +21,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 16px;
+    padding: $size-16;
     background-color: $color-tertiary-bg;
     flex: 0 0 20%;
   }
@@ -31,26 +31,26 @@
     flex-direction: column;
     justify-content: center;
     height: 100%;
-    padding: 0 16px;
-    gap: 16px;
+    padding: 0 $size-16;
+    gap: $size-16;
   }
 
   &__name {
     margin: 0;
-    font-size: 32px;
+    font-size: $size-32;
   }
 
   &__id {
     margin: 0;
-    padding: 4px 8px;
+    padding: $size-4 $size-8;
     border: 1px solid $color-primary-text;
-    border-radius: 8px;
+    border-radius: $size-8;
   }
 
   &__button {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: $size-16;
   }
 }
 

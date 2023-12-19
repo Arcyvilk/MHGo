@@ -1,3 +1,5 @@
+@import './styles/index.scss';
+
 .app {
     display: flex;
     flex-direction: column;
@@ -8,5 +10,5 @@
     box-sizing: border-box;
     overflow: hidden;
     box-sizing: border-box;
-    padding-bottom: 48px;    
+    padding-bottom: $size-48;
 }
