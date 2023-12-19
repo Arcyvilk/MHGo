@@ -1,3 +1,5 @@
+@import '../../styles/index.scss';
+
 .icon {
   display: flex;
   color: inherit;
@@ -57,8 +59,8 @@
     margin: 0 auto;
     min-height: inherit;
     max-height: inherit;
-    height: inherit;
-    width: inherit;
+    min-width: inherit;
+    max-width: inherit;
     color: inherit;
 
     path {

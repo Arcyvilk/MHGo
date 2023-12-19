@@ -11,12 +11,11 @@
   color: $color-primary-bg;
 
   &__button {
-    --button-size: $size-100;
-    min-width: var(--button-size);
-    min-height: var(--button-size);
-    max-width: var(--button-size);
-    max-height: var(--button-size);
-    border-radius: var(--button-size);
+    min-width: $size-100;
+    min-height: $size-100;
+    max-width: $size-100;
+    max-height: $size-100;
+    border-radius: $size-100;
 
     display: flex;
     align-items: center;

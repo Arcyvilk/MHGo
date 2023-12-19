@@ -8,7 +8,7 @@
   gap: $size-8;
 
   &__title {
-    font-size: $size-24;
+    font-size: $size-16;
   }
 
   &__bar {
@@ -16,13 +16,13 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 17.5rem;
-    height: $size-28;
+    width: 12rem;
+    height: $size-22;
     box-sizing: border-box;
     border: 2px solid rgba($color-primary-text, 0.5);
     border-radius: $size-8;
     overflow: hidden;
-    padding: 3px;
+    padding: 2px;
   }
 }
 
@@ -31,7 +31,8 @@
     position: absolute;
     color: $color-white;
     text-align: center;
-    font-size: $size-24;
+    font-size: $size-14;
+    line-height: $size-14;
     text-shadow: 2px 0 $color-bar, -2px 0 $color-bar, 0 2px $color-bar, 0 -2px $color-bar,
     1px 1px $color-bar, -1px -1px $color-bar, 1px -1px $color-bar, -1px 1px $color-bar;
   }
