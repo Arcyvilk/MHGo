@@ -1,0 +1,12 @@
+@import '../../styles/index.scss';
+
+.button {
+  cursor: pointer;
+  font-size: 28px;
+  font-weight: 800;
+  padding: 24px;
+  background-color: $color-white;
+  border-radius: 16px;
+  color: $color-primary-text;
+  border: 1px solid $color-primary-text;
+}

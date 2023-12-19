@@ -3,6 +3,7 @@ import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 
 import s from './App.module.scss';
 import { HomeView, InventoryView, QuestView, YouView } from './pages';
+import { SimpleButton } from './components/SimpleButton';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -26,6 +27,7 @@ export const App = () => {
             <Route path="/shop" element={<NotImplementedView />} />
             <Route path="/quest" element={<QuestView />} />
             <Route path="/you" element={<YouView />} />
+            <Route path="/404" element={<NotImplementedView />} />
           </Routes>
         </BrowserRouter>
       </div>
@@ -35,12 +37,12 @@ export const App = () => {
 
 const NotImplementedView = () => {
   const navigate = useNavigate();
-  const onGoHome = () => navigate('/');
+  const onGoHome = () => navigate(-1);
 
   return (
     <div>
       <h1>NOT IMPLEMENTED YET</h1>
-      <button onClick={onGoHome}>Go back home</button>
+      <SimpleButton onClick={onGoHome} label="Go back home" />
     </div>
   );
 };

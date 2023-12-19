@@ -1,4 +1,4 @@
-import { Button } from '../../components/Button';
+import { SimpleButton } from '../../components/SimpleButton';
 import { Icon } from '../../components/Icon';
 import qr from '../../assets/qr.png';
 
@@ -30,7 +30,7 @@ export const Hunter = () => {
             <h2 className={s.hunter__name}>{MOCK.NAME}</h2>
             <h2 className={s.hunter__id}>Niantic ID: {MOCK.ID}</h2>
           </div>
-          <Button
+          <SimpleButton
             onClick={onHunterViewToggle}
             label={
               <div className={s.hunter__button}>
