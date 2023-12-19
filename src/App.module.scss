@@ -3,17 +3,13 @@
     flex-direction: column;
     width: 100vw;
     height: 100vh;
-    margin: 0;
+    max-width: 720px;
+    max-height: 1520px;
     box-sizing: border-box;
-    align-items: center;
     overflow: hidden;
-    gap: 24px;
-  
-    &__top {
-      display: flex;
-      flex-direction: column;
-      width: 100%;
-      position: sticky;
-      top: 0;
-    }
+    box-sizing: border-box;
+    padding-bottom: 48px;
+
+    background-image: url('./assets/bg_map.png');
+    background-size: contain;
   }

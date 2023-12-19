@@ -1,0 +1,79 @@
+.icon {
+  display:flex;
+  
+  &--8 {
+    --icon-size: 8px;
+    min-height: var(--icon-size);
+    max-height: var(--icon-size);
+    height: var(--icon-size);
+    width: var(--icon-size);
+  }
+  &--16 {
+    --icon-size: 16px;
+    min-height: var(--icon-size);
+    max-height: var(--icon-size);
+    height: var(--icon-size);
+    width: var(--icon-size);
+  }
+  &--24 {
+    --icon-size: 24px;
+    min-height: var(--icon-size);
+    max-height: var(--icon-size);
+    height: var(--icon-size);
+    width: var(--icon-size);
+  }
+  &--32 {
+    --icon-size: 32px;
+    min-height: var(--icon-size);
+    max-height: var(--icon-size);
+    height: var(--icon-size);
+    width: var(--icon-size);
+  }
+  &--48 {
+    --icon-size: 48px;
+    min-height: var(--icon-size);
+    max-height: var(--icon-size);
+    height: var(--icon-size);
+    width: var(--icon-size);
+  }
+  &--64 {
+    --icon-size: 64px;
+    min-height: var(--icon-size);
+    max-height: var(--icon-size);
+    height: var(--icon-size);
+    width: var(--icon-size);
+  }
+  &--128 {
+    --icon-size: 128px;
+    min-height: var(--icon-size);
+    max-height: var(--icon-size);
+    height: var(--icon-size);
+    width: var(--icon-size);
+  }
+
+  &__svg {
+    display: block;
+    margin: 0 auto;
+    min-height: inherit;
+    max-height: inherit;
+    height: inherit;
+    width: inherit;
+
+    path {
+      fill: currentColor;
+    }
+
+    &--spin {
+      animation: rotation 2s infinite linear;
+    }
+  }
+
+  @keyframes rotation {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(359deg);
+    }
+  }
+}
