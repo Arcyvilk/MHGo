@@ -6,7 +6,8 @@ import s from './ShopView.module.scss';
 
 // TODO replace with API
 import { currencies } from '../../_mock/wealth';
-import { MOCK_USER_ID, userWealth } from '../../_mock/save';
+import { userWealth } from '../../_mock/save';
+import { USER_ID } from '../../_mock/settings';
 
 export const ShopView = () => {
   return (
@@ -27,7 +28,7 @@ const Header = () => {
 };
 
 const Wealth = () => {
-  const wealth = useWealth(MOCK_USER_ID);
+  const wealth = useWealth(USER_ID);
 
   return (
     <div className={s.wealth}>

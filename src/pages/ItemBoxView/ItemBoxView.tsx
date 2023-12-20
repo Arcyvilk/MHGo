@@ -5,10 +5,10 @@ import { CloseButton } from '../../components/CloseButton';
 
 import s from './ItemBoxView.module.scss';
 
-import { MOCK_USER_ID, userMaterials } from '../../_mock/save';
-import { userItems } from '../../_mock/save';
+import { userItems, userMaterials } from '../../_mock/save';
 import { items } from '../../_mock/items';
 import { materials } from '../../_mock/materials';
+import { USER_ID } from '../../_mock/settings';
 
 export const ItemBoxView = () => {
   const [activeTab, setActiveTab] = useState(TABS.MATERIALS);
@@ -18,10 +18,8 @@ export const ItemBoxView = () => {
       <Header />
       <div className={s.itemBoxView__wrapper}>
         <Tabs activeTab={activeTab} setActiveTab={setActiveTab} />
-        {activeTab === TABS.ITEMS && <UserItems userId={MOCK_USER_ID} />}
-        {activeTab === TABS.MATERIALS && (
-          <UserMaterials userId={MOCK_USER_ID} />
-        )}
+        {activeTab === TABS.ITEMS && <UserItems userId={USER_ID} />}
+        {activeTab === TABS.MATERIALS && <UserMaterials userId={USER_ID} />}
       </div>
       <CloseButton />
     </div>

@@ -35,12 +35,21 @@
     line-height: $size-16;
     text-shadow: 2px 0 $color-bar, -2px 0 $color-bar, 0 2px $color-bar, 0 -2px $color-bar,
     1px 1px $color-bar, -1px -1px $color-bar, 1px -1px $color-bar, -1px 1px $color-bar;
+    z-index: $zindex-barText;
   }
   &__bg {
     width: 100%;
     height: 100%;
-    box-sizing: border-box;
     background-color: $color-bar;
     border-radius: $size-6;
+  }
+  &__fg {
+    position: absolute;
+    left: 0;
+    height: 75%;
+    background-color: rgba($color-black, 0.6);
+    border-radius: $size-6;
+    margin: 2px;
+    box-sizing: border-box;
   }
 }

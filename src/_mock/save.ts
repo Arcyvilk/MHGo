@@ -1,5 +1,3 @@
-export const MOCK_USER_ID = '1';
-
 export type UserWealth = {
   id: string;
   amount: number;
@@ -60,9 +58,10 @@ export const userMaterials: { userId: string; materials: UserItem[] }[] = [
   },
 ];
 
-export const userProgress = [
+export const userData = [
   {
     userId: '1',
+    exp: 0,
     progress: {
       chapter: '1',
       quest: '1',
