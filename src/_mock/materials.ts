@@ -11,36 +11,31 @@ export type Material = {
   filter: string;
 };
 
-const materialsBase: Pick<Material, 'id' | 'img' | 'description' | 'name'>[] = [
+const materialsBase: Pick<Material, 'id' | 'img' | 'name'>[] = [
   {
     id: 'claw',
     img: `${CDN_URL}/materials/base_claw.webp`,
     name: 'Claw',
-    description: 'B',
   },
   {
     id: 'fin',
     img: `${CDN_URL}/materials/base_claw.webp`,
     name: 'Fin',
-    description: 'B',
   },
   {
     id: 'hide',
     img: `${CDN_URL}/materials/base_hide.webp`,
     name: 'Hide',
-    description: 'B',
   },
   {
     id: 'scale',
     img: `${CDN_URL}/materials/base_scale.webp`,
     name: 'Scale',
-    description: 'B',
   },
   {
     id: 'bug',
     img: `${CDN_URL}/materials/bug_yellow.webp`,
     name: 'Bug',
-    description: 'B',
   },
 ];
 
@@ -48,6 +43,7 @@ const materialsRarity1: Material[] = materialsBase.map(material => ({
   ...material,
   id: `${material.id}1`,
   name: `Basic ${material.name}`,
+  description: `Just a common ${material.name.toLowerCase()}. You can find it everywhere.`,
   rarity: 1,
   price: 5,
   purchasable: false,
@@ -58,6 +54,7 @@ const materialsRarity2: Material[] = materialsBase.map(material => ({
   ...material,
   id: `${material.id}2`,
   name: `Quality ${material.name}`,
+  description: `A common ${material.name.toLowerCase()} of marginally higher quality.`,
   rarity: 2,
   price: 25,
   purchasable: false,
@@ -68,6 +65,7 @@ const materialsRarity3: Material[] = materialsBase.map(material => ({
   ...material,
   id: `${material.id}3`,
   name: `Rare ${material.name}`,
+  description: `Woah! A rare ${material.name.toLowerCase()}! You don't see those every day.`,
   rarity: 3,
   price: 100,
   purchasable: false,
@@ -78,6 +76,7 @@ const materialsRarity4: Material[] = materialsBase.map(material => ({
   ...material,
   id: `${material.id}4`,
   name: `Shiny ${material.name}`,
+  description: `Beautiful, shiny ${material.name.toLowerCase()}. It could be a piece of jewelry if you didn't know better.`,
   rarity: 4,
   price: 250,
   purchasable: false,
@@ -88,6 +87,7 @@ const materialsRarity5: Material[] = materialsBase.map(material => ({
   ...material,
   id: `${material.id}5`,
   name: `Devil's ${material.name}`,
+  description: `Such an extraordinary luck! Everyone thought that "${material.name.toLowerCase()}" is just a children's tale!`,
   rarity: 5,
   price: 550,
   purchasable: false,
