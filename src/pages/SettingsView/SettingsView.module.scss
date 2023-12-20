@@ -1,0 +1,52 @@
+@import '../../styles/index.scss';
+
+.settingsView {
+  @include page-wrapper;
+
+  &__wrapper {
+    display: flex;
+    flex-direction: column; 
+    padding: $size-16;
+    gap: $size-48;
+  }
+}
+
+.header {
+  @include page-header;
+  &__title {
+    @include page-title; 
+  }
+}
+
+.slider {
+  display: flex;
+  flex-direction: column;
+  gap: $size-8;
+
+  &__label {
+    font-size: $size-16;
+    font-weight: 400;
+  }
+  &__wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.section {
+  display: flex;
+  flex-direction: column; 
+  gap: $size-16;
+}
+
+.disclaimer {
+  font-weight: 400;
+  color: rgba($color-primary-text, 0.6);
+}
+
+.version {
+  text-align: center;
+  font-weight: 400;
+  color: rgba($color-primary-text, 0.4);
+}

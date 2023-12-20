@@ -6,6 +6,7 @@ import {
   ItemBoxView,
   NotImplementedView,
   QuestView,
+  SettingsView,
   ShopView,
   YouView,
 } from './pages';
@@ -31,6 +32,7 @@ export const App = () => {
             <Route path="/inventory" element={<NotImplementedView />} />
             <Route path="/items" element={<ItemBoxView />} />
             <Route path="/paintball" element={<NotImplementedView />} />
+            <Route path="/settings" element={<SettingsView />} />
             <Route path="/shop" element={<ShopView />} />
             <Route path="/quest" element={<QuestView />} />
             <Route path="/you" element={<YouView />} />

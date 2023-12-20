@@ -15,7 +15,7 @@ const BUTTONS: { icon: IconType; label: string; link: string | null }[] = [
   { icon: 'Medal', label: 'Hunter Medals', link: null },
   { icon: 'ItemBox', label: 'Item Box', link: '/items' },
   { icon: 'Appearance', label: 'Edit Appearance', link: null },
-  { icon: 'Gear', label: 'Settings', link: null },
+  { icon: 'Gear', label: 'Settings', link: '/settings' },
 ];
 
 export const Buttons = () => {
