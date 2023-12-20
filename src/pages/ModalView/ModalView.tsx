@@ -1,4 +1,4 @@
-import { Button, Icon } from '../../components';
+import { Icon } from '../../components';
 
 import s from './ModalView.module.scss';
 
