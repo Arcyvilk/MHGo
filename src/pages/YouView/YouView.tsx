@@ -25,7 +25,7 @@ type HeaderProps = { userId: string };
 const Header = ({ userId }: HeaderProps) => {
   return (
     <div className={s.header}>
-      <h1 className={s.header__title}>Hunter</h1>
+      <h1 className={s.header__title}>Hoarder</h1>
       <Experience userId={userId} />
     </div>
   );

@@ -6,6 +6,7 @@ import qr from '../../assets/qr.png';
 import s from './Hunter.module.scss';
 import { useUser } from '../../hooks/useUser';
 import { USER_ID } from '../../_mock/settings';
+import { CDN_URL } from '../../utils/consts';
 
 export const Hunter = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -23,10 +24,7 @@ export const Hunter = () => {
       <div className={s.hunter}>
         <div className={s.hunter__top}>
           <div className={s.hunter__level}>HR {userLevel}</div>
-          <img
-            className={s.hunter__image}
-            src="https://cdn.arcyvilk.com/mhgo/misc/hunter.jpg"
-          />
+          <img className={s.hunter__image} src={`${CDN_URL}/misc/hunter.jpg`} />
         </div>
         <div className={s.hunter__bottom}>
           <div className={s.hunter__info}>

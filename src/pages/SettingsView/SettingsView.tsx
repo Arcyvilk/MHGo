@@ -6,6 +6,7 @@ import { STATUS, useLogin } from '../../hooks/useLogin';
 import s from './SettingsView.module.scss';
 import { APP_NAME, APP_VERSION } from '../../_mock/settings';
 import { useEffect, useState } from 'react';
+import { CDN_URL } from '../../utils/consts';
 
 const DEFAULT = {
   min: 0,
@@ -81,7 +82,6 @@ export const SettingsView = () => {
             Once your {APP_NAME} account is deleted, it will no longer be
             accessible by you or anyone else. This action cannot be undone.
           </p>
-          <p className={s.version}>{APP_VERSION}</p>
         </div>
 
         {installPrompt && (
@@ -89,6 +89,15 @@ export const SettingsView = () => {
             <Button label="Install this app" onClick={onInstallClick} />
           </div>
         )}
+
+        <div className={s.section}>
+          <img src={`${CDN_URL}/misc/logo.png`} />
+          <p className={s.version}>
+            Arcyvilk 2023-2024 (c) ALL RIGHTS RESERVED. Map of Hoarding GO is a
+            protected trademark.
+          </p>
+          <p className={s.version}>{APP_VERSION}</p>
+        </div>
       </div>
       <ToastContainer />
       <CloseButton />
