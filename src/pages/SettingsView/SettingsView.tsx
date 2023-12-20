@@ -5,6 +5,7 @@ import { STATUS, useLogin } from '../../hooks/useLogin';
 
 import s from './SettingsView.module.scss';
 import { APP_NAME, APP_VERSION } from '../../_mock/settings';
+import { useEffect, useState } from 'react';
 
 const DEFAULT = {
   min: 0,
@@ -12,8 +13,16 @@ const DEFAULT = {
 };
 
 export const SettingsView = () => {
+  const [installPrompt, setInstallPrompt] = useState<any>(null);
   const { volume, setVolume } = useVolume();
   const { onLogOut, onDeleteAccount } = useLogin();
+
+  useEffect(() => {
+    window.addEventListener('beforeinstallprompt', event => {
+      event.preventDefault();
+      setInstallPrompt(event);
+    });
+  }, []);
 
   const onLogOutClick = async () => {
     const logOutStatus = await onLogOut();
@@ -25,6 +34,13 @@ export const SettingsView = () => {
     const deleteStatus = await onDeleteAccount();
     if (deleteStatus === STATUS.ERROR) toast.error('Did not work :C');
     if (deleteStatus === STATUS.SUCCESS) toast.success('Did work :3');
+  };
+
+  const onInstallClick = async () => {
+    if (!installPrompt) return;
+    const result = await installPrompt.prompt();
+    console.log(`Install prompt was: ${result.outcome}`);
+    setInstallPrompt(null);
   };
 
   return (
@@ -53,10 +69,9 @@ export const SettingsView = () => {
             setVolume={setVolume}
           />
         </div>
+
         <div className={s.section}>
           <Button label="Log out" onClick={onLogOutClick} />
-        </div>
-        <div className={s.section}>
           <Button
             label="Delete account"
             onClick={onDeleteAccountClick}
@@ -68,6 +83,12 @@ export const SettingsView = () => {
           </p>
           <p className={s.version}>{APP_VERSION}</p>
         </div>
+
+        {installPrompt && (
+          <div className={s.section}>
+            <Button label="Install this app" onClick={onInstallClick} />
+          </div>
+        )}
       </div>
       <ToastContainer />
       <CloseButton />
