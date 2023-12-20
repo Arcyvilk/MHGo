@@ -7,6 +7,7 @@ import Face from './Face.svg?react';
 import Friends from './Friends.svg?react';
 import Gear from './Gear.svg?react';
 import ItemBox from './ItemBox.svg?react';
+import Marker from './Marker.svg?react';
 import Medal from './Medal.svg?react';
 import Monster from './Monster.svg?react';
 import News from './News.svg?react';
@@ -28,6 +29,7 @@ const icons = {
   Friends,
   Gear,
   ItemBox,
+  Marker,
   Medal,
   Monster,
   News,
