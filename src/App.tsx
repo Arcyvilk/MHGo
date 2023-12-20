@@ -30,7 +30,7 @@ export const App = () => {
       window.navigator.standalone === true;
     if (isInsideInstalledApp) {
       // Size window after open the app
-      window.resizeTo(400, 600);
+      window.resizeTo(400, 650);
     }
   }, []);
   return (
