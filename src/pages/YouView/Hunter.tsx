@@ -1,18 +1,16 @@
-import { SimpleButton } from '../../components/SimpleButton';
-import { Icon } from '../../components/Icon';
-import qr from '../../assets/qr.png';
-
-import s from './Hunter.module.scss';
 import { useState } from 'react';
-import { Modal } from '../../components/Modal';
-import { Size } from '../../utils/size';
 
-const MOCKNAME = 'SzatanSzatanSzatan';
+import { Icon, Modal, SimpleButton } from '../../components';
+import { Size } from '../../utils/size';
+import qr from '../../assets/qr.png';
+import s from './Hunter.module.scss';
+
+import { USER_NAME } from '../../_mock/settings';
 
 export const Hunter = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const userName = MOCKNAME;
+  const userName = USER_NAME;
   const userId = userName.toLowerCase().replace(' ', '_').concat('666');
 
   const onHunterViewToggle = () => {

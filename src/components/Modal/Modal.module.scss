@@ -19,14 +19,14 @@
 
   &__content {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
-    max-width: 80%;
-    max-height: 80%;
-    margin: $size-64;
+    max-width: 90%;
+    max-height: 90%;
     padding: $size-16;
     box-sizing: border-box;
     background-color: $color-white;
     border-radius: $size-16;
+    overflow-y: scroll;
   }
 }

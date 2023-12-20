@@ -1,21 +1,13 @@
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
-import { Icon } from '../../components/Icon';
+
+import { Button, Icon, Modal } from '../../components';
 import { IconType } from '../../assets/icons';
-import { Button } from '../../components/Button';
 import { Size } from '../../utils/size';
+import { NewsModal, PartyModal } from '../ModalView';
 
 import s from './Buttons.module.scss';
-import { useNavigate } from 'react-router-dom';
-import { Modal } from '../../components';
-import { useState } from 'react';
-
-const PartyModal = () => {
-  return (
-    <div className={s.partyModal}>
-      <Icon icon="Spin" spin />
-    </div>
-  );
-};
 
 const BUTTONS: {
   icon: IconType;
@@ -26,7 +18,7 @@ const BUTTONS: {
   { icon: 'Friends', label: 'Friends', link: null },
   { icon: 'Party', label: 'Party', link: null, modal: <PartyModal /> },
   { icon: 'Monster', label: 'Monster Guide', link: null },
-  { icon: 'News', label: 'News', link: null },
+  { icon: 'News', label: 'News', link: null, modal: <NewsModal /> },
   { icon: 'Medal', label: 'Hunter Medals', link: null },
   { icon: 'ItemBox', label: 'Item Box', link: '/items' },
   { icon: 'Appearance', label: 'Edit Appearance', link: null },

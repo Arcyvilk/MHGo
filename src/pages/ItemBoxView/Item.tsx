@@ -1,3 +1,4 @@
+import { modifiers } from '../../utils/modifiers';
 import s from './Item.module.scss';
 
 type ItemProps = {
@@ -11,9 +12,11 @@ type ItemProps = {
 export const Item = (props: ItemProps) => {
   return (
     <button className={s.item}>
-      <div className={s.item__tile}>
+      <div className={modifiers(s, 'item__tile', `rarity-${props.rarity}`)}>
         <img className={s.tile__image} src={props.img} />
-        <div className={s.tile__rarity}>Rarity {props.rarity}</div>
+        <div className={modifiers(s, 'tile__rarity', `rarity-${props.rarity}`)}>
+          Rarity {props.rarity}
+        </div>
         <div className={s.tile__amount}>{props.amount}</div>
       </div>
       <div className={s.item__name}>{props.name}</div>

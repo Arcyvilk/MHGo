@@ -30,23 +30,23 @@ export const userItems: { userId: string; items: UserItem[] }[] = [
     items: [
       {
         id: 'potion',
-        amount: 11,
+        amount: 7,
       },
       {
         id: 'paintball',
-        amount: 2,
+        amount: 16,
       },
       {
         id: 'bomb',
-        amount: 11,
+        amount: 1,
       },
       {
         id: 'steak',
-        amount: 2,
+        amount: 20,
       },
       {
         id: 'pitfall',
-        amount: 11,
+        amount: 4,
       },
     ],
   },
