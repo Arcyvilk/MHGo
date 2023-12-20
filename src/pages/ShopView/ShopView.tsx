@@ -8,11 +8,14 @@ import s from './ShopView.module.scss';
 import { currencies } from '../../_mock/wealth';
 import { userWealth } from '../../_mock/save';
 import { USER_ID } from '../../_mock/settings';
+import { items } from '../../_mock/items';
+import { Item } from '../ItemBoxView/Item';
 
 export const ShopView = () => {
   return (
     <div className={s.shopView}>
       <Header />
+      <Shop />
       <CloseButton />
     </div>
   );
@@ -25,6 +28,25 @@ const Header = () => {
       <Wealth />
     </div>
   );
+};
+
+const Shop = () => {
+  const items = useItems();
+
+  return (
+    <div className={s.shopView__wrapper}>
+      <div className={s.shopView__items}>
+        {items.map(item => (
+          <Item {...item} />
+        ))}
+      </div>
+    </div>
+  );
+};
+
+const useItems = () => {
+  const purchasableItems = items.filter(item => item.purchasable);
+  return purchasableItems;
 };
 
 const Wealth = () => {

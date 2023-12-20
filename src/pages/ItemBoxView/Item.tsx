@@ -1,4 +1,6 @@
+import { Icon } from '../../components';
 import { modifiers } from '../../utils/modifiers';
+import { Size } from '../../utils/size';
 import s from './Item.module.scss';
 
 type ItemProps = {
@@ -7,24 +9,35 @@ type ItemProps = {
   name: string;
   description: string;
   rarity: number;
-  amount: number;
+  amount?: number;
+  price?: number;
   filter?: string;
 };
-export const Item = (props: ItemProps) => {
+export const Item = ({
+  // id,
+  img,
+  name,
+  // description,
+  rarity,
+  amount,
+  price,
+  filter,
+}: ItemProps) => {
   return (
     <button className={s.item}>
-      <div className={modifiers(s, 'item__tile', `rarity-${props.rarity}`)}>
-        <img
-          src={props.img}
-          style={{ filter: props.filter }}
-          className={s.tile__image}
-        />
-        <div className={modifiers(s, 'tile__rarity', `rarity-${props.rarity}`)}>
-          Rarity {props.rarity}
+      <div className={modifiers(s, 'item__tile', `rarity-${rarity}`)}>
+        <img src={img} style={{ filter }} className={s.tile__image} />
+        <div className={modifiers(s, 'tile__rarity', `rarity-${rarity}`)}>
+          Rarity {rarity}
         </div>
-        <div className={s.tile__amount}>{props.amount}</div>
+        {amount && <div className={s.tile__amount}>{amount}</div>}
       </div>
-      <div className={s.item__name}>{props.name}</div>
+      <div className={s.item__name}>{name}</div>
+      {price && (
+        <div className={s.item__price}>
+          <Icon icon="Paw" size={Size.MICRO} /> {price}
+        </div>
+      )}
     </button>
   );
 };

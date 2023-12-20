@@ -8,6 +8,12 @@
     padding: $size-16;
     gap: $size-16;
   }
+
+  &__items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $size-32 $size-8;
+  }
 }
 
 .header {
