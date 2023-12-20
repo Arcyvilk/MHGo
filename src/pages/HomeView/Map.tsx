@@ -18,7 +18,7 @@ export const Map = () => {
   const geo = useMemo(() => navigator.geolocation, []);
 
   useEffect(() => {
-    const id = geo.watchPosition(
+    geo.watchPosition(
       (position: GeolocationPosition) => {
         const { latitude, longitude } = position.coords;
         setCoords([latitude, longitude]);
