@@ -57,10 +57,10 @@ export default defineConfig({
           },
         ],
       },
-      devOptions: {
-        enabled: true,
-        type: 'module',
-      },
+      // devOptions: {
+      //   enabled: true,
+      //   type: 'module',
+      // },
     }),
   ],
 });

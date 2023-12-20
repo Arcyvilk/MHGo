@@ -8,7 +8,9 @@ import 'react-toastify/dist/ReactToastify.css';
 import './index.scss';
 
 if ('serviceWorker' in navigator) {
-  registerSW();
+  registerSW({
+    immediate: true,
+  });
 }
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
