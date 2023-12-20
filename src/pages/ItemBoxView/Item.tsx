@@ -12,6 +12,7 @@ type ItemProps = {
   amount?: number;
   price?: number;
   filter?: string;
+  onClick?: () => void;
 };
 export const Item = ({
   // id,
@@ -22,9 +23,10 @@ export const Item = ({
   amount,
   price,
   filter,
+  onClick,
 }: ItemProps) => {
   return (
-    <button className={s.item}>
+    <button className={s.item} onClick={onClick}>
       <div className={modifiers(s, 'item__tile', `rarity-${rarity}`)}>
         <img src={img} style={{ filter }} className={s.tile__image} />
         <div className={modifiers(s, 'tile__rarity', `rarity-${rarity}`)}>

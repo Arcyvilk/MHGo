@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 
 import { Button, Icon, Modal } from '../../components';
 import { IconType } from '../../assets/icons';
@@ -47,11 +47,7 @@ export const Buttons = () => {
       return;
     }
 
-    toast.info('Not implemented yet :(', {
-      closeOnClick: true,
-      theme: 'dark',
-      autoClose: 2500,
-    });
+    toast.info('Not implemented yet :(');
   };
 
   return (
@@ -68,7 +64,6 @@ export const Buttons = () => {
           }
         />
       ))}
-      <ToastContainer />
       <Modal isOpen={isModalOpen} setIsOpen={setIsModalOpen}>
         {activeModal}
       </Modal>

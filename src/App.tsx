@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
+import { ToastContainer, ToastContainerProps } from 'react-toastify';
 
 import {
   HomeView,
@@ -24,6 +25,12 @@ const queryClient = new QueryClient({
   },
 });
 
+const toastOptions: ToastContainerProps = {
+  closeOnClick: true,
+  theme: 'dark',
+  autoClose: 2500,
+};
+
 export const App = () => {
   useEffect(() => {
     const isInsideInstalledApp =
@@ -34,6 +41,7 @@ export const App = () => {
       window.resizeTo(400, 650);
     }
   }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
       <div className={s.app}>
@@ -50,6 +58,7 @@ export const App = () => {
             <Route path="/404" element={<NotImplementedView />} />
           </Routes>
         </BrowserRouter>
+        <ToastContainer {...toastOptions} />
       </div>
     </QueryClientProvider>
   );

@@ -1,4 +1,4 @@
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import { Button, CloseButton, Slider } from '../../components';
 import { Volume, useVolume } from '../../hooks/useVolume';
 import { STATUS, useLogin } from '../../hooks/useLogin';
@@ -99,7 +99,6 @@ export const SettingsView = () => {
           <p className={s.version}>{APP_VERSION}</p>
         </div>
       </div>
-      <ToastContainer />
       <CloseButton />
     </div>
   );

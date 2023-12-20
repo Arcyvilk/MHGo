@@ -1,6 +1,8 @@
-import { CloseButton } from '../../components/CloseButton';
-import { Icon } from '../../components/Icon';
+import { toast } from 'react-toastify';
+
+import { CloseButton, Icon } from '../../components';
 import { Size } from '../../utils/size';
+import { Item } from '../ItemBoxView/Item';
 
 import s from './ShopView.module.scss';
 
@@ -9,7 +11,6 @@ import { currencies } from '../../_mock/wealth';
 import { userWealth } from '../../_mock/save';
 import { USER_ID } from '../../_mock/settings';
 import { items } from '../../_mock/items';
-import { Item } from '../ItemBoxView/Item';
 
 export const ShopView = () => {
   return (
@@ -32,12 +33,15 @@ const Header = () => {
 
 const Shop = () => {
   const items = useItems();
+  const onItemClick = () => {
+    toast.error('You are too poor for this!');
+  };
 
   return (
     <div className={s.shopView__wrapper}>
       <div className={s.shopView__items}>
         {items.map(item => (
-          <Item {...item} />
+          <Item {...item} onClick={onItemClick} />
         ))}
       </div>
     </div>
