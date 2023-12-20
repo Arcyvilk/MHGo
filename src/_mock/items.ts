@@ -1,3 +1,5 @@
+import { CDN_URL } from '../utils/consts';
+
 export type Item = {
   id: string;
   img: string;
@@ -11,7 +13,7 @@ export type Item = {
 export const items: Item[] = [
   {
     id: 'potion',
-    img: 'https://cdn.arcyvilk.com/mhgo/potion.jpg',
+    img: `${CDN_URL}/items/potion.jpg`,
     name: 'Potion',
     description: 'B',
     rarity: 2,
@@ -20,7 +22,7 @@ export const items: Item[] = [
   },
   {
     id: 'bomb',
-    img: 'https://cdn.arcyvilk.com/mhgo/barrel.jpg',
+    img: `${CDN_URL}/items/barrel.jpg`,
     name: 'Barrel bomb',
     description: 'Blablablablabla',
     rarity: 5,
@@ -29,7 +31,7 @@ export const items: Item[] = [
   },
   {
     id: 'pitfall',
-    img: 'https://cdn.arcyvilk.com/mhgo/pitfall.jpg',
+    img: `${CDN_URL}/items/pitfall.jpg`,
     name: 'Pitfall trap',
     description: 'Blablablabalbal',
     rarity: 4,
@@ -38,7 +40,7 @@ export const items: Item[] = [
   },
   {
     id: 'paintball',
-    img: 'https://cdn.arcyvilk.com/mhgo/paintball.jpg',
+    img: `${CDN_URL}/items/paintball.jpg`,
     name: 'Paintball',
     description: 'Bablablablablabalbalbal',
     rarity: 3,
@@ -47,7 +49,7 @@ export const items: Item[] = [
   },
   {
     id: 'steak',
-    img: 'https://cdn.arcyvilk.com/mhgo/steak.jpg',
+    img: `${CDN_URL}/items/steak.jpg`,
     name: 'Well-done steak',
     description: 'Bbdbfiuewbfiur',
     rarity: 1,

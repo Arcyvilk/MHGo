@@ -12,6 +12,6 @@ export const news: News[] = [
     author: 'Arcyvilk',
     title: 'Happy birthday!',
     content: '% has birthday today. Happy birthday!',
-    img: 'https://cdn.arcyvilk.com/mhgo/happybday.jpg',
+    img: 'https://cdn.arcyvilk.com/mhgo/news/happybday.jpg',
   },
 ];

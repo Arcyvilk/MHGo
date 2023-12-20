@@ -19,6 +19,7 @@
   justify-content: space-between;
   padding: $size-16;
   background-color: $color-primary-bg;
+  z-index: $zindex-header;
 }
 
 @mixin page-title {

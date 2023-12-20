@@ -26,7 +26,7 @@ export const Hunter = () => {
         <div className={s.hunter__top}>
           <img
             className={s.hunter__image}
-            src="https://cdn.arcyvilk.com/mhgo/hunter.jpg"
+            src="https://cdn.arcyvilk.com/mhgo/misc/hunter.jpg"
           />
         </div>
         <div className={s.hunter__bottom}>

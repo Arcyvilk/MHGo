@@ -8,12 +8,17 @@ type ItemProps = {
   description: string;
   rarity: number;
   amount: number;
+  filter?: string;
 };
 export const Item = (props: ItemProps) => {
   return (
     <button className={s.item}>
       <div className={modifiers(s, 'item__tile', `rarity-${props.rarity}`)}>
-        <img className={s.tile__image} src={props.img} />
+        <img
+          src={props.img}
+          style={{ filter: props.filter }}
+          className={s.tile__image}
+        />
         <div className={modifiers(s, 'tile__rarity', `rarity-${props.rarity}`)}>
           Rarity {props.rarity}
         </div>
