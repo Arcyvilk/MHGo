@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import L from 'leaflet';
 
 import s from './Map.module.scss';
@@ -13,9 +13,9 @@ const geoOptions = {
 };
 
 const mapOptions = {
-  zoom: 16,
-  minZoom: 16,
-  maxZoom: 19,
+  zoom: 15,
+  minZoom: 15,
+  maxZoom: 18,
   scrollWheelZoom: true,
 };
 
@@ -41,11 +41,26 @@ export const Map = () => {
       center={L.latLng(coords[0], coords[1])}
       className={s.mapContainer}
       {...mapOptions}>
+      <MapLayer coords={coords} />
+    </MapContainer>
+  );
+};
+
+type MapLayerProps = { coords: number[] };
+const MapLayer = ({ coords }: MapLayerProps) => {
+  const map = useMap();
+
+  useEffect(() => {
+    if (map) map.flyTo(L.latLng(coords[0], coords[1]));
+  }, [coords, map]);
+
+  return (
+    <>
       <TileLayer
         attribution='&copy; <a href="https://stadiamaps.com/" target="_blank">Stadia Maps</a>
-        &copy; <a href="https://www.stamen.com/" target="_blank">Stamen Design</a>
-        &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a>
-        &copy; <a href="https://www.openstreetmap.org/copyright/" target="_blank">OpenStreetMap contributors</a>'
+          &copy; <a href="https://www.stamen.com/" target="_blank">Stamen Design</a>
+          &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a>
+          &copy; <a href="https://www.openstreetmap.org/copyright/" target="_blank">OpenStreetMap contributors</a>'
         url="https://tiles.stadiamaps.com/tiles/stamen_watercolor/{z}/{x}/{y}.jpg"
       />
       <Marker position={L.latLng(coords[0], coords[1])}>
@@ -53,6 +68,6 @@ export const Map = () => {
           A pretty CSS3 popup. <br /> Easily customizable.
         </Popup>
       </Marker>
-    </MapContainer>
+    </>
   );
 };
