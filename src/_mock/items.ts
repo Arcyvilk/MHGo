@@ -27,7 +27,7 @@ export const items: Item[] = [
     description: 'Blablablablabla',
     rarity: 5,
     price: 60,
-    purchasable: true,
+    purchasable: false,
   },
   {
     id: 'pitfall',
@@ -36,7 +36,7 @@ export const items: Item[] = [
     description: 'Blablablabalbal',
     rarity: 4,
     price: 60,
-    purchasable: true,
+    purchasable: false,
   },
   {
     id: 'paintball',
@@ -44,7 +44,7 @@ export const items: Item[] = [
     name: 'Paintball',
     description: 'Bablablablablabalbalbal',
     rarity: 3,
-    price: 60,
+    price: 99999999999999,
     purchasable: true,
   },
   {
@@ -54,6 +54,6 @@ export const items: Item[] = [
     description: 'Bbdbfiuewbfiur',
     rarity: 1,
     price: 60,
-    purchasable: true,
+    purchasable: false,
   },
 ];

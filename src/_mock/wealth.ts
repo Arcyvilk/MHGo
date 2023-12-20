@@ -1,7 +1,7 @@
 export const currencies = [
   {
     id: 'money',
-    icon: 'Ball',
+    icon: 'Coin',
   },
   {
     id: 'lapki',

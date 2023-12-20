@@ -12,7 +12,7 @@ export const Experience = ({ userId }: ExperienceProps) => {
 
   return (
     <div className={s.experience}>
-      <Icon icon="Ball" size={Size.TINY} />
+      <Icon icon="Paintball" size={Size.TINY} />
       <span className={s.experience__title}>HRP</span>
       <div className={s.experience__bar}>
         <div className={s.bar__text}>

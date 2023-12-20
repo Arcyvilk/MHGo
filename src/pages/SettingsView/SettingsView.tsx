@@ -93,7 +93,7 @@ export const SettingsView = () => {
         <div className={s.section}>
           <img src={`${CDN_URL}/misc/logo.png`} />
           <p className={s.version}>
-            Arcyvilk 2023-2024 (c) ALL RIGHTS RESERVED. Map of Hoarding GO is a
+            Arcyvilk 2023-2024 (c) ALL RIGHTS RESERVED. {APP_NAME} is a
             protected trademark.
           </p>
           <p className={s.version}>{APP_VERSION}</p>

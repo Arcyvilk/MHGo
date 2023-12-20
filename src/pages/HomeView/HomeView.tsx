@@ -23,9 +23,9 @@ export const HomeView = () => {
       <div className={s.actions}>
         <div className={s.actions__top}>
           <ActionButton icon="Face" onClick={onYouClick} />
-          <ActionButton icon="Utensils" onClick={onInventoryClick} />
-          <ActionButton icon="Ball" onClick={onPaintballClick} />
-          <ActionButton icon="Jar" onClick={onItemsClick} />
+          <ActionButton icon="Armory" onClick={onInventoryClick} />
+          <ActionButton icon="Paintball" onClick={onPaintballClick} />
+          <ActionButton icon="Potion" onClick={onItemsClick} />
           <ActionButton icon="Shop" onClick={onShopClick} />
         </div>
         <QuestButton onClick={onQuestClick} />

@@ -10,14 +10,8 @@ export const userWealth: { userId: string; wealth: UserWealth[] }[] = [
   {
     userId: '1',
     wealth: [
-      {
-        id: 'money',
-        amount: 66666,
-      },
-      {
-        id: 'lapki',
-        amount: 12,
-      },
+      { id: 'money', amount: 0 },
+      { id: 'lapki', amount: 0 },
     ],
   },
 ];
@@ -27,7 +21,7 @@ export const userItems: { userId: string; items: UserItem[] }[] = [
     userId: '1',
     items: [
       { id: 'potion', amount: 7 },
-      { id: 'paintball', amount: 16 },
+      { id: 'paintball', amount: 0 },
       { id: 'bomb', amount: 1 },
       { id: 'steak', amount: 20 },
       { id: 'pitfall', amount: 4 },
