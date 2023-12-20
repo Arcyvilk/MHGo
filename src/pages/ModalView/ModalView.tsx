@@ -1,4 +1,4 @@
-import { Icon } from '../../components';
+import { Button, Icon } from '../../components';
 
 import s from './ModalView.module.scss';
 
@@ -29,6 +29,14 @@ export const NewsModal = () => {
           </div>
         </div>
       ))}
+    </div>
+  );
+};
+
+export const AppearanceModal = () => {
+  return (
+    <div className={s.modalView__appearance}>
+      You're already beautiful &lt;3
     </div>
   );
 };

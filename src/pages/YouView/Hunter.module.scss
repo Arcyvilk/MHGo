@@ -8,14 +8,19 @@
   box-sizing: border-box;
   background-color: $color-secondary-bg;
   box-shadow: 0 5px 5px rgba($color-black, 0.2);
-  height: 600px;
   width: 100%;
 
   &__top {
     display: flex;
-    padding: $size-8;
     box-sizing: border-box;
+    border-radius: $size-18;
     flex-grow: 1;
+  }
+
+  &__image {
+    width: 100%;
+    object-fit: cover;
+    aspect-ratio: 1 / 1;
   }
 
   &__bottom {
@@ -23,10 +28,10 @@
     justify-content: space-between;
     align-items: center;
     padding: $size-16;
-    height: 130px;
+    // height: 130px;
     box-sizing: border-box;
     background-color: $color-tertiary-bg;
-    flex: 0 0 20%;
+    flex: 1 1 20%;
     gap: $size-16;
   }
 

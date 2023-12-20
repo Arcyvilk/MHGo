@@ -23,7 +23,12 @@ export const Hunter = () => {
         <img className={s.qr} src={qr} />
       </Modal>
       <div className={s.hunter}>
-        <div className={s.hunter__top}>TODO top</div>
+        <div className={s.hunter__top}>
+          <img
+            className={s.hunter__image}
+            src="https://cdn.arcyvilk.com/mhgo/hunter.jpg"
+          />
+        </div>
         <div className={s.hunter__bottom}>
           <div className={s.hunter__info}>
             <h2 className={s.hunter__name}>{userName}</h2>

@@ -18,6 +18,13 @@
     justify-content: center;
     gap: $size-32;
   }
+
+  &__appearance {
+    display: flex;
+    flex-direction: column;
+    gap: $size-16;
+    font-size: $size-16;
+  }
 }
 
 // Modal View - posts
@@ -58,5 +65,4 @@
     font-weight: 400;
     padding: 0 $size-12;
   }
-
 }

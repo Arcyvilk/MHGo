@@ -5,7 +5,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import { Button, Icon, Modal } from '../../components';
 import { IconType } from '../../assets/icons';
 import { Size } from '../../utils/size';
-import { NewsModal, PartyModal } from '../ModalView';
+import { AppearanceModal, NewsModal, PartyModal } from '../ModalView';
 
 import s from './Buttons.module.scss';
 
@@ -21,7 +21,12 @@ const BUTTONS: {
   { icon: 'News', label: 'News', link: null, modal: <NewsModal /> },
   { icon: 'Medal', label: 'Hunter Medals', link: null },
   { icon: 'ItemBox', label: 'Item Box', link: '/items' },
-  { icon: 'Appearance', label: 'Edit Appearance', link: null },
+  {
+    icon: 'Appearance',
+    label: 'Edit Appearance',
+    link: null,
+    modal: <AppearanceModal />,
+  },
   { icon: 'Gear', label: 'Settings', link: '/settings' },
 ];
 
