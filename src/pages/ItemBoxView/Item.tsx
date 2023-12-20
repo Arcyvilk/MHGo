@@ -9,8 +9,9 @@ type ItemProps = {
   name: string;
   description: string;
   rarity: number;
+  price: number;
+  purchasable: boolean;
   amount?: number;
-  price?: number;
   filter?: string;
   onClick?: () => void;
 };
@@ -22,6 +23,7 @@ export const Item = ({
   rarity,
   amount,
   price,
+  purchasable,
   filter,
   onClick,
 }: ItemProps) => {
@@ -35,7 +37,7 @@ export const Item = ({
         {amount && <div className={s.tile__amount}>{amount}</div>}
       </div>
       <div className={s.item__name}>{name}</div>
-      {price && (
+      {purchasable && (
         <div className={s.item__price}>
           <Icon icon="Paw" size={Size.MICRO} /> {price}
         </div>

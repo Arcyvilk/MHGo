@@ -32,9 +32,11 @@ const UserItems = ({ userId }: UserItemBoxProps) => {
 
   return (
     <div className={s.itemBoxView__container}>
-      {userItems.map(userItem => (
-        <Item {...userItem} />
-      ))}
+      {userItems
+        .filter(userItem => userItem.amount)
+        .map(userItem => (
+          <Item {...userItem} purchasable={false} />
+        ))}
     </div>
   );
 };
@@ -44,9 +46,11 @@ const UserMaterials = ({ userId }: UserItemBoxProps) => {
 
   return (
     <div className={s.itemBoxView__container}>
-      {userItems.map(userItem => (
-        <Item {...userItem} />
-      ))}
+      {userItems
+        .filter(userItem => userItem.amount)
+        .map(userItem => (
+          <Item {...userItem} purchasable={false} />
+        ))}
     </div>
   );
 };

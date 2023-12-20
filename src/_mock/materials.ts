@@ -19,7 +19,7 @@ const materialsBase: Pick<Material, 'id' | 'img' | 'name'>[] = [
   },
   {
     id: 'fin',
-    img: `${CDN_URL}/materials/base_claw.webp`,
+    img: `${CDN_URL}/materials/base_default.webp`,
     name: 'Fin',
   },
   {

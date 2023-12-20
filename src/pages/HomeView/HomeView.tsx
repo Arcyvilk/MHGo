@@ -3,6 +3,7 @@ import { IconType } from '../../assets/icons';
 import { Icon } from '../../components/Icon';
 import { Size } from '../../utils/size';
 import s from './HomeView.module.scss';
+import { Map } from './Map';
 
 const TEMP_SRC =
   'https://cdn.masochist.me/badges/1003590_6423923a819d3d1917bfa22b.png';
@@ -20,6 +21,7 @@ export const HomeView = () => {
   return (
     <div className={s.homeView}>
       <h1>HomeView</h1>
+      <Map />
       <div className={s.actions}>
         <div className={s.actions__top}>
           <ActionButton icon="Face" onClick={onYouClick} />
