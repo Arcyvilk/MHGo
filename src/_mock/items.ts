@@ -1,4 +1,14 @@
-export const items = [
+export type Item = {
+  id: string;
+  img: string;
+  name: string;
+  description: string;
+  rarity: number;
+  price: number;
+  purchasable: boolean;
+};
+
+export const items: Item[] = [
   {
     id: 'potion',
     img: 'https://cdn.arcyvilk.com/mhgo/potion.jpg',
@@ -6,6 +16,7 @@ export const items = [
     description: 'B',
     rarity: 1,
     price: 60,
+    purchasable: true,
   },
   {
     id: 'bomb',
@@ -14,6 +25,7 @@ export const items = [
     description: 'Blablablablabla',
     rarity: 2,
     price: 60,
+    purchasable: true,
   },
   {
     id: 'pitfall',
@@ -22,6 +34,7 @@ export const items = [
     description: 'Blablablabalbal',
     rarity: 3,
     price: 60,
+    purchasable: true,
   },
   {
     id: 'paintball',
@@ -30,6 +43,7 @@ export const items = [
     description: 'Bablablablablabalbalbal',
     rarity: 4,
     price: 60,
+    purchasable: true,
   },
   {
     id: 'steak',
@@ -38,5 +52,6 @@ export const items = [
     description: 'Bbdbfiuewbfiur',
     rarity: 5,
     price: 60,
+    purchasable: true,
   },
 ];

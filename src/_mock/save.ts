@@ -1,6 +1,14 @@
 export const MOCK_USER_ID = '1';
 
-export const userWealth = [
+export type UserWealth = {
+  id: string;
+  amount: number;
+};
+export type UserItem = {
+  id: string;
+  amount: number;
+};
+export const userWealth: { userId: string; wealth: UserWealth[] }[] = [
   {
     userId: '1',
     wealth: [
@@ -16,7 +24,7 @@ export const userWealth = [
   },
 ];
 
-export const userItems = [
+export const userItems: { userId: string; items: UserItem[] }[] = [
   {
     userId: '1',
     items: [

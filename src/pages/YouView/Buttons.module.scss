@@ -6,3 +6,13 @@
   gap: $size-10 $size-16;
   margin-bottom: $size-32;
 }
+
+.partyModal {
+  display: flex;
+  align-items:center;
+  justify-content: center;
+  overflow:hidden;
+  width: 90vw;
+  height: 90vh;
+  color: rgba($color-black, 0.5);
+}

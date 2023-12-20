@@ -4,7 +4,7 @@ import { Volume, useVolume } from '../../hooks/useVolume';
 import { STATUS, useLogin } from '../../hooks/useLogin';
 
 import s from './SettingsView.module.scss';
-import { APP_NAME } from '../../_mock/settings';
+import { APP_NAME, APP_VERSION } from '../../_mock/settings';
 
 const DEFAULT = {
   min: 0,
@@ -66,7 +66,7 @@ export const SettingsView = () => {
             Once your {APP_NAME} account is deleted, it will no longer be
             accessible by you or anyone else. This action cannot be undone.
           </p>
-          <p className={s.version}>v67.0-231208-2307</p>
+          <p className={s.version}>{APP_VERSION}</p>
         </div>
       </div>
       <ToastContainer />

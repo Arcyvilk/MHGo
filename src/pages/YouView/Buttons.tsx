@@ -6,10 +6,25 @@ import { Size } from '../../utils/size';
 
 import s from './Buttons.module.scss';
 import { useNavigate } from 'react-router-dom';
+import { Modal } from '../../components';
+import { useState } from 'react';
 
-const BUTTONS: { icon: IconType; label: string; link: string | null }[] = [
+const PartyModal = () => {
+  return (
+    <div className={s.partyModal}>
+      <Icon icon="Spin" spin />
+    </div>
+  );
+};
+
+const BUTTONS: {
+  icon: IconType;
+  label: string;
+  link: string | null;
+  modal?: React.ReactNode;
+}[] = [
   { icon: 'Friends', label: 'Friends', link: null },
-  { icon: 'Party', label: 'Party', link: null },
+  { icon: 'Party', label: 'Party', link: null, modal: <PartyModal /> },
   { icon: 'Monster', label: 'Monster Guide', link: null },
   { icon: 'News', label: 'News', link: null },
   { icon: 'Medal', label: 'Hunter Medals', link: null },
@@ -19,17 +34,27 @@ const BUTTONS: { icon: IconType; label: string; link: string | null }[] = [
 ];
 
 export const Buttons = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [activeModal, setActiveModal] = useState<React.ReactNode>();
   const navigate = useNavigate();
 
-  const onButtonClick = (link: string | null) => {
-    if (link) {
+  const onButtonClick = (link: string | null, modal?: React.ReactNode) => {
+    if (modal) {
+      setIsModalOpen(true);
+      setActiveModal(modal);
+      return;
+    }
+
+    if (typeof link === 'string') {
       navigate(link);
-    } else
-      toast.info('Not implemented yet :(', {
-        closeOnClick: true,
-        theme: 'dark',
-        autoClose: 2500,
-      });
+      return;
+    }
+
+    toast.info('Not implemented yet :(', {
+      closeOnClick: true,
+      theme: 'dark',
+      autoClose: 2500,
+    });
   };
 
   return (
@@ -37,7 +62,7 @@ export const Buttons = () => {
       {BUTTONS.map(b => (
         <Button
           key={b.label}
-          onClick={() => onButtonClick(b.link)}
+          onClick={() => onButtonClick(b.link, b.modal)}
           label={
             <>
               <Icon icon={b.icon} size={Size.MICRO} />
@@ -47,6 +72,9 @@ export const Buttons = () => {
         />
       ))}
       <ToastContainer />
+      <Modal isOpen={isModalOpen} setIsOpen={setIsModalOpen}>
+        {activeModal}
+      </Modal>
     </div>
   );
 };

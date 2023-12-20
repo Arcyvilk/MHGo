@@ -14,6 +14,7 @@ import Party from './Party.svg?react';
 import Paw from './Paw.svg?react';
 import QR from './QR.svg?react';
 import Shop from './Shop.svg?react';
+import Spin from './Spin.svg?react';
 import Utensils from './Utensils.svg?react';
 import X from './X.svg?react';
 
@@ -32,6 +33,7 @@ const icons = {
   Paw,
   QR,
   Shop,
+  Spin,
   Utensils,
   X,
 };
