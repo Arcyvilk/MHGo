@@ -1,10 +1,11 @@
 import { useEffect, useMemo, useState } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
-import L from 'leaflet';
+import L, { Zoom } from 'leaflet';
+
+import { DEFAULT_COORDS } from '../../utils/consts';
 
 import s from './Map.module.scss';
 import 'leaflet/dist/leaflet.css';
-import { DEFAULT_COORDS } from '../../utils/consts';
 
 const geoOptions = {
   enableHighAccuracy: false,
@@ -16,7 +17,8 @@ const mapOptions = {
   zoom: 15,
   minZoom: 15,
   maxZoom: 18,
-  scrollWheelZoom: true,
+  scrollWheelZoom: 'center' as Zoom,
+  dragging: false,
 };
 
 export const Map = () => {
