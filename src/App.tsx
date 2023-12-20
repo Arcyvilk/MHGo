@@ -12,6 +12,7 @@ import {
 } from './pages';
 
 import s from './App.module.scss';
+import { useEffect } from 'react';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -23,6 +24,15 @@ const queryClient = new QueryClient({
 });
 
 export const App = () => {
+  useEffect(() => {
+    const isInsideInstalledApp =
+      window.matchMedia('(display-mode: standalone)').matches || // @ts-ignore
+      window.navigator.standalone === true;
+    if (isInsideInstalledApp) {
+      // Size window after open the app
+      window.resizeTo(400, 600);
+    }
+  }, []);
   return (
     <QueryClientProvider client={queryClient}>
       <div className={s.app}>
