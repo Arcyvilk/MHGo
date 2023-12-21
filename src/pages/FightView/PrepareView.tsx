@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 
-import { Button, CloseButton, Icon } from '../../components';
+import { Button, Icon } from '../../components';
 import { modifiers } from '../../utils/modifiers';
 import { Size } from '../../utils/size';
 import { useMonster } from '../../hooks/useMonster';
