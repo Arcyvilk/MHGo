@@ -47,6 +47,7 @@ html:not(#close) {
 }
 
 * {
+  user-select: none;
   box-sizing: border-box;
   font-family: 'Open Sans', 'Georgia', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
