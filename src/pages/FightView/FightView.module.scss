@@ -32,12 +32,12 @@
 
   &__buttons {
     position: fixed;
-    bottom: $size-72;
+    bottom: $size-16;
     width: 100%;
     margin-left: -$size-16;
     display: flex;
     flex-direction: column;
-    padding: $size-16;
+    padding: $size-20;
     gap: $size-8;
   }
 

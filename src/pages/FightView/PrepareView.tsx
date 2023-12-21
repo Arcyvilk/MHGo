@@ -34,7 +34,6 @@ export const PrepareView = () => {
           <Button label="Flee!" onClick={onFlee} simple />
         </div>
       </div>
-      <CloseButton />
     </div>
   );
 };
