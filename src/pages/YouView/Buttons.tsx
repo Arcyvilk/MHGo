@@ -19,7 +19,7 @@ const BUTTONS: {
   { icon: 'Party', label: 'Party', link: null, modal: <PartyModal /> },
   { icon: 'Monster', label: 'Monster Guide', link: null },
   { icon: 'News', label: 'News', link: null, modal: <NewsModal /> },
-  { icon: 'Medal', label: 'Hunter Medals', link: null },
+  { icon: 'Medal', label: 'Hoarder Medals', link: null },
   { icon: 'ItemBox', label: 'Item Box', link: '/items' },
   {
     icon: 'Appearance',
