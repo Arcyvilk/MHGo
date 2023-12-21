@@ -69,6 +69,11 @@ const MapLayer = ({ coords }: MapLayerProps) => {
     if (map) map.flyTo(L.latLng(coords[0], coords[1]));
   }, [coords, map]);
 
+  map.on('click', ev => {
+    const latlng = map.mouseEventToLatLng(ev.originalEvent);
+    console.log(latlng.lat + ', ' + latlng.lng);
+  });
+
   return (
     <>
       <TileLayer

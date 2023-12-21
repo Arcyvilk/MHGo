@@ -1,6 +1,6 @@
 import { CDN_URL } from '../utils/consts';
 
-export type HabitatType = 'swamp' | 'desert' | 'forest';
+export type HabitatType = 'swamp' | 'desert' | 'forest' | 'cave';
 export type Habitat = {
   id: string;
   type: HabitatType;
@@ -30,5 +30,12 @@ export const habitats: Habitat[] = [
     name: 'Forest',
     description: "It's a forest.",
     image: `${CDN_URL}/habitats/forest.jpg`,
+  },
+  {
+    id: 'cave',
+    type: 'cave',
+    name: 'Cave',
+    description: "It's a cave.",
+    image: `${CDN_URL}/habitats/cave.jpg`,
   },
 ];

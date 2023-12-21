@@ -77,11 +77,15 @@ export const monsterMarkers: MonsterMarker[] = [
   },
   {
     monsterId: 'babcioth',
-    coords: [59.945375, 10.719106],
+    coords: [59.896351, 10.615496],
   },
   {
     monsterId: 'businessnath',
     coords: [59.8915828, 10.6191182],
+  },
+  {
+    monsterId: 'sabertooth',
+    coords: [59.894065, 10.6275319],
   },
 ].map((monster, index) => ({
   ...monster,

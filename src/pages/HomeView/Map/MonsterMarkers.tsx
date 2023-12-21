@@ -16,6 +16,7 @@ export const MonsterMarkers = () => {
       {monsterMarkers.map(m => (
         <>
           <Marker
+            key={m.id}
             icon={m.thumbnail}
             position={L.latLng(m.coords[0], m.coords[1])}
             eventHandlers={{
