@@ -15,6 +15,7 @@ import { DEFAULT_COORDS, MAP_RANGE } from '../../../utils/consts';
 import s from './Map.module.scss';
 import 'leaflet/dist/leaflet.css';
 import { useLocalStorage } from '../../../hooks/useLocalStorage';
+import { MonsterMarkers } from './MonsterMarkers';
 
 const geoOptions = {
   enableHighAccuracy: false,
@@ -77,6 +78,7 @@ const MapLayer = ({ coords }: MapLayerProps) => {
           &copy; <a href="https://www.openstreetmap.org/copyright/" target="_blank">OpenStreetMap contributors</a>'
         url="https://tiles.stadiamaps.com/tiles/stamen_watercolor/{z}/{x}/{y}.jpg"
       />
+      <MonsterMarkers />
       <Circle center={L.latLng(coords[0], coords[1])} radius={MAP_RANGE} />
       <Marker icon={iconMarker} position={L.latLng(coords[0], coords[1])}>
         <Popup>

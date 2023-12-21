@@ -29,7 +29,7 @@ export const monsters: Monster[] = [
     name: 'Babcianiath',
     description: 'TODO',
     img: `${CDN_URL}/monsters/babcianiath.png`,
-    thumbnail: `${CDN_URL}/monsters/babcianiath.png`,
+    thumbnail: `${CDN_URL}/monsters/thumbnail-babcianiath.png`,
     habitat: 'swamp',
     baseHP: 100,
     baseExp: 10,

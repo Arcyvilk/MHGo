@@ -52,10 +52,49 @@ export const resourceMarkers: ResourceMarker[] = [
 export const monsterMarkers: MonsterMarker[] = [
   {
     id: '1',
-    monsterId: 'babcianiath',
+    monsterId: 'angrybird',
     coords: [59.941134, 10.716524],
     respawnTime: 300,
+    level: 1,
+    drops: [
+      {
+        dropId: 'claw1',
+        chance: 100,
+      },
+    ],
+  },
+  {
+    id: '2',
+    monsterId: 'babcianiath',
+    coords: [59.94392, 10.715436],
+    respawnTime: 300,
     level: 2,
+    drops: [
+      {
+        dropId: 'claw1',
+        chance: 100,
+      },
+    ],
+  },
+  {
+    id: '3',
+    monsterId: 'babcioth',
+    coords: [59.945375, 10.719106],
+    respawnTime: 300,
+    level: 3,
+    drops: [
+      {
+        dropId: 'claw1',
+        chance: 100,
+      },
+    ],
+  },
+  {
+    id: '4',
+    monsterId: 'businessnath',
+    coords: [59.942205, 10.718076],
+    respawnTime: 300,
+    level: 4,
     drops: [
       {
         dropId: 'claw1',

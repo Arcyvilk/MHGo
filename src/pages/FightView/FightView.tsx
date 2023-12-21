@@ -3,12 +3,12 @@ import { toast } from 'react-toastify';
 
 import { Button, CloseButton, Icon } from '../../components';
 import { modifiers } from '../../utils/modifiers';
+import { Size } from '../../utils/size';
 
 import s from './FightView.module.scss';
 
 import { monsters } from '../../_mock/monsters';
 import { monsterMarkers } from '../../_mock/mapMarkers';
-import { Size } from '../../utils/size';
 
 export const FightView = () => {
   const navigate = useNavigate();

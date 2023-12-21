@@ -20,14 +20,11 @@ export const HomeView = () => {
   const onShopClick = () => navigate('/shop');
   const onQuestClick = () => navigate('/quest');
 
-  const onTest = () => navigate('/fight?id=1');
-
   return (
     <div className={s.homeView}>
       <h1>HomeView</h1>
       <Map />
       <div className={s.actions}>
-        <ActionButton icon="Monster" onClick={onTest} />
         <div className={s.actions__top}>
           <ActionButton icon="Face" onClick={onYouClick} />
           <ActionButton icon="Armory" onClick={onInventoryClick} />
