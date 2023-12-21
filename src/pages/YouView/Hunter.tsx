@@ -2,15 +2,16 @@ import { useState } from 'react';
 
 import { Icon, Modal, SimpleButton } from '../../components';
 import { Size } from '../../utils/size';
-import qr from '../../assets/qr.png';
-import s from './Hunter.module.scss';
 import { useUser } from '../../hooks/useUser';
 import { USER_ID } from '../../_mock/settings';
 import { CDN_URL } from '../../utils/consts';
+import qr from '../../assets/qr.png';
+
+import s from './Hunter.module.scss';
 
 export const Hunter = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { userName, userNianticId, userLevel } = useUser(USER_ID);
+  const { userName, userArcyId, userLevel } = useUser(USER_ID);
 
   const onHunterViewToggle = () => {
     setIsModalOpen(!isModalOpen);
@@ -29,7 +30,7 @@ export const Hunter = () => {
         <div className={s.hunter__bottom}>
           <div className={s.hunter__info}>
             <h2 className={s.hunter__name}>{userName}</h2>
-            <h2 className={s.hunter__id}>Niantic ID: {userNianticId}</h2>
+            <h2 className={s.hunter__id}>Arcy ID: {userArcyId}</h2>
           </div>
           <SimpleButton
             onClick={onHunterViewToggle}

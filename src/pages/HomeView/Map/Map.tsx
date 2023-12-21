@@ -14,6 +14,7 @@ import { DEFAULT_COORDS, MAP_RANGE } from '../../../utils/consts';
 
 import s from './Map.module.scss';
 import 'leaflet/dist/leaflet.css';
+import { useLocalStorage } from '../../../hooks/useLocalStorage';
 
 const geoOptions = {
   enableHighAccuracy: false,
@@ -30,8 +31,11 @@ const mapOptions = {
 };
 
 export const Map = () => {
-  const [coords, setCoords] = useState(DEFAULT_COORDS);
   const geo = useMemo(() => navigator.geolocation, []);
+  const [coords, setCoords] = useLocalStorage(
+    'MHGO_LAST_KNOWN_LOCATION',
+    DEFAULT_COORDS,
+  );
 
   useEffect(() => {
     geo.watchPosition(
