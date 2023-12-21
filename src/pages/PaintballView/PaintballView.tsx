@@ -1,12 +1,13 @@
 import { useNavigate } from 'react-router-dom';
-import { userItems } from '../../_mock/save';
-import { USER_ID } from '../../_mock/settings';
-import { Button, Icon } from '../../components';
-import { CloseButton } from '../../components/CloseButton';
+
+import { Button, CloseButton, Icon } from '../../components';
 import { CDN_URL } from '../../utils/consts';
 import { Size } from '../../utils/size';
 
 import s from './PaintballView.module.scss';
+
+import { userItems } from '../../_mock/save';
+import { USER_ID } from '../../_mock/settings';
 
 export const PaintballView = () => {
   const userId = USER_ID;

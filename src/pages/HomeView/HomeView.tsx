@@ -1,9 +1,11 @@
 import { useNavigate } from 'react-router-dom';
+
 import { IconType } from '../../assets/icons';
-import { Icon } from '../../components/Icon';
+import { Icon } from '../../components';
 import { Size } from '../../utils/size';
-import s from './HomeView.module.scss';
 import { Map } from './Map';
+
+import s from './HomeView.module.scss';
 
 const TEMP_SRC =
   'https://cdn.masochist.me/badges/1003590_6423923a819d3d1917bfa22b.png';
@@ -18,11 +20,14 @@ export const HomeView = () => {
   const onShopClick = () => navigate('/shop');
   const onQuestClick = () => navigate('/quest');
 
+  const onTest = () => navigate('/fight?id=1');
+
   return (
     <div className={s.homeView}>
       <h1>HomeView</h1>
       <Map />
       <div className={s.actions}>
+        <ActionButton icon="Monster" onClick={onTest} />
         <div className={s.actions__top}>
           <ActionButton icon="Face" onClick={onYouClick} />
           <ActionButton icon="Armory" onClick={onInventoryClick} />

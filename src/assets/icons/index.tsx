@@ -19,6 +19,7 @@ import QR from './QR.svg?react';
 import Quest from './Quest.svg?react';
 import Shop from './Shop.svg?react';
 import Spin from './Spin.svg?react';
+import Star from './Star.svg?react';
 import X from './X.svg?react';
 
 const icons = {
@@ -41,6 +42,7 @@ const icons = {
   Quest,
   Shop,
   Spin,
+  Star,
   X,
 };
 

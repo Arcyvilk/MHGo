@@ -1,0 +1,1 @@
+export { FightView } from './FightView';

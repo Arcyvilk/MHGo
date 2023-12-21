@@ -32,3 +32,20 @@
   white-space: nowrap;
   overflow: hidden;
 }
+
+@mixin text-outline {
+  text-shadow:
+    2px 2px 0 $color-black,
+    -2px 2px 0 $color-black,
+    -2px -2px 0 $color-black,
+    2px -2px 0 $color-black;
+}
+
+@mixin svg-outline {
+  filter: dropShadow(
+    2px 2px 0 $color-black,
+    -2px 2px 0 $color-black,
+    -2px -2px 0 $color-black,
+    2px -2px 0 $color-black
+  )
+}

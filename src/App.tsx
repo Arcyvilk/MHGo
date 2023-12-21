@@ -15,6 +15,7 @@ import {
 import s from './App.module.scss';
 import { useEffect } from 'react';
 import { PaintballView } from './pages/PaintballView';
+import { FightView } from './pages/FightView';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -48,6 +49,11 @@ export const App = () => {
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<HomeView />} />
+
+            {/* INTERACTIVE PATHS */}
+            <Route path="/fight" element={<FightView />} />
+
+            {/* STATIC PATHS */}
             <Route path="/inventory" element={<NotImplementedView />} />
             <Route path="/items" element={<ItemBoxView />} />
             <Route path="/paintball" element={<PaintballView />} />

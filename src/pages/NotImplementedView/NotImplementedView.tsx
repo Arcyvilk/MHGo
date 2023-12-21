@@ -1,4 +1,4 @@
-import { CloseButton } from '../../components/CloseButton';
+import { CloseButton } from '../../components';
 
 import s from './NotImplementedView.module.scss';
 

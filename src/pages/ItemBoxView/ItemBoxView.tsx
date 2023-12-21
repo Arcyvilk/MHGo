@@ -1,7 +1,8 @@
 import { useState } from 'react';
+
 import { TABS, Tabs } from './Tabs';
 import { Item } from './Item';
-import { CloseButton } from '../../components/CloseButton';
+import { CloseButton } from '../../components';
 
 import s from './ItemBoxView.module.scss';
 

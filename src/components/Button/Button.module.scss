@@ -8,13 +8,26 @@
   box-shadow: 0 5px 5px rgba($color-black, 0.2);
   border-radius: $size-8;
 
+  &--simple {
+    font-size: $size-14;
+    font-weight: 800;
+    padding: $size-12;
+    background-color: $color-white;
+    border-radius: $size-8;
+    color: $color-primary-text;
+    border: 1px solid $color-primary-text;
+    box-shadow: none;
+  }
+
   &--default {
     color: $color-primary-text;
   }
   &--danger {
-    color: red;
+    color: $color-danger;
   }
-  
+  &--action {
+    background-color: $color-action;
+  }
 
   &__label {
     display: flex;

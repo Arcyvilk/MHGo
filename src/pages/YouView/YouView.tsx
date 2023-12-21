@@ -1,4 +1,4 @@
-import { CloseButton } from '../../components/CloseButton';
+import { CloseButton } from '../../components';
 import { Buttons } from './Buttons';
 import { Experience } from './Experience';
 import { Hunter } from './Hunter';

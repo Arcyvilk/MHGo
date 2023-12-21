@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { Icon, Modal, SimpleButton } from '../../components';
+import { Button, Icon, Modal } from '../../components';
 import { Size } from '../../utils/size';
 import { useUser } from '../../hooks/useUser';
 import { USER_ID } from '../../_mock/settings';
@@ -32,7 +32,8 @@ export const Hunter = () => {
             <h2 className={s.hunter__name}>{userName}</h2>
             <h2 className={s.hunter__id}>Arcy ID: {userArcyId}</h2>
           </div>
-          <SimpleButton
+          <Button
+            simple
             onClick={onHunterViewToggle}
             label={
               <div className={s.hunter__button}>

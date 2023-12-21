@@ -1,6 +1,6 @@
-import { Icon } from '../../components/Icon';
 import { Size } from '../../utils/size';
 import { useUser } from '../../hooks/useUser';
+import { Icon } from '../../components';
 
 import s from './Experience.module.scss';
 
