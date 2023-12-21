@@ -48,6 +48,11 @@ export const resourceMarkers: ResourceMarker[] = [
     // ],
   },
 ];
+
+// MOVED TO DATABASE
+export const RESPAWN_TIME = 300; // This will be the same for everything
+
+// MOVED TO DATABASE
 export const monsterMarkers: MonsterMarker[] = [
   // praca
   {
@@ -57,10 +62,6 @@ export const monsterMarkers: MonsterMarker[] = [
   {
     monsterId: 'babcianiath',
     coords: [59.94392, 10.715436],
-  },
-  {
-    monsterId: 'babcioth',
-    coords: [59.945375, 10.719106],
   },
   {
     monsterId: 'businessnath',
@@ -76,10 +77,6 @@ export const monsterMarkers: MonsterMarker[] = [
     coords: [59.893297, 10.6185925],
   },
   {
-    monsterId: 'babcioth',
-    coords: [59.896351, 10.615496],
-  },
-  {
     monsterId: 'businessnath',
     coords: [59.8915828, 10.6191182],
   },
@@ -90,6 +87,6 @@ export const monsterMarkers: MonsterMarker[] = [
 ].map((monster, index) => ({
   ...monster,
   id: String(index + 1),
-  respawnTime: 300,
+  respawnTime: RESPAWN_TIME,
   level: 1,
 }));

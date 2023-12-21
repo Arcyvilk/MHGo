@@ -14,6 +14,7 @@ type ItemProps = {
   amount?: number;
   filter?: string;
   onClick?: () => void;
+  simple?: boolean;
 };
 export const Item = ({
   // id,
@@ -26,7 +27,16 @@ export const Item = ({
   purchasable,
   filter,
   onClick,
+  simple,
 }: ItemProps) => {
+  if (simple)
+    return (
+      <img
+        src={img}
+        style={{ filter }}
+        className={modifiers(s, 'tile__image', 'simple')}
+      />
+    );
   return (
     <button className={s.item} onClick={onClick}>
       <div className={modifiers(s, 'item__tile', `rarity-${rarity}`)}>

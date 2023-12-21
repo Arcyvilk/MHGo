@@ -6,6 +6,7 @@ export type News = {
   img: string;
 };
 
+// DODANE DO BAZY DANYCH!
 export const news: News[] = [
   {
     date: new Date(1705392000000),

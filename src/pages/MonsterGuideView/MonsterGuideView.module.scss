@@ -1,0 +1,82 @@
+@import '../../styles/index.scss';
+
+.monsterGuideView {
+  @include page-wrapper;
+  &__wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: $size-16;
+    gap: $size-16;
+  }
+
+  &__monsters {
+    display: flex;
+    flex-direction: column;
+    gap: $size-16;
+  }
+}
+
+.header {
+  @include page-header;
+  &__title {
+    @include page-title; 
+  }
+}
+
+.monster {
+  display: flex;
+  width: 100%;
+  padding: $size-16;
+  align-items: center;
+  justify-content: space-around;
+  background-color: rgba($color-white, 0.6);
+  gap: $size-32;
+
+  &__thumbnail {
+    flex: 1 1 40%;
+    object-fit: cover;
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+  }
+
+  &__name {
+    font-size: $size-18;
+    margin: 0;
+  }
+
+  &__detail {
+    display: flex;
+    align-items: center;
+    gap: $size-4;
+  }
+
+  &__details {
+    flex: 0 0 60%;
+    display: flex;
+    flex-direction: column;
+    gap: $size-16;
+  }
+
+  &__table {
+    border: 1px solid rgba($color-primary-text, 0.3);
+    border-radius: $size-8;
+
+    & > * {
+      margin: 0;
+      font-size: $size-14;  
+      padding: $size-8 $size-6;
+      &:not(:last-child) {
+        border-bottom: 1px solid rgba($color-primary-text, 0.3);
+      }
+    }
+  }
+
+  &__drops {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $size-4;
+    justify-content: center;
+  }
+}

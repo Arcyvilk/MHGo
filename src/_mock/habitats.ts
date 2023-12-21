@@ -9,6 +9,7 @@ export type Habitat = {
   image: string;
 };
 
+// DODANE DO BAZY DANYCH!
 export const habitats: Habitat[] = [
   {
     id: 'swamp',

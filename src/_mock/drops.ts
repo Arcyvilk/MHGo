@@ -144,7 +144,7 @@ export const monsterDrops: MonsterDrop[] = [
     ],
   },
   {
-    monsterId: 'babcioth',
+    monsterId: 'sabertooth',
     drops: [
       {
         level: 1,

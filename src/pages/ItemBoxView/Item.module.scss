@@ -61,6 +61,11 @@
     max-height: $size-72;
     object-fit: contain;
     padding: $size-6;
+
+    &--simple {
+      max-width: $size-32;
+      padding: 0;
+    }
   }
 
   &__rarity {

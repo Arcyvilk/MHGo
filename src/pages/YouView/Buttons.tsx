@@ -17,7 +17,7 @@ const BUTTONS: {
 }[] = [
   { icon: 'Friends', label: 'Friends', link: null },
   { icon: 'Party', label: 'Party', link: null, modal: <PartyModal /> },
-  { icon: 'Monster', label: 'Monster Guide', link: null },
+  { icon: 'Monster', label: 'Monster Guide', link: '/guide' },
   { icon: 'News', label: 'News', link: null, modal: <NewsModal /> },
   { icon: 'Medal', label: 'Hoarder Medals', link: null },
   { icon: 'ItemBox', label: 'Item Box', link: '/items' },
