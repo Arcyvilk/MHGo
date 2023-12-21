@@ -5,10 +5,16 @@ import { useMonster } from '../../hooks/useMonster';
 import s from './FightView.module.scss';
 import { useState } from 'react';
 
+const CURR_ATTACK = 1;
+
 export const FightView = () => {
   const { monster } = useMonster();
   const { habitat, level = 1, baseHP = 0, name, img } = monster;
   const [currentHP, setCurrentHP] = useState<number>(level * baseHP);
+
+  const onMonsterHit = () => {
+    setCurrentHP(currentHP - CURR_ATTACK);
+  };
 
   return (
     <div className={modifiers(s, 'fightView', habitat)}>
@@ -17,6 +23,7 @@ export const FightView = () => {
         <Rays />
         <img
           className={modifiers(s, 'fightView__monster', { isActive: true })}
+          onClick={onMonsterHit}
           src={img}
         />
       </div>
