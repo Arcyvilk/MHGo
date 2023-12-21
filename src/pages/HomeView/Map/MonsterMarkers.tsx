@@ -14,15 +14,20 @@ export const MonsterMarkers = () => {
   return (
     <>
       {monsterMarkers.map(m => (
-        <Marker
-          icon={m.thumbnail}
-          position={L.latLng(m.coords[0], m.coords[1])}
-          eventHandlers={{
-            click: () => {
-              navigate(`/prepare?id=${m.id}`);
-            },
-          }}
-        />
+        <>
+          <Marker
+            icon={m.thumbnail}
+            position={L.latLng(m.coords[0], m.coords[1])}
+            eventHandlers={{
+              click: () => {
+                navigate(`/prepare?id=${m.id}`);
+              },
+            }}
+          />
+          {/* <text x="50%" y="50%" stroke="white">
+            text
+          </text> */}
+        </>
       ))}
     </>
   );

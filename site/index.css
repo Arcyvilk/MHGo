@@ -1,0 +1,99 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&family=Raleway&display=swap');
+
+* {
+  box-sizing: border-box;
+  user-select: none;
+}
+
+body, html {
+  height: 100%;
+  margin: 0;
+  font: 400 15px/1.8 "Orbitron", sans-serif;
+  color: #f6eeda;
+  background-color: #22211D;
+}
+
+.bgimg-1, .bgimg-2, .bgimg-3, .bgimg-4 {
+  position: relative;
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+}
+.bgimg-1 {
+  background-image: url("https://cdn.arcyvilk.com/mhgo/habitats/swamp.jpg");
+  min-height: 100%;
+}
+
+.bgimg-2 {
+  background-image: url("https://cdn.arcyvilk.com/mhgo/habitats/forest.jpg");
+  min-height: 70%;
+}
+
+.bgimg-3 {
+  background-image: url("https://cdn.arcyvilk.com/mhgo/habitats/cave.jpg");
+  min-height: 70%;
+}
+
+.bgimg-4 {
+  background-image: url("https://cdn.arcyvilk.com/mhgo/habitats/desert.jpg");
+  min-height: 100%;
+}
+
+.caption {
+  display:flex;
+  flex-direction: column;
+  justify-content:center;
+  align-items: center;
+  position: absolute;
+  left: 0;
+  margin: auto;
+  width: 100%;
+  text-align: center;
+  color: #000;
+  gap: 3.2rem;
+}
+
+.caption div.border {
+  width: 100%;
+  max-width: 500px;
+  background-color: #22211D;
+  color: #f6eeda;
+  padding: 14px 16px;
+  font-size: 24px;
+  letter-spacing: 10px;
+}
+
+h3 {
+  letter-spacing: 5px;
+  line-height: 3.5rem;
+  text-align: center;
+  font-size: 4rem;
+  margin: 0;
+  color: #22211D;
+}
+
+p {
+  font-size: 1.4rem;
+  font-family:Raleway, Verdana, Geneva, Tahoma, sans-serif;
+  margin: 0;
+}
+
+/* Turn off parallax scrolling for tablets and phones */
+@media only screen and (max-device-width: 1024px) {
+  .bgimg-1, .bgimg-2, .bgimg-3 {
+    background-attachment: scroll;
+  }
+}
+
+.logo {
+  filter: drop-shadow(0 0 20px #000);
+  width: 500px;
+  max-width: 90%;
+  margin: 0 32px;
+}

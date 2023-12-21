@@ -49,32 +49,43 @@ export const resourceMarkers: ResourceMarker[] = [
   },
 ];
 export const monsterMarkers: MonsterMarker[] = [
+  // praca
   {
-    id: '1',
     monsterId: 'angrybird',
     coords: [59.941134, 10.716524],
-    respawnTime: 300,
-    level: 1,
   },
   {
-    id: '2',
     monsterId: 'babcianiath',
     coords: [59.94392, 10.715436],
-    respawnTime: 300,
-    level: 2,
   },
   {
-    id: '3',
     monsterId: 'babcioth',
     coords: [59.945375, 10.719106],
-    respawnTime: 300,
-    level: 3,
   },
   {
-    id: '4',
     monsterId: 'businessnath',
     coords: [59.942205, 10.718076],
-    respawnTime: 300,
-    level: 4,
   },
-];
+  // dom
+  {
+    monsterId: 'angrybird',
+    coords: [59.8925197, 10.6198271],
+  },
+  {
+    monsterId: 'babcianiath',
+    coords: [59.893297, 10.6185925],
+  },
+  {
+    monsterId: 'babcioth',
+    coords: [59.945375, 10.719106],
+  },
+  {
+    monsterId: 'businessnath',
+    coords: [59.8915828, 10.6191182],
+  },
+].map((monster, index) => ({
+  ...monster,
+  id: String(index + 1),
+  respawnTime: 300,
+  level: 1,
+}));
