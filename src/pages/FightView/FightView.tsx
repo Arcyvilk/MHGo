@@ -22,7 +22,7 @@ export const FightView = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMonsterAlive, setIsMonsterAlive] = useState<boolean>(true);
-  const [isPlayerAlive, setIsPlayerAlive] = useState<boolean>(true);
+  const [isPlayerAlive, _setIsPlayerAlive] = useState<boolean>(true);
   const [currentHP, setCurrentHP] = useState<number>(level * baseHP);
 
   const onMonsterHit = () => {
