@@ -18,7 +18,7 @@ export const MonsterMarkers = () => {
           icon={m.thumbnail}
           position={L.latLng(m.coords[0], m.coords[1])}
           eventHandlers={{
-            click: e => {
+            click: () => {
               navigate(`/fight?id=${m.id}`);
             },
           }}

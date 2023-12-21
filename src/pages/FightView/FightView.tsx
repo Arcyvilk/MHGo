@@ -12,7 +12,7 @@ import { monsterMarkers } from '../../_mock/mapMarkers';
 
 export const FightView = () => {
   const navigate = useNavigate();
-  const { habitat, img, level, name, ...monster } = useMonster();
+  const { habitat, img, level, name } = useMonster();
 
   const onFight = () => {
     toast.info('Not implemented yet!');
