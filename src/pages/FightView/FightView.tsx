@@ -1,17 +1,13 @@
 import { useEffect, useState } from 'react';
-// @ts-ignore
-import ExplosionTicao from 'react-explode/Ticao';
-// @ts-ignore
-import ExplosionNegros from 'react-explode/Negros';
-// @ts-ignore
-import ExplosionBoracay from 'react-explode/Boracay';
 
-import { CloseButton, Modal, Rays } from '../../components';
+import { CloseButton, Explosions, Modal, Rays } from '../../components';
 import { modifiers } from '../../utils/modifiers';
 import { useMonster } from '../../hooks/useMonster';
 
 import s from './FightView.module.scss';
 import { useNavigate } from 'react-router-dom';
+import { ModalSuccess } from './ModalSuccess';
+import { ModalFailure } from './ModalFailure';
 
 const CURR_ATTACK = 10;
 
@@ -51,13 +47,15 @@ export const FightView = () => {
 
   return (
     <div className={modifiers(s, 'fightView', habitat)}>
-      <Modal
-        isOpen={isModalOpen}
-        setIsOpen={setIsModalOpen}
-        onClose={onFightEnd}>
-        {isPlayerAlive && <ModalSuccess />}
-        {!isPlayerAlive && <ModalFailure />}
-      </Modal>
+      {!isMonsterAlive && (
+        <Modal
+          isOpen={isModalOpen}
+          setIsOpen={setIsModalOpen}
+          onClose={onFightEnd}>
+          {isPlayerAlive && <ModalSuccess />}
+          {!isPlayerAlive && <ModalFailure />}
+        </Modal>
+      )}
       <Header name={name} maxHP={level * baseHP} currentHP={currentHP} />
       {!isMonsterAlive && <Explosions />}
       <div className={s.fightView__wrapper}>
@@ -76,14 +74,6 @@ export const FightView = () => {
       <CloseButton />
     </div>
   );
-};
-
-const ModalSuccess = () => {
-  return <div>Success!</div>;
-};
-
-const ModalFailure = () => {
-  return <div>Failure!</div>;
 };
 
 type HeaderProps = {
@@ -105,16 +95,6 @@ const Header = ({ name = '?', maxHP, currentHP }: HeaderProps) => {
         />
         <div className={s.healthBar__bg} />
       </div>
-    </div>
-  );
-};
-
-const Explosions = () => {
-  return (
-    <div className={s.explosions}>
-      <ExplosionTicao size="600" delay={0} repeatDelay={0} repeat={0} />
-      <ExplosionNegros size="600" delay={0} repeatDelay={0} repeat={0} />
-      <ExplosionBoracay size="600" delay={0} repeatDelay={0} repeat={0} />
     </div>
   );
 };

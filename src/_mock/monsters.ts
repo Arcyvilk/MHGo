@@ -8,6 +8,7 @@ export type Monster = {
   thumbnail: string; // URL of the map marker
   habitat: string;
   baseHP: number;
+  baseAttack: number;
   baseExp: number;
   baseCoins: number;
 };
@@ -21,6 +22,7 @@ export const monsters: Monster[] = [
     thumbnail: `${CDN_URL}/monsters/angrybird.png`,
     habitat: 'desert',
     baseHP: 100,
+    baseAttack: 10,
     baseExp: 10,
     baseCoins: 10,
   },
@@ -32,6 +34,7 @@ export const monsters: Monster[] = [
     thumbnail: `${CDN_URL}/monsters/thumbnail-babcianiath.png`,
     habitat: 'swamp',
     baseHP: 100,
+    baseAttack: 10,
     baseExp: 10,
     baseCoins: 10,
   },
@@ -43,6 +46,7 @@ export const monsters: Monster[] = [
     thumbnail: `${CDN_URL}/monsters/babcioth.png`,
     habitat: 'forest',
     baseHP: 100,
+    baseAttack: 10,
     baseExp: 10,
     baseCoins: 10,
   },
@@ -54,6 +58,7 @@ export const monsters: Monster[] = [
     thumbnail: `${CDN_URL}/monsters/businessnath.png`,
     habitat: 'swamp',
     baseHP: 100,
+    baseAttack: 10,
     baseExp: 10,
     baseCoins: 10,
   },

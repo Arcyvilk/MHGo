@@ -1,4 +1,4 @@
-import { modifiers } from '../../utils/modifiers';
+import { modifiers } from '../../../utils/modifiers';
 import s from './Rays.module.scss';
 
 export const Rays = () => {
