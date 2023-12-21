@@ -1,12 +1,19 @@
 import { useEffect, useMemo, useState } from 'react';
-import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
+import {
+  MapContainer,
+  TileLayer,
+  Marker,
+  Popup,
+  useMap,
+  Circle,
+} from 'react-leaflet';
 import L, { Zoom } from 'leaflet';
 
-import { DEFAULT_COORDS } from '../../../utils/consts';
+import { iconMarker } from './Marker';
+import { DEFAULT_COORDS, MAP_RANGE } from '../../../utils/consts';
 
 import s from './Map.module.scss';
 import 'leaflet/dist/leaflet.css';
-import { iconMarker } from './Marker';
 
 const geoOptions = {
   enableHighAccuracy: false,
@@ -15,7 +22,7 @@ const geoOptions = {
 };
 
 const mapOptions = {
-  zoom: 15,
+  zoom: 16,
   minZoom: 15,
   maxZoom: 18,
   scrollWheelZoom: 'center' as Zoom,
@@ -66,9 +73,10 @@ const MapLayer = ({ coords }: MapLayerProps) => {
           &copy; <a href="https://www.openstreetmap.org/copyright/" target="_blank">OpenStreetMap contributors</a>'
         url="https://tiles.stadiamaps.com/tiles/stamen_watercolor/{z}/{x}/{y}.jpg"
       />
+      <Circle center={L.latLng(coords[0], coords[1])} radius={MAP_RANGE} />
       <Marker icon={iconMarker} position={L.latLng(coords[0], coords[1])}>
         <Popup>
-          A pretty CSS3 popup. <br /> Easily customizable.
+          <div className={s.popup}>This is you!</div>
         </Popup>
       </Marker>
     </>
