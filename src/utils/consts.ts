@@ -1,3 +1,6 @@
+export const APP_NAME = 'Master Hoarder GO';
+export const APP_VERSION = 'v66.6-240116-0800';
+
 export const CDN_URL = 'https://cdn.arcyvilk.com/mhgo';
 export const API_URL = 'https://api.mhgo.arcyvilk.com';
 

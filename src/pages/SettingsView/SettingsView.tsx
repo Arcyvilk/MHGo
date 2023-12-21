@@ -1,12 +1,12 @@
+import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
+
 import { Button, CloseButton, Slider } from '../../components';
 import { Volume, useVolume } from '../../hooks/useVolume';
 import { STATUS, useLogin } from '../../hooks/useLogin';
+import { APP_NAME, APP_VERSION, CDN_URL } from '../../utils/consts';
 
 import s from './SettingsView.module.scss';
-import { APP_NAME, APP_VERSION } from '../../_mock/settings';
-import { useEffect, useState } from 'react';
-import { CDN_URL } from '../../utils/consts';
 
 const DEFAULT = {
   min: 0,

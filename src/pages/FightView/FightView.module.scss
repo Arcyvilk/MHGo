@@ -42,6 +42,7 @@
   }
 
   &__monster {
+    position: relative;
     object-fit: cover;
     &--isActive {
       cursor: pointer;
@@ -51,6 +52,12 @@
         @include anim-bounce;
         animation: bounce 0.3s linear;
       }
+    }
+
+    &--isDead {
+      transform: rotate(90deg);
+      filter: grayscale(1);
+        bottom: -$size-128;
     }
   }
 }
@@ -111,5 +118,23 @@
     background-color: rgba($color-danger, 0.6);
     border-radius: $size-6;
     box-sizing: border-box;
+  }
+}
+
+.explosions {
+  position: absolute;
+  top:0;
+  left:0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: $zindex-modal;
+  pointer-events:none;
+
+  & > * {
+    position: absolute !important;
+    margin: 0 auto;
   }
 }

@@ -28,7 +28,7 @@ export default defineConfig({
         globPatterns: ['**/*.{js,css,html,ico,png,svg,jpg}'],
       },
       manifest: {
-        name: 'Map of Hoarding GO',
+        name: 'Master Hoarder GO',
         short_name: 'MHGo',
         description: 'Add description later',
         theme_color: '#f6eeda',
