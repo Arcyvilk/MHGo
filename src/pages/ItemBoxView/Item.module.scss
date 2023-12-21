@@ -8,6 +8,7 @@
   gap: $size-12;
   min-width: $size-72;
   max-width: 23%;
+  flex: 1;
 
   &__tile {
     display: flex;
