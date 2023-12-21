@@ -84,6 +84,10 @@ export const monsterMarkers: MonsterMarker[] = [
     monsterId: 'sabertooth',
     coords: [59.894065, 10.6275319],
   },
+  {
+    monsterId: 'dracolich',
+    coords: [59.890799, 10.617814],
+  },
 ].map((monster, index) => ({
   ...monster,
   id: String(index + 1),

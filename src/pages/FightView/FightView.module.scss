@@ -2,6 +2,7 @@
 
 .fightView {
   @include page-wrapper;
+  overflow: hidden; // Rays make website stretch lol
 
   &--swamp {
     background: url("https://cdn.arcyvilk.com/mhgo/habitats/swamp.jpg");
@@ -49,6 +50,7 @@
 
   &__monster {
     position: relative;
+    max-width: 90%;
     object-fit: cover;
     user-select: none;
     -webkit-user-drag: none;

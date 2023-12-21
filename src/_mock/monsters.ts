@@ -74,4 +74,16 @@ export const monsters: Monster[] = [
     baseExp: 10,
     baseCoins: 10,
   },
+  {
+    id: 'dracolich',
+    name: 'Dracolich',
+    description: 'The Final Boss',
+    img: `${CDN_URL}/monsters/dracolich.png`,
+    thumbnail: `${CDN_URL}/monsters/thumbnail-dracolich.png`,
+    habitat: 'cave',
+    baseHP: 1000,
+    baseAttack: 100,
+    baseExp: 500,
+    baseCoins: 500,
+  },
 ];
