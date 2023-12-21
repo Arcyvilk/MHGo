@@ -53,7 +53,7 @@ const MonsterTile = ({
             Found in: <span style={{ fontWeight: 400 }}>{monster.habitat}</span>
           </div>
           <div className={s.monster__detail}>
-            Weakness: <span style={{ fontWeight: 400 }}>getting stabbed</span>
+            Weakness: <span style={{ fontWeight: 400 }}>getting killed</span>
           </div>
           <div className={s.monster__detail}>
             Drops:{' '}
