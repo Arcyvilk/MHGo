@@ -35,8 +35,18 @@ export const useMonsterDrops = (markerId: string | null) => {
     [markerId],
   );
 
-  const drops: Material[] = dropIds
-    .map(dropId => materials.find(material => material.id === dropId))
+  const uniqueDropIds = [...new Set(dropIds)];
+
+  const drops: Material[] = uniqueDropIds
+    .map(uniqueDropId => {
+      const material = materials.find(material => material.id === uniqueDropId);
+      const amount =
+        dropIds.filter(dropId => dropId === uniqueDropId).length ?? 0;
+      return {
+        ...material,
+        amount,
+      };
+    })
     .filter(Boolean) as Material[];
 
   return { drops };

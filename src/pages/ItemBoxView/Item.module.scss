@@ -6,8 +6,8 @@
   display: flex;
   flex-direction: column;
   gap: $size-12;
+  min-width: $size-72;
   max-width: 23%;
-  min-width: 23%;
 
   &__tile {
     display: flex;
