@@ -15,7 +15,7 @@ import {
 import s from './App.module.scss';
 import { useEffect } from 'react';
 import { PaintballView } from './pages/PaintballView';
-import { FightView } from './pages/FightView';
+import { FightView, PrepareView } from './pages/FightView';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -51,6 +51,7 @@ export const App = () => {
             <Route path="/" element={<HomeView />} />
 
             {/* INTERACTIVE PATHS */}
+            <Route path="/prepare" element={<PrepareView />} />
             <Route path="/fight" element={<FightView />} />
 
             {/* STATIC PATHS */}

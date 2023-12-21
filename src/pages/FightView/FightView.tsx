@@ -1,40 +1,24 @@
-import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
-
-import { Button, CloseButton, Icon } from '../../components';
+import { CloseButton, Rays } from '../../components';
 import { modifiers } from '../../utils/modifiers';
-import { Size } from '../../utils/size';
+import { useMonster } from '../../hooks/useMonster';
 
 import s from './FightView.module.scss';
-
-import { monsters } from '../../_mock/monsters';
-import { monsterMarkers } from '../../_mock/mapMarkers';
+import { useState } from 'react';
 
 export const FightView = () => {
-  const navigate = useNavigate();
-  const { habitat, img, level, name } = useMonster();
-
-  const onFight = () => {
-    toast.info('Not implemented yet!');
-  };
-  const onFlee = () => {
-    navigate('/');
-  };
+  const { monster } = useMonster();
+  const { habitat, level = 1, baseHP = 0, name, img } = monster;
+  const [currentHP, setCurrentHP] = useState<number>(level * baseHP);
 
   return (
     <div className={modifiers(s, 'fightView', habitat)}>
-      <Header name={name} level={level} />
+      <Header name={name} maxHP={level * baseHP} currentHP={currentHP} />
       <div className={s.fightView__wrapper}>
-        <img className={s.fightView__monster} src={img} />
-        <div className={s.fightView__buttons}>
-          <Button
-            label="Fight!"
-            onClick={onFight}
-            variant={Button.Variant.ACTION}
-            simple
-          />
-          <Button label="Flee!" onClick={onFlee} simple />
-        </div>
+        <Rays />
+        <img
+          className={modifiers(s, 'fightView__monster', { isActive: true })}
+          src={img}
+        />
       </div>
       <CloseButton />
     </div>
@@ -43,33 +27,23 @@ export const FightView = () => {
 
 type HeaderProps = {
   name?: string;
-  level?: number;
+  maxHP: number;
+  currentHP: number;
 };
-const Header = ({ name = '?', level = 0 }: HeaderProps) => {
+const Header = ({ name = '?', maxHP, currentHP }: HeaderProps) => {
   return (
     <div className={s.header}>
-      <div className={s.header__difficulty}>
-        {new Array(level).fill(null).map(_ => (
-          <Icon icon="Star" size={Size.SMALL} />
-        ))}
-      </div>
       <h1 className={s.header__title}>{name}</h1>
+      <div className={s.healthBar}>
+        <div className={s.healthBar__text}>
+          {currentHP} / {maxHP}
+        </div>
+        <div
+          className={s.healthBar__fg}
+          style={{ width: `${(100 * currentHP) / maxHP}%` }}
+        />
+        <div className={s.healthBar__bg} />
+      </div>
     </div>
   );
-};
-
-const useMonster = () => {
-  const params = new URLSearchParams(location.search);
-  const markerId = params.get('id');
-
-  const monsterMarker = monsterMarkers.find(m => m.id === markerId);
-  const monsterId = monsterMarker?.monsterId;
-
-  const monster = monsters.find(m => m.id === monsterId);
-  const fixedMonster = {
-    ...monster,
-    ...monsterMarker,
-  };
-
-  return fixedMonster;
 };

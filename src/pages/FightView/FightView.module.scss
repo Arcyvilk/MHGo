@@ -3,18 +3,23 @@
 .fightView {
   @include page-wrapper;
 
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: contain;
-
   &--swamp {
-    background: url("https://cdn.arcyvilk.com/mhgo/habitats/swamp.jpg")
+    background: url("https://cdn.arcyvilk.com/mhgo/habitats/swamp.jpg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
   }
   &--forest {
-    background: url("https://cdn.arcyvilk.com/mhgo/habitats/forest.jpg")
+    background: url("https://cdn.arcyvilk.com/mhgo/habitats/forest.jpg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
   }
   &--desert {
-    background: url("https://cdn.arcyvilk.com/mhgo/habitats/desert.jpg")
+    background: url("https://cdn.arcyvilk.com/mhgo/habitats/desert.jpg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
   }
 
   &__wrapper {
@@ -23,10 +28,6 @@
     flex-direction: column;
     padding: $size-16;
     gap: $size-16;
-  }
-
-  &__monster {
-    object-fit: cover;
   }
 
   &__buttons {
@@ -38,6 +39,19 @@
     flex-direction: column;
     padding: $size-16;
     gap: $size-8;
+  }
+
+  &__monster {
+    object-fit: cover;
+    &--isActive {
+      cursor: pointer;
+      filter: drop-shadow(0 0 $size-32 $color-white);
+
+      &:active {
+        @include anim-bounce;
+        animation: bounce 0.3s linear;
+      }
+    }
   }
 }
 
@@ -61,5 +75,41 @@
     padding-bottom: $size-12;
     border-bottom: 1px solid $color-primary-text;
     color: $color-white;
+  }
+}
+
+.healthBar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: $size-24;
+  box-sizing: border-box;
+  border: 3px solid $color-black;
+  border-radius: $size-16;
+  overflow: hidden;
+
+  &__text {
+    position: absolute;
+    color: $color-white;
+    text-align: center;
+    font-size: $size-14;
+    line-height: $size-16;
+    z-index: $zindex-barText;
+  }
+  &__bg {
+    width: 100%;
+    height: 100%;
+    background-color: $color-black;
+    border-radius: $size-6;
+  }
+  &__fg {
+    position: absolute;
+    left: 0;
+    height: 100%;
+    background-color: rgba($color-danger, 0.6);
+    border-radius: $size-6;
+    box-sizing: border-box;
   }
 }

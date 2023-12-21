@@ -1,0 +1,111 @@
+.center {
+    position: absolute;
+	top:0;
+	left:0;
+	right:0;
+	bottom:0;
+	margin: auto;  
+	width:30%;
+	height:30%;
+	border-radius:50%;	
+	background:white;
+	opacity:0.9;	
+	box-shadow: 0px 0px 60px 50px white;  
+}
+
+.rayBox {
+  position: absolute;
+  margin: auto;
+    top:0px;
+    left:0;
+    right:0;
+    bottom:0;	
+  width:70px;  
+  -webkit-animation: ray_anim 90s linear infinite;
+  animation: ray_anim 90s linear infinite;
+}
+
+.ray {
+  background: -webkit-linear-gradient(top, rgba(255,255,255,0) 0%, rgba(255,255,255,0.8) 50%, rgba(255,255,255,0) 100%);
+  background: linear-gradient(top, rgba(255,255,255,0) 0%, rgba(255,255,255,0.8) 50%, rgba(255,255,255,0) 100%); 
+  margin-left:10px;
+  border-radius:80% 80% 0 0;
+  position:absolute;
+  opacity:0.6;
+
+  &--1 {
+      height:270px;
+      width:30px;
+      transform: rotate(180deg);
+      top:-175px;
+      left: 15px;
+  }
+  &--2 {
+      height:200px;
+      width:16px;
+     transform: rotate(220deg);
+      top:-90px;
+      left: 75px;
+  }
+  &--3 {
+      height:270px;
+      width:50px;
+     transform: rotate(250deg);
+      top:-80px;
+      left: 100px;
+  }
+  &--4 {
+      height:220px;
+      width:28px;
+     transform: rotate(305deg);
+      top:30px;
+      left: 100px;
+  }
+  &--5 {
+      height:240px;
+      width:30px;
+     transform: rotate(-15deg);
+      top:60px;
+      left: 40px;
+  }
+  &--6 {
+      height:190px;
+      width:10px;
+     transform: rotate(30deg);
+      top:60px;
+      left: -40px;
+  }
+  &--7 {
+      height:280px;
+      width:16px;
+     transform: rotate(70deg);
+      top:-35px;
+      left: -40px;
+  }
+  &--8 {
+      height:220px;
+      width:60px;
+     transform: rotate(100deg);
+      top:-45px;
+      left:-90px;
+  }
+  &--9 {
+      height:180px;
+      width:20px;
+     transform: rotate(120deg);
+      top:-65px;
+      left:-60px;
+  }
+  &--10 {
+      height:290px;
+      width:46px;
+     transform: rotate(150deg);
+      top:-185px;
+      left: -60px;
+  }
+}
+
+@keyframes ray_anim { 
+  0% { transform: rotate(0deg); transform: rotate(0deg);}    
+  100% { transform: rotate(360deg); transform: rotate(360deg);}
+}
