@@ -44,6 +44,7 @@
   &__monster {
     position: relative;
     object-fit: cover;
+    user-select: none;
     &--isActive {
       cursor: pointer;
       filter: drop-shadow(0 0 $size-32 $color-white);

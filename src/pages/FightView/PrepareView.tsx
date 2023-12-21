@@ -23,7 +23,7 @@ export const PrepareView = () => {
     <div className={modifiers(s, 'fightView', habitat)}>
       <Header name={name} level={level} />
       <div className={s.fightView__wrapper}>
-        <img className={s.fightView__monster} src={img} />
+        <img className={s.fightView__monster} src={img} draggable={false} />
         <div className={s.fightView__buttons}>
           <Button
             label="Fight!"
