@@ -27,6 +27,18 @@ export const MonsterMarkers = () => {
         return (
           <>
             <SVGOverlay bounds={[northWest, southEast]}>
+              <text
+                x="20%"
+                y="90%"
+                fill="black"
+                stroke="black"
+                strokeWidth={1}
+                fontSize={14}
+                fontWeight={800}
+                filter="drop-shadow(0 0 4px #fff)"
+                z="2">
+                LVL {m.level}
+              </text>
               <Marker
                 key={m.id}
                 icon={m.thumbnail}
@@ -37,17 +49,6 @@ export const MonsterMarkers = () => {
                   },
                 }}
               />
-              <text
-                x="20%"
-                y="90%"
-                fill="black"
-                stroke="black"
-                strokeWidth={1}
-                fontSize={14}
-                fontWeight={800}
-                filter="drop-shadow(0 0 4px #fff)">
-                LVL {m.level}
-              </text>
             </SVGOverlay>
           </>
         );

@@ -1,5 +1,5 @@
 import { useMonsterDrops } from '../../hooks/useMonsterDrops';
-import { Item } from '../ItemBoxView/Item';
+import { Item } from '../../containers';
 
 import s from './FightView.module.scss';
 

@@ -31,11 +31,14 @@ export const Item = ({
 }: ItemProps) => {
   if (simple)
     return (
-      <img
-        src={img}
-        style={{ filter }}
-        className={modifiers(s, 'tile__image', 'simple')}
-      />
+      <div className={s.item__simple}>
+        <img
+          src={img}
+          style={{ filter }}
+          className={modifiers(s, 'tile__image', 'simple')}
+        />
+        {amount && <div className={s.tile__amount}>{amount}</div>}
+      </div>
     );
   return (
     <button className={s.item} onClick={onClick}>

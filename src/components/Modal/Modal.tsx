@@ -9,8 +9,8 @@ type ModalProps = {
 };
 export const Modal = ({ children, isOpen, setIsOpen, onClose }: ModalProps) => {
   const onModalClose = () => {
-    setIsOpen(false);
     if (onClose) onClose();
+    else setIsOpen(false);
   };
 
   return (

@@ -1,10 +1,10 @@
 import { CloseButton } from '../../components';
+import { Item } from '../../containers';
 
 import s from './MonsterGuideView.module.scss';
 
 import { Monster, monsters } from '../../_mock/monsters';
 import { MonsterDrop, monsterDrops } from '../../_mock/drops';
-import { Item } from '../ItemBoxView/Item';
 import { Material, materials } from '../../_mock/materials';
 
 export const MonsterGuideView = () => {

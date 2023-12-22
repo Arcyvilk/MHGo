@@ -2,7 +2,7 @@ import { toast } from 'react-toastify';
 
 import { CloseButton, Icon } from '../../components';
 import { Size } from '../../utils/size';
-import { Item } from '../ItemBoxView/Item';
+import { Item } from '../../containers';
 
 import s from './ShopView.module.scss';
 

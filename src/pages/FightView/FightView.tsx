@@ -35,6 +35,7 @@ export const FightView = () => {
   };
 
   const onFightEnd = () => {
+    setIsModalOpen(false);
     navigate('/');
   };
 

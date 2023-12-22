@@ -42,13 +42,6 @@ export const EquipmentOverview = () => {
           </span>
           <span>0</span>
         </div>
-        <div className={s.stats}>
-          <span>
-            <Icon icon="Luck" size={Size.MICRO} />
-            Luck
-          </span>
-          <span>0</span>
-        </div>
       </div>
     </div>
   );

@@ -8,6 +8,7 @@
   box-sizing: border-box;
   border: 1px solid $color-header-bg;
   gap: $size-16;
+  padding-bottom: $size-64;
 }
 
 @mixin page-header {

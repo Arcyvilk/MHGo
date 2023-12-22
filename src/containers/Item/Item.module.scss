@@ -10,6 +10,15 @@
   max-width: 23%;
   flex: 1;
 
+  &__simple {
+    position: relative;
+    display: flex;
+
+    .tile__amount {
+      font-size: $size-10;
+    }
+  }
+
   &__tile {
     display: flex;
     flex-direction: column;
