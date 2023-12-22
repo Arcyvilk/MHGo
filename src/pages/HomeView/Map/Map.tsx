@@ -1,12 +1,5 @@
 import { useEffect, useMemo } from 'react';
-import {
-  MapContainer,
-  TileLayer,
-  Marker,
-  Popup,
-  useMap,
-  Circle,
-} from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, useMap, Circle } from 'react-leaflet';
 import L, { Zoom } from 'leaflet';
 
 import { iconMarker } from './Marker';

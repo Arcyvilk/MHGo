@@ -1,7 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { Marker, SVGOverlay } from 'react-leaflet';
 import L from 'leaflet';
-import Star from '../../../assets/icons/Star.svg';
 
 import { useMonster } from '../../../hooks/useMonster';
 
