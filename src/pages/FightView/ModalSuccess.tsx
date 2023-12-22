@@ -8,16 +8,18 @@ export const ModalSuccess = () => {
   const markerId = params.get('id');
   const { drops } = useMonsterDrops(markerId);
 
-  console.log(drops);
+  const listOfDrops = (drops ?? []).map(drop => (
+    <Item {...drop} purchasable={false} />
+  ));
 
   return (
     <div className={s.result}>
       <h1 className={s.result__title}>Success!</h1>
       <p className={s.result__desc}>Monster dropped the following items:</p>
       <div className={s.result__drops}>
-        {(drops ?? []).map(drop => (
-          <Item {...drop} purchasable={false} />
-        ))}
+        {listOfDrops.length
+          ? listOfDrops
+          : "NOTHING! God damn it you're so unlucky ;-;"}
       </div>
     </div>
   );
