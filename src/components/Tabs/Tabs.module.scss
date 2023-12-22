@@ -14,7 +14,12 @@
     font-weight: 800;
     background-color: $color-primary-bg;
     border: 1px solid $color-header-bg;
+    border-right: 0;
     outline: none;
+
+    &:is(:last-child) {
+      border-right: 1px solid $color-header-bg;
+    }
 
     &--isActive {
       background-color: $color-white;

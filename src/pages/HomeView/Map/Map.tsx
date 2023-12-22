@@ -85,11 +85,7 @@ const MapLayer = ({ coords }: MapLayerProps) => {
       />
       <MonsterMarkers />
       <Circle center={L.latLng(coords[0], coords[1])} radius={MAP_RANGE} />
-      <Marker icon={iconMarker} position={L.latLng(coords[0], coords[1])}>
-        <Popup>
-          <div className={s.popup}>This is you!</div>
-        </Popup>
-      </Marker>
+      <Marker icon={iconMarker} position={L.latLng(coords[0], coords[1])} />
     </>
   );
 };

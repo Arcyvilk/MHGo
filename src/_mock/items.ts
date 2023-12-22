@@ -8,6 +8,7 @@ export type Item = {
   rarity: number;
   price: number;
   purchasable: boolean;
+  craftable: boolean;
 };
 
 export const items: Item[] = [
@@ -19,6 +20,7 @@ export const items: Item[] = [
     rarity: 2,
     price: 60,
     purchasable: true,
+    craftable: true,
   },
   {
     id: 'bomb',
@@ -28,6 +30,7 @@ export const items: Item[] = [
     rarity: 5,
     price: 60,
     purchasable: true,
+    craftable: true,
   },
   {
     id: 'pitfall',
@@ -37,6 +40,7 @@ export const items: Item[] = [
     rarity: 4,
     price: 60,
     purchasable: true,
+    craftable: true,
   },
   {
     id: 'paintball',
@@ -46,6 +50,7 @@ export const items: Item[] = [
     rarity: 3,
     price: 9999999,
     purchasable: true,
+    craftable: true,
   },
   {
     id: 'steak',
@@ -55,5 +60,6 @@ export const items: Item[] = [
     rarity: 1,
     price: 60,
     purchasable: true,
+    craftable: true,
   },
 ];

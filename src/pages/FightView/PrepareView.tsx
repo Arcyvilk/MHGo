@@ -9,11 +9,12 @@ import s from './FightView.module.scss';
 
 export const PrepareView = () => {
   const navigate = useNavigate();
-  const { markerId, monster } = useMonster();
+  const { getMonster } = useMonster();
+  const { markerId, monster } = getMonster();
   const { habitat, level, name, img } = monster;
 
   const onFight = () => {
-    navigate(`/fight?id=${markerId}`);
+    navigate(`/fight?id=${markerId}&level=${level}`);
   };
   const onFlee = () => {
     navigate('/');

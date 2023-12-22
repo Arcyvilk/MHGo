@@ -55,7 +55,7 @@ export const userMaterials: { userId: string; materials: UserItem[] }[] = [
 export const userData = [
   {
     userId: '1',
-    exp: 0,
+    exp: 1000,
     progress: {
       chapter: '1',
       quest: '1',

@@ -1,0 +1,51 @@
+@import '../../styles/index.scss';
+
+.equipmentView {
+  @include page-wrapper;
+  &__overview {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    min-height: 50vh;
+  }
+
+  &__avatar {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    right: 0;
+    background-image: url('https://cdn.arcyvilk.com/mhgo/misc/avatar_nobg.png');
+    background-position: right;
+    background-repeat: no-repeat;
+    background-size: contain;
+    opacity: 1;
+    z-index: $zindex-lowest;
+  }
+
+  &__stats {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 200px;
+    max-width: 50%;
+    margin: $size-16;
+    padding: $size-12;
+    background-color: rgba($color-white, 0.5);
+    border-radius: $size-8;
+    gap: $size-6;
+    color: rgba($color-primary-text, 0.8);
+
+    span {
+      display: flex;
+      align-items: center;
+      gap: $size-4;
+    }
+  }
+}
+
+.stats {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: $size-12;
+}

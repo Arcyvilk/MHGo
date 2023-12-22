@@ -13,7 +13,8 @@ const CURR_ATTACK = 10;
 
 export const FightView = () => {
   const navigate = useNavigate();
-  const { monster } = useMonster();
+  const { getMonster } = useMonster();
+  const { monster } = getMonster();
   const { habitat, level = 1, baseHP = 0, name, img } = monster;
 
   const [isModalOpen, setIsModalOpen] = useState(false);

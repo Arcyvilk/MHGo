@@ -6,7 +6,7 @@ export type MapMarker = {
 
 export type MonsterMarker = MapMarker & {
   monsterId: string;
-  level: number;
+  level: number | null;
 };
 
 export type ResourceMarker = MapMarker & {
@@ -67,6 +67,15 @@ export const monsterMarkers: MonsterMarker[] = [
     monsterId: 'businessnath',
     coords: [59.942205, 10.718076],
   },
+  {
+    monsterId: 'dracolich',
+    coords: [59.9442758, 10.7185793],
+    level: 5,
+  },
+  {
+    monsterId: 'sabertooth',
+    coords: [59.9409978752237, 10.714008808135988],
+  },
   // dom
   {
     monsterId: 'angrybird',
@@ -87,10 +96,11 @@ export const monsterMarkers: MonsterMarker[] = [
   {
     monsterId: 'dracolich',
     coords: [59.890799, 10.617814],
+    level: 5,
   },
 ].map((monster, index) => ({
   ...monster,
   id: String(index + 1),
   respawnTime: RESPAWN_TIME,
-  level: 1,
+  level: monster.level ?? null,
 }));

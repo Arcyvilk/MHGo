@@ -1,5 +1,5 @@
 export * from './HomeView';
-export * from './InventoryView';
+export * from './EquipmentView';
 export * from './ItemBoxView';
 export * from './NotImplementedView';
 export * from './QuestView';

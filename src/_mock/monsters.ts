@@ -16,7 +16,7 @@ export type Monster = {
 export const monsters: Monster[] = [
   {
     id: 'angrybird',
-    name: 'Angry Bird',
+    name: 'Broiler Abomination',
     description: 'TODO',
     img: `${CDN_URL}/monsters/angrybird.png`,
     thumbnail: `${CDN_URL}/monsters/thumbnail-angrybird.png`,
@@ -28,7 +28,7 @@ export const monsters: Monster[] = [
   },
   {
     id: 'babcianiath',
-    name: 'Babcianiath',
+    name: 'Grandmaniath',
     description: 'TODO',
     img: `${CDN_URL}/monsters/babcianiath.png`,
     thumbnail: `${CDN_URL}/monsters/thumbnail-babcianiath.png`,
@@ -52,7 +52,7 @@ export const monsters: Monster[] = [
   // },
   {
     id: 'businessnath',
-    name: 'Businessnath',
+    name: 'Businessaurus',
     description: 'TODO',
     img: `${CDN_URL}/monsters/businessnath.png`,
     thumbnail: `${CDN_URL}/monsters/thumbnail-businessnath.png`,
@@ -64,7 +64,7 @@ export const monsters: Monster[] = [
   },
   {
     id: 'sabertooth',
-    name: 'Sabertooth',
+    name: 'Carrioth',
     description: 'TODO',
     img: `${CDN_URL}/monsters/sabertooth.png`,
     thumbnail: `${CDN_URL}/monsters/thumbnail-sabertooth.png`,
@@ -76,7 +76,7 @@ export const monsters: Monster[] = [
   },
   {
     id: 'dracolich',
-    name: 'Dracolich',
+    name: 'CFO (Chief Hoarding Officer)',
     description: 'The Final Boss',
     img: `${CDN_URL}/monsters/dracolich.png`,
     thumbnail: `${CDN_URL}/monsters/thumbnail-dracolich.png`,

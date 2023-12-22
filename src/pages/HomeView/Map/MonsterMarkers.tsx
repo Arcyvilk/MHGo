@@ -1,55 +1,57 @@
 import { useNavigate } from 'react-router-dom';
-import { Marker } from 'react-leaflet';
+import { Marker, SVGOverlay } from 'react-leaflet';
 import L from 'leaflet';
+import Star from '../../../assets/icons/Star.svg';
 
-import { monsters } from '../../../_mock/monsters';
-import { monsterMarkers } from '../../../_mock/mapMarkers';
-
-import s from './MonsterMarkers.module.scss';
+import { useMonster } from '../../../hooks/useMonster';
 
 export const MonsterMarkers = () => {
   const navigate = useNavigate();
-  const monsterMarkers = useMonsterMarkers();
+  const { getMonsterMarkers } = useMonster();
+
+  const monsterMarkers = getMonsterMarkers();
 
   return (
     <>
-      {monsterMarkers.map(m => (
-        <>
-          <Marker
-            key={m.id}
-            icon={m.thumbnail}
-            position={L.latLng(m.coords[0], m.coords[1])}
-            eventHandlers={{
-              click: () => {
-                navigate(`/prepare?id=${m.id}`);
-              },
-            }}
-          />
-          {/* <text x="50%" y="50%" stroke="white">
-            text
-          </text> */}
-        </>
-      ))}
+      {monsterMarkers.map(m => {
+        const position = L.latLng(m.coords[0], m.coords[1]);
+        const northWest: L.LatLngTuple = [
+          m.coords[0] - 0.0005,
+          m.coords[1] - 0.0005,
+        ];
+        const southEast: L.LatLngTuple = [
+          m.coords[0] + 0.0005,
+          m.coords[1] + 0.0005,
+        ];
+
+        return (
+          <>
+            <SVGOverlay bounds={[northWest, southEast]}>
+              <Marker
+                key={m.id}
+                icon={m.thumbnail}
+                position={position}
+                eventHandlers={{
+                  click: () => {
+                    navigate(`/prepare?id=${m.id}&level=${m.level}`);
+                  },
+                }}
+              />
+              <text
+                x="20%"
+                y="90%"
+                fill="black"
+                stroke="black"
+                strokeWidth={1}
+                fontSize={14}
+                fontWeight={800}
+                filter="drop-shadow(0 0 4px #fff)">
+                LVL {m.level}
+              </text>
+            </SVGOverlay>
+          </>
+        );
+      })}
     </>
   );
-};
-
-const useMonsterMarkers = () => {
-  const monsterMarkersData = monsterMarkers.map(monsterMarker => {
-    const { thumbnail, name } =
-      monsters.find(m => m.id === monsterMarker.monsterId) ?? {};
-    const iconMarker = new L.Icon({
-      iconUrl: thumbnail,
-      iconRetinaUrl: thumbnail,
-      iconSize: new L.Point(48, 48),
-      className: s.monsterMarker,
-    });
-    return {
-      ...monsterMarker,
-      thumbnail: iconMarker,
-      name,
-    };
-  });
-
-  return monsterMarkersData;
 };

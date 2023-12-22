@@ -13,7 +13,7 @@ const TEMP_SRC =
 export const HomeView = () => {
   const navigate = useNavigate();
 
-  const onInventoryClick = () => navigate('/inventory');
+  const onEquipmentClick = () => navigate('/equipment');
   const onItemsClick = () => navigate('/items');
   const onPaintballClick = () => navigate('/paintball');
   const onYouClick = () => navigate('/you');
@@ -27,7 +27,7 @@ export const HomeView = () => {
       <div className={s.actions}>
         <div className={s.actions__top}>
           <ActionButton icon="Face" onClick={onYouClick} />
-          <ActionButton icon="Armory" onClick={onInventoryClick} />
+          <ActionButton icon="Armory" onClick={onEquipmentClick} />
           <ActionButton icon="Paintball" onClick={onPaintballClick} />
           <ActionButton icon="Potion" onClick={onItemsClick} />
           <ActionButton icon="Shop" onClick={onShopClick} />

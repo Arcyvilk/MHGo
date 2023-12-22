@@ -1,0 +1,16 @@
+@import '../../styles/index.scss';
+
+.equipmentView {
+  &__craft {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: $size-16;
+  }
+
+  &__items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $size-32 $size-8;
+  }
+}

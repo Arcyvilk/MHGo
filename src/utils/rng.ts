@@ -5,3 +5,6 @@ export const happensWithAChanceOf = (percentageChance: number): boolean =>
 
 export const chooseRandom = <T>(list: Array<T>): T =>
   list[Math.floor(Math.random() * list.length)];
+
+export const randomNumberBetween = (min: number, max: number) =>
+  Math.floor(Math.random() * (max - min + 1) + min);
