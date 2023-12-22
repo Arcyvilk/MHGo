@@ -28,6 +28,9 @@ body, html {
 .bgimg-1 {
   background-image: url("https://cdn.arcyvilk.com/mhgo/habitats/swamp.jpg");
   min-height: 100%;
+  @media (max-width:1024px) {
+    min-height: 70%;
+  }
 }
 
 .bgimg-2 {
@@ -43,6 +46,9 @@ body, html {
 .bgimg-4 {
   background-image: url("https://cdn.arcyvilk.com/mhgo/habitats/desert.jpg");
   min-height: 100%;
+  @media (max-width:1024px) {
+    min-height: 70%;
+  }
 }
 
 .caption {
