@@ -3,12 +3,13 @@ import { Marker, SVGOverlay } from 'react-leaflet';
 import L from 'leaflet';
 
 import { useMonster } from '../../../hooks/useMonster';
+import { useMemo } from 'react';
 
 export const MonsterMarkers = () => {
   const navigate = useNavigate();
   const { getMonsterMarkers } = useMonster();
 
-  const monsterMarkers = getMonsterMarkers();
+  const monsterMarkers = useMemo(() => getMonsterMarkers(), []);
 
   return (
     <>
