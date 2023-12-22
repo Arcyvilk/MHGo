@@ -9,7 +9,7 @@
 body, html {
   height: 100%;
   margin: 0;
-  font: 400 15px/1.8 "Orbitron", sans-serif;
+  font: 400 10px/1.0 "Orbitron", sans-serif;
   color: #f6eeda;
   background-color: #22211D;
 }
@@ -93,7 +93,50 @@ p {
 
 .logo {
   filter: drop-shadow(0 0 20px #000);
-  width: 500px;
+  width: 350px;
   max-width: 90%;
   margin: 0 32px;
+}
+
+.download_buttons {
+  position: fixed;
+  bottom: 0;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  gap: 1.6rem;
+  padding: 1.6rem 0.8rem;
+  background-color:#282E34;
+  z-index: 2;
+}
+
+.download {
+  display: flex;
+  align-items: center;
+  flex: 0 0 280px;
+  gap: 1.2rem;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #fdc000;
+  border: none;
+  padding: 1.2rem 1.6rem;
+  border-radius: 2.4rem;
+  font-family: "Orbitron", sans-serif;
+  font-size: 2rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 5px 10px #000;
+}
+
+.footer {
+  position: relative;
+  color: #777;
+  background-color:white;
+  padding: 2rem;
+  text-align: center;
+  font-size: 1.2rem;
+  bottom: 14rem;
 }
