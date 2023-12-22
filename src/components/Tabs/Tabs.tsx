@@ -12,7 +12,6 @@ export const Tabs = <T extends Record<string, string>>({
   setActiveTab,
 }: TabsProps<T>) => {
   const onTabClick = (tabValue: string) => {
-    console.log(activeTab, tabValue);
     setActiveTab(tabValue);
   };
 

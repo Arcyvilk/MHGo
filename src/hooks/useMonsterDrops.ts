@@ -4,16 +4,21 @@ import { happensWithAChanceOf } from '../utils/rng';
 import { monsterDrops } from '../_mock/drops';
 import { monsterMarkers } from '../_mock/mapMarkers';
 import { Material, materials } from '../_mock/materials';
+import { useMonster } from './useMonster';
 
 export const useMonsterDrops = (markerId: string | null) => {
+  const { determineMonsterLevel } = useMonster();
+
   if (!markerId)
     return {
       monsterDrop: {},
     };
 
   const monsterMarker = monsterMarkers.find(m => m.id === markerId);
-  const monsterLevel = monsterMarker?.level;
+  const monsterLevel = monsterMarker?.level ?? determineMonsterLevel();
   const monsterId = monsterMarker?.monsterId;
+
+  console.log(monsterLevel);
 
   // const monsterData = monsters.find(m => m.id === monsterId);
   const monsterDropData = monsterDrops.find(m => m.monsterId === monsterId);

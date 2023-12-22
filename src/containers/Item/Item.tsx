@@ -37,7 +37,7 @@ export const Item = ({
           style={{ filter }}
           className={modifiers(s, 'tile__image', 'simple')}
         />
-        {amount && <div className={s.tile__amount}>{amount}</div>}
+        <div className={s.tile__amount}>{amount}</div>
       </div>
     );
   return (
@@ -47,7 +47,7 @@ export const Item = ({
         <div className={modifiers(s, 'tile__rarity', `rarity-${rarity}`)}>
           Rarity {rarity}
         </div>
-        {amount && <div className={s.tile__amount}>{amount}</div>}
+        {amount && amount > 0 && <div className={s.tile__amount}>{amount}</div>}
       </div>
       <div className={s.item__name}>{name}</div>
       {purchasable && (

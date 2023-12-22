@@ -93,7 +93,6 @@ const CraftConfirmation = ({
   const item = useMemo(() => getItem(itemId), [itemId]);
   const matsToCraft = useMemo(() => getItemCraftingList(itemId), [itemId]);
 
-  console.log(matsToCraft);
   const onYes = () => {
     setIsModalOpen(false);
     onCraft(itemId);

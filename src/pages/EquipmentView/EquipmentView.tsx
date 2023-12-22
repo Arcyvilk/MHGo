@@ -4,6 +4,8 @@ import { EquipmentLoadout } from './EquipmentLoadout';
 import { EquipmentOverview } from './EquipmentOverview';
 import s from './EquipmentView.module.scss';
 
+// TODO This page has completely fucked up z-margins and positions
+// fix this
 export const EquipmentView = () => {
   return (
     <div className={s.equipmentView}>

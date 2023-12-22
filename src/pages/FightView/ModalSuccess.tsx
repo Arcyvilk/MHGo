@@ -8,6 +8,8 @@ export const ModalSuccess = () => {
   const markerId = params.get('id');
   const { drops } = useMonsterDrops(markerId);
 
+  console.log(drops);
+
   return (
     <div className={s.result}>
       <h1 className={s.result__title}>Success!</h1>
