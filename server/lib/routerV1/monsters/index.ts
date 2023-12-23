@@ -1,0 +1,1 @@
+export { getMonsters } from './getMonsters';
