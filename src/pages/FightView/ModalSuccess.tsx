@@ -8,9 +8,14 @@ export const ModalSuccess = () => {
   const markerId = params.get('id');
   const { drops } = useMonsterDrops(markerId);
 
-  const listOfDrops = (drops ?? []).map(drop => (
-    <Item {...drop} purchasable={false} key={drop.id} />
-  ));
+  const listOfDrops = (drops ?? []).map(drop => {
+    const data = {
+      ...drop,
+      purchasable: false,
+      price: 0,
+    };
+    return <Item data={data} key={drop.id} />;
+  });
 
   return (
     <div className={s.result}>

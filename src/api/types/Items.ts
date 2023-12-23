@@ -4,9 +4,15 @@ export enum ItemType {
   ARMOR = 'armor',
   OTHER = 'other',
 }
+
+export enum ItemClass {
+  ITEM = 'item',
+  MATERIAL = 'material',
+}
+
 export type CraftList = {
   id: string;
-  type: 'item' | 'material';
+  type: ItemClass;
   amount: number;
 };
 

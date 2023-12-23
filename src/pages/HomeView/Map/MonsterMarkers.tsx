@@ -7,9 +7,12 @@ import { Fragment, useMemo } from 'react';
 
 export const MonsterMarkers = () => {
   const navigate = useNavigate();
-  const { getMonsterMarkers } = useMonster();
+  const { isFetched, getMonsterMarkers } = useMonster();
 
-  const monsterMarkers = useMemo(() => getMonsterMarkers(), []);
+  const monsterMarkers = useMemo(() => {
+    if (isFetched) return getMonsterMarkers();
+    else return [];
+  }, [isFetched]);
 
   return (
     <>

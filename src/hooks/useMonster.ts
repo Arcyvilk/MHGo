@@ -15,7 +15,7 @@ type ExpandedMonsterMarker = {
 };
 export const useMonster = () => {
   const { userLevel } = useUser();
-  const { data: monsters } = useMonsters();
+  const { data: monsters, isLoading, isFetched } = useMonsters();
 
   const determineMonsterLevel = () => {
     const params = new URLSearchParams(location.search);
@@ -75,5 +75,11 @@ export const useMonster = () => {
     return monsterMarkersData;
   };
 
-  return { getMonster, getMonsterMarkers, determineMonsterLevel };
+  return {
+    isLoading,
+    isFetched,
+    getMonster,
+    getMonsterMarkers,
+    determineMonsterLevel,
+  };
 };

@@ -64,9 +64,10 @@ const MonsterTile = ({
           <div className={s.monster__detail}>
             Drops:{' '}
             <div className={s.monster__drops}>
-              {uniqueMonsterDrops.map(drop => (
-                <Item {...drop} simple key={drop.id} />
-              ))}
+              {uniqueMonsterDrops.map(drop => {
+                const data = { ...drop, purchasable: false, price: 0 };
+                return <Item data={data} simple key={drop.id} />;
+              })}
             </div>
           </div>
         </div>

@@ -50,7 +50,7 @@ const QuestCraft = ({ onCraft }: { onCraft: (itemId: string) => void }) => {
         .filter(item => item.type === ItemType.QUEST)
         .map(item => (
           <div className={s.equipmentView__itemWrapper} key={item.id}>
-            <Item {...item} onClick={() => onCraft(item.id)} />
+            <Item data={item} onClick={() => onCraft(item.id)} />
           </div>
         ))}
     </div>
@@ -65,7 +65,7 @@ const WeaponsCraft = ({ onCraft }: { onCraft: (itemId: string) => void }) => {
         .filter(item => item.type === ItemType.WEAPON)
         .map(item => (
           <div className={s.equipmentView__itemWrapper} key={item.id}>
-            <Item {...item} onClick={() => onCraft(item.id)} />
+            <Item data={item} onClick={() => onCraft(item.id)} />
           </div>
         ))}
     </div>
@@ -80,7 +80,7 @@ const ArmorCraft = ({ onCraft }: { onCraft: (itemId: string) => void }) => {
         .filter(item => item.type === ItemType.ARMOR)
         .map(item => (
           <div className={s.equipmentView__itemWrapper} key={item.id}>
-            <Item {...item} onClick={() => onCraft(item.id)} />
+            <Item data={item} onClick={() => onCraft(item.id)} />
           </div>
         ))}
     </div>

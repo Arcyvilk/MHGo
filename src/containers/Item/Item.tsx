@@ -1,34 +1,26 @@
 import { Icon } from '../../components';
 import { modifiers } from '../../utils/modifiers';
 import { Size } from '../../utils/size';
+
 import s from './Item.module.scss';
 
 type ItemProps = {
-  id: string;
-  img: string;
-  name: string;
-  description: string;
-  rarity: number;
-  price: number;
-  purchasable: boolean;
-  amount?: number;
-  filter?: string;
+  data: {
+    id: string;
+    img: string;
+    name: string;
+    description: string;
+    rarity: number;
+    price: number;
+    purchasable: boolean;
+    amount?: number;
+    filter?: string;
+  };
   onClick?: () => void;
   simple?: boolean;
 };
-export const Item = ({
-  // id,
-  img,
-  name,
-  // description,
-  rarity,
-  amount,
-  price,
-  purchasable,
-  filter,
-  onClick,
-  simple,
-}: ItemProps) => {
+export const Item = ({ data, onClick, simple }: ItemProps) => {
+  const { img, filter, amount, rarity, name, purchasable, price } = data;
   if (simple)
     return (
       <div className={s.item__simple}>

@@ -41,7 +41,7 @@ const Shop = () => {
       <div className={s.shopView__items}>
         {items.map(item => (
           <div className={s.shopView__itemWrapper}>
-            <Item {...item} onClick={onItemClick} key={item.id} />
+            <Item data={item} onClick={onItemClick} key={item.id} />
           </div>
         ))}
       </div>
