@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { toast } from 'react-toastify';
-import { Button, Modal, Tabs } from '../../components';
-import { Item } from '../../containers';
+import { Button, Modal } from '../../components';
+import { Item, Tabs } from '../../containers';
 import { useItems } from '../../hooks/useItems';
 
 import s from './EquipmentCraft.module.scss';
@@ -48,7 +48,9 @@ const QuestCraft = ({ onCraft }: { onCraft: (itemId: string) => void }) => {
       {craftableItems
         .filter(item => item.type === ItemType.QUEST)
         .map(item => (
-          <Item {...item} onClick={() => onCraft(item.id)} />
+          <div className={s.equipmentView__itemWrapper} key={item.id}>
+            <Item {...item} onClick={() => onCraft(item.id)} />
+          </div>
         ))}
     </div>
   );
@@ -61,7 +63,9 @@ const WeaponsCraft = ({ onCraft }: { onCraft: (itemId: string) => void }) => {
       {craftableItems
         .filter(item => item.type === ItemType.WEAPON)
         .map(item => (
-          <Item {...item} onClick={() => onCraft(item.id)} />
+          <div className={s.equipmentView__itemWrapper} key={item.id}>
+            <Item {...item} onClick={() => onCraft(item.id)} />
+          </div>
         ))}
     </div>
   );
@@ -74,7 +78,9 @@ const ArmorCraft = ({ onCraft }: { onCraft: (itemId: string) => void }) => {
       {craftableItems
         .filter(item => item.type === ItemType.ARMOR)
         .map(item => (
-          <Item {...item} onClick={() => onCraft(item.id)} />
+          <div className={s.equipmentView__itemWrapper} key={item.id}>
+            <Item {...item} onClick={() => onCraft(item.id)} />
+          </div>
         ))}
     </div>
   );
@@ -113,7 +119,7 @@ const CraftConfirmation = ({
       <div className={s.craftConfirmation__materials}>
         {matsToCraft.map(mat => (
           // @ts-ignore // TODO fix it!
-          <Item {...mat} simple />
+          <Item {...mat} simple key={item.id} />
         ))}
       </div>
       <div className={s.craftConfirmation__buttons}>

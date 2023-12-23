@@ -17,7 +17,7 @@ export const NewsModal = () => {
   return (
     <div className={s.modalView__news}>
       {news.map(post => (
-        <div className={s.post}>
+        <div className={s.post} key={String(post.date)}>
           <h2 className={s.post__title}>{post.title}</h2>
           <div className={s.post__details}>
             <span>{post.author}</span>

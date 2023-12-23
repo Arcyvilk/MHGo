@@ -10,9 +10,11 @@
   }
 
   &__items {
-    display: flex;
-    flex-wrap: wrap;
-    gap: $size-32 $size-8;
+    @include item-grid;
+  }
+
+  &__itemWrapper {
+    @include item-grid-wrapper;
   }
 }
 

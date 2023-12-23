@@ -1,0 +1,30 @@
+@import '../../styles/index.scss';
+
+.equipmentView {
+  &__loadout {
+    display: flex;
+    flex-direction: column;
+    gap: $size-24;
+    margin-bottom: $size-24;
+  }
+}
+
+.loadout {
+  &__title {
+    margin: 0;
+  }
+  &__items {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+    gap: $size-8;
+  }
+  &__item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 3px solid $color-black;
+    border-radius: $size-8;
+    background-color: $color-white;
+    aspect-ratio: 1 / 1;
+  }
+}

@@ -5,13 +5,10 @@ import { Hunter } from './Hunter';
 
 import s from './YouView.module.scss';
 
-import { USER_ID } from '../../_mock/settings';
-
 export const YouView = () => {
-  const userId = USER_ID;
   return (
     <div className={s.youView}>
-      <Header userId={userId} />
+      <Header />
       <div className={s.youView__wrapper}>
         <Hunter />
         <Buttons />
@@ -21,12 +18,11 @@ export const YouView = () => {
   );
 };
 
-type HeaderProps = { userId: string };
-const Header = ({ userId }: HeaderProps) => {
+const Header = () => {
   return (
     <div className={s.header}>
       <h1 className={s.header__title}>Hoarder</h1>
-      <Experience userId={userId} />
+      <Experience />
     </div>
   );
 };

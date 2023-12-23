@@ -13,6 +13,7 @@
   &__simple {
     position: relative;
     display: flex;
+    aspect-ratio: 1 / 1;
 
     .tile__amount {
       font-size: $size-10;
@@ -27,6 +28,7 @@
     border-radius: $size-6;
     background-color: $color-white;
     border: 3px solid $color-rarity-1;
+    aspect-ratio: 1 / 1;
 
     &--rarity-1 {
       border: 3px solid $color-rarity-1;

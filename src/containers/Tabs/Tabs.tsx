@@ -18,13 +18,14 @@ export const Tabs = <T extends Record<string, string>>({
   return (
     <div className={s.tabs}>
       {Object.entries(allTabs).map(tab => {
-        const [_tabKey, tabValue] = tab;
+        const [tabKey, tabValue] = tab;
         return (
           <button
             className={modifiers(s, 'tabs__tab', {
               isActive: activeTab === tabValue,
             })}
-            onClick={() => onTabClick(tabValue)}>
+            onClick={() => onTabClick(tabValue)}
+            key={tabKey}>
             {tabValue}
           </button>
         );

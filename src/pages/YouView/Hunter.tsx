@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { Button, Icon, Modal } from '../../components';
 import { Size } from '../../utils/size';
 import { useUser } from '../../hooks/useUser';
-import { USER_ID } from '../../_mock/settings';
 import { CDN_URL } from '../../utils/consts';
 import qr from '../../assets/qr.png';
 
@@ -11,7 +10,7 @@ import s from './Hunter.module.scss';
 
 export const Hunter = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { userName, userArcyId, userLevel } = useUser(USER_ID);
+  const { userName, userArcyId, userLevel } = useUser();
 
   const onHunterViewToggle = () => {
     setIsModalOpen(!isModalOpen);

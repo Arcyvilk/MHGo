@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { CloseButton, Tabs } from '../../components';
+import { CloseButton } from '../../components';
+import { Tabs } from '../../containers';
 
 import s from './QuestView.module.scss';
 

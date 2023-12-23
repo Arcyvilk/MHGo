@@ -1,7 +1,8 @@
 import { userData } from '../_mock/save';
-import { EXP_PER_LEVEL, USER_NAME } from '../_mock/settings';
+import { EXP_PER_LEVEL, USER_ID, USER_NAME } from '../_mock/settings';
 
-export const useUser = (userId: string) => {
+export const useUser = () => {
+  const userId = USER_ID;
   const userName = USER_NAME;
 
   const user = userData.find(u => u.userId === userId);
@@ -10,5 +11,5 @@ export const useUser = (userId: string) => {
   const userExp = (user?.exp ?? 0) % EXP_PER_LEVEL;
   const userLevel = 1 + Math.floor((user?.exp ?? 0) / EXP_PER_LEVEL);
 
-  return { userName, userExp, userLevel, userArcyId };
+  return { userId, userName, userExp, userLevel, userArcyId };
 };

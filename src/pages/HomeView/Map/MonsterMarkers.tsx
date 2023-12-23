@@ -3,7 +3,7 @@ import { Marker, SVGOverlay } from 'react-leaflet';
 import L from 'leaflet';
 
 import { useMonster } from '../../../hooks/useMonster';
-import { useMemo } from 'react';
+import { Fragment, useMemo } from 'react';
 
 export const MonsterMarkers = () => {
   const navigate = useNavigate();
@@ -25,7 +25,7 @@ export const MonsterMarkers = () => {
         ];
 
         return (
-          <>
+          <Fragment key={m.id}>
             <SVGOverlay bounds={[northWest, southEast]}>
               <text
                 x="20%"
@@ -50,7 +50,7 @@ export const MonsterMarkers = () => {
                 }}
               />
             </SVGOverlay>
-          </>
+          </Fragment>
         );
       })}
     </>

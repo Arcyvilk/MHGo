@@ -15,7 +15,11 @@ export const MonsterGuideView = () => {
       </div>
       <div className={s.monsterGuideView__monsters}>
         {monsters.map(monster => (
-          <MonsterTile monster={monster} drops={monsterDrops} />
+          <MonsterTile
+            monster={monster}
+            drops={monsterDrops}
+            key={monster.id}
+          />
         ))}
       </div>
       <CloseButton />
@@ -59,7 +63,7 @@ const MonsterTile = ({
             Drops:{' '}
             <div className={s.monster__drops}>
               {uniqueMonsterDrops.map(drop => (
-                <Item {...drop} simple />
+                <Item {...drop} simple key={drop.id} />
               ))}
             </div>
           </div>

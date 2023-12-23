@@ -14,7 +14,7 @@ type ExpandedMonsterMarker = {
   monster: Monster & Omit<MonsterMarker, 'level'> & { level: number };
 };
 export const useMonster = () => {
-  const { userLevel } = useUser(USER_ID);
+  const { userLevel } = useUser();
 
   const determineMonsterLevel = () => {
     const params = new URLSearchParams(location.search);

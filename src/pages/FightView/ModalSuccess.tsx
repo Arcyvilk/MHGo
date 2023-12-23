@@ -9,7 +9,7 @@ export const ModalSuccess = () => {
   const { drops } = useMonsterDrops(markerId);
 
   const listOfDrops = (drops ?? []).map(drop => (
-    <Item {...drop} purchasable={false} />
+    <Item {...drop} purchasable={false} key={drop.id} />
   ));
 
   return (

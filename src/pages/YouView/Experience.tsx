@@ -6,9 +6,8 @@ import s from './Experience.module.scss';
 
 import { EXP_PER_LEVEL } from '../../_mock/settings';
 
-type ExperienceProps = { userId: string };
-export const Experience = ({ userId }: ExperienceProps) => {
-  const { userExp } = useUser(userId);
+export const Experience = () => {
+  const { userExp } = useUser();
 
   return (
     <div className={s.experience}>
