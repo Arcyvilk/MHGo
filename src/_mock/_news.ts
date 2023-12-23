@@ -1,12 +1,5 @@
-export type News = {
-  date: Date;
-  author: string;
-  title: string;
-  content: string;
-  img: string;
-};
+import { News } from '../api/types/News';
 
-// DODANE DO BAZY DANYCH!
 export const news: News[] = [
   {
     date: new Date(1705392000000),

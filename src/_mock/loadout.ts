@@ -13,7 +13,7 @@ export type UserLoadout = {
 
 export const userLoadout: UserLoadout[] = [
   {
-    userId: '1',
+    userId: 'TESTER',
     loadout: [
       {
         slot: 'weapon',

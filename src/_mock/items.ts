@@ -104,7 +104,7 @@ export const items: Item[] = [
     ],
   },
   {
-    id: 'page1',
+    id: 'grimoire_page_craftable',
     type: ItemType.QUEST,
     img: `${CDN_URL}/items/steak.jpg`,
     name: 'Lost Chapter: Introduction to the Art of Looting',
@@ -121,7 +121,7 @@ export const items: Item[] = [
     ],
   },
   {
-    id: 'page2',
+    id: 'grimoire_page_purchasable',
     type: ItemType.QUEST,
     img: `${CDN_URL}/items/steak.jpg`,
     name: 'Lost Chapter: Hoarding for Dummies',
@@ -133,7 +133,7 @@ export const items: Item[] = [
     craftList: [],
   },
   {
-    id: 'page3',
+    id: 'grimoire_page_bossdrop',
     type: ItemType.QUEST,
     img: `${CDN_URL}/items/steak.jpg`,
     name: 'Lost Chapter: More is More, and Less is Less',

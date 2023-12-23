@@ -1,19 +1,21 @@
+import { Monster } from '../api/types/Monsters';
 import { CDN_URL } from '../utils/consts';
 
-export type Monster = {
-  id: string;
-  name: string;
-  description: string;
-  img: string; // URL of the fight image
-  thumbnail: string; // URL of the map marker
-  habitat: string;
-  baseHP: number;
-  baseAttack: number;
-  baseExp: number;
-  baseCoins: number;
-};
-
+// MOVED TO DB
 export const monsters: Monster[] = [
+  {
+    id: 'babcianiath',
+    name: 'Grandmaniath',
+    description: 'TODO',
+    img: `${CDN_URL}/monsters/babcianiath.png`,
+    thumbnail: `${CDN_URL}/monsters/thumbnail-babcianiath.png`,
+    habitat: 'forest',
+    baseHP: 50,
+    baseDamage: 5,
+    baseAttackSpeed: 0.8,
+    baseExp: 20,
+    baseWealth: [{ type: 'base', amount: 10 }],
+  },
   {
     id: 'angrybird',
     name: 'Broiler Abomination',
@@ -22,34 +24,11 @@ export const monsters: Monster[] = [
     thumbnail: `${CDN_URL}/monsters/thumbnail-angrybird.png`,
     habitat: 'desert',
     baseHP: 100,
-    baseAttack: 10,
-    baseExp: 10,
-    baseCoins: 10,
+    baseDamage: 5,
+    baseAttackSpeed: 1,
+    baseExp: 25,
+    baseWealth: [{ type: 'base', amount: 20 }],
   },
-  {
-    id: 'babcianiath',
-    name: 'Grandmaniath',
-    description: 'TODO',
-    img: `${CDN_URL}/monsters/babcianiath.png`,
-    thumbnail: `${CDN_URL}/monsters/thumbnail-babcianiath.png`,
-    habitat: 'forest',
-    baseHP: 100,
-    baseAttack: 10,
-    baseExp: 10,
-    baseCoins: 10,
-  },
-  // {
-  //   id: 'babcioth',
-  //   name: 'Babcioth',
-  //   description: 'TODO',
-  //   img: `${CDN_URL}/monsters/babcioth.png`,
-  //   thumbnail: `${CDN_URL}/monsters/thumbnail-babcioth.png`,
-  //   habitat: 'forest',
-  //   baseHP: 100,
-  //   baseAttack: 10,
-  //   baseExp: 10,
-  //   baseCoins: 10,
-  // },
   {
     id: 'businessnath',
     name: 'Businessaurus',
@@ -57,10 +36,11 @@ export const monsters: Monster[] = [
     img: `${CDN_URL}/monsters/businessnath.png`,
     thumbnail: `${CDN_URL}/monsters/thumbnail-businessnath.png`,
     habitat: 'swamp',
-    baseHP: 100,
-    baseAttack: 10,
-    baseExp: 10,
-    baseCoins: 10,
+    baseHP: 200,
+    baseDamage: 10,
+    baseAttackSpeed: 1,
+    baseExp: 30,
+    baseWealth: [{ type: 'base', amount: 50 }],
   },
   {
     id: 'sabertooth',
@@ -69,10 +49,11 @@ export const monsters: Monster[] = [
     img: `${CDN_URL}/monsters/sabertooth.png`,
     thumbnail: `${CDN_URL}/monsters/thumbnail-sabertooth.png`,
     habitat: 'cave',
-    baseHP: 100,
-    baseAttack: 10,
-    baseExp: 10,
-    baseCoins: 10,
+    baseHP: 200,
+    baseDamage: 10,
+    baseAttackSpeed: 1.5,
+    baseExp: 30,
+    baseWealth: [{ type: 'base', amount: 50 }],
   },
   {
     id: 'dracolich',
@@ -82,8 +63,9 @@ export const monsters: Monster[] = [
     thumbnail: `${CDN_URL}/monsters/thumbnail-dracolich.png`,
     habitat: 'cave',
     baseHP: 1000,
-    baseAttack: 100,
+    baseDamage: 200,
+    baseAttackSpeed: 0.5,
     baseExp: 500,
-    baseCoins: 500,
+    baseWealth: [{ type: 'base', amount: 500 }],
   },
 ];

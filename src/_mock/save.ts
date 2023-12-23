@@ -6,9 +6,11 @@ export type UserItem = {
   id: string;
   amount: number;
 };
+
+// MOVED TO DB
 export const userWealth: { userId: string; wealth: UserWealth[] }[] = [
   {
-    userId: '1',
+    userId: 'TESTER',
     wealth: [
       { id: 'money', amount: 0 },
       { id: 'lapki', amount: 0 },
@@ -16,9 +18,10 @@ export const userWealth: { userId: string; wealth: UserWealth[] }[] = [
   },
 ];
 
+// MOVED TO DB
 export const userItems: { userId: string; items: UserItem[] }[] = [
   {
-    userId: '1',
+    userId: 'TESTER',
     items: [
       { id: 'potion', amount: 7 },
       { id: 'paintball', amount: 0 },
@@ -29,9 +32,10 @@ export const userItems: { userId: string; items: UserItem[] }[] = [
   },
 ];
 
+// MOVED TO DB
 export const userMaterials: { userId: string; materials: UserItem[] }[] = [
   {
-    userId: '1',
+    userId: 'TESTER',
     materials: [
       { id: 'claw1', amount: 749 },
       { id: 'claw2', amount: 441 },
@@ -54,7 +58,7 @@ export const userMaterials: { userId: string; materials: UserItem[] }[] = [
 
 export const userData = [
   {
-    userId: '1',
+    userId: 'TESTER',
     exp: 1000,
     progress: {
       chapter: '1',

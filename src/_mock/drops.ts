@@ -12,6 +12,7 @@ export type MonsterDrop = {
   }[];
 };
 
+// PRZENIESIONE
 export const monsterDrops: MonsterDrop[] = [
   {
     monsterId: 'angrybird',

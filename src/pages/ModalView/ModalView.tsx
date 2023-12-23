@@ -2,8 +2,8 @@ import { Icon } from '../../components';
 
 import s from './ModalView.module.scss';
 
-import { news } from '../../_mock/news';
 import { USER_NAME } from '../../_mock/settings';
+import { useNews } from '../../api/useNews';
 
 export const PartyModal = () => {
   return (
@@ -14,6 +14,10 @@ export const PartyModal = () => {
 };
 
 export const NewsModal = () => {
+  const { data: news } = useNews();
+
+  console.log(news);
+
   return (
     <div className={s.modalView__news}>
       {news.map(post => (
@@ -21,7 +25,7 @@ export const NewsModal = () => {
           <h2 className={s.post__title}>{post.title}</h2>
           <div className={s.post__details}>
             <span>{post.author}</span>
-            <span>{post.date.toLocaleDateString()}</span>
+            <span>{String(post.date)}</span>
           </div>
           <img className={s.post__img} src={post.img} />
           <div className={s.post__content}>

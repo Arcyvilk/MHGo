@@ -1,11 +1,10 @@
 import { MonsterMarker } from '../_mock/mapMarkers';
-import { Monster } from '../_mock/monsters';
+import { Monster } from '../api/types/Monsters';
+
+export { API_URL, CDN_URL } from '../env';
 
 export const APP_NAME = 'Master Hoarder GO';
 export const APP_VERSION = 'v66.6-240116-0800'; // moved to database
-
-export const CDN_URL = 'https://cdn.arcyvilk.com/mhgo';
-export const API_URL = 'https://api.mhgo.arcyvilk.com';
 
 export const DEFAULT_COORDS = [59.892131, 10.6194067];
 export const MAP_RANGE = 75; // moved to database
@@ -17,8 +16,9 @@ export const MONSTER_MISSING: Monster = {
   img: '',
   thumbnail: '',
   habitat: '',
-  baseAttack: 0,
-  baseCoins: 0,
+  baseDamage: 0,
+  baseAttackSpeed: 0,
+  baseWealth: [],
   baseExp: 0,
   baseHP: 0,
 };

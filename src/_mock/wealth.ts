@@ -1,10 +1,15 @@
-export const currencies = [
+export type CurrencyType = 'base' | 'premium';
+export type Currency = {
+  id: CurrencyType;
+  icon: string;
+};
+export const currencies: Currency[] = [
   {
-    id: 'money',
+    id: 'base',
     icon: 'Coin',
   },
   {
-    id: 'lapki',
+    id: 'premium',
     icon: 'Paw',
   },
 ];

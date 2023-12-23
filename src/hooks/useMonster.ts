@@ -2,12 +2,12 @@ import L from 'leaflet';
 import { useUser } from '../hooks/useUser';
 import { randomNumberBetween } from '../utils/rng';
 import { MONSTER_MISSING, MONSTER_MARKER_MISSING } from '../utils/consts';
+import { Monster } from '../api/types/Monsters';
+import { useMonsters } from '../api/useMonsters';
 
 import s from '../pages/HomeView/Map/MonsterMarkers.module.scss';
 
-import { Monster, monsters } from '../_mock/monsters';
 import { MonsterMarker, monsterMarkers } from '../_mock/mapMarkers';
-import { USER_ID } from '../_mock/settings';
 
 type ExpandedMonsterMarker = {
   markerId: string | null;
@@ -15,6 +15,7 @@ type ExpandedMonsterMarker = {
 };
 export const useMonster = () => {
   const { userLevel } = useUser();
+  const { data: monsters } = useMonsters();
 
   const determineMonsterLevel = () => {
     const params = new URLSearchParams(location.search);

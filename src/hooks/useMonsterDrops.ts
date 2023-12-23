@@ -19,7 +19,6 @@ export const useMonsterDrops = (markerId: string | null) => {
   const monsterId = monsterMarker?.monsterId;
 
   console.log(monsterLevel);
-
   // const monsterData = monsters.find(m => m.id === monsterId);
   const monsterDropData = monsterDrops.find(m => m.monsterId === monsterId);
   const monsterDrop =
