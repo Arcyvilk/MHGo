@@ -1,7 +1,6 @@
 import { Monster } from '../api/types/Monsters';
 import { CDN_URL } from '../utils/consts';
 
-// MOVED TO DB
 export const monsters: Monster[] = [
   {
     id: 'babcianiath',

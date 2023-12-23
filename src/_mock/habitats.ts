@@ -1,15 +1,6 @@
+import { Habitat } from '../api/types/Habitats';
 import { CDN_URL } from '../utils/consts';
 
-export type HabitatType = 'swamp' | 'desert' | 'forest' | 'cave';
-export type Habitat = {
-  id: string;
-  type: HabitatType;
-  name: string;
-  description: string;
-  image: string;
-};
-
-// DODANE DO BAZY DANYCH!
 export const habitats: Habitat[] = [
   {
     id: 'swamp',

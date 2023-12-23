@@ -3,10 +3,11 @@ import { toast } from 'react-toastify';
 import { Button, Modal } from '../../components';
 import { Item, Tabs } from '../../containers';
 import { useItems } from '../../hooks/useItems';
+import { ItemType } from '../../api/types';
 
 import s from './EquipmentCraft.module.scss';
 
-import { ItemType, items } from '../../_mock/items';
+import { items } from '../../_mock/items';
 import { materials } from '../../_mock/materials';
 
 export const TABS = {

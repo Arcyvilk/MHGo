@@ -1,4 +1,4 @@
-import { CurrencyType } from '../../_mock/wealth';
+import { CurrencyType } from './Wealth';
 
 export type BaseWealth = {
   type: CurrencyType;

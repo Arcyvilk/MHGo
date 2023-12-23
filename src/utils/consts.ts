@@ -1,5 +1,4 @@
-import { MonsterMarker } from '../_mock/mapMarkers';
-import { Monster } from '../api/types/Monsters';
+import { Monster, MonsterMarker } from '../api/types';
 
 export { API_URL, CDN_URL } from '../env';
 

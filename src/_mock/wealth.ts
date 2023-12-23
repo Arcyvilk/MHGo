@@ -1,8 +1,5 @@
-export type CurrencyType = 'base' | 'premium';
-export type Currency = {
-  id: CurrencyType;
-  icon: string;
-};
+import { Currency } from '../api/types/Wealth';
+
 export const currencies: Currency[] = [
   {
     id: 'base',

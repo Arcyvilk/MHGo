@@ -1,10 +1,11 @@
 import { useMemo } from 'react';
-
 import { happensWithAChanceOf } from '../utils/rng';
+import { useMonster } from './useMonster';
+import { Material } from '../api/types';
+
 import { monsterDrops } from '../_mock/drops';
 import { monsterMarkers } from '../_mock/mapMarkers';
-import { Material, materials } from '../_mock/materials';
-import { useMonster } from './useMonster';
+import { materials } from '../_mock/materials';
 
 export const useMonsterDrops = (markerId: string | null) => {
   const { determineMonsterLevel } = useMonster();

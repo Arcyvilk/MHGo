@@ -2,12 +2,12 @@ import L from 'leaflet';
 import { useUser } from '../hooks/useUser';
 import { randomNumberBetween } from '../utils/rng';
 import { MONSTER_MISSING, MONSTER_MARKER_MISSING } from '../utils/consts';
-import { Monster } from '../api/types/Monsters';
+import { Monster, MonsterMarker } from '../api/types';
 import { useMonsters } from '../api/useMonsters';
 
 import s from '../pages/HomeView/Map/MonsterMarkers.module.scss';
 
-import { MonsterMarker, monsterMarkers } from '../_mock/mapMarkers';
+import { monsterMarkers } from '../_mock/mapMarkers';
 
 type ExpandedMonsterMarker = {
   markerId: string | null;

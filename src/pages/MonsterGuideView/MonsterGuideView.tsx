@@ -1,12 +1,12 @@
 import { CloseButton } from '../../components';
 import { Item } from '../../containers';
 import { useMonsters } from '../../api/useMonsters';
-import { Monster } from '../../api/types/Monsters';
+import { Material, Monster, MonsterDrop } from '../../api/types';
 
 import s from './MonsterGuideView.module.scss';
 
-import { MonsterDrop, monsterDrops } from '../../_mock/drops';
-import { Material, materials } from '../../_mock/materials';
+import { monsterDrops } from '../../_mock/drops';
+import { materials } from '../../_mock/materials';
 
 export const MonsterGuideView = () => {
   const { data: monsters } = useMonsters();

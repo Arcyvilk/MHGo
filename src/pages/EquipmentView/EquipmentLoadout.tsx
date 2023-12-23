@@ -1,8 +1,10 @@
+import { useUser } from '../../hooks/useUser';
+import { LoadoutType } from '../../api/types';
+
 import s from './EquipmentLoadout.module.scss';
 
-import { LoadoutType, userLoadout } from '../../_mock/loadout';
+import { userLoadout } from '../../_mock/loadout';
 import { items } from '../../_mock/items';
-import { useUser } from '../../hooks/useUser';
 
 const LOADOUT_SLOTS: LoadoutType[] = [
   'weapon',

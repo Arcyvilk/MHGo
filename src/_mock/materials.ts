@@ -1,18 +1,6 @@
-import { CDN_URL } from '../utils/consts';
-import { CurrencyType } from './wealth';
+import { FieldByRarity, Material } from '../api/types/Materials';
 
-type Price = {
-  type: CurrencyType;
-  amount: number;
-};
-export type Material = {
-  id: string;
-  img: string;
-  name: string;
-  description: string;
-  rarity: number;
-  filter: string;
-};
+import { CDN_URL } from '../utils/consts';
 
 const materialsBase: Pick<Material, 'id' | 'img' | 'name'>[] = [
   {
@@ -42,13 +30,6 @@ const materialsBase: Pick<Material, 'id' | 'img' | 'name'>[] = [
   },
 ];
 
-type FieldByRarity = {
-  rarity: number;
-  prefix: string;
-  filter: string;
-  description: string;
-};
-// MOVED TO DB
 const fieldsByRarity: FieldByRarity[] = [
   {
     rarity: 1,

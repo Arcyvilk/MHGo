@@ -6,7 +6,6 @@ import { Item } from '../../containers';
 
 import s from './ShopView.module.scss';
 
-// TODO replace with API
 import { currencies } from '../../_mock/wealth';
 import { userWealth } from '../../_mock/save';
 import { USER_ID } from '../../_mock/settings';
