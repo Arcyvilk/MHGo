@@ -1,4 +1,4 @@
-import { useItemsApi } from '../api/useItemsApi';
+import { useItemsApi } from '../api';
 
 export const useItems = () => {
   const { data: items } = useItemsApi();

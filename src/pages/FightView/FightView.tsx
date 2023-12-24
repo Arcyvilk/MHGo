@@ -1,6 +1,13 @@
 import { useEffect, useState } from 'react';
 
-import { CloseButton, Explosions, Modal, Rays } from '../../components';
+import {
+  CloseButton,
+  Explosions,
+  Loader,
+  Modal,
+  QueryBoundary,
+  Rays,
+} from '../../components';
 import { modifiers } from '../../utils/modifiers';
 import { useMonster } from '../../hooks/useMonster';
 
@@ -11,10 +18,15 @@ import { ModalFailure } from './ModalFailure';
 
 const CURR_ATTACK = 10;
 
-export const FightView = () => {
+export const FightView = () => (
+  <QueryBoundary fallback={<Loader />}>
+    <Load />
+  </QueryBoundary>
+);
+
+const Load = () => {
   const navigate = useNavigate();
-  const { getMonster } = useMonster();
-  const { monster } = getMonster();
+  const { monster } = useMonster();
   const { habitat, level = 1, baseHP = 0, name, img } = monster;
 
   const [isModalOpen, setIsModalOpen] = useState(false);

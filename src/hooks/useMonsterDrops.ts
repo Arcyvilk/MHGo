@@ -1,15 +1,17 @@
 import { useMemo } from 'react';
 import { happensWithAChanceOf } from '../utils/rng';
-import { useMonster } from './useMonster';
-import { Material } from '../api/types';
-
-import { monsterDrops } from '../_mock/drops';
-import { monsterMarkers } from '../_mock/mapMarkers';
+import { Material, useMonsterMarkersApi } from '../api';
 import { useMaterials } from './useMaterials';
 
-export const useMonsterDrops = (markerId: string | null) => {
-  const { determineMonsterLevel } = useMonster();
+import { monsterDrops } from '../_mock/drops';
+
+export const useMonsterDrops = (
+  markerId: string | null,
+  userId: string,
+  level: string | null,
+) => {
   const { materials } = useMaterials();
+  const { data: monsterMarkers } = useMonsterMarkersApi(userId);
 
   if (!markerId)
     return {
@@ -17,11 +19,9 @@ export const useMonsterDrops = (markerId: string | null) => {
     };
 
   const monsterMarker = monsterMarkers.find(m => m.id === markerId);
-  const monsterLevel = monsterMarker?.level ?? determineMonsterLevel();
+  const monsterLevel = monsterMarker?.level ?? Number(level);
   const monsterId = monsterMarker?.monsterId;
 
-  console.log(monsterLevel);
-  // const monsterData = monsters.find(m => m.id === monsterId);
   const monsterDropData = monsterDrops.find(m => m.monsterId === monsterId);
   const monsterDrop =
     monsterDropData?.drops.find(drop => drop.level === monsterLevel)?.drops ??

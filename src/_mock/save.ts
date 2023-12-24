@@ -1,4 +1,4 @@
-import { UserItems, UserMaterials, UserWealth } from '../api/types';
+import { UserItems, UserMaterials, UserWealth } from '../api';
 
 export const userWealth: UserWealth[] = [
   {

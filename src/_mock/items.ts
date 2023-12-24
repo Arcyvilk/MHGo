@@ -1,4 +1,4 @@
-import { Item, ItemType } from '../api/types/Items';
+import { Item, ItemType } from '../api';
 import { CDN_URL } from '../utils/consts';
 
 export const items: Item[] = [

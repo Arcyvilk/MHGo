@@ -1,4 +1,4 @@
-import { UserLoadout } from '../api/types/Loadout';
+import { UserLoadout } from '../api';
 
 export const userLoadout: UserLoadout[] = [
   {

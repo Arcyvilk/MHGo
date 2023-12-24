@@ -1,5 +1,4 @@
-import { useMaterialsApi } from '../api/useMaterialsApi';
-import { useRarityMaterialsApi } from '../api/useRarityMaterialsApi';
+import { useMaterialsApi, useRarityMaterialsApi } from '../api';
 
 const rarityList = [1, 2, 3, 4, 5];
 
@@ -15,6 +14,7 @@ export const useMaterials = () => {
           rarityMaterials[0];
         return {
           ...material,
+          rarity,
           id: `${material.id}${rarity}`,
           name: `${fieldByRarity?.prefix} ${material.name}`,
           filter: fieldByRarity?.filter,

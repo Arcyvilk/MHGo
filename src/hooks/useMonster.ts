@@ -1,63 +1,51 @@
+import { useMemo } from 'react';
 import L from 'leaflet';
 import { useUser } from '../hooks/useUser';
-import { randomNumberBetween } from '../utils/rng';
 import { MONSTER_MISSING, MONSTER_MARKER_MISSING } from '../utils/consts';
-import { Monster, MonsterMarker } from '../api/types';
-import { useMonstersApi } from '../api/useMonstersApi';
+import { useMonstersApi, useMonsterMarkersApi } from '../api';
 
 import s from '../pages/HomeView/Map/MonsterMarkers.module.scss';
 
-import { monsterMarkers } from '../_mock/mapMarkers';
-
-type ExpandedMonsterMarker = {
-  markerId: string | null;
-  monster: Monster & Omit<MonsterMarker, 'level'> & { level: number };
-};
 export const useMonster = () => {
-  const { userLevel } = useUser();
-  const { data: monsters, isLoading, isFetched } = useMonstersApi();
+  const { userLevel, userId } = useUser();
+  const { data: monsters } = useMonstersApi();
+  const { data: monsterMarkers } = useMonsterMarkersApi(userId, userLevel);
 
-  const determineMonsterLevel = () => {
-    const params = new URLSearchParams(location.search);
-    const level = params.get('level');
-    const randomMonsterLevel = randomNumberBetween(
-      1,
-      userLevel > 5 ? 5 : userLevel,
-    );
+  const params = new URLSearchParams(location.search);
+  const markerId = params.get('id');
 
-    return level ? Number(level) : randomMonsterLevel;
-  };
+  const monsterMarker = monsterMarkers.find(m => m.id === markerId);
+  const monsterId = monsterMarker?.monsterId;
+  const monsterData = monsters.find(m => m.id === monsterId);
 
-  const getMonster = (): ExpandedMonsterMarker => {
-    const params = new URLSearchParams(location.search);
-    const markerId = params.get('id');
-
-    const monsterMarker = monsterMarkers.find(m => m.id === markerId);
-    const monsterId = monsterMarker?.monsterId;
-    const monsterData = monsters.find(m => m.id === monsterId);
-
-    if (!monsterMarker || !monsterData)
-      return {
-        markerId: null,
-        monster: {
-          ...MONSTER_MISSING,
-          ...MONSTER_MARKER_MISSING,
-        },
-      };
-
-    const monster = {
-      ...monsterData,
-      ...monsterMarker,
-      level: monsterMarker.level ?? determineMonsterLevel(),
+  if (!monsterMarker || !monsterData)
+    return {
+      markerId: null,
+      monster: {
+        ...MONSTER_MISSING,
+        ...MONSTER_MARKER_MISSING,
+      },
     };
 
-    return { markerId, monster };
+  const monster = {
+    ...monsterData,
+    ...monsterMarker,
   };
 
-  const getMonsterMarkers = () => {
-    const monsterMarkersData = monsterMarkers.map(monsterMarker => {
+  return { markerId, monster };
+};
+
+export const useMonsterMarkers = () => {
+  const { userId, userLevel } = useUser();
+  const { data: monsters } = useMonstersApi();
+  const { data: monsterMarkers } = useMonsterMarkersApi(userId, userLevel);
+
+  const monsterMarkersData = useMemo(() => {
+    if (!monsterMarkers || !monsters) return [];
+    return monsterMarkers?.map(monsterMarker => {
       const { thumbnail, name } =
-        monsters.find(m => m.id === monsterMarker.monsterId) ?? {};
+        monsters?.find(m => m.id === monsterMarker.monsterId) ?? {};
+      console.log(thumbnail, name);
       const iconMarker = new L.Icon({
         iconUrl: thumbnail,
         iconRetinaUrl: thumbnail,
@@ -68,18 +56,9 @@ export const useMonster = () => {
         ...monsterMarker,
         thumbnail: iconMarker,
         name,
-        level: monsterMarker.level ?? determineMonsterLevel(),
       };
     });
+  }, [monsterMarkers, monsters]);
 
-    return monsterMarkersData;
-  };
-
-  return {
-    isLoading,
-    isFetched,
-    getMonster,
-    getMonsterMarkers,
-    determineMonsterLevel,
-  };
+  return monsterMarkersData;
 };

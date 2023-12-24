@@ -1,18 +1,20 @@
+import { Fragment } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Marker, SVGOverlay } from 'react-leaflet';
 import L from 'leaflet';
 
-import { useMonster } from '../../../hooks/useMonster';
-import { Fragment, useMemo } from 'react';
+import { useMonsterMarkers } from '../../../hooks/useMonster';
+import { QueryBoundary } from '../../../components';
 
-export const MonsterMarkers = () => {
+export const MonsterMarkers = () => (
+  <QueryBoundary fallback={null}>
+    <Load />
+  </QueryBoundary>
+);
+
+const Load = () => {
   const navigate = useNavigate();
-  const { isFetched, getMonsterMarkers } = useMonster();
-
-  const monsterMarkers = useMemo(() => {
-    if (isFetched) return getMonsterMarkers();
-    else return [];
-  }, [isFetched]);
+  const monsterMarkers = useMonsterMarkers();
 
   return (
     <>

@@ -1,4 +1,4 @@
-import { MonsterMarker, ResourceMarker } from '../api/types/MapMarkers';
+import { ResourceMarker } from '../api';
 
 export const resourceMarkers: ResourceMarker[] = [
   {
@@ -35,67 +35,3 @@ export const resourceMarkers: ResourceMarker[] = [
     // ],
   },
 ];
-
-// MOVED TO DATABASE
-export const RESPAWN_TIME = 300; // This will be the same for everything
-
-// MOVED TO DATABASE
-export const monsterMarkers: MonsterMarker[] = [
-  // praca
-  {
-    monsterId: 'angrybird',
-    coords: [59.941134, 10.716524],
-    level: null,
-  },
-  {
-    monsterId: 'babcianiath',
-    coords: [59.94392, 10.715436],
-    level: null,
-  },
-  {
-    monsterId: 'businessnath',
-    coords: [59.942205, 10.718076],
-    level: null,
-  },
-  {
-    monsterId: 'dracolich',
-    coords: [59.9442758, 10.7185793],
-    level: 5,
-  },
-  {
-    monsterId: 'sabertooth',
-    coords: [59.9409978752237, 10.714008808135988],
-    level: null,
-  },
-  // dom
-  {
-    monsterId: 'angrybird',
-    coords: [59.8925197, 10.6198271],
-    level: null,
-  },
-  {
-    monsterId: 'babcianiath',
-    coords: [59.893297, 10.6185925],
-    level: null,
-  },
-  {
-    monsterId: 'businessnath',
-    coords: [59.8915828, 10.6191182],
-    level: null,
-  },
-  {
-    monsterId: 'sabertooth',
-    coords: [59.894065, 10.6275319],
-    level: null,
-  },
-  {
-    monsterId: 'dracolich',
-    coords: [59.890799, 10.617814],
-    level: 5,
-  },
-].map((monster, index) => ({
-  ...monster,
-  id: String(index + 1),
-  respawnTime: RESPAWN_TIME,
-  level: monster.level ?? null,
-}));

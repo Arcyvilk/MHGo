@@ -3,12 +3,12 @@ import { toast } from 'react-toastify';
 import { Button, Loader, Modal, QueryBoundary } from '../../components';
 import { Item, Tabs } from '../../containers';
 import { useItems } from '../../hooks/useItems';
-import { ItemType } from '../../api/types';
+import { useMaterials } from '../../hooks/useMaterials';
+import { ItemType } from '../../api';
 
 import s from './EquipmentCraft.module.scss';
 
 import { items } from '../../_mock/items';
-import { useMaterials } from '../../hooks/useMaterials';
 
 export const TABS = {
   QUEST: 'Quest',

@@ -9,8 +9,7 @@ import s from './FightView.module.scss';
 
 export const PrepareView = () => {
   const navigate = useNavigate();
-  const { getMonster } = useMonster();
-  const { markerId, monster } = getMonster();
+  const { markerId, monster } = useMonster();
   const { habitat, level, name, img } = monster;
 
   const onFight = () => {

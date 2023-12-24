@@ -28,7 +28,10 @@ export const getMonsterMarkersByUserId = async (
     });
 
     for await (const el of cursorMonsterMarkers) {
-      monsterMarkers.push(el);
+      monsterMarkers.push({
+        ...el,
+        id: el._id,
+      });
     }
 
     res.status(200).send(monsterMarkers);

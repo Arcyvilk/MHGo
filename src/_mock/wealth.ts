@@ -1,4 +1,4 @@
-import { Currency } from '../api/types/Wealth';
+import { Currency } from '../api';
 
 export const currencies: Currency[] = [
   {

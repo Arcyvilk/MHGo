@@ -1,9 +1,8 @@
-import { useItemsApi } from '../api/useItemsApi';
-import { useUserItemsApi, useUserMaterialsApi } from '../api/useUserApi';
-
-import { userData } from '../_mock/save';
-import { EXP_PER_LEVEL, USER_ID, USER_NAME } from '../_mock/settings';
+import { useItemsApi, useUserItemsApi, useUserMaterialsApi } from '../api';
 import { useMaterials } from './useMaterials';
+
+import { EXP_PER_LEVEL, USER_ID, USER_NAME } from '../_mock/settings';
+import { userData } from '../_mock/save';
 
 export const useUser = () => {
   const userId = USER_ID;

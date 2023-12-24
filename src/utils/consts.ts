@@ -1,4 +1,4 @@
-import { Monster, MonsterMarker } from '../api/types';
+import { Monster, MonsterMarker } from '../api';
 
 export { API_URL, CDN_URL } from '../env';
 
@@ -6,7 +6,6 @@ export const APP_NAME = 'Master Hoarder GO';
 export const APP_VERSION = 'v66.6-240116-0800'; // moved to database
 
 export const DEFAULT_COORDS = [59.892131, 10.6194067];
-export const MAP_RANGE = 75; // moved to database
 
 export const MONSTER_MISSING: Monster = {
   id: '-1',

@@ -1,8 +1,7 @@
 import { CloseButton, Loader, QueryBoundary } from '../../components';
 import { Item } from '../../containers';
 import { useMaterials } from '../../hooks/useMaterials';
-import { useMonstersApi } from '../../api/useMonstersApi';
-import { Material, Monster, MonsterDrop } from '../../api/types';
+import { useMonstersApi, Material, Monster, MonsterDrop } from '../../api';
 
 import s from './MonsterGuideView.module.scss';
 

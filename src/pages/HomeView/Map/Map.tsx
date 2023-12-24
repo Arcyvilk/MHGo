@@ -3,12 +3,14 @@ import { MapContainer, TileLayer, Marker, useMap, Circle } from 'react-leaflet';
 import L, { Zoom } from 'leaflet';
 
 import { iconMarker } from './Marker';
-import { DEFAULT_COORDS, MAP_RANGE } from '../../../utils/consts';
-
-import s from './Map.module.scss';
-import 'leaflet/dist/leaflet.css';
 import { useLocalStorage } from '../../../hooks/useLocalStorage';
 import { MonsterMarkers } from './MonsterMarkers';
+import { useSettingsApi } from '../../../api';
+import { Loader, QueryBoundary } from '../../../components';
+import { DEFAULT_COORDS } from '../../../utils/consts';
+
+import 'leaflet/dist/leaflet.css';
+import s from './Map.module.scss';
 
 const geoOptions = {
   enableHighAccuracy: false,
@@ -24,8 +26,15 @@ const mapOptions = {
   dragging: false,
 };
 
-export const Map = () => {
+export const Map = () => (
+  <QueryBoundary fallback={<Loader />}>
+    <Load />
+  </QueryBoundary>
+);
+
+const Load = () => {
   const geo = useMemo(() => navigator.geolocation, []);
+
   const [coords, setCoords] = useLocalStorage(
     'MHGO_LAST_KNOWN_LOCATION',
     DEFAULT_COORDS,
@@ -56,6 +65,7 @@ export const Map = () => {
 
 type MapLayerProps = { coords: number[] };
 const MapLayer = ({ coords }: MapLayerProps) => {
+  const { setting: mapRadius } = useSettingsApi('map_radius', 75);
   const map = useMap();
 
   useEffect(() => {
@@ -77,7 +87,7 @@ const MapLayer = ({ coords }: MapLayerProps) => {
         url="https://tiles.stadiamaps.com/tiles/stamen_watercolor/{z}/{x}/{y}.jpg"
       />
       <MonsterMarkers />
-      <Circle center={L.latLng(coords[0], coords[1])} radius={MAP_RANGE} />
+      <Circle center={L.latLng(coords[0], coords[1])} radius={mapRadius} />
       <Marker icon={iconMarker} position={L.latLng(coords[0], coords[1])} />
     </>
   );

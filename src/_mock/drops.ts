@@ -1,4 +1,4 @@
-import { MonsterDrop } from '../api/types/Drops';
+import { MonsterDrop } from '../api';
 
 export const monsterDrops: MonsterDrop[] = [
   {
