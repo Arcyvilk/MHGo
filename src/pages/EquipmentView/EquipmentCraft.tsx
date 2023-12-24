@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { toast } from 'react-toastify';
-import { Button, Modal } from '../../components';
+import { Button, Loader, Modal, QueryBoundary } from '../../components';
 import { Item, Tabs } from '../../containers';
 import { useItems } from '../../hooks/useItems';
 import { ItemType } from '../../api/types';
@@ -16,7 +16,13 @@ export const TABS = {
   ARMOR: 'Armor',
 };
 
-export const EquipmentCraft = () => {
+export const EquipmentCraft = () => (
+  <QueryBoundary fallback={<Loader />}>
+    <Load />
+  </QueryBoundary>
+);
+
+const Load = () => {
   const [activeTab, setActiveTab] = useState(TABS.QUEST);
   const [activeItem, setActiveItem] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);

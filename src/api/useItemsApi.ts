@@ -2,6 +2,8 @@ import { useQuery } from '@tanstack/react-query';
 import { API_URL, CDN_URL } from '../utils/consts';
 import { Item } from './types';
 
+import { items as mockItems } from '../_mock/items';
+
 /**
  *
  * @returns
@@ -27,5 +29,5 @@ export const useItemsApi = () => {
     img: `${CDN_URL}${item.img}`,
   }));
 
-  return { data, isLoading, isFetched, isError };
+  return { data: mockItems, dataNew: data, isLoading, isFetched, isError };
 };

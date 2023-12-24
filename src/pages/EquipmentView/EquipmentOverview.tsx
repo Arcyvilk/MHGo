@@ -1,8 +1,15 @@
-import { Icon } from '../../components';
+import { Icon, Loader, QueryBoundary } from '../../components';
 import { Size } from '../../utils/size';
+
 import s from './EquipmentOverview.module.scss';
 
-export const EquipmentOverview = () => {
+export const EquipmentOverview = () => (
+  <QueryBoundary fallback={<Loader />}>
+    <Load />
+  </QueryBoundary>
+);
+
+const Load = () => {
   return (
     <div className={s.equipmentView__overview}>
       <div className={s.equipmentView__avatar} />

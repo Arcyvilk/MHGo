@@ -1,6 +1,6 @@
 import { toast } from 'react-toastify';
 
-import { CloseButton, Icon } from '../../components';
+import { CloseButton, Icon, Loader, QueryBoundary } from '../../components';
 import { Size } from '../../utils/size';
 import { Item } from '../../containers';
 
@@ -15,7 +15,9 @@ export const ShopView = () => {
   return (
     <div className={s.shopView}>
       <Header />
-      <Shop />
+      <QueryBoundary fallback={<Loader />}>
+        <Shop />
+      </QueryBoundary>
       <CloseButton />
     </div>
   );

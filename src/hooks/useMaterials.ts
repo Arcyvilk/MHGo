@@ -16,9 +16,9 @@ export const useMaterials = () => {
         return {
           ...material,
           id: `${material.id}${rarity}`,
-          name: `${fieldByRarity.prefix} ${material.name}`,
-          filter: fieldByRarity.filter,
-          description: fieldByRarity.description.replace('%', material.name),
+          name: `${fieldByRarity?.prefix} ${material.name}`,
+          filter: fieldByRarity?.filter,
+          description: fieldByRarity?.description?.replace('%', material.name),
         };
       }),
     )

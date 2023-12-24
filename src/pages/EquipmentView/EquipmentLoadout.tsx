@@ -5,6 +5,7 @@ import s from './EquipmentLoadout.module.scss';
 
 import { userLoadout } from '../../_mock/loadout';
 import { items } from '../../_mock/items';
+import { Loader, QueryBoundary } from '../../components';
 
 const LOADOUT_SLOTS: LoadoutType[] = [
   'weapon',
@@ -15,7 +16,13 @@ const LOADOUT_SLOTS: LoadoutType[] = [
   'legs',
 ];
 
-export const EquipmentLoadout = () => {
+export const EquipmentLoadout = () => (
+  <QueryBoundary fallback={<Loader />}>
+    <Load />
+  </QueryBoundary>
+);
+
+const Load = () => {
   const loadout = useLoadout();
 
   return (

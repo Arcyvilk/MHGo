@@ -1,4 +1,4 @@
-import { CloseButton } from '../../components';
+import { CloseButton, Loader, QueryBoundary } from '../../components';
 import { Item } from '../../containers';
 import { useMaterials } from '../../hooks/useMaterials';
 import { useMonstersApi } from '../../api/useMonstersApi';
@@ -8,7 +8,13 @@ import s from './MonsterGuideView.module.scss';
 
 import { monsterDrops } from '../../_mock/drops';
 
-export const MonsterGuideView = () => {
+export const MonsterGuideView = () => (
+  <QueryBoundary fallback={<Loader />}>
+    <Load />
+  </QueryBoundary>
+);
+
+const Load = () => {
   const { data: monsters } = useMonstersApi();
 
   return (
@@ -37,9 +43,7 @@ const MonsterTile = ({
   monster: Monster;
   drops: MonsterDrop[];
 }) => {
-  const { materials, isFetched } = useMaterials();
-
-  if (!isFetched) return;
+  const { materials } = useMaterials();
 
   const allMonsterDrops =
     drops.find(drop => drop.monsterId === monster.id)?.drops ?? [];
