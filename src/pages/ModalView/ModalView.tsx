@@ -1,9 +1,9 @@
 import { Icon } from '../../components';
+import { useNewsApi } from '../../api/useNewsApi';
 
 import s from './ModalView.module.scss';
 
 import { USER_NAME } from '../../_mock/settings';
-import { useNews } from '../../api/useNews';
 
 export const PartyModal = () => {
   return (
@@ -14,9 +14,7 @@ export const PartyModal = () => {
 };
 
 export const NewsModal = () => {
-  const { data: news } = useNews();
-
-  console.log(news);
+  const { data: news } = useNewsApi();
 
   return (
     <div className={s.modalView__news}>

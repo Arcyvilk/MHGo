@@ -6,7 +6,7 @@ import { Monster } from './types/Monsters';
  *
  * @returns
  */
-export const useMonsters = () => {
+export const useMonstersApi = () => {
   const getMonsters = async (): Promise<Monster[]> => {
     const res = await fetch(`${API_URL}/monsters/list`);
     return res.json();
@@ -18,7 +18,7 @@ export const useMonsters = () => {
     isFetched,
     isError,
   } = useQuery<Monster[], unknown, Monster[], string[]>({
-    queryKey: ['monsters'],
+    queryKey: ['monsters', 'list'],
     queryFn: getMonsters,
   });
 

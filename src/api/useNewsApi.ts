@@ -6,7 +6,7 @@ import { News } from './types/News';
  *
  * @returns
  */
-export const useNews = () => {
+export const useNewsApi = () => {
   const getNews = async (): Promise<News[]> => {
     const res = await fetch(`${API_URL}/news/list`);
     return res.json();

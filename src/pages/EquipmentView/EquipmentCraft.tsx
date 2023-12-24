@@ -8,7 +8,7 @@ import { ItemType } from '../../api/types';
 import s from './EquipmentCraft.module.scss';
 
 import { items } from '../../_mock/items';
-import { materials } from '../../_mock/materials';
+import { useMaterials } from '../../hooks/useMaterials';
 
 export const TABS = {
   QUEST: 'Quest',
@@ -137,6 +137,8 @@ const CraftConfirmation = ({
 };
 
 const useCraftableItems = () => {
+  const { materials } = useMaterials();
+
   const craftableItems = items
     .filter(item => item.craftable)
     .map(item => ({

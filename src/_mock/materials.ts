@@ -2,7 +2,7 @@ import { FieldByRarity, Material } from '../api/types/Materials';
 
 import { CDN_URL } from '../utils/consts';
 
-const materialsBase: Pick<Material, 'id' | 'img' | 'name'>[] = [
+export const materialsBase: Pick<Material, 'id' | 'img' | 'name'>[] = [
   {
     id: 'claw',
     img: `${CDN_URL}/materials/base_claw.webp`,
@@ -30,7 +30,7 @@ const materialsBase: Pick<Material, 'id' | 'img' | 'name'>[] = [
   },
 ];
 
-const fieldsByRarity: FieldByRarity[] = [
+export const fieldsByRarity: FieldByRarity[] = [
   {
     rarity: 1,
     prefix: 'Basic',
@@ -64,22 +64,3 @@ const fieldsByRarity: FieldByRarity[] = [
       "Such an extraordinary luck! Everyone thought that % is just a children's tale!",
   },
 ];
-
-const rarityList = [1, 2, 3, 4, 5];
-
-export const materials = rarityList
-  .map(rarity =>
-    materialsBase.map(material => {
-      const fieldByRarity =
-        fieldsByRarity.find(field => field.rarity === rarity) ??
-        fieldsByRarity[0];
-      return {
-        ...material,
-        id: `${material.id}${rarity}`,
-        name: `${fieldByRarity.prefix} ${material.name}`,
-        filter: fieldByRarity.filter,
-        description: fieldByRarity.description.replace('%', material.name),
-      };
-    }),
-  )
-  .flat();

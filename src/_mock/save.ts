@@ -1,14 +1,6 @@
-export type UserWealth = {
-  id: string;
-  amount: number;
-};
-export type UserItem = {
-  id: string;
-  amount: number;
-};
+import { UserItems, UserMaterials, UserWealth } from '../api/types';
 
-// MOVED TO DB
-export const userWealth: { userId: string; wealth: UserWealth[] }[] = [
+export const userWealth: UserWealth[] = [
   {
     userId: 'TESTER',
     wealth: [
@@ -18,8 +10,7 @@ export const userWealth: { userId: string; wealth: UserWealth[] }[] = [
   },
 ];
 
-// MOVED TO DB
-export const userItems: { userId: string; items: UserItem[] }[] = [
+export const userItems: UserItems[] = [
   {
     userId: 'TESTER',
     items: [
@@ -32,8 +23,7 @@ export const userItems: { userId: string; items: UserItem[] }[] = [
   },
 ];
 
-// MOVED TO DB
-export const userMaterials: { userId: string; materials: UserItem[] }[] = [
+export const userMaterials: UserMaterials[] = [
   {
     userId: 'TESTER',
     materials: [

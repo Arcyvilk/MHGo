@@ -1,0 +1,10 @@
+@import "../../styles/index.scss";
+
+.loader {
+  display: flex;
+  flex-direction: column;
+  gap: $size-16;
+  align-items: center;
+  justify-content: center;
+  padding: $size-64;
+}

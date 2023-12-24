@@ -1,0 +1,22 @@
+.errorFallback {   
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  padding: var(--size-16);
+  gap: var(--size-16);
+
+  &__img {
+    object-fit: contain;
+    aspect-ratio: 1/1;
+    filter: opacity(100%) drop-shadow(1px 1px 0 #555) drop-shadow(-1px 1px 0 #555)
+      drop-shadow(1px -1px 0 #555) drop-shadow(-1px -1px 0 #555);
+  }
+  &__text{
+    font-family: var(--font-dosis);
+    text-transform: uppercase;
+    letter-spacing: var(--size-2);
+    opacity: 0.5;
+  }
+}

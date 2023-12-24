@@ -5,10 +5,11 @@ import { Material } from '../api/types';
 
 import { monsterDrops } from '../_mock/drops';
 import { monsterMarkers } from '../_mock/mapMarkers';
-import { materials } from '../_mock/materials';
+import { useMaterials } from './useMaterials';
 
 export const useMonsterDrops = (markerId: string | null) => {
   const { determineMonsterLevel } = useMonster();
+  const { materials } = useMaterials();
 
   if (!markerId)
     return {

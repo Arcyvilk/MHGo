@@ -1,15 +1,16 @@
 import { CloseButton } from '../../components';
 import { Item } from '../../containers';
-import { useMonsters } from '../../api/useMonsters';
+import { useMaterials } from '../../hooks/useMaterials';
+import { useMonstersApi } from '../../api/useMonstersApi';
 import { Material, Monster, MonsterDrop } from '../../api/types';
 
 import s from './MonsterGuideView.module.scss';
 
 import { monsterDrops } from '../../_mock/drops';
-import { materials } from '../../_mock/materials';
 
 export const MonsterGuideView = () => {
-  const { data: monsters } = useMonsters();
+  const { data: monsters } = useMonstersApi();
+
   return (
     <div className={s.monsterGuideView}>
       <div className={s.header}>
@@ -36,6 +37,10 @@ const MonsterTile = ({
   monster: Monster;
   drops: MonsterDrop[];
 }) => {
+  const { materials, isFetched } = useMaterials();
+
+  if (!isFetched) return;
+
   const allMonsterDrops =
     drops.find(drop => drop.monsterId === monster.id)?.drops ?? [];
   const uniqueMonsterDrops = [

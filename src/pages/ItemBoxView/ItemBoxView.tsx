@@ -2,14 +2,12 @@ import { useState } from 'react';
 
 import { TABS, Tabs } from './Tabs';
 import { Item } from '../../containers';
-import { CloseButton } from '../../components';
+import { CloseButton, Loader, QueryBoundary } from '../../components';
 
 import s from './ItemBoxView.module.scss';
 
-import { userItems, userMaterials } from '../../_mock/save';
-import { items } from '../../_mock/items';
-import { materials } from '../../_mock/materials';
 import { USER_ID } from '../../_mock/settings';
+import { useUserItems, useUserMaterials } from '../../hooks/useUser';
 
 export const ItemBoxView = () => {
   const [activeTab, setActiveTab] = useState(TABS.MATERIALS);
@@ -19,8 +17,16 @@ export const ItemBoxView = () => {
       <Header />
       <div className={s.itemBoxView__wrapper}>
         <Tabs activeTab={activeTab} setActiveTab={setActiveTab} />
-        {activeTab === TABS.ITEMS && <UserItems userId={USER_ID} />}
-        {activeTab === TABS.MATERIALS && <UserMaterials userId={USER_ID} />}
+        {activeTab === TABS.ITEMS && (
+          <QueryBoundary fallback={<Loader />}>
+            <UserItems userId={USER_ID} />
+          </QueryBoundary>
+        )}
+        {activeTab === TABS.MATERIALS && (
+          <QueryBoundary fallback={<Loader />}>
+            <UserMaterials userId={USER_ID} />
+          </QueryBoundary>
+        )}
       </div>
       <CloseButton />
     </div>
@@ -48,11 +54,11 @@ const UserItems = ({ userId }: UserItemBoxProps) => {
 };
 
 const UserMaterials = ({ userId }: UserItemBoxProps) => {
-  const userItems = useUserMaterials(userId);
+  const userMaterials = useUserMaterials(userId);
 
   return (
     <div className={s.itemBoxView__container}>
-      {userItems
+      {userMaterials
         .filter(userItem => userItem.amount)
         .map(userItem => {
           const data = { ...userItem, purchasable: false, price: 0 };
@@ -72,35 +78,4 @@ const Header = () => {
       <h1 className={s.header__title}>Items</h1>
     </div>
   );
-};
-
-const useUserItems = (userId: string) => {
-  const userData = userItems.find(user => user.userId === userId);
-  const userItemData = items
-    .filter(item => userData?.items.find(userItem => userItem.id === item.id))
-    .map(item => ({
-      ...item,
-      amount:
-        userData?.items.find(userItem => userItem.id === item.id)?.amount ?? 0,
-    }));
-  return userItemData;
-};
-
-const useUserMaterials = (userId: string) => {
-  const userData = userMaterials.find(user => user.userId === userId);
-  const userMaterialData = materials
-    .filter(
-      material =>
-        userData?.materials.find(
-          userMaterial => userMaterial.id === material.id,
-        ),
-    )
-    .map(material => ({
-      ...material,
-      amount:
-        userData?.materials.find(
-          userMaterial => userMaterial.id === material.id,
-        )?.amount ?? 0,
-    }));
-  return userMaterialData;
 };

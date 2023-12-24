@@ -3,7 +3,7 @@ import { useUser } from '../hooks/useUser';
 import { randomNumberBetween } from '../utils/rng';
 import { MONSTER_MISSING, MONSTER_MARKER_MISSING } from '../utils/consts';
 import { Monster, MonsterMarker } from '../api/types';
-import { useMonsters } from '../api/useMonsters';
+import { useMonstersApi } from '../api/useMonstersApi';
 
 import s from '../pages/HomeView/Map/MonsterMarkers.module.scss';
 
@@ -15,7 +15,7 @@ type ExpandedMonsterMarker = {
 };
 export const useMonster = () => {
   const { userLevel } = useUser();
-  const { data: monsters, isLoading, isFetched } = useMonsters();
+  const { data: monsters, isLoading, isFetched } = useMonstersApi();
 
   const determineMonsterLevel = () => {
     const params = new URLSearchParams(location.search);
