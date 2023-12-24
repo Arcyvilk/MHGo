@@ -16,7 +16,7 @@ import { useNavigate } from 'react-router-dom';
 import { ModalSuccess } from './ModalSuccess';
 import { ModalFailure } from './ModalFailure';
 
-const CURR_ATTACK = 10;
+const CURR_ATTACK = 1000;
 
 export const FightView = () => (
   <QueryBoundary fallback={<Loader />}>

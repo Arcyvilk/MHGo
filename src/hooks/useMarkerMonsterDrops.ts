@@ -1,15 +1,23 @@
 import { useMemo } from 'react';
 import { happensWithAChanceOf } from '../utils/rng';
-import { Material, useMonsterMarkersApi } from '../api';
+import {
+  Item as TItem,
+  Material,
+  useMonsterMarkersApi,
+  ItemClass,
+  Drop,
+} from '../api';
 import { useMaterials } from './useMaterials';
 import { useMonsterDropsApi } from '../api/useMonsterDropsApi';
 import { useUser } from './useUser';
+import { useItems } from './useItems';
 
 export const useMarkerMonsterDrops = (
   markerId: string | null,
   level: string | null,
 ) => {
   const { materials } = useMaterials();
+  const { items } = useItems();
   const { userId, userLevel } = useUser();
   const { data: monsterMarkers } = useMonsterMarkersApi(userId, userLevel);
   const { data: monsterDrops } = useMonsterDropsApi();
@@ -28,7 +36,7 @@ export const useMarkerMonsterDrops = (
     monsterDropData?.drops.find(drop => drop.level === monsterLevel)?.drops ??
     [];
 
-  const dropIds = useMemo(
+  const allDrops = useMemo(
     () =>
       monsterDrop
         .map(drop => {
@@ -38,17 +46,35 @@ export const useMarkerMonsterDrops = (
           return d;
         })
         .flat()
-        .map(drop => drop.materialId),
+        .map(drop => ({ id: drop.id, type: drop.type })),
     [markerId],
   );
 
-  const uniqueDropIds = [...new Set(dropIds)];
+  const drops = [
+    ...getUniqueMaterialDrops(allDrops, materials),
+    ...getUniqueItemDrops(allDrops, items),
+  ];
 
-  const drops: Material[] = uniqueDropIds
+  return { drops };
+};
+
+const getUniqueMaterialDrops = (
+  allDrops: { id: string; type: ItemClass }[],
+  materials: Material[],
+) => {
+  const allMaterialDrops = allDrops.filter(
+    drop => drop.type === ItemClass.MATERIAL,
+  );
+  const uniqueMaterialDropIds = [
+    ...new Set(allMaterialDrops.map(drop => drop.id)),
+  ];
+
+  const materialDrops: Material[] = uniqueMaterialDropIds
     .map(uniqueDropId => {
-      const material = materials.find(material => material.id === uniqueDropId);
+      const material = materials.find(m => m.id === uniqueDropId);
       const amount =
-        dropIds.filter(dropId => dropId === uniqueDropId).length ?? 0;
+        allMaterialDrops.filter(dropId => dropId.id === uniqueDropId).length ??
+        0;
       return {
         ...material,
         amount,
@@ -56,5 +82,26 @@ export const useMarkerMonsterDrops = (
     })
     .filter(Boolean) as Material[];
 
-  return { drops };
+  return materialDrops;
+};
+
+const getUniqueItemDrops = (
+  allDrops: { id: string; type: ItemClass }[],
+  items: TItem[],
+) => {
+  const allItemDrops = allDrops.filter(drop => drop.type === ItemClass.ITEM);
+  const uniqueItemDropIds = [...new Set(allItemDrops.map(drop => drop.id))];
+  const itemDrops: TItem[] = uniqueItemDropIds
+    .map(uniqueDropId => {
+      const item = items.find(i => i.id === uniqueDropId);
+      const amount =
+        allItemDrops.filter(dropId => dropId.id === uniqueDropId).length ?? 0;
+      return {
+        ...item,
+        amount,
+      };
+    })
+    .filter(Boolean) as TItem[];
+
+  return itemDrops;
 };
