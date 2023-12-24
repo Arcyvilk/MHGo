@@ -1,15 +1,14 @@
-import { useMonsterDrops } from '../../hooks/useMonsterDrops';
+import { useMarkerMonsterDrops } from '../../hooks/useMarkerMonsterDrops';
 import { Item } from '../../containers';
 
 import s from './FightView.module.scss';
-import { useUser } from '../../hooks/useUser';
 
 export const ModalSuccess = () => {
   const params = new URLSearchParams(location.search);
   const markerId = params.get('id');
   const level = params.get('level');
-  const { userId } = useUser();
-  const { drops } = useMonsterDrops(markerId, userId, level);
+
+  const { drops } = useMarkerMonsterDrops(markerId, level);
 
   const listOfDrops = (drops ?? []).map(drop => {
     const data = {

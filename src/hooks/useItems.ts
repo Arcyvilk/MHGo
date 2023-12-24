@@ -8,5 +8,5 @@ export const useItems = () => {
     return item;
   };
 
-  return { getItem };
+  return { getItem, items };
 };

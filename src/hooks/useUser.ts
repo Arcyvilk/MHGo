@@ -1,4 +1,10 @@
-import { useItemsApi, useUserItemsApi, useUserMaterialsApi } from '../api';
+import {
+  LOADOUT_SLOTS,
+  useItemsApi,
+  useUserItemsApi,
+  useUserLoadoutApi,
+  useUserMaterialsApi,
+} from '../api';
 import { useMaterials } from './useMaterials';
 
 import { EXP_PER_LEVEL, USER_ID, USER_NAME } from '../_mock/settings';
@@ -46,4 +52,22 @@ export const useUserMaterials = (userId: string) => {
     }));
 
   return userMaterialData;
+};
+
+export const useUserLoadout = (userId: string) => {
+  const { data: items } = useItemsApi();
+  const { data: loadout } = useUserLoadoutApi(userId);
+
+  const slots = LOADOUT_SLOTS.map(slot => {
+    const userSlot = loadout.find(l => l.slot === slot);
+    return {
+      slot,
+      itemId: userSlot?.itemId ?? null,
+    };
+  });
+
+  const loadoutItems =
+    slots.map(slot => items.find(i => i.id === slot.itemId)) ?? [];
+
+  return loadoutItems;
 };

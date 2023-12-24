@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { API_URL } from '../utils/consts';
+import { API_URL, CDN_URL } from '../utils/consts';
 import { News } from './types/News';
 
 /**
@@ -13,7 +13,7 @@ export const useNewsApi = () => {
   };
 
   const {
-    data = [],
+    data: news = [],
     isLoading,
     isFetched,
     isError,
@@ -21,6 +21,11 @@ export const useNewsApi = () => {
     queryKey: ['news'],
     queryFn: getNews,
   });
+
+  const data = news.map(post => ({
+    ...post,
+    img: `${CDN_URL}${post.img}`,
+  }));
 
   return { data, isLoading, isFetched, isError };
 };

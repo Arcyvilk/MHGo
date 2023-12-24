@@ -2,16 +2,17 @@ import { useMemo } from 'react';
 import { happensWithAChanceOf } from '../utils/rng';
 import { Material, useMonsterMarkersApi } from '../api';
 import { useMaterials } from './useMaterials';
+import { useMonsterDropsApi } from '../api/useMonsterDropsApi';
+import { useUser } from './useUser';
 
-import { monsterDrops } from '../_mock/drops';
-
-export const useMonsterDrops = (
+export const useMarkerMonsterDrops = (
   markerId: string | null,
-  userId: string,
   level: string | null,
 ) => {
   const { materials } = useMaterials();
-  const { data: monsterMarkers } = useMonsterMarkersApi(userId);
+  const { userId, userLevel } = useUser();
+  const { data: monsterMarkers } = useMonsterMarkersApi(userId, userLevel);
+  const { data: monsterDrops } = useMonsterDropsApi();
 
   if (!markerId)
     return {

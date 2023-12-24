@@ -1,11 +1,18 @@
 import { CloseButton, Loader, QueryBoundary } from '../../components';
 import { Item } from '../../containers';
 import { useMaterials } from '../../hooks/useMaterials';
-import { useMonstersApi, Material, Monster, MonsterDrop } from '../../api';
+import {
+  useMonstersApi,
+  useMonsterDropsApi,
+  Material,
+  Monster,
+  ItemClass,
+  Item as TItem,
+  Drop,
+} from '../../api';
 
 import s from './MonsterGuideView.module.scss';
-
-import { monsterDrops } from '../../_mock/drops';
+import { useItems } from '../../hooks/useItems';
 
 export const MonsterGuideView = () => (
   <QueryBoundary fallback={<Loader />}>
@@ -23,11 +30,7 @@ const Load = () => {
       </div>
       <div className={s.monsterGuideView__monsters}>
         {monsters.map(monster => (
-          <MonsterTile
-            monster={monster}
-            drops={monsterDrops}
-            key={monster.id}
-          />
+          <MonsterTile monster={monster} key={monster.id} />
         ))}
       </div>
       <CloseButton />
@@ -35,27 +38,21 @@ const Load = () => {
   );
 };
 
-const MonsterTile = ({
-  monster,
-  drops,
-}: {
-  monster: Monster;
-  drops: MonsterDrop[];
-}) => {
+const MonsterTile = ({ monster }: { monster: Monster }) => {
   const { materials } = useMaterials();
+  const { items } = useItems();
+  const { data: drops } = useMonsterDropsApi();
 
-  const allMonsterDrops =
-    drops.find(drop => drop.monsterId === monster.id)?.drops ?? [];
+  const allMonsterDrops = (
+    drops.find(drop => drop.monsterId === monster.id)?.drops ?? []
+  )
+    .map(drops => drops.drops)
+    .flat();
+
   const uniqueMonsterDrops = [
-    ...new Set(
-      allMonsterDrops
-        .map(drops => drops.drops)
-        .flat()
-        .map(drop => drop.materialId),
-    ),
-  ]
-    .map(dropId => materials.find(material => material.id === dropId))
-    .filter(Boolean) as Material[];
+    ...getUniqueItemDrops(allMonsterDrops, items),
+    ...getUniqueMaterialDrops(allMonsterDrops, materials),
+  ];
 
   return (
     <div className={s.monster}>
@@ -82,4 +79,31 @@ const MonsterTile = ({
       </div>
     </div>
   );
+};
+
+const getUniqueItemDrops = (allDrops: Drop[], items: TItem[]) => {
+  const itemMonsterDrops = allDrops.filter(
+    drop => drop.type === ItemClass.ITEM,
+  );
+  const uniqueMonsterItemDrops = [
+    ...new Set(itemMonsterDrops.map(drop => drop.id)),
+  ]
+    .map(dropId => items.find(item => item.id === dropId))
+    .filter(Boolean) as TItem[];
+
+  return uniqueMonsterItemDrops;
+};
+
+const getUniqueMaterialDrops = (allDrops: Drop[], materials: Material[]) => {
+  const materialMonsterDrops = allDrops.filter(
+    drop => drop.type === ItemClass.MATERIAL,
+  );
+
+  const uniqueMonsterMaterialDrops = [
+    ...new Set(materialMonsterDrops.map(drop => drop.id)),
+  ]
+    .map(dropId => materials.find(material => material.id === dropId))
+    .filter(Boolean) as Material[];
+
+  return uniqueMonsterMaterialDrops;
 };

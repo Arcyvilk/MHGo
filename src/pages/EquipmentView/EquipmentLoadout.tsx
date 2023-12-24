@@ -1,20 +1,7 @@
-import { useUser } from '../../hooks/useUser';
-import { LoadoutType } from '../../api';
+import { useUser, useUserLoadout } from '../../hooks/useUser';
 import { Loader, QueryBoundary } from '../../components';
 
 import s from './EquipmentLoadout.module.scss';
-
-import { userLoadout } from '../../_mock/loadout';
-import { items } from '../../_mock/items';
-
-const LOADOUT_SLOTS: LoadoutType[] = [
-  'weapon',
-  'helmet',
-  'torso',
-  'gloves',
-  'hips',
-  'legs',
-];
 
 export const EquipmentLoadout = () => (
   <QueryBoundary fallback={<Loader />}>
@@ -23,7 +10,8 @@ export const EquipmentLoadout = () => (
 );
 
 const Load = () => {
-  const loadout = useLoadout();
+  const { userId } = useUser();
+  const loadout = useUserLoadout(userId);
 
   return (
     <div className={s.equipmentView__loadout}>
@@ -37,22 +25,4 @@ const Load = () => {
       </div>
     </div>
   );
-};
-
-const useLoadout = () => {
-  const { userId } = useUser();
-  const loadout = userLoadout.find(l => l.userId === userId)?.loadout ?? [];
-
-  const slots = LOADOUT_SLOTS.map(slot => {
-    const userSlot = loadout.find(l => l.slot === slot);
-    return {
-      slot,
-      itemId: userSlot?.itemId ?? null,
-    };
-  });
-
-  const loadoutItems =
-    slots.map(slot => items.find(i => i.id === slot.itemId)) ?? [];
-
-  return loadoutItems;
 };

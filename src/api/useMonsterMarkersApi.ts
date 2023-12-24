@@ -34,7 +34,5 @@ export const useMonsterMarkersApi = (userId: string, userLevel: number) => {
     [monsterMarkers],
   );
 
-  console.log(data);
-
   return { data, isLoading, isFetched, isError };
 };

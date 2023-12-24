@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { API_URL } from '../utils/consts';
 import { News } from './types/News';
-import { UserAmount } from './types';
+import { Loadout, UserAmount } from './types';
 
 /**
  *
@@ -86,6 +86,28 @@ export const useUserWealthApi = (userId: string) => {
   } = useQuery<UserAmount[], unknown, UserAmount[], string[]>({
     queryKey: ['user', userId, 'wealth'],
     queryFn: getUserWealth,
+  });
+
+  return { data, isLoading, isFetched, isError };
+};
+
+/**
+ *
+ */
+export const useUserLoadoutApi = (userId: string) => {
+  const getUserLoadout = async (): Promise<Loadout[]> => {
+    const res = await fetch(`${API_URL}/users/user/${userId}/loadout/list`);
+    return res.json();
+  };
+
+  const {
+    data = [],
+    isLoading,
+    isFetched,
+    isError,
+  } = useQuery<Loadout[], unknown, Loadout[], string[]>({
+    queryKey: ['user', userId, 'loadout'],
+    queryFn: getUserLoadout,
   });
 
   return { data, isLoading, isFetched, isError };
