@@ -5,7 +5,6 @@ import {
   Material,
   useMonsterMarkersApi,
   ItemClass,
-  Drop,
 } from '../api';
 import { useMaterials } from './useMaterials';
 import { useMonsterDropsApi } from '../api/useMonsterDropsApi';
@@ -18,8 +17,8 @@ export const useMarkerMonsterDrops = (
 ) => {
   const { materials } = useMaterials();
   const { items } = useItems();
-  const { userId, userLevel } = useUser();
-  const { data: monsterMarkers } = useMonsterMarkersApi(userId, userLevel);
+  const { userId } = useUser();
+  const { data: monsterMarkers } = useMonsterMarkersApi(userId);
   const { data: monsterDrops } = useMonsterDropsApi();
 
   if (!markerId)

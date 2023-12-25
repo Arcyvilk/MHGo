@@ -2,6 +2,10 @@ import { Request, Response } from 'express';
 
 import { mongoInstance } from '../../../api';
 import { log } from '../../helpers/log';
+import {
+  determineMonsterLevel,
+  getUserLevel,
+} from '../../helpers/getUserLevel';
 
 export const getMonsterMarkersByUserId = async (
   req: Request,
@@ -19,7 +23,8 @@ export const getMonsterMarkersByUserId = async (
     const expPerLevel =
       (await collectionSettings.findOne({ key: 'exp_per_level' }))?.value ??
       100;
-    const maxMonsterLevel = Math.floor((user?.exp ?? 0) / expPerLevel);
+    const userLevel = getUserLevel(user, expPerLevel);
+    const maxMonsterLevel = userLevel;
 
     const monsterMarkers = [];
 
@@ -31,6 +36,7 @@ export const getMonsterMarkersByUserId = async (
       monsterMarkers.push({
         ...el,
         id: el._id,
+        level: el.level ?? determineMonsterLevel(userLevel),
       });
     }
 
