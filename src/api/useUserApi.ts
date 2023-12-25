@@ -1,7 +1,7 @@
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { API_URL } from '../utils/consts';
 import { News } from './types/News';
-import { Loadout, UserAmount } from './types';
+import { Loadout, UserAmount, UserMaterials } from './types';
 
 /**
  *
@@ -111,4 +111,32 @@ export const useUserLoadoutApi = (userId: string) => {
   });
 
   return { data, isLoading, isFetched, isError };
+};
+
+/**
+ *
+ */
+export const useUserPutMaterialsApi = (userId: string) => {
+  const queryClient = useQueryClient();
+
+  const putUserMaterials = async (variables: UserAmount[]): Promise<void> => {
+    const res = await fetch(`${API_URL}/users/user/${userId}/materials`, {
+      method: 'PUT',
+      body: JSON.stringify(variables),
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+    });
+
+    queryClient.invalidateQueries({ queryKey: ['user', userId, 'materials'] });
+    return res.json();
+  };
+
+  const { mutate, isSuccess, status } = useMutation({
+    mutationKey: ['user', userId, 'materials', 'put'],
+    mutationFn: putUserMaterials,
+  });
+
+  return { mutate, isSuccess, status };
 };

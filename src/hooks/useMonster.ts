@@ -7,9 +7,9 @@ import { useMonstersApi, useMonsterMarkersApi } from '../api';
 import s from '../pages/HomeView/Map/MonsterMarkers.module.scss';
 
 export const useMonster = () => {
-  const { userLevel, userId } = useUser();
+  const { userId } = useUser();
   const { data: monsters } = useMonstersApi();
-  const { data: monsterMarkers } = useMonsterMarkersApi(userId, userLevel);
+  const { data: monsterMarkers } = useMonsterMarkersApi(userId);
 
   const params = new URLSearchParams(location.search);
   const markerId = params.get('id');
@@ -30,15 +30,16 @@ export const useMonster = () => {
   const monster = {
     ...monsterData,
     ...monsterMarker,
+    level: monsterMarker.level ?? 1,
   };
 
   return { markerId, monster };
 };
 
 export const useMonsterMarkers = () => {
-  const { userId, userLevel } = useUser();
+  const { userId } = useUser();
   const { data: monsters } = useMonstersApi();
-  const { data: monsterMarkers } = useMonsterMarkersApi(userId, userLevel);
+  const { data: monsterMarkers } = useMonsterMarkersApi(userId);
 
   const monsterMarkersData = useMemo(() => {
     if (!monsterMarkers || !monsters) return [];

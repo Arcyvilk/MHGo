@@ -27,7 +27,7 @@ export const FightView = () => (
 const Load = () => {
   const navigate = useNavigate();
   const { monster } = useMonster();
-  const { habitat, level = 1, baseHP = 0, name, img } = monster;
+  const { habitat, level, baseHP = 0, name, img } = monster;
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMonsterAlive, setIsMonsterAlive] = useState<boolean>(true);

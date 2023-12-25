@@ -68,7 +68,7 @@ const getUniqueMaterialDrops = (
     ...new Set(allMaterialDrops.map(drop => drop.id)),
   ];
 
-  const materialDrops: Material[] = uniqueMaterialDropIds
+  const materialDrops = uniqueMaterialDropIds
     .map(uniqueDropId => {
       const material = materials.find(m => m.id === uniqueDropId);
       const amount =
@@ -76,10 +76,11 @@ const getUniqueMaterialDrops = (
         0;
       return {
         ...material,
+        dropClass: ItemClass.MATERIAL,
         amount,
       };
     })
-    .filter(Boolean) as Material[];
+    .filter(Boolean) as (Material & { dropClass: ItemClass; amount: number })[];
 
   return materialDrops;
 };
@@ -90,17 +91,18 @@ const getUniqueItemDrops = (
 ) => {
   const allItemDrops = allDrops.filter(drop => drop.type === ItemClass.ITEM);
   const uniqueItemDropIds = [...new Set(allItemDrops.map(drop => drop.id))];
-  const itemDrops: TItem[] = uniqueItemDropIds
+  const itemDrops = uniqueItemDropIds
     .map(uniqueDropId => {
       const item = items.find(i => i.id === uniqueDropId);
       const amount =
         allItemDrops.filter(dropId => dropId.id === uniqueDropId).length ?? 0;
       return {
         ...item,
+        dropClass: ItemClass.ITEM,
         amount,
       };
     })
-    .filter(Boolean) as TItem[];
+    .filter(Boolean) as (TItem & { dropClass: ItemClass; amount: number })[];
 
   return itemDrops;
 };
