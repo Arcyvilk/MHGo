@@ -2,7 +2,6 @@ import { Request, Response } from 'express';
 
 import { mongoInstance } from '../../../api';
 import { log } from '../../helpers/log';
-import { ObjectId, WithId } from 'mongodb';
 
 // TODO share this with client type!
 type Material = {
