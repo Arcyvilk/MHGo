@@ -4,10 +4,11 @@ import { Icon } from '../../components';
 
 import s from './Experience.module.scss';
 
-import { EXP_PER_LEVEL } from '../../_mock/settings';
+import { useSettingsApi } from '../../api';
 
 export const Experience = () => {
   const { userExp } = useUser();
+  const { setting: expPerLevel } = useSettingsApi<number>('exp_per_level', 0);
 
   return (
     <div className={s.experience}>
@@ -15,11 +16,11 @@ export const Experience = () => {
       <span className={s.experience__title}>HRP</span>
       <div className={s.experience__bar}>
         <div className={s.bar__text}>
-          {userExp} / {EXP_PER_LEVEL}
+          {userExp} / {expPerLevel}
         </div>
         <div
           className={s.bar__fg}
-          style={{ width: `${(100 * userExp) / EXP_PER_LEVEL}%` }}
+          style={{ width: `${(100 * userExp) / expPerLevel}%` }}
         />
         <div className={s.bar__bg} />
       </div>

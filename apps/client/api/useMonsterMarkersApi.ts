@@ -3,11 +3,7 @@ import { MonsterMarker } from '@mhgo/types';
 
 import { API_URL } from '../utils/consts';
 
-/**
- *
- * @returns
- */
-export const useMonsterMarkersApi = (userId: string) => {
+export const useMonsterMarkersApi = (userId?: string) => {
   const getMonsterMarkers = async (): Promise<MonsterMarker[]> => {
     const res = await fetch(`${API_URL}/map/monsters/user/${userId}`);
     return res.json();
@@ -19,8 +15,9 @@ export const useMonsterMarkersApi = (userId: string) => {
     isFetched,
     isError,
   } = useQuery<MonsterMarker[], unknown, MonsterMarker[], string[]>({
-    queryKey: ['monster', 'markers', userId],
+    queryKey: ['monster', 'markers', userId!],
     queryFn: getMonsterMarkers,
+    enabled: Boolean(userId),
   });
 
   return { data, isLoading, isFetched, isError };

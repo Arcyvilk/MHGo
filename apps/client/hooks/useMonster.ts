@@ -42,11 +42,9 @@ export const useMonsterMarkers = () => {
   const { data: monsterMarkers } = useMonsterMarkersApi(userId);
 
   const monsterMarkersData = useMemo(() => {
-    if (!monsterMarkers || !monsters) return [];
     return monsterMarkers?.map(monsterMarker => {
       const { thumbnail, name } =
         monsters?.find(m => m.id === monsterMarker.monsterId) ?? {};
-      console.log(thumbnail, name);
       const iconMarker = new L.Icon({
         iconUrl: thumbnail,
         iconRetinaUrl: thumbnail,

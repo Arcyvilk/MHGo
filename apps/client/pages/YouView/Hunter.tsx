@@ -10,7 +10,7 @@ import { addCdnUrl } from '../../utils/addCdnUrl';
 
 export const Hunter = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { userName, userArcyId, userLevel } = useUser();
+  const { userName, userId, userLevel } = useUser();
 
   const onHunterViewToggle = () => {
     setIsModalOpen(!isModalOpen);
@@ -32,7 +32,7 @@ export const Hunter = () => {
         <div className={s.hunter__bottom}>
           <div className={s.hunter__info}>
             <h2 className={s.hunter__name}>{userName}</h2>
-            <h2 className={s.hunter__id}>Arcy ID: {userArcyId}</h2>
+            <h2 className={s.hunter__id}>Arcy ID: {userId}</h2>
           </div>
           <Button
             simple

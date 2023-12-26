@@ -6,14 +6,20 @@ import { useUser } from '../../hooks/useUser';
 import { addCdnUrl } from '../../utils/addCdnUrl';
 
 import s from './FightView.module.scss';
-import { Modal } from '../../components';
+import { Loader, Modal, QueryBoundary } from '../../components';
 
 type ModalProps = {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
   onClose: () => void;
 };
-export const ModalSuccess = ({ isOpen, setIsOpen, onClose }: ModalProps) => {
+export const ModalSuccess = (props: ModalProps) => (
+  <QueryBoundary fallback={<Loader />}>
+    <Load {...props} />
+  </QueryBoundary>
+);
+
+const Load = ({ isOpen, setIsOpen, onClose }: ModalProps) => {
   const params = new URLSearchParams(location.search);
   const markerId = params.get('id') ?? '';
   const level = params.get('level') ?? '0';

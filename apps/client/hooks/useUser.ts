@@ -1,35 +1,24 @@
-import { LoadoutType } from '@mhgo/types';
 import {
   useItemsApi,
+  useSettingsApi,
+  useUserApi,
   useUserItemsApi,
   useUserLoadoutApi,
   useUserMaterialsApi,
 } from '../api';
 import { useMaterials } from './useMaterials';
 
-import { EXP_PER_LEVEL, USER_ID, USER_NAME } from '../_mock/settings';
-import { userData } from '../_mock/save';
-
-const LOADOUT_SLOTS: LoadoutType[] = [
-  'weapon',
-  'helmet',
-  'torso',
-  'gloves',
-  'hips',
-  'legs',
-];
+import { USER_ID, USER_NAME, LOADOUT_SLOTS } from '../_mock/settings';
 
 export const useUser = () => {
-  const userId = USER_ID;
-  const userName = USER_NAME;
+  const { data: user } = useUserApi(USER_ID);
+  const { setting: expPerLevel } = useSettingsApi<number>('exp_per_level', 0);
 
-  const user = userData.find(u => u.userId === userId);
+  const { name, exp, id } = user ?? { name: USER_NAME, exp: 0, id: USER_ID };
+  const userExp = exp % expPerLevel;
+  const userLevel = 1 + Math.floor((user?.exp ?? 0) / expPerLevel);
 
-  const userArcyId = userName.toLowerCase().replace(' ', '_').concat('666');
-  const userExp = (user?.exp ?? 0) % EXP_PER_LEVEL;
-  const userLevel = 1 + Math.floor((user?.exp ?? 0) / EXP_PER_LEVEL);
-
-  return { userId, userName, userExp, userLevel, userArcyId };
+  return { ...user, userId: id, userName: name, userExp, userLevel };
 };
 
 export const useUserItems = (userId: string) => {

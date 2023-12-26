@@ -1,33 +1,27 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { Loadout, News, UserAmount } from '@mhgo/types';
+import { Loadout, User, UserAmount } from '@mhgo/types';
 
 import { API_URL } from '../utils/consts';
 
-/**
- *
- */
 export const useUserApi = (userId: string) => {
-  const getNews = async (): Promise<News[]> => {
+  const getUser = async (): Promise<User> => {
     const res = await fetch(`${API_URL}/users/user/${userId}`);
     return res.json();
   };
 
-  const {
-    data = [],
-    isLoading,
-    isFetched,
-    isError,
-  } = useQuery<News[], unknown, News[], string[]>({
+  const { data, isLoading, isFetched, isError } = useQuery<
+    User,
+    unknown,
+    User,
+    string[]
+  >({
     queryKey: ['user', userId],
-    queryFn: getNews,
+    queryFn: getUser,
   });
 
   return { data, isLoading, isFetched, isError };
 };
 
-/**
- *
- */
 export const useUserItemsApi = (userId: string) => {
   const getUserItems = async (): Promise<UserAmount[]> => {
     const res = await fetch(`${API_URL}/users/user/${userId}/items/list`);
@@ -47,9 +41,6 @@ export const useUserItemsApi = (userId: string) => {
   return { data, isLoading, isFetched, isError };
 };
 
-/**
- *
- */
 export const useUserMaterialsApi = (userId: string) => {
   const getUserMaterials = async (): Promise<UserAmount[]> => {
     const res = await fetch(`${API_URL}/users/user/${userId}/materials/list`);
@@ -69,9 +60,6 @@ export const useUserMaterialsApi = (userId: string) => {
   return { data, isLoading, isFetched, isError };
 };
 
-/**
- *
- */
 export const useUserWealthApi = (userId: string) => {
   const getUserWealth = async (): Promise<UserAmount[]> => {
     const res = await fetch(`${API_URL}/users/user/${userId}/wealth/list`);
@@ -91,9 +79,6 @@ export const useUserWealthApi = (userId: string) => {
   return { data, isLoading, isFetched, isError };
 };
 
-/**
- *
- */
 export const useUserLoadoutApi = (userId: string) => {
   const getUserLoadout = async (): Promise<Loadout[]> => {
     const res = await fetch(`${API_URL}/users/user/${userId}/loadout/list`);
@@ -113,9 +98,6 @@ export const useUserLoadoutApi = (userId: string) => {
   return { data, isLoading, isFetched, isError };
 };
 
-/**
- *
- */
 export const useUserPutMaterialsApi = (userId: string) => {
   const queryClient = useQueryClient();
 
