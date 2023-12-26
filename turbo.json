@@ -1,0 +1,14 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "pipeline": {
+    "dev:client": { "outputs": []},
+    "dev:server": { "outputs": []},
+    "build:client": {
+      "outputs": ["dist/client/**"]
+    },
+    "build:server": {
+      "outputs": ["dist/server/**"]
+    },
+    "type-check": {}
+  }
+}
