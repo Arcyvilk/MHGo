@@ -1,5 +1,5 @@
+import { LOADOUT_SLOTS } from '@mhgo/types';
 import {
-  LOADOUT_SLOTS,
   useItemsApi,
   useUserItemsApi,
   useUserLoadoutApi,

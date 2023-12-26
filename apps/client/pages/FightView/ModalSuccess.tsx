@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
+import { ItemClass } from '@mhgo/types';
+
 import { useMarkerMonsterDrops } from '../../hooks/useMarkerMonsterDrops';
 import { Item } from '../../containers';
-import { ItemClass, useUserPutMaterialsApi } from '../../api';
+import { useUserPutMaterialsApi } from '../../api';
 import { useUser } from '../../hooks/useUser';
 
 import s from './FightView.module.scss';

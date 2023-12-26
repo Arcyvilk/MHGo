@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
+import { log } from '@mhgo/utils';
 
 import { mongoInstance } from '../../../api';
-import { log } from '@mhgo/utils';
 
 export const getMonsters = async (
   _req: Request,

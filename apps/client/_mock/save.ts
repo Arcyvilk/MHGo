@@ -1,4 +1,4 @@
-import { UserItems, UserMaterials, UserWealth } from '../api';
+import { UserItems, UserMaterials, UserWealth } from '@mhgo/types';
 
 export const userWealth: UserWealth[] = [
   {

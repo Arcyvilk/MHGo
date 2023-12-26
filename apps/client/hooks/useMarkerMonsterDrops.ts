@@ -1,13 +1,9 @@
 import { useMemo } from 'react';
 import { happensWithAChanceOf } from '@mhgo/utils';
-import {
-  Item as TItem,
-  Material,
-  useMonsterMarkersApi,
-  ItemClass,
-} from '../api';
+import { Item as TItem, Material, ItemClass } from '@mhgo/types';
+
+import { useMonsterMarkersApi, useMonsterDropsApi } from '../api';
 import { useMaterials } from './useMaterials';
-import { useMonsterDropsApi } from '../api/useMonsterDropsApi';
 import { useUser } from './useUser';
 import { useItems } from './useItems';
 

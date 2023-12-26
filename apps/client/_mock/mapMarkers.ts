@@ -1,4 +1,4 @@
-import { ResourceMarker } from '../api';
+import { ResourceMarker } from '@mhgo/types';
 
 export const resourceMarkers: ResourceMarker[] = [
   {

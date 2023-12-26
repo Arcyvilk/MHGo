@@ -1,15 +1,9 @@
+import { Material, Monster, ItemClass, Item as TItem, Drop } from '@mhgo/types';
+
 import { CloseButton, Loader, QueryBoundary } from '../../components';
 import { Item } from '../../containers';
 import { useMaterials } from '../../hooks/useMaterials';
-import {
-  useMonstersApi,
-  useMonsterDropsApi,
-  Material,
-  Monster,
-  ItemClass,
-  Item as TItem,
-  Drop,
-} from '../../api';
+import { useMonstersApi, useMonsterDropsApi } from '../../api';
 
 import s from './MonsterGuideView.module.scss';
 import { useItems } from '../../hooks/useItems';

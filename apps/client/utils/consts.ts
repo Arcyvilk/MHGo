@@ -1,4 +1,4 @@
-import { Monster, MonsterMarker } from '../api';
+import { Monster, MonsterMarker } from '@mhgo/types';
 
 export { API_URL, CDN_URL } from '../env';
 

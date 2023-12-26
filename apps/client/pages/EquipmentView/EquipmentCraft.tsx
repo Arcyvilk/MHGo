@@ -1,10 +1,11 @@
 import { useMemo, useState } from 'react';
 import { toast } from 'react-toastify';
+import { ItemType } from '@mhgo/types';
+
 import { Button, Loader, Modal, QueryBoundary } from '../../components';
 import { Item, Tabs } from '../../containers';
 import { useItems } from '../../hooks/useItems';
 import { useMaterials } from '../../hooks/useMaterials';
-import { ItemType } from '../../api';
 
 import s from './EquipmentCraft.module.scss';
 

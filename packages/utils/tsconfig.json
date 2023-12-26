@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "target": "esnext",        // or a version compatible with your Node.js version
+    "module": "commonjs",      // Node.js uses CommonJS modules
+    "declaration": true,       // generates corresponding .d.ts files
+    "outDir": "./dist",        // output directory for compiled files
+    "rootDir": ".",        // source directory
+    "strict": true,            // enable strict mode
+    "esModuleInterop": true,    // enable interop between CommonJS and ES Modules
+    "skipLibCheck": true,      // skip type checking of declaration files
+    "forceConsistentCasingInFileNames": true,  // enforce consistent file naming
+    "isolatedModules": true    // ensure each file is independent of others
+  },
+  "include": [
+    "lib/**/*.ts",            // include TypeScript files in the 'src' directory
+    "lib/**/*.d.ts"           // include declaration files
+  ],
+  "exclude": [
+    "node_modules"            // exclude the 'node_modules' directory
+  ]
+}

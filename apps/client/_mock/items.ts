@@ -1,4 +1,4 @@
-import { Item, ItemClass, ItemType } from '../api';
+import { Item, ItemClass, ItemType } from '@mhgo/types';
 import { CDN_URL } from '../utils/consts';
 
 export const items: Item[] = [
