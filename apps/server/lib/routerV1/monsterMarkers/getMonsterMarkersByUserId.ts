@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { Monster, MonsterMarker, Setting, User } from '@mhgo/types';
+import { MonsterMarker, Setting, User } from '@mhgo/types';
 import { log } from '@mhgo/utils';
 
 import { mongoInstance } from '../../../api';

@@ -160,14 +160,14 @@ const useCraftableItems = () => {
     const itemToCraft = items.find(item => item.id === itemId);
     if (!itemToCraft?.craftable) return [];
     const materialMats = itemToCraft.craftList
-      .filter(item => item.type === 'material')
+      .filter(item => item.craftType === 'material')
       .map(material => ({
         ...materials.find(m => m.id === material.id),
         amount: material.amount,
       }))
       .filter(Boolean);
     const itemMats = itemToCraft.craftList
-      .filter(item => item.type === 'item')
+      .filter(item => item.craftType === 'item')
       .map(item => ({
         ...items.find(i => i.id === item.id),
         amount: item.amount,

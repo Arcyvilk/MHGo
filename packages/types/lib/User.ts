@@ -5,13 +5,21 @@ export type User = {
   pwdHash: string;
   avatar: string;
   exp: number;
+  isAwaitingModApproval: boolean;
+  isModApproved: boolean;
   progress: UserProgress;
+  ban: UserBan;
 };
 
 // TODO temp user progress type
 export type UserProgress = {
-  chapter: number;
-  quest: number;
+  chapter: string;
+  quest: string;
+};
+
+export type UserBan = {
+  isBanned: boolean;
+  endDate: Date;
 };
 
 export type UserAmount = { id: string; amount: number };
