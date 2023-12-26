@@ -1,4 +1,4 @@
-import { CDN_URL } from '../utils/consts';
+import { addCdnUrl } from '../utils/addCdnUrl';
 
 export type Resource = {
   id: string;
@@ -14,8 +14,8 @@ export const resources: Resource[] = [
     id: 'tree',
     name: 'Tree',
     description: 'TODO',
-    img: `${CDN_URL}/resources/angrybird.png`,
-    thumbnail: `${CDN_URL}/resources/angrybird.png`,
+    img: addCdnUrl('/resources/angrybird.png'),
+    thumbnail: addCdnUrl('/resources/angrybird.png'),
     habitat: 'Fornebu',
   },
 ];

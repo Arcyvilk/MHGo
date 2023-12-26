@@ -1,11 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
-import { API_URL, CDN_URL } from '../utils/consts';
-import { Monster } from './types/Monsters';
+import { Monster } from '@mhgo/types';
 
-/**
- *
- * @returns
- */
+import { API_URL } from '../utils/consts';
+import { addCdnUrl } from '../utils/addCdnUrl';
+
 export const useMonstersApi = () => {
   const getMonsters = async (): Promise<Monster[]> => {
     const res = await fetch(`${API_URL}/monsters/list`);
@@ -24,8 +22,8 @@ export const useMonstersApi = () => {
 
   const data = monsters.map(monster => ({
     ...monster,
-    img: `${CDN_URL}${monster.img}`,
-    thumbnail: `${CDN_URL}${monster.thumbnail}`,
+    img: addCdnUrl(monster.img),
+    thumbnail: addCdnUrl(monster.thumbnail),
   }));
 
   return { data, isLoading, isFetched, isError };

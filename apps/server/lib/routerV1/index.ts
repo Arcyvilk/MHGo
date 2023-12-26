@@ -17,10 +17,11 @@ routerV1.get('/monsters/list', getMonsters);
  *         DROPS         *
  *************************/
 
-import { getDrops, getDropsByMonsterId } from './drops';
+import { getDrops, getDropsByMonsterId, getDropsForUser } from './drops';
 
 routerV1.get('/drops/list', getDrops);
 routerV1.get('/drops/monster/:monsterId', getDropsByMonsterId);
+routerV1.put('/drops/user/:userId', getDropsForUser);
 
 /************************
  *         USER         *

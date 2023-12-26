@@ -1,13 +1,13 @@
 import { useNavigate } from 'react-router-dom';
 
 import { Button, CloseButton, Icon } from '../../components';
-import { CDN_URL } from '../../utils/consts';
 import { Size } from '../../utils/size';
 
 import s from './PaintballView.module.scss';
 
 import { userItems } from '../../_mock/save';
 import { USER_ID } from '../../_mock/settings';
+import { addCdnUrl } from '../../utils/addCdnUrl';
 
 export const PaintballView = () => {
   const userId = USER_ID;
@@ -47,7 +47,7 @@ const NoPaintballs = () => {
       <Button label="Go to the shop and buy some!" onClick={onShopClick} />
       <img
         className={s.paintballView__image}
-        src={`${CDN_URL}/misc/sad_palico.png`}
+        src={addCdnUrl('/misc/sad_palico.png')}
       />
     </div>
   );

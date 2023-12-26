@@ -1,8 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
-import { API_URL, CDN_URL } from '../utils/consts';
-import { Item } from './types';
+import { Item } from '@mhgo/types';
 
+import { API_URL } from '../utils/consts';
 import { items as mockItems } from '../_mock/items';
+import { addCdnUrl } from '../utils/addCdnUrl';
 
 /**
  *
@@ -26,7 +27,7 @@ export const useItemsApi = () => {
 
   const data = items.map(item => ({
     ...item,
-    img: `${CDN_URL}${item.img}`,
+    img: addCdnUrl(item.img),
   }));
 
   return { data: mockItems, dataNew: data, isLoading, isFetched, isError };

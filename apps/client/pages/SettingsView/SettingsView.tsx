@@ -4,9 +4,10 @@ import { toast } from 'react-toastify';
 import { Button, CloseButton, Slider } from '../../components';
 import { Volume, useVolume } from '../../hooks/useVolume';
 import { STATUS, useLogin } from '../../hooks/useLogin';
-import { APP_NAME, APP_VERSION, CDN_URL } from '../../utils/consts';
+import { APP_NAME, APP_VERSION } from '../../utils/consts';
 
 import s from './SettingsView.module.scss';
+import { addCdnUrl } from '../../utils/addCdnUrl';
 
 const DEFAULT = {
   min: 0,
@@ -91,7 +92,7 @@ export const SettingsView = () => {
         )}
 
         <div className={s.section}>
-          <img src={`${CDN_URL}/misc/logo.png`} />
+          <img src={addCdnUrl('/misc/logo.png')} />
           <p className={s.version}>
             Arcyvilk 2023-2024 (c) ALL RIGHTS RESERVED. {APP_NAME} is a
             protected trademark.

@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
+import { FieldByRarity } from '@mhgo/types';
+
 import { API_URL } from '../utils/consts';
-import { FieldByRarity } from './types';
 
 /**
  *

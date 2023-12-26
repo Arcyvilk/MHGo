@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { Loadout, News, UserAmount } from '@mhgo/types';
+
 import { API_URL } from '../utils/consts';
-import { News } from './types/News';
-import { Loadout, UserAmount } from './types';
 
 /**
  *

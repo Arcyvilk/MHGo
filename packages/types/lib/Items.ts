@@ -19,4 +19,5 @@ export type Item = {
   purchasable: boolean;
   craftable: boolean;
   craftList: CraftList[];
+  unique: boolean; // Can user have only one copy of an item at once
 };

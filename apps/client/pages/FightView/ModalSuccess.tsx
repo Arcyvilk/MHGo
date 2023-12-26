@@ -1,41 +1,45 @@
-import { useEffect, useState } from 'react';
-import { CraftType } from '@mhgo/types';
+import { useEffect, useState, useCallback } from 'react';
 
-import { useMarkerMonsterDrops } from '../../hooks/useMarkerMonsterDrops';
 import { Item } from '../../containers';
-import { useUserPutMaterialsApi } from '../../api';
+import { useMonsterMarkerDropsApi } from '../../api';
 import { useUser } from '../../hooks/useUser';
+import { addCdnUrl } from '../../utils/addCdnUrl';
 
 import s from './FightView.module.scss';
+import { Modal } from '../../components';
 
-export const ModalSuccess = () => {
+type ModalProps = {
+  isOpen: boolean;
+  setIsOpen: (isOpen: boolean) => void;
+  onClose: () => void;
+};
+export const ModalSuccess = ({ isOpen, setIsOpen, onClose }: ModalProps) => {
   const params = new URLSearchParams(location.search);
-  const markerId = params.get('id');
-  const level = params.get('level');
+  const markerId = params.get('id') ?? '';
+  const level = params.get('level') ?? '0';
 
   const [isLootRedeemed, setIsLootRedeemed] = useState(false);
   const { userId } = useUser();
 
-  const { drops } = useMarkerMonsterDrops(markerId, level);
-  const { mutate: materialsMutate } = useUserPutMaterialsApi(userId);
+  const { data: drops, mutate: mutateUserDrops } =
+    useMonsterMarkerDropsApi(userId);
 
-  // TODO this triggers too often!
-  useEffect(() => {
-    if (isLootRedeemed) return;
-    const materialDrops = (
-      drops?.filter(drop => drop.dropClass === 'material') ?? []
-    ).map(drop => ({ id: drop.id, amount: drop.amount }));
-    // const itemDrops = drops?.filter(
-    //   drop => drop.dropClass === 'item',
-    // );
-    materialsMutate(materialDrops);
-    // itemsMutate(itemDrops);
-    setIsLootRedeemed(true);
+  const redeemLoot = useCallback(() => {
+    if (!isLootRedeemed) setIsLootRedeemed(true);
+    mutateUserDrops({
+      markerId,
+      monsterLevel: Number(level),
+    });
   }, [isLootRedeemed]);
+
+  useEffect(() => {
+    redeemLoot();
+  }, []);
 
   const listOfDrops = (drops ?? []).map(drop => {
     const data = {
       ...drop,
+      img: addCdnUrl(drop.img),
       purchasable: false,
       price: 0,
     };
@@ -43,14 +47,16 @@ export const ModalSuccess = () => {
   });
 
   return (
-    <div className={s.result}>
-      <h1 className={s.result__title}>Success!</h1>
-      <p className={s.result__desc}>Monster dropped the following items:</p>
-      <div className={s.result__drops}>
-        {listOfDrops.length
-          ? listOfDrops
-          : "NOTHING! God damn it you're so unlucky ;-;"}
+    <Modal isOpen={isOpen} setIsOpen={setIsOpen} onClose={onClose}>
+      <div className={s.result}>
+        <h1 className={s.result__title}>Success!</h1>
+        <p className={s.result__desc}>Monster dropped the following items:</p>
+        <div className={s.result__drops}>
+          {listOfDrops.length
+            ? listOfDrops
+            : "NOTHING! God damn it you're so unlucky ;-;"}
+        </div>
       </div>
-    </div>
+    </Modal>
   );
 };

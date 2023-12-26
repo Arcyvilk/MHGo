@@ -61,14 +61,11 @@ const Load = () => {
 
   return (
     <div className={modifiers(s, 'fightView', habitat)}>
-      {!isMonsterAlive && (
-        <Modal
-          isOpen={isModalOpen}
-          setIsOpen={setIsModalOpen}
-          onClose={onFightEnd}>
-          {isPlayerAlive && <ModalSuccess />}
-          {!isPlayerAlive && <ModalFailure />}
-        </Modal>
+      {isPlayerAlive && !isMonsterAlive && isModalOpen && (
+        <ModalSuccess isOpen setIsOpen={setIsModalOpen} onClose={onFightEnd} />
+      )}
+      {!isPlayerAlive && isModalOpen && (
+        <ModalFailure isOpen setIsOpen={setIsModalOpen} onClose={onFightEnd} />
       )}
       <Header name={name} maxHP={level * baseHP} currentHP={currentHP} />
       {!isMonsterAlive && <Explosions />}

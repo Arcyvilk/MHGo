@@ -1,11 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
-import { API_URL, CDN_URL } from '../utils/consts';
-import { Material } from './types';
+import { Material } from '@mhgo/types';
+import { API_URL } from '../utils/consts';
+import { addCdnUrl } from '../utils/addCdnUrl';
 
-/**
- *
- * @returns
- */
 export const useMaterialsApi = () => {
   const getMaterials = async (): Promise<Material[]> => {
     const res = await fetch(`${API_URL}/materials/list`);
@@ -24,7 +21,7 @@ export const useMaterialsApi = () => {
 
   const data = materials.map(material => ({
     ...material,
-    img: `${CDN_URL}${material.img}`,
+    img: addCdnUrl(material.img),
   }));
 
   return { data, isLoading, isFetched, isError };

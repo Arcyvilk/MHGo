@@ -1,4 +1,3 @@
-import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { registerSW } from 'virtual:pwa-register';
 
@@ -14,7 +13,11 @@ if ('serviceWorker' in navigator) {
 }
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
+  // Strict mode causes stuff to render twice and some endpoints get called twice
+  // <React.StrictMode>
+  //   <App />
+  // </React.StrictMode>,
+  <>
     <App />
-  </React.StrictMode>,
+  </>,
 );

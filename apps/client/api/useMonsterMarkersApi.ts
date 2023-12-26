@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
+import { MonsterMarker } from '@mhgo/types';
+
 import { API_URL } from '../utils/consts';
-import { MonsterMarker } from './types';
 
 /**
  *

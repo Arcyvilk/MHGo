@@ -1,6 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
-import { API_URL, CDN_URL } from '../utils/consts';
-import { News } from './types/News';
+import { News } from '@mhgo/types';
+
+import { API_URL } from '../utils/consts';
+import { addCdnUrl } from '../utils/addCdnUrl';
 
 /**
  *
@@ -24,7 +26,7 @@ export const useNewsApi = () => {
 
   const data = news.map(post => ({
     ...post,
-    img: `${CDN_URL}${post.img}`,
+    img: addCdnUrl(post.img),
   }));
 
   return { data, isLoading, isFetched, isError };
