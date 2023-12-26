@@ -1,7 +1,8 @@
 import { Request, Response } from 'express';
+import { log } from '@mhgo/utils';
+import { Material } from '@mhgo/types';
 
 import { mongoInstance } from '../../../api';
-import { log } from '@mhgo/utils';
 
 export const getMaterials = async (
   _req: Request,
@@ -9,8 +10,8 @@ export const getMaterials = async (
 ): Promise<void> => {
   try {
     const { db } = mongoInstance.getDb();
-    const collection = db.collection('materials');
-    const materials = [];
+    const collection = db.collection<Material>('materials');
+    const materials: Material[] = [];
 
     const cursor = collection.find();
 

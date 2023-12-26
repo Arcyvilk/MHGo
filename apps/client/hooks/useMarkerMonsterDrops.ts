@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { happensWithAChanceOf } from '@mhgo/utils';
-import { Item as TItem, Material, ItemClass } from '@mhgo/types';
+import { Item as TItem, Material, CraftType } from '@mhgo/types';
 
 import { useMonsterMarkersApi, useMonsterDropsApi } from '../api';
 import { useMaterials } from './useMaterials';
@@ -54,11 +54,11 @@ export const useMarkerMonsterDrops = (
 };
 
 const getUniqueMaterialDrops = (
-  allDrops: { id: string; type: ItemClass }[],
+  allDrops: { id: string; type: CraftType }[],
   materials: Material[],
 ) => {
   const allMaterialDrops = allDrops.filter(
-    drop => drop.type === ItemClass.MATERIAL,
+    drop => drop.type === 'material',
   );
   const uniqueMaterialDropIds = [
     ...new Set(allMaterialDrops.map(drop => drop.id)),
@@ -72,20 +72,20 @@ const getUniqueMaterialDrops = (
         0;
       return {
         ...material,
-        dropClass: ItemClass.MATERIAL,
+        dropClass: 'material',
         amount,
       };
     })
-    .filter(Boolean) as (Material & { dropClass: ItemClass; amount: number })[];
+    .filter(Boolean) as (Material & { dropClass: CraftType; amount: number })[];
 
   return materialDrops;
 };
 
 const getUniqueItemDrops = (
-  allDrops: { id: string; type: ItemClass }[],
+  allDrops: { id: string; type: CraftType }[],
   items: TItem[],
 ) => {
-  const allItemDrops = allDrops.filter(drop => drop.type === ItemClass.ITEM);
+  const allItemDrops = allDrops.filter(drop => drop.type === 'item');
   const uniqueItemDropIds = [...new Set(allItemDrops.map(drop => drop.id))];
   const itemDrops = uniqueItemDropIds
     .map(uniqueDropId => {
@@ -94,11 +94,11 @@ const getUniqueItemDrops = (
         allItemDrops.filter(dropId => dropId.id === uniqueDropId).length ?? 0;
       return {
         ...item,
-        dropClass: ItemClass.ITEM,
+        dropClass: 'item',
         amount,
       };
     })
-    .filter(Boolean) as (TItem & { dropClass: ItemClass; amount: number })[];
+    .filter(Boolean) as (TItem & { dropClass: CraftType; amount: number })[];
 
   return itemDrops;
 };

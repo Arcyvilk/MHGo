@@ -1,14 +1,15 @@
 import { Request, Response } from 'express';
+import { log } from '@mhgo/utils';
+import { User } from '@mhgo/types';
 
 import { mongoInstance } from '../../../api';
-import { log } from '@mhgo/utils';
 
 export const getUser = async (req: Request, res: Response): Promise<void> => {
   try {
     const { userId } = req.params;
     const { db } = mongoInstance.getDb();
-    const collection = db.collection('users');
-    const users = [];
+    const collection = db.collection<User>('users');
+    const users: User[] = [];
 
     const cursor = collection.find({ id: userId });
 

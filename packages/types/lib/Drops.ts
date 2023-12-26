@@ -1,7 +1,7 @@
-import { ItemClass } from '.';
+import { CraftType } from './Items';
 
 export type Drop = {
-  type: ItemClass;
+  type: CraftType;
   id: string; // ID of the material to drop
   chance: number; // from 0 to 100
   amount: number; // how many of those can drop

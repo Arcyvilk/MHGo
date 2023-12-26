@@ -6,5 +6,6 @@ export * from './MapMarkers';
 export * from './Materials';
 export * from './Monsters';
 export * from './News';
+export * from './Settings';
 export * from './User';
 export * from './Wealth';

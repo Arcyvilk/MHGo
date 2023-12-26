@@ -1,7 +1,8 @@
 import { Request, Response } from 'express';
+import { log } from '@mhgo/utils';
+import { UserAmount, UserWealth } from '@mhgo/types';
 
 import { mongoInstance } from '../../../api';
-import { log } from '@mhgo/utils';
 
 export const getUserWealth = async (
   req: Request,
@@ -10,8 +11,8 @@ export const getUserWealth = async (
   try {
     const { userId } = req.params;
     const { db } = mongoInstance.getDb();
-    const collection = db.collection('userWealth');
-    const userWealth = [];
+    const collection = db.collection<UserWealth>('userWealth');
+    const userWealth: UserAmount[] = [];
 
     const cursor = collection.find({ userId });
 

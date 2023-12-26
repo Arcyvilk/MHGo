@@ -1,12 +1,3 @@
-export const LOADOUT_SLOTS: LoadoutType[] = [
-  'weapon',
-  'helmet',
-  'torso',
-  'gloves',
-  'hips',
-  'legs',
-];
-
 export type LoadoutType =
   | 'weapon'
   | 'helmet'

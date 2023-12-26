@@ -1,6 +1,5 @@
 import { useMemo, useState } from 'react';
 import { toast } from 'react-toastify';
-import { ItemType } from '@mhgo/types';
 
 import { Button, Loader, Modal, QueryBoundary } from '../../components';
 import { Item, Tabs } from '../../containers';
@@ -54,7 +53,7 @@ const QuestCraft = ({ onCraft }: { onCraft: (itemId: string) => void }) => {
   return (
     <div className={s.equipmentView__items}>
       {craftableItems
-        .filter(item => item.type === ItemType.QUEST)
+        .filter(item => item.type === 'quest')
         .map(item => (
           <div className={s.equipmentView__itemWrapper} key={item.id}>
             <Item data={item} onClick={() => onCraft(item.id)} />
@@ -69,7 +68,7 @@ const WeaponsCraft = ({ onCraft }: { onCraft: (itemId: string) => void }) => {
   return (
     <div className={s.equipmentView__items}>
       {craftableItems
-        .filter(item => item.type === ItemType.WEAPON)
+        .filter(item => item.type === 'weapon')
         .map(item => (
           <div className={s.equipmentView__itemWrapper} key={item.id}>
             <Item data={item} onClick={() => onCraft(item.id)} />
@@ -84,7 +83,7 @@ const ArmorCraft = ({ onCraft }: { onCraft: (itemId: string) => void }) => {
   return (
     <div className={s.equipmentView__items}>
       {craftableItems
-        .filter(item => item.type === ItemType.ARMOR)
+        .filter(item => item.type === 'armor')
         .map(item => (
           <div className={s.equipmentView__itemWrapper} key={item.id}>
             <Item data={item} onClick={() => onCraft(item.id)} />

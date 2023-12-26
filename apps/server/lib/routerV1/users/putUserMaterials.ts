@@ -1,18 +1,8 @@
 import { Request, Response } from 'express';
+import { log } from '@mhgo/utils';
+import { UserMaterials, type Material, type UserAmount } from '@mhgo/types';
 
 import { mongoInstance } from '../../../api';
-import { log } from '@mhgo/utils';
-
-// TODO share this with client type!
-type Material = {
-  id: string;
-  img: string;
-  name: string;
-  description: string;
-  rarity: number;
-  filter: string;
-};
-type UserMaterial = { id: string; amount: number };
 
 export const putUserMaterials = async (
   req: Request,
@@ -20,7 +10,8 @@ export const putUserMaterials = async (
 ): Promise<void> => {
   try {
     const { db } = mongoInstance.getDb();
-    const collectionUserMaterials = db.collection('userMaterials');
+    const collectionUserMaterials =
+      db.collection<UserMaterials>('userMaterials');
     const { userId } = req.params;
     const materials = req.body;
 
@@ -36,13 +27,13 @@ export const putUserMaterials = async (
 
     const newUserMaterials = materials.filter(
       (material: Material) =>
-        !oldUserMaterials.some((m: UserMaterial) => m.id === material.id),
+        !oldUserMaterials.some((m: UserAmount) => m.id === material.id),
     );
 
     const oldUserMaterialsUpdated = oldUserMaterials.map(
-      (material: UserMaterial) => {
+      (material: UserAmount) => {
         const newMaterialAmount = materials.find(
-          (m: UserMaterial) => m.id === material.id,
+          (m: UserAmount) => m.id === material.id,
         )?.amount;
         if (!newMaterialAmount) return material;
         const newAmount = (material.amount ?? 0) + newMaterialAmount;

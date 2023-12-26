@@ -1,7 +1,8 @@
 import { Request, Response } from 'express';
+import { log } from '@mhgo/utils';
+import { Setting } from '@mhgo/types';
 
 import { mongoInstance } from '../../../api';
-import { log } from '@mhgo/utils';
 
 export const getSettings = async (
   _req: Request,
@@ -9,8 +10,8 @@ export const getSettings = async (
 ): Promise<void> => {
   try {
     const { db } = mongoInstance.getDb();
-    const collection = db.collection('settings');
-    const settings = [];
+    const collection = db.collection<Setting<unknown>>('settings');
+    const settings: Setting<unknown>[] = [];
 
     const cursor = collection.find();
 

@@ -1,7 +1,8 @@
 import { Request, Response } from 'express';
+import { log } from '@mhgo/utils';
+import { FieldByRarity } from '@mhgo/types';
 
 import { mongoInstance } from '../../../api';
-import { log } from '@mhgo/utils';
 
 export const getRarityMaterials = async (
   _req: Request,
@@ -9,8 +10,8 @@ export const getRarityMaterials = async (
 ): Promise<void> => {
   try {
     const { db } = mongoInstance.getDb();
-    const collection = db.collection('rarityMaterials');
-    const rarityMaterials = [];
+    const collection = db.collection<FieldByRarity>('rarityMaterials');
+    const rarityMaterials: FieldByRarity[] = [];
 
     const cursor = collection.find();
 

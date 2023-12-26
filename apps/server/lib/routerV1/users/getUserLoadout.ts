@@ -1,7 +1,8 @@
 import { Request, Response } from 'express';
+import { log } from '@mhgo/utils';
+import { Loadout, UserLoadout } from '@mhgo/types';
 
 import { mongoInstance } from '../../../api';
-import { log } from '@mhgo/utils';
 
 export const getUserLoadout = async (
   req: Request,
@@ -10,8 +11,8 @@ export const getUserLoadout = async (
   try {
     const { userId } = req.params;
     const { db } = mongoInstance.getDb();
-    const collection = db.collection('userLoadout');
-    const userLoadout = [];
+    const collection = db.collection<UserLoadout>('userLoadout');
+    const userLoadout: Loadout[] = [];
 
     const cursor = collection.find({ userId });
 

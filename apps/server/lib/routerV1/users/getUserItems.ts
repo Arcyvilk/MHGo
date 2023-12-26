@@ -1,7 +1,8 @@
 import { Request, Response } from 'express';
+import { log } from '@mhgo/utils';
+import { UserAmount, UserItems } from '@mhgo/types';
 
 import { mongoInstance } from '../../../api';
-import { log } from '@mhgo/utils';
 
 export const getUserItems = async (
   req: Request,
@@ -10,8 +11,8 @@ export const getUserItems = async (
   try {
     const { userId } = req.params;
     const { db } = mongoInstance.getDb();
-    const collection = db.collection('userItems');
-    const userItems = [];
+    const collection = db.collection<UserItems>('userItems');
+    const userItems: UserAmount[] = [];
 
     const cursor = collection.find({ userId });
 

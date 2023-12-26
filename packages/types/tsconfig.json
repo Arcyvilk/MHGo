@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "outDir": "dist",
+    "rootDir": "./lib",
+    "strict": true
+  },
+  "include": ["lib/**/*.ts"],
+  "exclude": ["node_modules"]
+}

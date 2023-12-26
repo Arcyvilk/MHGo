@@ -1,7 +1,8 @@
 import { Request, Response } from 'express';
+import { Monster, MonsterMarker, Setting, User } from '@mhgo/types';
+import { log } from '@mhgo/utils';
 
 import { mongoInstance } from '../../../api';
-import { log } from '@mhgo/utils';
 import {
   determineMonsterLevel,
   getUserLevel,
@@ -15,9 +16,10 @@ export const getMonsterMarkersByUserId = async (
     const { userId } = req.params;
     const { db } = mongoInstance.getDb();
 
-    const collectionUsers = db.collection('users');
-    const collectionSettings = db.collection('settings');
-    const collectionMonsterMarkers = db.collection('monsterMarkers');
+    const collectionUsers = db.collection<User>('users');
+    const collectionSettings = db.collection<Setting<number>>('settings');
+    const collectionMonsterMarkers =
+      db.collection<MonsterMarker>('monsterMarkers');
 
     const user = await collectionUsers.findOne({ id: userId });
     const expPerLevel =
@@ -26,7 +28,7 @@ export const getMonsterMarkersByUserId = async (
     const userLevel = getUserLevel(user, expPerLevel);
     const maxMonsterLevel = userLevel;
 
-    const monsterMarkers = [];
+    const monsterMarkers: MonsterMarker[] = [];
 
     const cursorMonsterMarkers = collectionMonsterMarkers.find({
       $or: [{ level: null }, { level: { $lte: maxMonsterLevel } }],
@@ -35,7 +37,7 @@ export const getMonsterMarkersByUserId = async (
     for await (const el of cursorMonsterMarkers) {
       monsterMarkers.push({
         ...el,
-        id: el._id,
+        id: String(el._id),
         level: el.level ?? determineMonsterLevel(userLevel),
       });
     }

@@ -1,9 +1,9 @@
 import { randomNumberBetween } from '@mhgo/utils';
+import type { User } from '@mhgo/types';
 
-type User = any; // TODO get this type from client
-
-export const getUserLevel = (user: User, expPerLevel: number) => {
-  const userLevel = 1 + Math.floor((user?.exp ?? 0) / expPerLevel);
+export const getUserLevel = (user: User | null, expPerLevel: number) => {
+  const userExp = user?.exp ?? 0;
+  const userLevel = 1 + Math.floor(userExp / expPerLevel);
   return userLevel;
 };
 

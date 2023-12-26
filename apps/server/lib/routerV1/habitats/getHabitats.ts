@@ -1,7 +1,8 @@
 import { Request, Response } from 'express';
+import { log } from '@mhgo/utils';
+import { Habitat } from '@mhgo/types';
 
 import { mongoInstance } from '../../../api';
-import { log } from '@mhgo/utils';
 
 export const getHabitats = async (
   _req: Request,
@@ -9,8 +10,8 @@ export const getHabitats = async (
 ): Promise<void> => {
   try {
     const { db } = mongoInstance.getDb();
-    const collection = db.collection('habitats');
-    const habitats = [];
+    const collection = db.collection<Habitat>('habitats');
+    const habitats: Habitat[] = [];
 
     const cursor = collection.find();
 

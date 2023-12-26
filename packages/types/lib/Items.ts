@@ -1,18 +1,10 @@
-export enum ItemType {
-  QUEST = 'quest',
-  WEAPON = 'weapon',
-  ARMOR = 'armor',
-  OTHER = 'other',
-}
+export type ItemType = 'quest' | 'weapon' | 'armor' | 'other';
 
-export enum ItemClass {
-  ITEM = 'item',
-  MATERIAL = 'material',
-}
+export type CraftType = 'item' | 'material';
 
 export type CraftList = {
   id: string;
-  type: ItemClass;
+  craftType: CraftType;
   amount: number;
 };
 

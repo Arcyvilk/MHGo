@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { log } from '@mhgo/utils';
+import { Monster } from '@mhgo/types';
 
 import { mongoInstance } from '../../../api';
 
@@ -9,8 +10,8 @@ export const getMonsters = async (
 ): Promise<void> => {
   try {
     const { db } = mongoInstance.getDb();
-    const collection = db.collection('monsters');
-    const monsters = [];
+    const collection = db.collection<Monster>('monsters');
+    const monsters: Monster[] = [];
     const cursor = collection.find();
 
     for await (const el of cursor) {

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { ItemClass } from '@mhgo/types';
+import { CraftType } from '@mhgo/types';
 
 import { useMarkerMonsterDrops } from '../../hooks/useMarkerMonsterDrops';
 import { Item } from '../../containers';
@@ -23,10 +23,10 @@ export const ModalSuccess = () => {
   useEffect(() => {
     if (isLootRedeemed) return;
     const materialDrops = (
-      drops?.filter(drop => drop.dropClass === ItemClass.MATERIAL) ?? []
+      drops?.filter(drop => drop.dropClass === 'material') ?? []
     ).map(drop => ({ id: drop.id, amount: drop.amount }));
     // const itemDrops = drops?.filter(
-    //   drop => drop.dropClass === ItemClass.ITEM,
+    //   drop => drop.dropClass === 'item',
     // );
     materialsMutate(materialDrops);
     // itemsMutate(itemDrops);

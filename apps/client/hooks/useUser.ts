@@ -1,4 +1,4 @@
-import { LOADOUT_SLOTS } from '@mhgo/types';
+import { LoadoutType } from '@mhgo/types';
 import {
   useItemsApi,
   useUserItemsApi,
@@ -9,6 +9,15 @@ import { useMaterials } from './useMaterials';
 
 import { EXP_PER_LEVEL, USER_ID, USER_NAME } from '../_mock/settings';
 import { userData } from '../_mock/save';
+
+const LOADOUT_SLOTS: LoadoutType[] = [
+  'weapon',
+  'helmet',
+  'torso',
+  'gloves',
+  'hips',
+  'legs',
+];
 
 export const useUser = () => {
   const userId = USER_ID;

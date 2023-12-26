@@ -1,4 +1,4 @@
-import { Material, Monster, ItemClass, Item as TItem, Drop } from '@mhgo/types';
+import { Material, Monster, CraftType, Item as TItem, Drop } from '@mhgo/types';
 
 import { CloseButton, Loader, QueryBoundary } from '../../components';
 import { Item } from '../../containers';
@@ -77,7 +77,7 @@ const MonsterTile = ({ monster }: { monster: Monster }) => {
 
 const getUniqueItemDrops = (allDrops: Drop[], items: TItem[]) => {
   const itemMonsterDrops = allDrops.filter(
-    drop => drop.type === ItemClass.ITEM,
+    drop => drop.type === 'item',
   );
   const uniqueMonsterItemDrops = [
     ...new Set(itemMonsterDrops.map(drop => drop.id)),
@@ -90,7 +90,7 @@ const getUniqueItemDrops = (allDrops: Drop[], items: TItem[]) => {
 
 const getUniqueMaterialDrops = (allDrops: Drop[], materials: Material[]) => {
   const materialMonsterDrops = allDrops.filter(
-    drop => drop.type === ItemClass.MATERIAL,
+    drop => drop.type === 'material',
   );
 
   const uniqueMonsterMaterialDrops = [

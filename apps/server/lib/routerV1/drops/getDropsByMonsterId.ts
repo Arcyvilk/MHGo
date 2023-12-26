@@ -1,7 +1,8 @@
 import { Request, Response } from 'express';
+import { log } from '@mhgo/utils';
+import { MonsterDrop } from '@mhgo/types';
 
 import { mongoInstance } from '../../../api';
-import { log } from '@mhgo/utils';
 
 export const getDropsByMonsterId = async (
   req: Request,
@@ -10,16 +11,11 @@ export const getDropsByMonsterId = async (
   try {
     const { monsterId } = req.params;
     const { db } = mongoInstance.getDb();
-    const collection = db.collection('drops');
-    const drops = [];
+    const collection = db.collection<MonsterDrop>('drops');
 
-    const cursor = collection.find({ monsterId });
+    const monsterDrops = await collection.findOne({ monsterId });
 
-    for await (const el of cursor) {
-      drops.push(...el.drops);
-    }
-
-    res.status(200).send(drops);
+    res.status(200).send(monsterDrops);
   } catch (err: any) {
     log.WARN(err);
     res.status(500).send({ error: err.message ?? 'Internal server error' });

@@ -1,13 +1,14 @@
 import { Request, Response } from 'express';
+import { log } from '@mhgo/utils';
+import { News } from '@mhgo/types';
 
 import { mongoInstance } from '../../../api';
-import { log } from '@mhgo/utils';
 
 export const getNews = async (_req: Request, res: Response): Promise<void> => {
   try {
     const { db } = mongoInstance.getDb();
-    const collection = db.collection('news');
-    const news = [];
+    const collection = db.collection<News>('news');
+    const news: News[] = [];
 
     const cursor = collection.find();
 
