@@ -1,14 +1,15 @@
 import { toast } from 'react-toastify';
+import { Currency } from '@mhgo/types';
 
 import { CloseButton, Icon, Loader, QueryBoundary } from '../../components';
 import { Size } from '../../utils/size';
 import { Item } from '../../containers';
+import { useUserWealthApi } from '../../api';
+import { useUser } from '../../hooks/useUser';
 
 import s from './ShopView.module.scss';
 
 import { currencies } from '../../_mock/wealth';
-import { userWealth } from '../../_mock/save';
-import { USER_ID } from '../../_mock/settings';
 import { items } from '../../_mock/items';
 
 export const ShopView = () => {
@@ -34,6 +35,7 @@ const Header = () => {
 
 const Shop = () => {
   const items = useItems();
+
   const onItemClick = () => {
     toast.error('You are too poor for this!');
   };
@@ -57,19 +59,19 @@ const useItems = () => {
 };
 
 const Wealth = () => {
-  const wealth = useWealth(USER_ID);
+  const wealth = useWealth();
 
   return (
     <div className={s.wealth}>
       {wealth.map(currency => (
-        <Currency currency={currency} />
+        <CurrencyInfo currency={currency} />
       ))}
     </div>
   );
 };
 
 // TODO make type for currency
-const Currency = ({ currency }: { currency: any }) => {
+const CurrencyInfo = ({ currency }: { currency: any }) => {
   return (
     <div className={s.currency}>
       <Icon icon={currency.icon} size={Size.TINY} />
@@ -78,10 +80,12 @@ const Currency = ({ currency }: { currency: any }) => {
   );
 };
 
-const useWealth = (userId: string) => {
-  const user = userWealth.find(user => user.userId === userId);
+const useWealth = () => {
+  const { userId } = useUser();
+  const { data: userWealth } = useUserWealthApi(userId);
+
   const mappedWealth = currencies.map(currency => {
-    const userData = user?.wealth.find(w => w.id === currency.id);
+    const userData = userWealth.find(w => w.id === currency.id);
     return {
       ...userData,
       ...currency,

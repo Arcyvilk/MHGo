@@ -8,6 +8,7 @@ export type CraftList = {
   amount: number;
 };
 
+// TODO add "obtainedAt" field which explains where this can be obtained
 export type Item = {
   id: string;
   type: ItemType;

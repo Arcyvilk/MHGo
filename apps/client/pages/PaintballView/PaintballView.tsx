@@ -2,12 +2,12 @@ import { useNavigate } from 'react-router-dom';
 
 import { Button, CloseButton, Icon } from '../../components';
 import { Size } from '../../utils/size';
+import { addCdnUrl } from '../../utils/addCdnUrl';
+import { usePaintballs } from '../../hooks/usePaintballs';
 
 import s from './PaintballView.module.scss';
 
-import { userItems } from '../../_mock/save';
 import { USER_ID } from '../../_mock/settings';
-import { addCdnUrl } from '../../utils/addCdnUrl';
 
 export const PaintballView = () => {
   const userId = USER_ID;
@@ -51,10 +51,4 @@ const NoPaintballs = () => {
       />
     </div>
   );
-};
-
-const usePaintballs = (userId: string) => {
-  const user = userItems.find(user => user.userId === userId);
-  const paintballs = user?.items.find(item => item.id === 'paintball');
-  return paintballs?.amount ?? 0;
 };

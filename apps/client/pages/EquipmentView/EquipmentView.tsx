@@ -1,14 +1,19 @@
 import { CloseButton } from '../../components';
+import { addCdnUrl } from '../../utils/addCdnUrl';
 import { EquipmentCraft } from './EquipmentCraft';
 import { EquipmentLoadout } from './EquipmentLoadout';
 import { EquipmentOverview } from './EquipmentOverview';
+
 import s from './EquipmentView.module.scss';
 
-// TODO This page has completely fucked up z-margins and positions
-// fix this
 export const EquipmentView = () => {
   return (
-    <div className={s.equipmentView}>
+    <div
+      className={s.equipmentView}
+      style={{
+        // TODO get this from database
+        backgroundImage: `url('${addCdnUrl('/misc/avatar_nobg.png')}')`,
+      }}>
       <div className={s.header}>
         <div className={s.header__title}>Equipment</div>
       </div>
