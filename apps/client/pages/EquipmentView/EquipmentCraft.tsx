@@ -1,14 +1,15 @@
 import { useMemo, useState } from 'react';
 import { toast } from 'react-toastify';
+import { Item as TItem, Material } from '@mhgo/types';
 
 import { Button, Loader, Modal, QueryBoundary } from '../../components';
 import { Item, Tabs } from '../../containers';
 import { useItems } from '../../hooks/useItems';
+import { useMaterialsApi } from '../../api';
 
 import s from './EquipmentCraft.module.scss';
 
 import { items } from '../../_mock/items';
-import { useMaterialsApi } from '../../api';
 
 export const TABS = {
   QUEST: 'Quest',
@@ -34,12 +35,17 @@ const Load = () => {
 
   return (
     <div className={s.equipmentView__craft}>
-      <Modal isOpen={isModalOpen} setIsOpen={setIsModalOpen} onClose={() => {}}>
-        <CraftConfirmation
-          itemId={activeItem}
-          setIsModalOpen={setIsModalOpen}
-        />
-      </Modal>
+      {activeItem && (
+        <Modal
+          isOpen={isModalOpen}
+          setIsOpen={setIsModalOpen}
+          onClose={() => {}}>
+          <CraftConfirmation
+            itemId={activeItem}
+            setIsModalOpen={setIsModalOpen}
+          />
+        </Modal>
+      )}
       <Tabs allTabs={TABS} activeTab={activeTab} setActiveTab={setActiveTab} />
       {activeTab === TABS.QUEST && <QuestCraft onCraft={onCraftClick} />}
       {activeTab === TABS.WEAPONS && <WeaponsCraft onCraft={onCraftClick} />}
@@ -50,13 +56,16 @@ const Load = () => {
 
 const QuestCraft = ({ onCraft }: { onCraft: (itemId: string) => void }) => {
   const { craftableItems } = useCraftableItems();
+  const onItemClick = (item: TItem) => {
+    if (item.craftable) return onCraft(item.id);
+  };
   return (
     <div className={s.equipmentView__items}>
       {craftableItems
         .filter(item => item.type === 'quest')
         .map(item => (
           <div className={s.equipmentView__itemWrapper} key={item.id}>
-            <Item data={item} onClick={() => onCraft(item.id)} />
+            <Item data={item} onClick={() => onItemClick(item)} />
           </div>
         ))}
     </div>
@@ -65,13 +74,16 @@ const QuestCraft = ({ onCraft }: { onCraft: (itemId: string) => void }) => {
 
 const WeaponsCraft = ({ onCraft }: { onCraft: (itemId: string) => void }) => {
   const { craftableItems } = useCraftableItems();
+  const onItemClick = (item: TItem) => {
+    if (item.craftable) return onCraft(item.id);
+  };
   return (
     <div className={s.equipmentView__items}>
       {craftableItems
         .filter(item => item.type === 'weapon')
         .map(item => (
           <div className={s.equipmentView__itemWrapper} key={item.id}>
-            <Item data={item} onClick={() => onCraft(item.id)} />
+            <Item data={item} onClick={() => onItemClick(item)} />
           </div>
         ))}
     </div>
@@ -80,13 +92,16 @@ const WeaponsCraft = ({ onCraft }: { onCraft: (itemId: string) => void }) => {
 
 const ArmorCraft = ({ onCraft }: { onCraft: (itemId: string) => void }) => {
   const { craftableItems } = useCraftableItems();
+  const onItemClick = (item: TItem) => {
+    if (item.craftable) return onCraft(item.id);
+  };
   return (
     <div className={s.equipmentView__items}>
       {craftableItems
         .filter(item => item.type === 'armor')
         .map(item => (
           <div className={s.equipmentView__itemWrapper} key={item.id}>
-            <Item data={item} onClick={() => onCraft(item.id)} />
+            <Item data={item} onClick={() => onItemClick(item)} />
           </div>
         ))}
     </div>
@@ -114,6 +129,8 @@ const CraftConfirmation = ({
     setIsModalOpen(false);
   };
 
+  console.log(matsToCraft);
+
   return (
     <div className={s.craftConfirmation}>
       <h2 className={s.craftConfirmation__prompt}>
@@ -124,9 +141,12 @@ const CraftConfirmation = ({
         will consume the following materials:
       </p>
       <div className={s.craftConfirmation__materials}>
-        {matsToCraft.map(mat => (
-          // @ts-ignore // TODO fix it!
-          <Item {...mat} simple key={item.id} />
+        {matsToCraft.map((mat: Material) => (
+          <Item
+            data={{ ...mat, price: 0, purchasable: false }}
+            simple
+            key={mat.id}
+          />
         ))}
       </div>
       <div className={s.craftConfirmation__buttons}>
@@ -157,8 +177,7 @@ const useCraftableItems = () => {
   };
 
   const getItemCraftingList = (itemId: string) => {
-    const itemToCraft = items.find(item => item.id === itemId);
-    if (!itemToCraft?.craftable) return [];
+    const itemToCraft = items.find(item => item.id === itemId)!;
     const materialMats = itemToCraft.craftList
       .filter(item => item.craftType === 'material')
       .map(material => ({
@@ -174,7 +193,7 @@ const useCraftableItems = () => {
       }))
       .filter(Boolean);
 
-    return [...materialMats, ...itemMats];
+    return [...materialMats, ...itemMats] as Material[];
   };
 
   return { craftableItems, onCraft, getItemCraftingList };

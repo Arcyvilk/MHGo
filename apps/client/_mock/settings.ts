@@ -5,8 +5,8 @@ export const USER_ID = 'TESTER';
 export const LOADOUT_SLOTS: LoadoutType[] = [
   'weapon',
   'helmet',
-  'torso',
-  'gloves',
-  'hips',
-  'legs',
+  'chest',
+  'arm',
+  'waist',
+  'leg',
 ];

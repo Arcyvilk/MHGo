@@ -75,15 +75,15 @@ export const items: Item[] = [
     purchasable: false,
     craftable: true,
     craftList: [
-      { id: 'page1', craftType: 'item', amount: 1 },
-      { id: 'page2', craftType: 'item', amount: 1 },
-      { id: 'page3', craftType: 'item', amount: 1 },
+      { id: 'grimoire_page_craftable', craftType: 'item', amount: 1 },
+      { id: 'grimoire_page_purchasable', craftType: 'item', amount: 1 },
+      { id: 'grimoire_page_bossdrop', craftType: 'item', amount: 1 },
     ],
   },
   {
     id: 'grimoire_page_craftable',
     type: 'quest',
-    img: `${CDN_URL}/items/book.webp`,
+    img: `${CDN_URL}/items/page_red.svg`,
     name: 'Lost Chapter: Introduction to the Art of Looting',
     description: 'A third chapter required to complete The Grimoire.',
     rarity: 5,
@@ -100,7 +100,7 @@ export const items: Item[] = [
   {
     id: 'grimoire_page_purchasable',
     type: 'quest',
-    img: `${CDN_URL}/items/book.webp`,
+    img: `${CDN_URL}/items/page_green.svg`,
     name: 'Lost Chapter: Hoarding for Dummies',
     description: 'A third chapter required to complete The Grimoire.',
     rarity: 5,
@@ -112,7 +112,7 @@ export const items: Item[] = [
   {
     id: 'grimoire_page_bossdrop',
     type: 'quest',
-    img: `${CDN_URL}/items/book.webp`,
+    img: `${CDN_URL}/items/page_blue.svg`,
     name: 'Lost Chapter: More is More, and Less is Less',
     description: 'A third chapter required to complete The Grimoire.',
     rarity: 5,
@@ -125,7 +125,7 @@ export const items: Item[] = [
   {
     id: 'dullblade',
     type: 'weapon',
-    img: `${CDN_URL}/items/steak.jpg`,
+    img: `${CDN_URL}/weapons/dualblade.png`,
     name: 'Dull blade',
     description: 'A very dull blade.',
     rarity: 1,
@@ -141,7 +141,7 @@ export const items: Item[] = [
   {
     id: 'bucket',
     type: 'armor',
-    img: `${CDN_URL}/items/steak.jpg`,
+    img: `${CDN_URL}/armor/helmet.webp`,
     name: 'A wooden bucket',
     description: 'Not very effective as armor but it is what it is.',
     rarity: 1,
