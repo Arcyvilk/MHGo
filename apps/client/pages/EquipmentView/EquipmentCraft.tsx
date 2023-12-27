@@ -5,7 +5,7 @@ import { Item as TItem, Material } from '@mhgo/types';
 import { Button, Loader, Modal, QueryBoundary } from '../../components';
 import { Item, Tabs } from '../../containers';
 import { useItems } from '../../hooks/useItems';
-import { useMaterialsApi } from '../../api';
+import { useCraftableItems } from '../../hooks/useCraftableItems';
 
 import s from './EquipmentCraft.module.scss';
 
@@ -129,8 +129,6 @@ const CraftConfirmation = ({
     setIsModalOpen(false);
   };
 
-  console.log(matsToCraft);
-
   return (
     <div className={s.craftConfirmation}>
       <h2 className={s.craftConfirmation__prompt}>
@@ -160,41 +158,4 @@ const CraftConfirmation = ({
       </div>
     </div>
   );
-};
-
-const useCraftableItems = () => {
-  const { data: materials } = useMaterialsApi();
-
-  const craftableItems = items
-    .filter(item => item.craftable)
-    .map(item => ({
-      ...item,
-      purchasable: false, // We don't want to purchase items in craft view
-    }));
-
-  const onCraft = (_itemId: string) => {
-    toast.info(`Crafting not implemented yet!`);
-  };
-
-  const getItemCraftingList = (itemId: string) => {
-    const itemToCraft = items.find(item => item.id === itemId)!;
-    const materialMats = itemToCraft.craftList
-      .filter(item => item.craftType === 'material')
-      .map(material => ({
-        ...materials.find(m => m.id === material.id),
-        amount: material.amount,
-      }))
-      .filter(Boolean);
-    const itemMats = itemToCraft.craftList
-      .filter(item => item.craftType === 'item')
-      .map(item => ({
-        ...items.find(i => i.id === item.id),
-        amount: item.amount,
-      }))
-      .filter(Boolean);
-
-    return [...materialMats, ...itemMats] as Material[];
-  };
-
-  return { craftableItems, onCraft, getItemCraftingList };
 };

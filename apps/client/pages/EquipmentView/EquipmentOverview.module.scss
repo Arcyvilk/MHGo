@@ -10,19 +10,6 @@
     pointer-events: none;
   }
 
-  &__avatar {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    right: 0;
-    background-image: url('https://cdn.arcyvilk.com/mhgo/misc/avatar_nobg.png');
-    background-position: right;
-    background-repeat: no-repeat;
-    background-size: contain;
-    opacity: 1;
-    z-index: $zindex-lowest;
-  }
-
   &__stats {
     position: relative;
     display: flex;

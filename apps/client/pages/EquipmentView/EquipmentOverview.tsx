@@ -12,7 +12,6 @@ export const EquipmentOverview = () => (
 const Load = () => {
   return (
     <div className={s.equipmentView__overview}>
-      <div className={s.equipmentView__avatar} />
       <div className={s.equipmentView__stats}>
         <div className={s.stats}>
           <span>
