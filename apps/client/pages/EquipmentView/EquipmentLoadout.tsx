@@ -1,5 +1,5 @@
 import { useUser, useUserLoadout } from '../../hooks/useUser';
-import { Loader, QueryBoundary } from '../../components';
+import { Loader, QueryBoundary, Tooltip } from '../../components';
 import { Item } from '../../containers';
 
 import s from './EquipmentLoadout.module.scss';
@@ -20,7 +20,11 @@ const Load = () => {
       <div className={s.loadout__items}>
         {loadout.map((equippedItem, i) => (
           <div className={s.loadout__item} key={i}>
-            {equippedItem ? <Item data={equippedItem} simple /> : null}
+            {equippedItem ? (
+              <Tooltip content={equippedItem.name} key={equippedItem.id}>
+                <Item data={equippedItem} simple />
+              </Tooltip>
+            ) : null}
           </div>
         ))}
       </div>

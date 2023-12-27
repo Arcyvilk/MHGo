@@ -213,9 +213,9 @@ export const items: Item[] = [
   {
     id: 'soatt',
     type: 'weapon',
-    img: `${CDN_URL}/weapons/soatt.jpg`,
+    img: `${CDN_URL}/weapons/soatt.png`,
     name: 'Sword of a Thousand Truths',
-    description: 'Make love, not warcraft',
+    description: 'How do you kill that which has no life?',
     rarity: 5,
     price: 0,
     purchasable: false,

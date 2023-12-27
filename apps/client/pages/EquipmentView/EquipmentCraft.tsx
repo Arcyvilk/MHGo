@@ -90,7 +90,7 @@ const EquipmentPieces = ({ itemType, ...actions }: EquipmentPiecesProps) => {
         .map(item => (
           <div className={s.equipmentView__itemWrapper} key={item.id}>
             <Dropdown content={<EquipmentDropdown item={item} {...actions} />}>
-              <Item data={item} />
+              <Item data={{ ...item, purchasable: false }} />
             </Dropdown>
           </div>
         ))}

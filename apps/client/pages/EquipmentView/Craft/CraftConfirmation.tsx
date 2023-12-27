@@ -19,8 +19,9 @@ export const CraftConfirmation = ({
 }: CraftConfirmationProps) => {
   const { getItem } = useItems();
   const { onCraft, getItemCraftingList } = useCraftableItems();
-  const item = useMemo(() => getItem(itemId), [itemId]);
-  const matsToCraft = useMemo(() => getItemCraftingList(itemId), [itemId]);
+
+  const item = getItem(itemId);
+  const matsToCraft = getItemCraftingList(itemId);
 
   const onYes = () => {
     setIsModalOpen(false);
@@ -40,13 +41,9 @@ export const CraftConfirmation = ({
         will consume the following materials:
       </p>
       <div className={s.craftConfirmation__materials}>
-        {matsToCraft.map((mat: Material) => (
-          <Tooltip content={mat.name}>
-            <Item
-              data={{ ...mat, price: 0, purchasable: false }}
-              simple
-              key={mat.id}
-            />
+        {matsToCraft.map((mat: Material, index: number) => (
+          <Tooltip content={mat.name} key={index}>
+            <Item data={{ ...mat, price: 0, purchasable: false }} simple />
           </Tooltip>
         ))}
       </div>

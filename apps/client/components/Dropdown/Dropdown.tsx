@@ -17,7 +17,9 @@ export const Dropdown = ({ children, content }: DropdownProps) => {
           {content}
         </div>
       )}>
-      <span tabIndex={0}>{children}</span>
+      <span tabIndex={0} style={{ all: 'inherit' }}>
+        {children}
+      </span>
     </Tippy>
   );
 };
