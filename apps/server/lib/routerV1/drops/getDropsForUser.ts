@@ -82,7 +82,7 @@ export const getDropsForUser = async (
     const monsterDropsPerLevel = allMonsterDrops.drops.find(
       drop => drop.level === monsterLevel,
     );
-    const allDrops = monsterDropsPerLevel.drops
+    const allDrops = (monsterDropsPerLevel?.drops ?? [])
       .map(drop => {
         const d = new Array(drop.amount)
           .fill(drop)

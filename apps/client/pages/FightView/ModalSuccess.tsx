@@ -64,7 +64,7 @@ const Load = ({ onClose }: { onClose: () => void }) => {
     <div className={s.modalSuccess}>
       <div className={s.result__drops}>
         {isSuccess ? (
-          listOfDrops.length ? (
+          listOfDrops?.length ? (
             listOfDrops
           ) : (
             "NOTHING! God damn it you're so unlucky ;-;"
