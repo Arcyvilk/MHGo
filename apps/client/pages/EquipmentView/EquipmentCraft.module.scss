@@ -17,35 +17,9 @@
   }
 }
 
-.craftConfirmation {
-  display: flex;
+
+.equipmentDropdown {
+  display:flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: $size-16;
-
-  &__prompt {
-    margin: 0;
-    text-align: center;
-  }
-
-  &__text {
-    margin: 0;
-    font-weight: 400;
-    font-size: $size-12;
-    text-align: center;
-  }
-
-  &__materials {
-    display: flex;
-    flex-wrap: wrap;
-    gap: $size-12 $size-8;
-  }
-
-  &__buttons {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: $size-4;
-  }
+  gap: $size-4;
 }

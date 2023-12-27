@@ -4,9 +4,9 @@ import { Item } from '../../containers';
 import { useMonsterMarkerDropsApi } from '../../api';
 import { useUser } from '../../hooks/useUser';
 import { addCdnUrl } from '../../utils/addCdnUrl';
+import { Button, Loader, Modal, QueryBoundary } from '../../components';
 
 import s from './FightView.module.scss';
-import { Loader, Modal, QueryBoundary } from '../../components';
 
 type ModalProps = {
   isOpen: boolean;
@@ -14,20 +14,18 @@ type ModalProps = {
   onClose: () => void;
 };
 export const ModalSuccess = ({ isOpen, setIsOpen, onClose }: ModalProps) => (
-  <Modal isOpen={isOpen} setIsOpen={setIsOpen} onClose={onClose}>
+  <Modal isOpen={isOpen} setIsOpen={setIsOpen} onClose={() => {}}>
     <div className={s.result}>
       <h1 className={s.result__title}>Success!</h1>
       <p className={s.result__desc}>Monster dropped the following items:</p>
-      <div className={s.result__drops}>
-        <QueryBoundary fallback={<Loader />}>
-          <Load />
-        </QueryBoundary>
-      </div>
+      <QueryBoundary fallback={<Loader />}>
+        <Load onClose={onClose} />
+      </QueryBoundary>
     </div>
   </Modal>
 );
 
-const Load = () => {
+const Load = ({ onClose }: { onClose: () => void }) => {
   const params = new URLSearchParams(location.search);
   const markerId = params.get('id') ?? '';
   const level = params.get('level') ?? '0';
@@ -63,16 +61,19 @@ const Load = () => {
   });
 
   return (
-    <>
-      {isSuccess ? (
-        listOfDrops.length ? (
-          listOfDrops
+    <div className={s.modalSuccess}>
+      <div className={s.result__drops}>
+        {isSuccess ? (
+          listOfDrops.length ? (
+            listOfDrops
+          ) : (
+            "NOTHING! God damn it you're so unlucky ;-;"
+          )
         ) : (
-          "NOTHING! God damn it you're so unlucky ;-;"
-        )
-      ) : (
-        <Loader />
-      )}
-    </>
+          <Loader />
+        )}
+      </div>
+      <Button label="OK" onClick={onClose} simple />
+    </div>
   );
 };

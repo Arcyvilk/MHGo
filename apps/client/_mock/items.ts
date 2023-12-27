@@ -13,6 +13,10 @@ export const items: Item[] = [
     purchasable: true,
     craftable: false,
     craftList: [],
+    usable: true,
+    equippable: false,
+    unique: false,
+    obtainedAt: 'crafted',
   },
   {
     id: 'bomb',
@@ -25,6 +29,10 @@ export const items: Item[] = [
     purchasable: true,
     craftable: false,
     craftList: [],
+    usable: true,
+    equippable: false,
+    unique: false,
+    obtainedAt: 'crafted',
   },
   {
     id: 'pitfall',
@@ -37,6 +45,10 @@ export const items: Item[] = [
     purchasable: true,
     craftable: false,
     craftList: [],
+    usable: true,
+    equippable: false,
+    unique: false,
+    obtainedAt: 'crafted',
   },
   {
     id: 'paintball',
@@ -49,6 +61,10 @@ export const items: Item[] = [
     purchasable: true,
     craftable: false,
     craftList: [],
+    usable: true,
+    equippable: false,
+    unique: false,
+    obtainedAt: 'crafted',
   },
   {
     id: 'steak',
@@ -61,6 +77,10 @@ export const items: Item[] = [
     purchasable: true,
     craftable: false,
     craftList: [],
+    usable: true,
+    equippable: false,
+    unique: false,
+    obtainedAt: 'crafted',
   },
 
   // QUEST
@@ -79,6 +99,10 @@ export const items: Item[] = [
       { id: 'grimoire_page_purchasable', craftType: 'item', amount: 1 },
       { id: 'grimoire_page_bossdrop', craftType: 'item', amount: 1 },
     ],
+    usable: true,
+    equippable: false,
+    unique: true,
+    obtainedAt: 'crafted',
   },
   {
     id: 'grimoire_page_craftable',
@@ -96,6 +120,10 @@ export const items: Item[] = [
       { id: 'claw5', craftType: 'material', amount: 1 },
       { id: 'hide5', craftType: 'material', amount: 1 },
     ],
+    usable: true,
+    equippable: false,
+    unique: true,
+    obtainedAt: 'crafted',
   },
   {
     id: 'grimoire_page_purchasable',
@@ -108,6 +136,10 @@ export const items: Item[] = [
     purchasable: true,
     craftable: false,
     craftList: [],
+    usable: true,
+    equippable: false,
+    unique: true,
+    obtainedAt: 'purchased',
   },
   {
     id: 'grimoire_page_bossdrop',
@@ -120,6 +152,10 @@ export const items: Item[] = [
     purchasable: false,
     craftable: false,
     craftList: [],
+    usable: true,
+    equippable: false,
+    unique: true,
+    obtainedAt: 'dropped from bossfight',
   },
   // WEAPON
   {
@@ -136,6 +172,10 @@ export const items: Item[] = [
       { id: 'claw1', craftType: 'material', amount: 50 },
       { id: 'hide1', craftType: 'material', amount: 10 },
     ],
+    usable: false,
+    equippable: true,
+    unique: false,
+    obtainedAt: 'crafted',
   },
   // ARMOR
   {
@@ -154,5 +194,9 @@ export const items: Item[] = [
       { id: 'scale3', craftType: 'material', amount: 2 },
       { id: 'scale4', craftType: 'material', amount: 1 },
     ],
+    usable: false,
+    equippable: true,
+    unique: false,
+    obtainedAt: 'crafted',
   },
 ];

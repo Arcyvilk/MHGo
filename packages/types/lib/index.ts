@@ -1,6 +1,7 @@
 export * from './Drops';
 export * from './Habitats';
 export * from './Items';
+export * from './ItemStats';
 export * from './Loadout';
 export * from './MapMarkers';
 export * from './Materials';

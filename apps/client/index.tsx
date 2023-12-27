@@ -3,6 +3,7 @@ import { registerSW } from 'virtual:pwa-register';
 
 import { App } from './App.tsx';
 
+import 'tippy.js/dist/tippy.css';
 import 'react-toastify/dist/ReactToastify.css';
 import './index.scss';
 

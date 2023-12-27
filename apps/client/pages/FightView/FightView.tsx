@@ -4,7 +4,6 @@ import {
   CloseButton,
   Explosions,
   Loader,
-  Modal,
   QueryBoundary,
   Rays,
 } from '../../components';

@@ -1,15 +1,19 @@
-import { useMemo, useState } from 'react';
-import { toast } from 'react-toastify';
-import { Item as TItem, Material } from '@mhgo/types';
+import { useState } from 'react';
+import { ItemType, Item as TItem } from '@mhgo/types';
 
-import { Button, Loader, Modal, QueryBoundary } from '../../components';
+import {
+  Button,
+  Dropdown,
+  Loader,
+  Modal,
+  QueryBoundary,
+} from '../../components';
 import { Item, Tabs } from '../../containers';
-import { useItems } from '../../hooks/useItems';
 import { useCraftableItems } from '../../hooks/useCraftableItems';
+import { CraftConfirmation } from './Craft/CraftConfirmation';
 
 import s from './EquipmentCraft.module.scss';
-
-import { items } from '../../_mock/items';
+import { toast } from 'react-toastify';
 
 export const TABS = {
   QUEST: 'Quest',
@@ -32,6 +36,12 @@ const Load = () => {
     setActiveItem(itemId);
     setIsModalOpen(true);
   };
+  const onUseClick = (itemId: string) => {
+    toast.info(`Using items not supported yet! [${itemId}]`);
+  };
+  const onEquipClick = (itemId: string) => {
+    toast.info(`Equipping items not supported yet! [${itemId}]`);
+  };
 
   return (
     <div className={s.equipmentView__craft}>
@@ -47,115 +57,83 @@ const Load = () => {
         </Modal>
       )}
       <Tabs allTabs={TABS} activeTab={activeTab} setActiveTab={setActiveTab} />
-      {activeTab === TABS.QUEST && <QuestCraft onCraft={onCraftClick} />}
-      {activeTab === TABS.WEAPONS && <WeaponsCraft onCraft={onCraftClick} />}
-      {activeTab === TABS.ARMOR && <ArmorCraft onCraft={onCraftClick} />}
-    </div>
-  );
-};
-
-const QuestCraft = ({ onCraft }: { onCraft: (itemId: string) => void }) => {
-  const { craftableItems } = useCraftableItems();
-  const onItemClick = (item: TItem) => {
-    if (item.craftable) return onCraft(item.id);
-  };
-  return (
-    <div className={s.equipmentView__items}>
-      {craftableItems
-        .filter(item => item.type === 'quest')
-        .map(item => (
-          <div className={s.equipmentView__itemWrapper} key={item.id}>
-            <Item data={item} onClick={() => onItemClick(item)} />
-          </div>
-        ))}
-    </div>
-  );
-};
-
-const WeaponsCraft = ({ onCraft }: { onCraft: (itemId: string) => void }) => {
-  const { craftableItems } = useCraftableItems();
-  const onItemClick = (item: TItem) => {
-    if (item.craftable) return onCraft(item.id);
-  };
-  return (
-    <div className={s.equipmentView__items}>
-      {craftableItems
-        .filter(item => item.type === 'weapon')
-        .map(item => (
-          <div className={s.equipmentView__itemWrapper} key={item.id}>
-            <Item data={item} onClick={() => onItemClick(item)} />
-          </div>
-        ))}
-    </div>
-  );
-};
-
-const ArmorCraft = ({ onCraft }: { onCraft: (itemId: string) => void }) => {
-  const { craftableItems } = useCraftableItems();
-  const onItemClick = (item: TItem) => {
-    if (item.craftable) return onCraft(item.id);
-  };
-  return (
-    <div className={s.equipmentView__items}>
-      {craftableItems
-        .filter(item => item.type === 'armor')
-        .map(item => (
-          <div className={s.equipmentView__itemWrapper} key={item.id}>
-            <Item data={item} onClick={() => onItemClick(item)} />
-          </div>
-        ))}
-    </div>
-  );
-};
-
-type CraftConfirmationProps = {
-  itemId: string;
-  setIsModalOpen: (isOpen: boolean) => void;
-};
-const CraftConfirmation = ({
-  itemId,
-  setIsModalOpen,
-}: CraftConfirmationProps) => {
-  const { getItem } = useItems();
-  const { onCraft, getItemCraftingList } = useCraftableItems();
-  const item = useMemo(() => getItem(itemId), [itemId]);
-  const matsToCraft = useMemo(() => getItemCraftingList(itemId), [itemId]);
-
-  const onYes = () => {
-    setIsModalOpen(false);
-    onCraft(itemId);
-  };
-  const onNo = () => {
-    setIsModalOpen(false);
-  };
-
-  return (
-    <div className={s.craftConfirmation}>
-      <h2 className={s.craftConfirmation__prompt}>
-        Crafting {item?.name ?? 'item'}...
-      </h2>
-      <p className={s.craftConfirmation__text}>
-        Crafting <span style={{ fontWeight: 800 }}>{item?.name ?? 'this'}</span>{' '}
-        will consume the following materials:
-      </p>
-      <div className={s.craftConfirmation__materials}>
-        {matsToCraft.map((mat: Material) => (
-          <Item
-            data={{ ...mat, price: 0, purchasable: false }}
-            simple
-            key={mat.id}
-          />
-        ))}
-      </div>
-      <div className={s.craftConfirmation__buttons}>
-        <Button
-          label="Cancel"
-          onClick={onNo}
-          simple
-          variant={Button.Variant.DANGER}
+      {activeTab === TABS.QUEST && (
+        <EquipmentPieces
+          onCraft={onCraftClick}
+          onUse={onUseClick}
+          onEquip={onEquipClick}
+          itemType="quest"
         />
-        <Button label="Craft" onClick={onYes} simple />
-      </div>
+      )}
+      {activeTab === TABS.WEAPONS && (
+        <EquipmentPieces
+          onCraft={onCraftClick}
+          onUse={onUseClick}
+          onEquip={onEquipClick}
+          itemType="weapon"
+        />
+      )}
+      {activeTab === TABS.ARMOR && (
+        <EquipmentPieces
+          onCraft={onCraftClick}
+          onUse={onUseClick}
+          onEquip={onEquipClick}
+          itemType="armor"
+        />
+      )}
+    </div>
+  );
+};
+
+type EquipmentActions = {
+  onCraft: (itemId: string) => void;
+  onUse: (itemId: string) => void;
+  onEquip: (itemId: string) => void;
+};
+type EquipmentPiecesProps = EquipmentActions & {
+  itemType: ItemType;
+};
+const EquipmentPieces = ({ itemType, ...actions }: EquipmentPiecesProps) => {
+  const { craftableItems } = useCraftableItems();
+
+  return (
+    <div className={s.equipmentView__items}>
+      {craftableItems
+        .filter(item => item.type === itemType)
+        .map(item => (
+          <div className={s.equipmentView__itemWrapper} key={item.id}>
+            <Dropdown content={<EquipmentDropdown item={item} {...actions} />}>
+              <Item data={item} />
+            </Dropdown>
+          </div>
+        ))}
+    </div>
+  );
+};
+
+const EquipmentDropdown = ({
+  item,
+  onCraft,
+  onEquip,
+  onUse,
+}: EquipmentActions & {
+  item: TItem;
+}) => {
+  const onItemCraft = () => {
+    if (item.craftable) return onCraft(item.id);
+  };
+  const onItemEquip = () => {
+    if (item.craftable) return onEquip(item.id);
+  };
+  const onItemUse = () => {
+    if (item.craftable) return onUse(item.id);
+  };
+
+  return (
+    <div className={s.equipmentDropdown}>
+      {item.craftable && <Button label="Craft" onClick={onItemCraft} />}
+      {item.equippable && <Button label="Equip" onClick={onItemEquip} />}
+      {item.usable && <Button label="Use" onClick={onItemUse} />}
     </div>
   );
 };

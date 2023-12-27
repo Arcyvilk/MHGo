@@ -158,3 +158,9 @@
     gap: $size-32 $size-8;
   }
 }
+
+.modalSuccess {
+  display: flex;
+  flex-direction: column;
+  gap: $size-16;
+}

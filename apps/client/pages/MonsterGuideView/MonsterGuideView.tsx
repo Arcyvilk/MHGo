@@ -1,7 +1,7 @@
 import { Material, Monster, Item as TItem, Drop } from '@mhgo/types';
 
 import { Item } from '../../containers';
-import { CloseButton, Loader, QueryBoundary } from '../../components';
+import { CloseButton, Loader, QueryBoundary, Tooltip } from '../../components';
 import { useMonstersApi, useMonsterDropsApi, useMaterialsApi } from '../../api';
 
 import s from './MonsterGuideView.module.scss';
@@ -64,7 +64,11 @@ const MonsterTile = ({ monster }: { monster: Monster }) => {
             <div className={s.monster__drops}>
               {uniqueMonsterDrops.map(drop => {
                 const data = { ...drop, purchasable: false, price: 0 };
-                return <Item data={data} simple key={drop.id} />;
+                return (
+                  <Tooltip content={drop.name}>
+                    <Item data={data} simple key={drop.id} />
+                  </Tooltip>
+                );
               })}
             </div>
           </div>
