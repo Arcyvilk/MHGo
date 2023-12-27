@@ -1,8 +1,9 @@
 import { Request, Response } from 'express';
 import { log } from '@mhgo/utils';
-import { Material } from '@mhgo/types';
+import { FieldByRarity, Material } from '@mhgo/types';
 
 import { mongoInstance } from '../../../api';
+import { getMaterialsWithRarity } from '../../helpers/getMaterialsWithRarity';
 
 export const getMaterials = async (
   _req: Request,
@@ -10,16 +11,26 @@ export const getMaterials = async (
 ): Promise<void> => {
   try {
     const { db } = mongoInstance.getDb();
-    const collection = db.collection<Material>('materials');
+
+    // Get all materials
+    const collectionMaterials = db.collection<Material>('materials');
     const materials: Material[] = [];
-
-    const cursor = collection.find();
-
-    for await (const el of cursor) {
+    const cursorMaterials = collectionMaterials.find();
+    for await (const el of cursorMaterials) {
       materials.push(el);
     }
 
-    res.status(200).send(materials);
+    // Get all materials' rarity
+    const collectionRarity = db.collection<FieldByRarity>('rarityMaterials');
+    const rarity: FieldByRarity[] = [];
+    const cursorRarity = collectionRarity.find();
+    for await (const el of cursorRarity) {
+      rarity.push(el);
+    }
+
+    const materialsWithRarity = getMaterialsWithRarity(materials, rarity);
+
+    res.status(200).send(materialsWithRarity);
   } catch (err: any) {
     log.WARN(err);
     res.status(500).send({ error: err.message ?? 'Internal server error' });

@@ -1,9 +1,8 @@
-import { Material, Monster, CraftType, Item as TItem, Drop } from '@mhgo/types';
+import { Material, Monster, Item as TItem, Drop } from '@mhgo/types';
 
-import { CloseButton, Loader, QueryBoundary } from '../../components';
 import { Item } from '../../containers';
-import { useMaterials } from '../../hooks/useMaterials';
-import { useMonstersApi, useMonsterDropsApi } from '../../api';
+import { CloseButton, Loader, QueryBoundary } from '../../components';
+import { useMonstersApi, useMonsterDropsApi, useMaterialsApi } from '../../api';
 
 import s from './MonsterGuideView.module.scss';
 import { useItems } from '../../hooks/useItems';
@@ -33,8 +32,8 @@ const Load = () => {
 };
 
 const MonsterTile = ({ monster }: { monster: Monster }) => {
-  const { materials } = useMaterials();
   const { items } = useItems();
+  const { data: materials } = useMaterialsApi();
   const { data: drops } = useMonsterDropsApi();
 
   const allMonsterDrops = (
@@ -76,9 +75,7 @@ const MonsterTile = ({ monster }: { monster: Monster }) => {
 };
 
 const getUniqueItemDrops = (allDrops: Drop[], items: TItem[]) => {
-  const itemMonsterDrops = allDrops.filter(
-    drop => drop.type === 'item',
-  );
+  const itemMonsterDrops = allDrops.filter(drop => drop.type === 'item');
   const uniqueMonsterItemDrops = [
     ...new Set(itemMonsterDrops.map(drop => drop.id)),
   ]

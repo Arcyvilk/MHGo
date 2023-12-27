@@ -4,11 +4,11 @@ import { toast } from 'react-toastify';
 import { Button, Loader, Modal, QueryBoundary } from '../../components';
 import { Item, Tabs } from '../../containers';
 import { useItems } from '../../hooks/useItems';
-import { useMaterials } from '../../hooks/useMaterials';
 
 import s from './EquipmentCraft.module.scss';
 
 import { items } from '../../_mock/items';
+import { useMaterialsApi } from '../../api';
 
 export const TABS = {
   QUEST: 'Quest',
@@ -143,7 +143,7 @@ const CraftConfirmation = ({
 };
 
 const useCraftableItems = () => {
-  const { materials } = useMaterials();
+  const { data: materials } = useMaterialsApi();
 
   const craftableItems = items
     .filter(item => item.craftable)

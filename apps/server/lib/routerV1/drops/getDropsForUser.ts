@@ -7,7 +7,6 @@ import {
   Material,
   MonsterDrop,
   MonsterMarker,
-  User,
   FieldByRarity,
   CraftType,
   UserMaterials,

@@ -1,12 +1,12 @@
 import {
   useItemsApi,
+  useMaterialsApi,
   useSettingsApi,
   useUserApi,
   useUserItemsApi,
   useUserLoadoutApi,
   useUserMaterialsApi,
 } from '../api';
-import { useMaterials } from './useMaterials';
 
 import { USER_ID, USER_NAME, LOADOUT_SLOTS } from '../_mock/settings';
 
@@ -36,7 +36,7 @@ export const useUserItems = (userId: string) => {
 };
 
 export const useUserMaterials = (userId: string) => {
-  const { materials } = useMaterials();
+  const { data: materials } = useMaterialsApi();
   const { data: userMaterials } = useUserMaterialsApi(userId);
 
   const userMaterialData = materials
