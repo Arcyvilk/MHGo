@@ -9,6 +9,7 @@ import { CraftConfirmation } from './Craft/CraftConfirmation';
 import { EquipmentDropdown } from './EquipmentDropdown';
 
 import s from './EquipmentCraft.module.scss';
+import { useItems } from '../../hooks/useItems';
 
 export const TABS = {
   QUEST: 'Quest',
@@ -34,9 +35,6 @@ const Load = () => {
   const onUseClick = (itemId: string) => {
     toast.info(`Using items not supported yet! [${itemId}]`);
   };
-  const onEquipClick = (itemId: string) => {
-    toast.info(`Equipping items not supported yet! [${itemId}]`);
-  };
 
   return (
     <div className={s.equipmentView__craft}>
@@ -56,7 +54,6 @@ const Load = () => {
         <EquipmentPieces
           onCraft={onCraftClick}
           onUse={onUseClick}
-          onEquip={onEquipClick}
           itemType="quest"
         />
       )}
@@ -64,7 +61,6 @@ const Load = () => {
         <EquipmentPieces
           onCraft={onCraftClick}
           onUse={onUseClick}
-          onEquip={onEquipClick}
           itemType="weapon"
         />
       )}
@@ -72,7 +68,6 @@ const Load = () => {
         <EquipmentPieces
           onCraft={onCraftClick}
           onUse={onUseClick}
-          onEquip={onEquipClick}
           itemType="armor"
         />
       )}
@@ -84,14 +79,13 @@ type EquipmentPiecesProps = {
   itemType: ItemType;
   onCraft: (itemId: string) => void;
   onUse: (itemId: string) => void;
-  onEquip: (itemId: string) => void;
 };
 const EquipmentPieces = ({ itemType, ...actions }: EquipmentPiecesProps) => {
-  const { craftableItems } = useCraftableItems();
+  const { items } = useItems();
 
   return (
     <div className={s.equipmentView__items}>
-      {craftableItems
+      {items
         .filter(item => item.type === itemType)
         .map(item => (
           <div className={s.equipmentView__itemWrapper} key={item.id}>

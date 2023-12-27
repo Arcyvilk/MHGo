@@ -29,6 +29,7 @@ routerV1.put('/drops/user/:userId', getDropsForUser);
 
 import {
   getUser,
+  getUserEquipItem,
   getUserItems,
   getUserLoadout,
   getUserMaterials,
@@ -42,6 +43,7 @@ routerV1.get('/users/user/:userId/loadout/list', getUserLoadout);
 routerV1.get('/users/user/:userId/materials/list', getUserMaterials);
 routerV1.get('/users/user/:userId/wealth/list', getUserWealth);
 routerV1.get('/users/user/:userId/stats', getUserStats);
+routerV1.get('/users/user/:userId/item/:itemId/equip', getUserEquipItem);
 
 /****************************
  *         MAP         *

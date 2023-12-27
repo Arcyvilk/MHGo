@@ -17,6 +17,7 @@ export const items: Item[] = [
     equippable: false,
     unique: false,
     obtainedAt: 'crafted',
+    slot: null,
   },
   {
     id: 'bomb',
@@ -33,6 +34,7 @@ export const items: Item[] = [
     equippable: false,
     unique: false,
     obtainedAt: 'crafted',
+    slot: null,
   },
   {
     id: 'pitfall',
@@ -49,6 +51,7 @@ export const items: Item[] = [
     equippable: false,
     unique: false,
     obtainedAt: 'crafted',
+    slot: null,
   },
   {
     id: 'paintball',
@@ -65,6 +68,7 @@ export const items: Item[] = [
     equippable: false,
     unique: false,
     obtainedAt: 'crafted',
+    slot: null,
   },
   {
     id: 'steak',
@@ -81,6 +85,7 @@ export const items: Item[] = [
     equippable: false,
     unique: false,
     obtainedAt: 'crafted',
+    slot: null,
   },
 
   // QUEST
@@ -103,6 +108,7 @@ export const items: Item[] = [
     equippable: false,
     unique: true,
     obtainedAt: 'crafted',
+    slot: null,
   },
   {
     id: 'grimoire_page_craftable',
@@ -124,6 +130,7 @@ export const items: Item[] = [
     equippable: false,
     unique: true,
     obtainedAt: 'crafted',
+    slot: null,
   },
   {
     id: 'grimoire_page_purchasable',
@@ -140,6 +147,7 @@ export const items: Item[] = [
     equippable: false,
     unique: true,
     obtainedAt: 'purchased',
+    slot: null,
   },
   {
     id: 'grimoire_page_bossdrop',
@@ -156,6 +164,7 @@ export const items: Item[] = [
     equippable: false,
     unique: true,
     obtainedAt: 'dropped from bossfight',
+    slot: null,
   },
   // WEAPON
   {
@@ -176,6 +185,7 @@ export const items: Item[] = [
     equippable: true,
     unique: false,
     obtainedAt: 'crafted',
+    slot: 'weapon',
   },
   // ARMOR
   {
@@ -198,5 +208,23 @@ export const items: Item[] = [
     equippable: true,
     unique: false,
     obtainedAt: 'crafted',
+    slot: 'helmet',
+  },
+  {
+    id: 'soatt',
+    type: 'weapon',
+    img: `${CDN_URL}/weapons/soatt.jpg`,
+    name: 'Sword of a Thousand Truths',
+    description: 'Make love, not warcraft',
+    rarity: 5,
+    price: 0,
+    purchasable: false,
+    craftable: false,
+    craftList: [],
+    usable: false,
+    equippable: true,
+    unique: true,
+    obtainedAt: 'being cool',
+    slot: 'weapon',
   },
 ];

@@ -14,8 +14,8 @@ import s from './FightView.module.scss';
 import { useNavigate } from 'react-router-dom';
 import { ModalSuccess } from './ModalSuccess';
 import { ModalFailure } from './ModalFailure';
-
-const CURR_ATTACK = 1000;
+import { useUserStatsApi } from '../../api';
+import { useUser } from '../../hooks/useUser';
 
 export const FightView = () => (
   <QueryBoundary fallback={<Loader />}>
@@ -25,6 +25,8 @@ export const FightView = () => (
 
 const Load = () => {
   const navigate = useNavigate();
+  const { userId } = useUser();
+  const { data: userStats } = useUserStatsApi(userId);
   const { monster } = useMonster();
   const { habitat, level, baseHP = 0, name, img } = monster;
 
@@ -35,7 +37,7 @@ const Load = () => {
 
   const onMonsterHit = () => {
     if (!isMonsterAlive) return;
-    const newHP = currentHP - CURR_ATTACK;
+    const newHP = currentHP - (userStats?.attack ?? 1);
 
     if (newHP > 0) {
       setCurrentHP(newHP);
