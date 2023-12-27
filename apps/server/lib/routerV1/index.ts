@@ -33,13 +33,15 @@ import {
   getUserLoadout,
   getUserMaterials,
   getUserWealth,
+  getUserStats,
 } from './users';
 
+routerV1.get('/users/user/:userId', getUser);
 routerV1.get('/users/user/:userId/items/list', getUserItems);
 routerV1.get('/users/user/:userId/loadout/list', getUserLoadout);
 routerV1.get('/users/user/:userId/materials/list', getUserMaterials);
 routerV1.get('/users/user/:userId/wealth/list', getUserWealth);
-routerV1.get('/users/user/:userId', getUser);
+routerV1.get('/users/user/:userId/stats', getUserStats);
 
 /****************************
  *         MAP         *

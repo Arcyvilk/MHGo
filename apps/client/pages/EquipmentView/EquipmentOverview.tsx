@@ -1,4 +1,6 @@
+import { useUserStatsApi } from '../../api';
 import { Icon, Loader, QueryBoundary } from '../../components';
+import { useUser } from '../../hooks/useUser';
 import { Size } from '../../utils/size';
 
 import s from './EquipmentOverview.module.scss';
@@ -10,6 +12,9 @@ export const EquipmentOverview = () => (
 );
 
 const Load = () => {
+  const { userId } = useUser();
+  const { data: userStats } = useUserStatsApi(userId);
+
   return (
     <div className={s.equipmentView__overview}>
       <div className={s.equipmentView__stats}>
@@ -18,35 +23,35 @@ const Load = () => {
             <Icon icon="Sword" size={Size.MICRO} />
             Attack
           </span>
-          <span>100</span>
+          <span>{userStats?.attack ?? '?'}</span>
         </div>
         <div className={s.stats}>
           <span>
             <Icon icon="Fire" size={Size.MICRO} />
             Element
           </span>
-          <span>none</span>
+          <span>{userStats?.element ?? '?'}</span>
         </div>
         <div className={s.stats}>
           <span>
             <Icon icon="Shield" size={Size.MICRO} />
             Defense
           </span>
-          <span>100</span>
+          <span>{userStats?.defense ?? '?'}</span>
         </div>
         <div className={s.stats}>
           <span>
             <Icon icon="Pulse" size={Size.MICRO} />
             HP
           </span>
-          <span>100</span>
+          <span>{userStats?.health ?? '?'}</span>
         </div>
         <div className={s.stats}>
           <span>
             <Icon icon="Burst" size={Size.MICRO} />
-            Critical hit
+            Crit chance
           </span>
-          <span>0</span>
+          <span>{userStats?.critChance ?? '?'}</span>
         </div>
       </div>
     </div>

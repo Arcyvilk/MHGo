@@ -10,17 +10,6 @@ export type User = {
   isModApproved: boolean;
   progress: UserProgress;
   ban: UserBan;
-  baseStats: UserStats;
-};
-
-export type UserStats = {
-  attack: number;
-  defense: number;
-  health: number;
-  element: string;
-  luck: number;
-  critChance: number;
-  critDamage: number;
 };
 
 // TODO temp user progress type

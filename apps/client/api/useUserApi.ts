@@ -1,5 +1,5 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { Loadout, User, UserAmount } from '@mhgo/types';
+import { useQuery } from '@tanstack/react-query';
+import { Loadout, Stats, User, UserAmount } from '@mhgo/types';
 
 import { API_URL } from '../utils/consts';
 
@@ -17,6 +17,7 @@ export const useUserApi = (userId: string) => {
   >({
     queryKey: ['user', userId],
     queryFn: getUser,
+    enabled: Boolean(userId),
   });
 
   return { data, isLoading, isFetched, isError };
@@ -36,6 +37,7 @@ export const useUserItemsApi = (userId: string) => {
   } = useQuery<UserAmount[], unknown, UserAmount[], string[]>({
     queryKey: ['user', userId, 'items'],
     queryFn: getUserItems,
+    enabled: Boolean(userId),
   });
 
   return { data, isLoading, isFetched, isError };
@@ -55,6 +57,7 @@ export const useUserMaterialsApi = (userId: string) => {
   } = useQuery<UserAmount[], unknown, UserAmount[], string[]>({
     queryKey: ['user', userId, 'materials'],
     queryFn: getUserMaterials,
+    enabled: Boolean(userId),
   });
 
   return { data, isLoading, isFetched, isError };
@@ -74,6 +77,7 @@ export const useUserWealthApi = (userId: string) => {
   } = useQuery<UserAmount[], unknown, UserAmount[], string[]>({
     queryKey: ['user', userId, 'wealth'],
     queryFn: getUserWealth,
+    enabled: Boolean(userId),
   });
 
   return { data, isLoading, isFetched, isError };
@@ -93,32 +97,28 @@ export const useUserLoadoutApi = (userId: string) => {
   } = useQuery<Loadout[], unknown, Loadout[], string[]>({
     queryKey: ['user', userId, 'loadout'],
     queryFn: getUserLoadout,
+    enabled: Boolean(userId),
   });
 
   return { data, isLoading, isFetched, isError };
 };
 
-export const useUserPutMaterialsApi = (userId: string) => {
-  const queryClient = useQueryClient();
-
-  const putUserMaterials = async (variables: UserAmount[]): Promise<void> => {
-    const res = await fetch(`${API_URL}/users/user/${userId}/materials`, {
-      method: 'PUT',
-      body: JSON.stringify(variables),
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-    });
-
-    queryClient.invalidateQueries({ queryKey: ['user', userId, 'materials'] });
+export const useUserStatsApi = (userId: string) => {
+  const getUserStats = async (): Promise<Stats> => {
+    const res = await fetch(`${API_URL}/users/user/${userId}/stats`);
     return res.json();
   };
 
-  const { mutate, isSuccess, status } = useMutation({
-    mutationKey: ['user', userId, 'materials', 'put'],
-    mutationFn: putUserMaterials,
+  const { data, isLoading, isFetched, isError } = useQuery<
+    Stats,
+    unknown,
+    Stats,
+    string[]
+  >({
+    queryKey: ['user', userId, 'stats'],
+    queryFn: getUserStats,
+    enabled: Boolean(userId),
   });
 
-  return { mutate, isSuccess, status };
+  return { data, isLoading, isFetched, isError };
 };

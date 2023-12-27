@@ -1,19 +1,14 @@
 import { useState } from 'react';
-import { ItemType, Item as TItem } from '@mhgo/types';
+import { toast } from 'react-toastify';
+import { ItemType } from '@mhgo/types';
 
-import {
-  Button,
-  Dropdown,
-  Loader,
-  Modal,
-  QueryBoundary,
-} from '../../components';
+import { Dropdown, Loader, Modal, QueryBoundary } from '../../components';
 import { Item, Tabs } from '../../containers';
 import { useCraftableItems } from '../../hooks/useCraftableItems';
 import { CraftConfirmation } from './Craft/CraftConfirmation';
+import { EquipmentDropdown } from './EquipmentDropdown';
 
 import s from './EquipmentCraft.module.scss';
-import { toast } from 'react-toastify';
 
 export const TABS = {
   QUEST: 'Quest',
@@ -85,13 +80,11 @@ const Load = () => {
   );
 };
 
-type EquipmentActions = {
+type EquipmentPiecesProps = {
+  itemType: ItemType;
   onCraft: (itemId: string) => void;
   onUse: (itemId: string) => void;
   onEquip: (itemId: string) => void;
-};
-type EquipmentPiecesProps = EquipmentActions & {
-  itemType: ItemType;
 };
 const EquipmentPieces = ({ itemType, ...actions }: EquipmentPiecesProps) => {
   const { craftableItems } = useCraftableItems();
@@ -107,33 +100,6 @@ const EquipmentPieces = ({ itemType, ...actions }: EquipmentPiecesProps) => {
             </Dropdown>
           </div>
         ))}
-    </div>
-  );
-};
-
-const EquipmentDropdown = ({
-  item,
-  onCraft,
-  onEquip,
-  onUse,
-}: EquipmentActions & {
-  item: TItem;
-}) => {
-  const onItemCraft = () => {
-    if (item.craftable) return onCraft(item.id);
-  };
-  const onItemEquip = () => {
-    if (item.craftable) return onEquip(item.id);
-  };
-  const onItemUse = () => {
-    if (item.craftable) return onUse(item.id);
-  };
-
-  return (
-    <div className={s.equipmentDropdown}>
-      {item.craftable && <Button label="Craft" onClick={onItemCraft} />}
-      {item.equippable && <Button label="Equip" onClick={onItemEquip} />}
-      {item.usable && <Button label="Use" onClick={onItemUse} />}
     </div>
   );
 };
