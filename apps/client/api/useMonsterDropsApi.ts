@@ -42,10 +42,16 @@ export const useMonsterMarkerDropsApi = (userId: string) => {
     return res.json();
   };
 
-  const { data, mutate, isSuccess, status } = useMutation({
+  const {
+    data = [],
+    mutate,
+    isSuccess,
+    isPending,
+    status,
+  } = useMutation({
     mutationKey: ['drops', 'user', userId],
     mutationFn: getDropsForUser,
   });
 
-  return { data, mutate, isSuccess, status };
+  return { data, mutate, isSuccess, isPending, status };
 };

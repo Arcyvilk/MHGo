@@ -13,22 +13,32 @@ type ModalProps = {
   setIsOpen: (isOpen: boolean) => void;
   onClose: () => void;
 };
-export const ModalSuccess = (props: ModalProps) => (
-  <QueryBoundary fallback={<Loader />}>
-    <Load {...props} />
-  </QueryBoundary>
+export const ModalSuccess = ({ isOpen, setIsOpen, onClose }: ModalProps) => (
+  <Modal isOpen={isOpen} setIsOpen={setIsOpen} onClose={onClose}>
+    <div className={s.result}>
+      <h1 className={s.result__title}>Success!</h1>
+      <p className={s.result__desc}>Monster dropped the following items:</p>
+      <div className={s.result__drops}>
+        <QueryBoundary fallback={<Loader />}>
+          <Load />
+        </QueryBoundary>
+      </div>
+    </div>
+  </Modal>
 );
 
-const Load = ({ isOpen, setIsOpen, onClose }: ModalProps) => {
+const Load = () => {
   const params = new URLSearchParams(location.search);
   const markerId = params.get('id') ?? '';
   const level = params.get('level') ?? '0';
 
   const [isLootRedeemed, setIsLootRedeemed] = useState(false);
   const { userId } = useUser();
-
-  const { data: drops, mutate: mutateUserDrops } =
-    useMonsterMarkerDropsApi(userId);
+  const {
+    data: drops,
+    mutate: mutateUserDrops,
+    isSuccess,
+  } = useMonsterMarkerDropsApi(userId);
 
   const redeemLoot = useCallback(() => {
     if (!isLootRedeemed) setIsLootRedeemed(true);
@@ -42,7 +52,7 @@ const Load = ({ isOpen, setIsOpen, onClose }: ModalProps) => {
     redeemLoot();
   }, []);
 
-  const listOfDrops = (drops ?? []).map(drop => {
+  const listOfDrops = drops.map(drop => {
     const data = {
       ...drop,
       img: addCdnUrl(drop.img),
@@ -53,16 +63,16 @@ const Load = ({ isOpen, setIsOpen, onClose }: ModalProps) => {
   });
 
   return (
-    <Modal isOpen={isOpen} setIsOpen={setIsOpen} onClose={onClose}>
-      <div className={s.result}>
-        <h1 className={s.result__title}>Success!</h1>
-        <p className={s.result__desc}>Monster dropped the following items:</p>
-        <div className={s.result__drops}>
-          {listOfDrops.length
-            ? listOfDrops
-            : "NOTHING! God damn it you're so unlucky ;-;"}
-        </div>
-      </div>
-    </Modal>
+    <>
+      {isSuccess ? (
+        listOfDrops.length ? (
+          listOfDrops
+        ) : (
+          "NOTHING! God damn it you're so unlucky ;-;"
+        )
+      ) : (
+        <Loader />
+      )}
+    </>
   );
 };
