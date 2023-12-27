@@ -3,11 +3,11 @@ import { useState } from 'react';
 import { TABS, Tabs } from './Tabs';
 import { Item } from '../../containers';
 import { CloseButton, Loader, QueryBoundary } from '../../components';
+import { useUserItems, useUserMaterials } from '../../hooks/useUser';
 
 import s from './ItemBoxView.module.scss';
 
 import { USER_ID } from '../../_mock/settings';
-import { useUserItems, useUserMaterials } from '../../hooks/useUser';
 
 export const ItemBoxView = () => {
   const [activeTab, setActiveTab] = useState(TABS.MATERIALS);

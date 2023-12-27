@@ -7,7 +7,7 @@ import { API_URL } from '../utils/consts';
  */
 export const useSettingsApi = <T>(key: string, defaultValue: T) => {
   const getSettings = async (): Promise<Record<string, T>[]> => {
-    const res = await fetch(`${API_URL}/news/list`);
+    const res = await fetch(`${API_URL}/settings`);
     return res.json();
   };
 

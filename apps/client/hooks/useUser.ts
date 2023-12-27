@@ -15,8 +15,9 @@ export const useUser = () => {
   const { setting: expPerLevel } = useSettingsApi<number>('exp_per_level', 0);
 
   const { name, exp, id } = user ?? { name: USER_NAME, exp: 0, id: USER_ID };
+
   const userExp = exp % expPerLevel;
-  const userLevel = 1 + Math.floor((user?.exp ?? 0) / expPerLevel);
+  const userLevel = 1 + Math.floor(exp / expPerLevel);
 
   return { ...user, userId: id, userName: name, userExp, userLevel };
 };

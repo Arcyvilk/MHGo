@@ -67,7 +67,7 @@ export const items: Item[] = [
   {
     id: 'grimoire',
     type: 'quest',
-    img: `${CDN_URL}/items/steak.jpg`,
+    img: `${CDN_URL}/items/book.webp`,
     name: 'Grimoire',
     description: 'Bbdbfiuewbfiur',
     rarity: 5,
@@ -83,7 +83,7 @@ export const items: Item[] = [
   {
     id: 'grimoire_page_craftable',
     type: 'quest',
-    img: `${CDN_URL}/items/steak.jpg`,
+    img: `${CDN_URL}/items/book.webp`,
     name: 'Lost Chapter: Introduction to the Art of Looting',
     description: 'A third chapter required to complete The Grimoire.',
     rarity: 5,
@@ -100,7 +100,7 @@ export const items: Item[] = [
   {
     id: 'grimoire_page_purchasable',
     type: 'quest',
-    img: `${CDN_URL}/items/steak.jpg`,
+    img: `${CDN_URL}/items/book.webp`,
     name: 'Lost Chapter: Hoarding for Dummies',
     description: 'A third chapter required to complete The Grimoire.',
     rarity: 5,
@@ -112,7 +112,7 @@ export const items: Item[] = [
   {
     id: 'grimoire_page_bossdrop',
     type: 'quest',
-    img: `${CDN_URL}/items/steak.jpg`,
+    img: `${CDN_URL}/items/book.webp`,
     name: 'Lost Chapter: More is More, and Less is Less',
     description: 'A third chapter required to complete The Grimoire.',
     rarity: 5,
