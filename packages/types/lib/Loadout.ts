@@ -1,12 +1,6 @@
-export type LoadoutType =
-  | 'weapon'
-  | 'helmet'
-  | 'torso'
-  | 'gloves'
-  | 'hips'
-  | 'legs';
+import { ItemSlot } from './Items';
 
-export type Loadout = { slot: LoadoutType; itemId: string };
+export type Loadout = { slot: ItemSlot; itemId: string };
 
 export type UserLoadout = {
   userId: string;

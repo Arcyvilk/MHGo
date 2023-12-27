@@ -1,5 +1,7 @@
 export type ItemType = 'quest' | 'weapon' | 'armor' | 'other';
 
+export type ItemSlot = 'weapon' | 'helmet' | 'chest' | 'arm' | 'waist' | 'leg';
+
 export type CraftType = 'item' | 'material';
 
 export type CraftList = {
@@ -11,6 +13,7 @@ export type CraftList = {
 export type Item = {
   id: string;
   type: ItemType;
+  slot: ItemSlot | null;
   img: string;
   name: string;
   description: string;
