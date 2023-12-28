@@ -14,6 +14,14 @@ import { getMonsters } from './monsters';
 routerV1.get('/monsters/list', getMonsters);
 
 /*************************
+ *         ITEMS         *
+ *************************/
+
+import { getItemUse } from './items';
+
+routerV1.get('/items/item/:itemId/uses', getItemUse);
+
+/*************************
  *         DROPS         *
  *************************/
 

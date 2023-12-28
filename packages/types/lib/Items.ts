@@ -27,3 +27,13 @@ export type Item = {
   unique: boolean; // Can user have only one copy of an item at once
   obtainedAt: string; // Short description of where this can be gotten from
 };
+
+export type ItemUses = {
+  itemId: string;
+  action: ItemActions;
+};
+
+export type ItemActions = {
+  text?: string;
+  redirect?: string;
+};
