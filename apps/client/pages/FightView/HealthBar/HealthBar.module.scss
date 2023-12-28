@@ -1,0 +1,53 @@
+@import '../../../styles/index.scss';
+
+.wrapper {
+  position: absolute;
+  bottom: $size-72 + $size-16;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 0 $size-64;
+}
+
+.healthBar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: $size-24;
+  box-sizing: border-box;
+  border-radius: $size-16;
+  overflow: hidden;
+  border: 3px solid $color-black;
+  &--isUser {
+    border: 2px solid $color-action;
+  }
+
+  &__text {
+    position: absolute;
+    color: $color-white;
+    text-align: center;
+    font-size: $size-14;
+    line-height: $size-16;
+    z-index: $zindex-barText;
+  }
+  &__bg {
+    width: 100%;
+    height: 100%;
+    border-radius: $size-6;
+    background-color: $color-black;
+  }
+  &__fg {
+    position: absolute;
+    left: 0;
+    height: 100%;
+    border-radius: $size-16;
+    box-sizing: border-box;
+    background-color: rgba($color-danger, 0.6);
+    &--isUser {
+      background-color: rgba($color-action, 0.6);
+    }
+  }
+}

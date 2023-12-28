@@ -10,7 +10,7 @@ import {
 } from '../../components';
 import { modifiers } from '../../utils/modifiers';
 import { useMonster } from '../../hooks/useMonster';
-import { UserHealthBar } from './UserHealthBar';
+import { HealthBarMonster, HealthBarUser } from './HealthBar';
 import { ModalSuccess } from './ModalSuccess';
 import { ModalFailure } from './ModalFailure';
 import { useUserStatsApi } from '../../api';
@@ -85,7 +85,7 @@ const Load = () => {
           src={img}
         />
       </div>
-      <UserHealthBar
+      <HealthBarUser
         setIsPlayerAlive={setIsPlayerAlive}
         isFightFinished={!isMonsterAlive || !isPlayerAlive}
       />
@@ -103,22 +103,7 @@ const Header = ({ name = '?', maxHP, currentHP }: HeaderProps) => {
   return (
     <div className={s.header}>
       <h1 className={s.header__title}>{name}</h1>
-      <HealthBar maxHP={maxHP} currentHP={currentHP} />
-    </div>
-  );
-};
-
-const HealthBar = ({ maxHP, currentHP }: Omit<HeaderProps, 'name'>) => {
-  return (
-    <div className={s.healthBar}>
-      <div className={s.healthBar__text}>
-        {currentHP} / {maxHP}
-      </div>
-      <div
-        className={s.healthBar__fg}
-        style={{ width: `${(100 * currentHP) / maxHP}%` }}
-      />
-      <div className={s.healthBar__bg} />
+      <HealthBarMonster maxHP={maxHP} currentHP={currentHP} />
     </div>
   );
 };
