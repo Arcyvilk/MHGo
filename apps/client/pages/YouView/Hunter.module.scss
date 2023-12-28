@@ -18,10 +18,13 @@
     flex-grow: 1;
   }
 
-  &__level {
+  &__stats {
+    display: flex;
+    flex-direction: column;
     position: absolute;
     left: $size-12;
     bottom: $size-12;
+    gap: $size-8;
     font-size: $size-18;
   }
 

@@ -1,4 +1,4 @@
-@import '../../../styles/index.scss';
+@import '../../styles/index.scss';
 
 .wrapper {
   position: absolute;
@@ -21,8 +21,14 @@
   border-radius: $size-16;
   overflow: hidden;
   border: 3px solid $color-black;
+
   &--isUser {
-    border: 2px solid $color-action;
+    border: 2px solid $color-white;
+  }
+  &--isSimple {
+    width: 150px;
+    height: $size-16;
+    border: 2px solid $color-black;
   }
 
   &__text {
@@ -32,13 +38,18 @@
     font-size: $size-14;
     line-height: $size-16;
     z-index: $zindex-barText;
+    &--isSimple {
+      font-size: $size-12;
+    }
   }
+
   &__bg {
     width: 100%;
     height: 100%;
     border-radius: $size-6;
     background-color: $color-black;
   }
+
   &__fg {
     position: absolute;
     left: 0;
@@ -47,7 +58,10 @@
     box-sizing: border-box;
     background-color: rgba($color-danger, 0.6);
     &--isUser {
-      background-color: rgba($color-action, 0.6);
+      background-color: rgba($color-health-user, 0.6);
+    }
+    &--isSimple {
+      background-color: rgba($color-health-user, 0.6);
     }
   }
 }

@@ -6,9 +6,14 @@ import { Size } from '../../utils/size';
 import { useMonster } from '../../hooks/useMonster';
 
 import s from './FightView.module.scss';
+import { HealthBarSimple } from '../../containers';
+import { useUserHealthApi } from '../../api';
+import { useUser } from '../../hooks/useUser';
 
 export const PrepareView = () => {
   const navigate = useNavigate();
+  const { userId } = useUser();
+  const { data: userHealth } = useUserHealthApi(userId);
   const { markerId, monster } = useMonster();
   const { habitat, level, name, img } = monster;
 
@@ -19,16 +24,26 @@ export const PrepareView = () => {
     navigate('/');
   };
 
+  const isUserAlive = userHealth.currentHealth > 0;
+
   return (
     <div className={modifiers(s, 'fightView', habitat)}>
       <Header name={name} level={level} />
       <div className={s.fightView__wrapper}>
         <img className={s.fightView__monster} src={img} draggable={false} />
         <div className={s.fightView__buttons}>
+          <HealthBarSimple
+            maxHP={userHealth.maxHealth}
+            currentHP={userHealth.currentHealth}
+          />
           <Button
             label="Fight!"
             onClick={onFight}
+            disabled={!isUserAlive}
             variant={Button.Variant.ACTION}
+            title={
+              isUserAlive ? null : 'You cannot initiate a fight when dead!'
+            }
             simple
           />
           <Button label="Flee!" onClick={onFlee} simple />

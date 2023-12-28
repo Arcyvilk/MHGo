@@ -1,13 +1,13 @@
 import { useEffect } from 'react';
 
-import { useUpdateUserHealth, useUserHealthApi } from '../../../api';
-import { useMonster } from '../../../hooks/useMonster';
-import { useUser } from '../../../hooks/useUser';
-import { useInterval } from '../../../hooks/useInterval';
-import { Loader, QueryBoundary } from '../../../components';
+import { useUpdateUserHealth, useUserHealthApi } from '../../api';
+import { useMonster } from '../../hooks/useMonster';
+import { useUser } from '../../hooks/useUser';
+import { useInterval } from '../../hooks/useInterval';
+import { Loader, QueryBoundary } from '../../components';
+import { modifiers } from '../../utils/modifiers';
 
 import s from './HealthBar.module.scss';
-import { modifiers } from '../../../utils/modifiers';
 
 type HealthBarUserProps = {
   isFightFinished: boolean;

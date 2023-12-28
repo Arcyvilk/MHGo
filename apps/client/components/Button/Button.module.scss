@@ -29,6 +29,11 @@
     background-color: $color-action;
   }
 
+  &--disabled {
+    cursor: not-allowed;
+    filter: grayscale(1);
+  }
+
   &__label {
     display: flex;
     align-items: center;

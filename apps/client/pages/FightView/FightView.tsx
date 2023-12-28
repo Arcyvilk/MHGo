@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { HealthBarMonster, HealthBarUser } from '../../containers';
 import {
   CloseButton,
   Explosions,
@@ -10,7 +11,6 @@ import {
 } from '../../components';
 import { modifiers } from '../../utils/modifiers';
 import { useMonster } from '../../hooks/useMonster';
-import { HealthBarMonster, HealthBarUser } from './HealthBar';
 import { ModalSuccess } from './ModalSuccess';
 import { ModalFailure } from './ModalFailure';
 import { useUserStatsApi } from '../../api';
@@ -38,7 +38,7 @@ const Load = () => {
   const [monsterHP, setMonsterHP] = useState<number>(level * baseHP);
 
   const onMonsterHit = () => {
-    if (!isMonsterAlive) return;
+    if (!isMonsterAlive || !isPlayerAlive) return;
     const newHP = monsterHP - (userStats?.attack ?? 1);
 
     if (newHP > 0) {
@@ -55,7 +55,11 @@ const Load = () => {
   };
 
   useEffect(() => {
-    if (!isMonsterAlive || !isPlayerAlive) {
+    if (!isPlayerAlive) {
+      setIsModalOpen(true);
+      return;
+    }
+    if (!isMonsterAlive) {
       setTimeout(() => {
         setIsModalOpen(true);
       }, 2000);

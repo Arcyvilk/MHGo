@@ -6,17 +6,20 @@ import s from './Tooltip.module.scss';
 type TooltipProps = {
   children: React.ReactElement;
   content: string;
+  trigger?: string;
 };
-export const Tooltip = ({ children, content }: TooltipProps) => {
+export const Tooltip = ({ children, content, trigger }: TooltipProps) => {
   return (
     <Tippy
-      trigger="click"
+      trigger={trigger ?? 'click'}
       render={attrs => (
         <div className={s.tooltip} {...attrs}>
           {content}
         </div>
       )}>
-      <span tabIndex={0}>{children}</span>
+      <span tabIndex={0} className={s.tooltip__wrapper}>
+        {children}
+      </span>
     </Tippy>
   );
 };

@@ -44,6 +44,7 @@ export const EquipmentDropdown = ({ item }: { item: TItem }) => {
       return;
     }
     if (itemUses.heal) {
+      // TODO this doesn't consume the item
       mutateUserHealth({ healthChange: itemUses.heal });
       toast.success(`Healed for ${itemUses.heal}!`);
       return;
