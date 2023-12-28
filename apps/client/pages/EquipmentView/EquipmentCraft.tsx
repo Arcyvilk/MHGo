@@ -12,6 +12,7 @@ export const TABS = {
   QUEST: 'Quest',
   WEAPONS: 'Weapons',
   ARMOR: 'Armor',
+  UTILITY: 'Utility',
 };
 
 export const EquipmentCraft = () => (
@@ -29,6 +30,7 @@ const Load = () => {
       {activeTab === TABS.QUEST && <EquipmentPieces itemType="quest" />}
       {activeTab === TABS.WEAPONS && <EquipmentPieces itemType="weapon" />}
       {activeTab === TABS.ARMOR && <EquipmentPieces itemType="armor" />}
+      {activeTab === TABS.UTILITY && <EquipmentPieces itemType="other" />}
     </div>
   );
 };

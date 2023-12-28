@@ -2,7 +2,11 @@ import { toast } from 'react-toastify';
 import { ItemUses, Item as TItem } from '@mhgo/types';
 
 import { Button, Dropdown, Modal } from '../../components';
-import { useItemUseApi, useUserEquipItemApi } from '../../api';
+import {
+  useItemUseApi,
+  useUpdateUserHealth,
+  useUserEquipItemApi,
+} from '../../api';
 import { useUser } from '../../hooks/useUser';
 import { CraftConfirmation } from './Craft/CraftConfirmation';
 
@@ -18,6 +22,7 @@ export const EquipmentDropdown = ({ item }: { item: TItem }) => {
   const { data: itemUses } = useItemUseApi(item.id);
   const { userId } = useUser();
   const { mutate: mutateItemEquip } = useUserEquipItemApi(userId, item.id);
+  const { mutate: mutateUserHealth } = useUpdateUserHealth(userId);
 
   const onItemCraft = () => {
     if (!item.craftable) return;
@@ -36,6 +41,11 @@ export const EquipmentDropdown = ({ item }: { item: TItem }) => {
     if (itemUses.text) {
       setAction('text');
       setIsModalOpen(true);
+      return;
+    }
+    if (itemUses.heal) {
+      mutateUserHealth({ healthChange: itemUses.heal });
+      toast.success(`Healed for ${itemUses.heal}!`);
       return;
     }
     toast.info(`This item doesn't have any use yet!`);
