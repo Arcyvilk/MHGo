@@ -11,19 +11,23 @@ export const updateUserExp = async (
   try {
     const { db } = mongoInstance.getDb();
     const { userId } = req.params;
+    const { expChange } = req.body;
 
-    const collection = db.collection<User>('users');
-    const updatedFields = req.body as Partial<User>;
+    // Get user
+    const collectionUsers = db.collection<User>('users');
+    const user = await collectionUsers.findOne({
+      id: userId,
+    });
 
-    const response = await collection.updateOne(
+    const response = await collectionUsers.updateOne(
       { id: userId },
-      { $set: updatedFields },
+      { $set: { exp: user.exp + expChange } },
     );
 
     if (!response.acknowledged) {
-      res.status(400).send({ error: 'Could not update this user.' });
+      res.status(400).send({ error: 'Could not update users experience.' });
     } else {
-      res.status(200).send(response);
+      res.sendStatus(200);
     }
   } catch (err: any) {
     log.WARN(err);

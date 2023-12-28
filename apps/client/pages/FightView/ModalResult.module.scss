@@ -14,7 +14,7 @@
   &__desc {
     margin: 0;
     font-size: $size-12;
-    font-weight: 400;
+    font-weight: 600;
   }
 
   &__drops {
@@ -28,6 +28,14 @@
   &__content {
     font-size: $size-14;
     font-weight: 400;
+  }
+
+  &__misc {
+    display:flex;
+    flex-direction: column;
+    font-size: $size-12;
+    font-weight: 400;
+    gap: $size-4;
   }
 }
 

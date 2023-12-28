@@ -1,5 +1,4 @@
 import { toast } from 'react-toastify';
-import { Currency } from '@mhgo/types';
 
 import { CloseButton, Icon, Loader, QueryBoundary } from '../../components';
 import { Size } from '../../utils/size';

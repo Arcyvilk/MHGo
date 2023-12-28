@@ -9,3 +9,4 @@ export { getUserHealth } from './getUserHealth';
 
 export { updateUserExp } from './updateUserExp';
 export { updateUserHealth } from './updateUserHealth';
+export { updateUserWealth } from './updateUserWealth';

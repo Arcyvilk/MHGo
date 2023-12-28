@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { Stats, User, UserAmount } from '@mhgo/types';
+import { Currency, CurrencyType, Stats, User, UserAmount } from '@mhgo/types';
 
 import { API_URL } from '../utils/consts';
 
@@ -146,6 +146,60 @@ export const useUpdateUserHealth = (userId: string) => {
   const { mutate, status, isPending, isSuccess, isError } = useMutation({
     mutationKey: ['user', userId, 'health', 'update'],
     mutationFn: updateUserHealth,
+  });
+
+  return { mutate, status, isPending, isSuccess, isError };
+};
+
+export const useUpdateUserExp = (userId: string) => {
+  const queryClient = useQueryClient();
+
+  const updateUserExp = async (variables: {
+    expChange: number;
+  }): Promise<void> => {
+    await fetch(`${API_URL}/users/user/${userId}/exp`, {
+      method: 'PUT',
+      body: JSON.stringify(variables),
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+    });
+    queryClient.invalidateQueries({
+      queryKey: ['user', userId],
+    });
+  };
+
+  const { mutate, status, isPending, isSuccess, isError } = useMutation({
+    mutationKey: ['user', userId, 'exp', 'update'],
+    mutationFn: updateUserExp,
+  });
+
+  return { mutate, status, isPending, isSuccess, isError };
+};
+
+export const useUpdateUserWealth = (userId: string) => {
+  const queryClient = useQueryClient();
+
+  const updateUserWealth = async (variables: {
+    [key in CurrencyType]?: number;
+  }): Promise<void> => {
+    await fetch(`${API_URL}/users/user/${userId}/wealth`, {
+      method: 'PUT',
+      body: JSON.stringify(variables),
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+    });
+    queryClient.invalidateQueries({
+      queryKey: ['user', userId, 'wealth'],
+    });
+  };
+
+  const { mutate, status, isPending, isSuccess, isError } = useMutation({
+    mutationKey: ['user', userId, 'wealth', 'update'],
+    mutationFn: updateUserWealth,
   });
 
   return { mutate, status, isPending, isSuccess, isError };
