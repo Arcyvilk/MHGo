@@ -5,3 +5,6 @@ export { getUserLoadout } from './getUserLoadout';
 export { getUserMaterials } from './getUserMaterials';
 export { getUserWealth } from './getUserWealth';
 export { getUserStats } from './getUserStats';
+
+export { updateUserExp } from './updateUserExp';
+export { updateUserHealth } from './updateUserHealth';

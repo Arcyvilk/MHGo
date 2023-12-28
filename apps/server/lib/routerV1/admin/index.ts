@@ -1,0 +1,1 @@
+export { adminUpdateUser } from './adminUpdateUser';

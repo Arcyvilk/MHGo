@@ -10,6 +10,7 @@ export type User = {
   isModApproved: boolean;
   progress: UserProgress;
   ban: UserBan;
+  wounds: number; // How much HP user lacks
 };
 
 // TODO temp user progress type

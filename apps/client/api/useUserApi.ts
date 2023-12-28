@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Stats, User, UserAmount } from '@mhgo/types';
 
 import { API_URL } from '../utils/consts';
@@ -101,4 +101,31 @@ export const useUserStatsApi = (userId: string) => {
   });
 
   return { data, isLoading, isFetched, isError };
+};
+
+export const useUpdateUserHealth = (userId: string) => {
+  const queryClient = useQueryClient();
+
+  const updateUserHealth = async (variables: {
+    healthChange: number;
+  }): Promise<void> => {
+    const res = await fetch(`${API_URL}/users/user/${userId}/health`, {
+      method: 'PUT',
+      body: JSON.stringify(variables),
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+    });
+    queryClient.invalidateQueries({ queryKey: ['user', userId, 'stats'] });
+
+    return res.json();
+  };
+
+  const { data, mutate, status, isPending, isSuccess, isError } = useMutation({
+    mutationKey: ['user', userId, 'health'],
+    mutationFn: updateUserHealth,
+  });
+
+  return { data, mutate, status, isPending, isSuccess, isError };
 };

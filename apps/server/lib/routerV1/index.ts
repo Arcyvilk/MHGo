@@ -5,6 +5,14 @@ export const routerV1 = express.Router();
 
 // TODO ADD API AUTH TO ALL ROUTES IN PROD!!!!
 
+/********************************
+ *         ADMIN ROUTES         *
+ ********************************/
+
+import { adminUpdateUser } from './admin';
+
+routerV1.put('/admin/users/user/:userId', adminUpdateUser);
+
 /****************************
  *         MONSTERS         *
  ****************************/
@@ -43,6 +51,8 @@ import {
   getUserMaterials,
   getUserWealth,
   getUserStats,
+  updateUserExp,
+  updateUserHealth,
 } from './users';
 
 routerV1.get('/users/user/:userId', getUser);
@@ -52,6 +62,8 @@ routerV1.get('/users/user/:userId/materials/list', getUserMaterials);
 routerV1.get('/users/user/:userId/wealth/list', getUserWealth);
 routerV1.get('/users/user/:userId/stats', getUserStats);
 routerV1.get('/users/user/:userId/item/:itemId/equip', getUserEquipItem);
+routerV1.put('/users/user/:userId/exp', updateUserExp);
+routerV1.put('/users/user/:userId/health', updateUserHealth);
 
 /****************************
  *         MAP         *
