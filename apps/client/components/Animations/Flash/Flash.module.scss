@@ -9,8 +9,8 @@
   z-index: $zindex-modal;
   user-select:none;
   pointer-events:none;
-  animation: fadeOut 1s;
-  opacity: 1;
+  animation: fadeOut 0.7s;
+  opacity: 0;
   
   &--green {
     box-shadow: inset 0 0 $size-128 $color-health-user;

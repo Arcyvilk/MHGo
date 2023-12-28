@@ -27,7 +27,15 @@
 
 
 .equipmentDropdown {
-  display:flex;
+  display: flex;
   flex-direction: column;
-  gap: $size-4;
+  gap: $size-12;
+  max-width: 200px;
+
+  &__section {
+    display: flex;
+    flex-direction: column;
+    gap: $size-6;
+    font-weight: 400;
+  }
 }

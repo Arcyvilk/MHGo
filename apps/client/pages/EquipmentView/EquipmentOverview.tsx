@@ -1,5 +1,5 @@
 import { useUserHealthApi, useUserStatsApi } from '../../api';
-import { Icon, Loader, QueryBoundary } from '../../components';
+import { Icon, Loader, QueryBoundary, Tooltip } from '../../components';
 import { HealthBarSimple } from '../../containers';
 import { useUser } from '../../hooks/useUser';
 import { Size } from '../../utils/size';
@@ -21,39 +21,49 @@ const Load = () => {
     <div className={s.equipmentView__overview}>
       <div className={s.equipmentView__stats}>
         <div className={s.stats}>
-          <span>
-            <Icon icon="Sword" size={Size.MICRO} />
-            Attack
-          </span>
+          <Tooltip content="How much raw damage you deal per hit">
+            <>
+              <Icon icon="Sword" size={Size.MICRO} />
+              Attack
+            </>
+          </Tooltip>
           <span>{userStats?.attack ?? '?'}</span>
         </div>
         <div className={s.stats}>
-          <span>
-            <Icon icon="Fire" size={Size.MICRO} />
-            Element
-          </span>
+          <Tooltip content="Your current dominant element, infusing your attacks with additional elemental damage">
+            <>
+              <Icon icon="Fire" size={Size.MICRO} />
+              Element
+            </>
+          </Tooltip>
           <span>{userStats?.element ?? '?'}</span>
         </div>
         <div className={s.stats}>
-          <span>
-            <Icon icon="Shield" size={Size.MICRO} />
-            Defense
-          </span>
+          <Tooltip content="Physical damage dealt to you will be mitigated according to a formula: damage * 100 / (100 + defense)">
+            <>
+              <Icon icon="Shield" size={Size.MICRO} />
+              Defense
+            </>
+          </Tooltip>
           <span>{userStats?.defense ?? '?'}</span>
         </div>
         <div className={s.stats}>
-          <span>
-            <Icon icon="Pulse" size={Size.MICRO} />
-            HP
-          </span>
+          <Tooltip content="Your maximum HP">
+            <span>
+              <Icon icon="Pulse" size={Size.MICRO} />
+              HP
+            </span>
+          </Tooltip>
           <span>{userStats?.health ?? '?'}</span>
         </div>
         <div className={s.stats}>
-          <span>
-            <Icon icon="Burst" size={Size.MICRO} />
-            Crit chance
-          </span>
-          <span>{userStats?.critChance ?? '?'}</span>
+          <Tooltip content="Percentage chance of dealing double physical damage">
+            <span>
+              <Icon icon="Burst" size={Size.MICRO} />
+              Crit chance
+            </span>
+          </Tooltip>
+          <span>{userStats?.critChance ?? '?'}%</span>
         </div>
       </div>
       <HealthBarSimple

@@ -70,11 +70,21 @@ export const EquipmentDropdown = ({ item }: { item: TItem }) => {
       <Dropdown
         content={
           <div className={s.equipmentDropdown}>
-            {item.craftable && <Button label="Craft" onClick={onItemCraft} />}
-            {item.equippable && <Button label="Equip" onClick={onItemEquip} />}
-            {item.usable && itemUses && (
-              <Button label="Use" onClick={onItemUse} />
-            )}
+            <div className={s.equipmentDropdown__section}>
+              <span style={{ fontWeight: 900 }}>{item.name}</span>
+              <span style={{ fontStyle: 'italic' }}>"{item.description}"</span>
+            </div>
+            <div className={s.equipmentDropdown__section}>
+              {item.craftable && (
+                <Button simple label="Craft" onClick={onItemCraft} />
+              )}
+              {item.equippable && (
+                <Button simple label="Equip" onClick={onItemEquip} />
+              )}
+              {item.usable && itemUses && (
+                <Button simple label="Use" onClick={onItemUse} />
+              )}
+            </div>
           </div>
         }>
         <Item data={{ ...item, purchasable: false }} />

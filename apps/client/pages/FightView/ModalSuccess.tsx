@@ -84,7 +84,7 @@ const Load = ({ onClose }: { onClose: () => void }) => {
         </div>
         {/* TODO display money properly */}
         <div>
-          <span style={{ fontWeight: 900 }}>Money:</span>{' '}
+          <span style={{ fontWeight: 900 }}>Money:</span>
           {JSON.stringify(wealthChange)}
         </div>
       </div>
