@@ -1,7 +1,7 @@
 import { toast } from 'react-toastify';
 import { ItemUses, Item as TItem } from '@mhgo/types';
 
-import { Button, Dropdown, Modal } from '../../components';
+import { Button, Dropdown, Flash, Modal } from '../../components';
 import {
   useItemUseApi,
   useUpdateUserHealth,
@@ -22,7 +22,8 @@ export const EquipmentDropdown = ({ item }: { item: TItem }) => {
   const { data: itemUses } = useItemUseApi(item.id);
   const { userId } = useUser();
   const { mutate: mutateItemEquip } = useUserEquipItemApi(userId, item.id);
-  const { mutate: mutateUserHealth } = useUpdateUserHealth(userId);
+  const { mutate: mutateUserHealth, isSuccess: isHealedSuccessfully } =
+    useUpdateUserHealth(userId);
 
   const onItemCraft = () => {
     if (!item.craftable) return;
@@ -54,6 +55,7 @@ export const EquipmentDropdown = ({ item }: { item: TItem }) => {
 
   return (
     <div className={s.equipmentView__itemWrapper} key={item.id}>
+      <Flash type="green" isActivated={isHealedSuccessfully} />
       <Modal isOpen={isModalOpen} setIsOpen={setIsModalOpen} onClose={() => {}}>
         {action === 'craft' && (
           <CraftConfirmation itemId={item.id} setIsModalOpen={setIsModalOpen} />

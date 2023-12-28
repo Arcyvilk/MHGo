@@ -4,7 +4,7 @@ import { useUpdateUserHealth, useUserHealthApi } from '../../api';
 import { useMonster } from '../../hooks/useMonster';
 import { useUser } from '../../hooks/useUser';
 import { useInterval } from '../../hooks/useInterval';
-import { Loader, QueryBoundary } from '../../components';
+import { Flash, Loader, QueryBoundary } from '../../components';
 import { modifiers } from '../../utils/modifiers';
 
 import s from './HealthBar.module.scss';
@@ -21,7 +21,7 @@ export const HealthBarUser = (props: HealthBarUserProps) => (
 
 const Load = ({ isFightFinished, setIsPlayerAlive }: HealthBarUserProps) => {
   const { userId } = useUser();
-  const { mutate } = useUpdateUserHealth(userId);
+  const { mutate, isSuccess: isUserHit } = useUpdateUserHealth(userId);
   const { data: userHealth } = useUserHealthApi(userId);
   const { monster } = useMonster();
   const { level, baseAttackSpeed, baseDamage } = monster;
@@ -43,6 +43,7 @@ const Load = ({ isFightFinished, setIsPlayerAlive }: HealthBarUserProps) => {
 
   return (
     <div className={s.wrapper}>
+      <Flash type="red" isActivated={isUserHit} />
       <div className={modifiers(s, 'healthBar', { isUser: true })}>
         <div className={modifiers(s, 'healthBar__text', { isUser: true })}>
           {userHealth.currentHealth} / {userHealth.maxHealth}

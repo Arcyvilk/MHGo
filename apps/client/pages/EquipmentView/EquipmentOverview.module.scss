@@ -5,9 +5,12 @@
   &__overview {
     position: relative;
     display: flex;
+    flex-direction: column;
     align-items: flex-start;
     min-height: 50vh;
     pointer-events: none;
+    padding: 0 $size-16;
+    gap: $size-16;
   }
 
   &__stats {
@@ -16,7 +19,7 @@
     flex-direction: column;
     width: 200px;
     max-width: 50%;
-    margin: 0 $size-16;
+    
     padding: $size-12;
     background-color: rgba($color-white, 0.5);
     border-radius: $size-8;

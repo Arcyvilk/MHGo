@@ -1,5 +1,6 @@
-import { useUserStatsApi } from '../../api';
+import { useUserHealthApi, useUserStatsApi } from '../../api';
 import { Icon, Loader, QueryBoundary } from '../../components';
+import { HealthBarSimple } from '../../containers';
 import { useUser } from '../../hooks/useUser';
 import { Size } from '../../utils/size';
 
@@ -14,6 +15,7 @@ export const EquipmentOverview = () => (
 const Load = () => {
   const { userId } = useUser();
   const { data: userStats } = useUserStatsApi(userId);
+  const { data: userHealth } = useUserHealthApi(userId);
 
   return (
     <div className={s.equipmentView__overview}>
@@ -54,6 +56,10 @@ const Load = () => {
           <span>{userStats?.critChance ?? '?'}</span>
         </div>
       </div>
+      <HealthBarSimple
+        maxHP={userHealth.maxHealth}
+        currentHP={userHealth.currentHealth}
+      />
     </div>
   );
 };

@@ -56,7 +56,7 @@
     height: 100%;
     border-radius: $size-16;
     box-sizing: border-box;
-    background-color: rgba($color-danger, 0.6);
+    background-color: rgba($color-health-enemy, 0.6);
     &--isUser {
       background-color: rgba($color-health-user, 0.6);
     }
