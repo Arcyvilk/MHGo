@@ -12,14 +12,13 @@ import {
 import { mongoInstance } from '../../../api';
 import { getSumOfStat } from '../../helpers/getSumOfStats';
 
-export const updateUserHealth = async (
+export const getUserHealth = async (
   req: Request,
   res: Response,
 ): Promise<void> => {
   try {
     const { db } = mongoInstance.getDb();
     const { userId } = req.params;
-    const { healthChange } = req.body;
 
     // Get base stats of every user
     const collectionSettings = db.collection<Setting<BaseStats>>('settings');
@@ -48,33 +47,14 @@ export const updateUserHealth = async (
     // Get user's current wounds
     const collectionUsers = db.collection<User>('users');
     const user = await collectionUsers.findOne({ id: userId });
+    const wounds = user.wounds;
 
-    const wounds = getUpdatedWounds(health, user.wounds, healthChange);
-
-    const response = await collectionUsers.updateOne(
-      { id: userId },
-      { $set: { wounds } },
-    );
-
-    if (!response.acknowledged) {
-      res.status(400).send({ error: 'Could not update users health.' });
-    } else {
-      res.sendStatus(200);
-    }
+    res.status(200).send({
+      maxHealth: health,
+      currentHealth: health + wounds,
+    });
   } catch (err: any) {
     log.WARN(err);
     res.status(500).send({ error: err.message ?? 'Internal server error' });
   }
-};
-
-const getUpdatedWounds = (
-  maxHealth: number,
-  currentWounds: number,
-  healthChange: number,
-) => {
-  const newWounds = currentWounds + healthChange;
-
-  if (newWounds > 0) return 0;
-  if (newWounds < -maxHealth) return -maxHealth;
-  return newWounds;
 };

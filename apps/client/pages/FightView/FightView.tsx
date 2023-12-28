@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import {
   CloseButton,
@@ -9,13 +10,13 @@ import {
 } from '../../components';
 import { modifiers } from '../../utils/modifiers';
 import { useMonster } from '../../hooks/useMonster';
-
-import s from './FightView.module.scss';
-import { useNavigate } from 'react-router-dom';
+import { UserHealthBar } from './UserHealthBar';
 import { ModalSuccess } from './ModalSuccess';
 import { ModalFailure } from './ModalFailure';
 import { useUserStatsApi } from '../../api';
 import { useUser } from '../../hooks/useUser';
+
+import s from './FightView.module.scss';
 
 export const FightView = () => (
   <QueryBoundary fallback={<Loader />}>
@@ -27,22 +28,23 @@ const Load = () => {
   const navigate = useNavigate();
   const { userId } = useUser();
   const { data: userStats } = useUserStatsApi(userId);
+
   const { monster } = useMonster();
   const { habitat, level, baseHP = 0, name, img } = monster;
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMonsterAlive, setIsMonsterAlive] = useState<boolean>(true);
-  const [isPlayerAlive, _setIsPlayerAlive] = useState<boolean>(true);
-  const [currentHP, setCurrentHP] = useState<number>(level * baseHP);
+  const [isPlayerAlive, setIsPlayerAlive] = useState<boolean>(true);
+  const [monsterHP, setMonsterHP] = useState<number>(level * baseHP);
 
   const onMonsterHit = () => {
     if (!isMonsterAlive) return;
-    const newHP = currentHP - (userStats?.attack ?? 1);
+    const newHP = monsterHP - (userStats?.attack ?? 1);
 
     if (newHP > 0) {
-      setCurrentHP(newHP);
+      setMonsterHP(newHP);
     } else {
-      setCurrentHP(0);
+      setMonsterHP(0);
       setIsMonsterAlive(false);
     }
   };
@@ -58,7 +60,7 @@ const Load = () => {
         setIsModalOpen(true);
       }, 2000);
     }
-  }, [isMonsterAlive]);
+  }, [isMonsterAlive, isPlayerAlive]);
 
   return (
     <div className={modifiers(s, 'fightView', habitat)}>
@@ -68,7 +70,7 @@ const Load = () => {
       {!isPlayerAlive && isModalOpen && (
         <ModalFailure isOpen setIsOpen={setIsModalOpen} onClose={onFightEnd} />
       )}
-      <Header name={name} maxHP={level * baseHP} currentHP={currentHP} />
+      <Header name={name} maxHP={level * baseHP} currentHP={monsterHP} />
       {!isMonsterAlive && <Explosions />}
       <div className={s.fightView__wrapper}>
         {isMonsterAlive && <Rays />}
@@ -83,6 +85,10 @@ const Load = () => {
           src={img}
         />
       </div>
+      <UserHealthBar
+        setIsPlayerAlive={setIsPlayerAlive}
+        isFightFinished={!isMonsterAlive || !isPlayerAlive}
+      />
       <CloseButton />
     </div>
   );
@@ -97,16 +103,22 @@ const Header = ({ name = '?', maxHP, currentHP }: HeaderProps) => {
   return (
     <div className={s.header}>
       <h1 className={s.header__title}>{name}</h1>
-      <div className={s.healthBar}>
-        <div className={s.healthBar__text}>
-          {currentHP} / {maxHP}
-        </div>
-        <div
-          className={s.healthBar__fg}
-          style={{ width: `${(100 * currentHP) / maxHP}%` }}
-        />
-        <div className={s.healthBar__bg} />
+      <HealthBar maxHP={maxHP} currentHP={currentHP} />
+    </div>
+  );
+};
+
+const HealthBar = ({ maxHP, currentHP }: Omit<HeaderProps, 'name'>) => {
+  return (
+    <div className={s.healthBar}>
+      <div className={s.healthBar__text}>
+        {currentHP} / {maxHP}
       </div>
+      <div
+        className={s.healthBar__fg}
+        style={{ width: `${(100 * currentHP) / maxHP}%` }}
+      />
+      <div className={s.healthBar__bg} />
     </div>
   );
 };

@@ -6,7 +6,7 @@ import { useUser } from '../../hooks/useUser';
 import { addCdnUrl } from '../../utils/addCdnUrl';
 import { Button, Loader, Modal, QueryBoundary } from '../../components';
 
-import s from './FightView.module.scss';
+import s from './ModalResult.module.scss';
 
 type ModalProps = {
   isOpen: boolean;

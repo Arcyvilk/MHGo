@@ -36,4 +36,5 @@ export type ItemUses = {
 export type ItemActions = {
   text?: string;
   redirect?: string;
+  heal?: number;
 };

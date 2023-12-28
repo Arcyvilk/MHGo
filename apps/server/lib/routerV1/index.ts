@@ -51,6 +51,7 @@ import {
   getUserMaterials,
   getUserWealth,
   getUserStats,
+  getUserHealth,
   updateUserExp,
   updateUserHealth,
 } from './users';
@@ -62,9 +63,11 @@ routerV1.get('/users/user/:userId/materials/list', getUserMaterials);
 routerV1.get('/users/user/:userId/wealth/list', getUserWealth);
 routerV1.get('/users/user/:userId/stats', getUserStats);
 routerV1.get('/users/user/:userId/item/:itemId/equip', getUserEquipItem);
-routerV1.put('/users/user/:userId/exp', updateUserExp);
+
+routerV1.get('/users/user/:userId/health', getUserHealth);
 routerV1.put('/users/user/:userId/health', updateUserHealth);
 
+routerV1.put('/users/user/:userId/exp', updateUserExp);
 /****************************
  *         MAP         *
  ****************************/

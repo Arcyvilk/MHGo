@@ -103,13 +103,34 @@ export const useUserStatsApi = (userId: string) => {
   return { data, isLoading, isFetched, isError };
 };
 
+type UserHealth = { maxHealth: number; currentHealth: number };
+export const useUserHealthApi = (userId: string) => {
+  const getUserHealth = async (): Promise<UserHealth> => {
+    const res = await fetch(`${API_URL}/users/user/${userId}/health`);
+    return res.json();
+  };
+
+  const {
+    data = { currentHealth: 1, maxHealth: 1 },
+    isLoading,
+    isFetched,
+    isError,
+  } = useQuery<UserHealth, unknown, UserHealth, string[]>({
+    queryKey: ['user', userId, 'health', 'get'],
+    queryFn: getUserHealth,
+    enabled: Boolean(userId),
+  });
+
+  return { data, isLoading, isFetched, isError };
+};
+
 export const useUpdateUserHealth = (userId: string) => {
   const queryClient = useQueryClient();
 
   const updateUserHealth = async (variables: {
     healthChange: number;
   }): Promise<void> => {
-    const res = await fetch(`${API_URL}/users/user/${userId}/health`, {
+    await fetch(`${API_URL}/users/user/${userId}/health`, {
       method: 'PUT',
       body: JSON.stringify(variables),
       headers: {
@@ -117,15 +138,15 @@ export const useUpdateUserHealth = (userId: string) => {
         'Content-Type': 'application/json',
       },
     });
-    queryClient.invalidateQueries({ queryKey: ['user', userId, 'stats'] });
-
-    return res.json();
+    queryClient.invalidateQueries({
+      queryKey: ['user', userId, 'health', 'get'],
+    });
   };
 
-  const { data, mutate, status, isPending, isSuccess, isError } = useMutation({
-    mutationKey: ['user', userId, 'health'],
+  const { mutate, status, isPending, isSuccess, isError } = useMutation({
+    mutationKey: ['user', userId, 'health', 'update'],
     mutationFn: updateUserHealth,
   });
 
-  return { data, mutate, status, isPending, isSuccess, isError };
+  return { mutate, status, isPending, isSuccess, isError };
 };
