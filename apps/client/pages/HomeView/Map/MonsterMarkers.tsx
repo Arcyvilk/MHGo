@@ -23,7 +23,7 @@ const Load = () => {
       {monsterMarkers.map(m => {
         const position = L.latLng(m.coords[0], m.coords[1]);
         const positionStars = L.latLng(
-          m.coords[0] - 0.00035,
+          m.coords[0] - 0.0003,
           m.coords[1] - 0.00057,
         );
 

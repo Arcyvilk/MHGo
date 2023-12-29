@@ -100,7 +100,7 @@ const Load = ({ onClose }: { onClose: () => void }) => {
           <Loader />
         )}
       </div>
-      <Button label="OK" onClick={onClose} simple />
+      <Button label="Claim" onClick={onClose} simple />
     </div>
   );
 };
