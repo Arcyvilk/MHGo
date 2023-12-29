@@ -2,4 +2,10 @@
 
 .monsterMarker {
   filter: drop-shadow(0 0 2px #000);
+
+  &__stars {
+    font-size: $size-14;
+    letter-spacing: -1rem;
+    text-shadow: 0 0 5px $color-black;
+  }
 }
