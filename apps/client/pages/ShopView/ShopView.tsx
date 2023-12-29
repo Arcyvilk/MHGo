@@ -3,13 +3,12 @@ import { toast } from 'react-toastify';
 import { CloseButton, Icon, Loader, QueryBoundary } from '../../components';
 import { Size } from '../../utils/size';
 import { Item } from '../../containers';
-import { useUserWealthApi } from '../../api';
+import { useItemsApi, useUserWealthApi } from '../../api';
 import { useUser } from '../../hooks/useUser';
 
 import s from './ShopView.module.scss';
 
 import { currencies } from '../../_mock/wealth';
-import { items } from '../../_mock/items';
 
 export const ShopView = () => {
   return (
@@ -33,7 +32,8 @@ const Header = () => {
 };
 
 const Shop = () => {
-  const items = useItems();
+  const { data: items } = useItemsApi();
+  const purchasableItems = items.filter(item => item.purchasable);
 
   const onItemClick = () => {
     toast.error('You are too poor for this!');
@@ -42,7 +42,7 @@ const Shop = () => {
   return (
     <div className={s.shopView__wrapper}>
       <div className={s.shopView__items}>
-        {items.map(item => (
+        {purchasableItems.map(item => (
           <div className={s.shopView__itemWrapper}>
             <Item data={item} onClick={onItemClick} key={item.id} />
           </div>
@@ -50,11 +50,6 @@ const Shop = () => {
       </div>
     </div>
   );
-};
-
-const useItems = () => {
-  const purchasableItems = items.filter(item => item.purchasable);
-  return purchasableItems;
 };
 
 const Wealth = () => {

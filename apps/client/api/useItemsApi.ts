@@ -2,7 +2,6 @@ import { useQuery } from '@tanstack/react-query';
 import { Item, ItemAction } from '@mhgo/types';
 
 import { API_URL } from '../utils/consts';
-import { items as mockItems } from '../_mock/items';
 import { addCdnUrl } from '../utils/addCdnUrl';
 
 export const useItemsApi = () => {
@@ -26,7 +25,7 @@ export const useItemsApi = () => {
     img: addCdnUrl(item.img),
   }));
 
-  return { data: mockItems, dataNew: data, isLoading, isFetched, isError };
+  return { data, isLoading, isFetched, isError };
 };
 
 export const useItemActionsApi = (itemId: string) => {

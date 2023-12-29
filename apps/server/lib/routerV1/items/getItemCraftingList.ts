@@ -1,12 +1,6 @@
 import { Request, Response } from 'express';
 import { log } from '@mhgo/utils';
-import {
-  Item,
-  Material,
-  UserAmount,
-  UserItems,
-  UserMaterials,
-} from '@mhgo/types';
+import { Item, Material, UserItems, UserMaterials } from '@mhgo/types';
 
 import { mongoInstance } from '../../../api';
 

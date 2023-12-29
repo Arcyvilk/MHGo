@@ -18,8 +18,9 @@ type ItemProps = {
   };
   onClick?: () => void;
   simple?: boolean;
+  isOwned?: boolean;
 };
-export const Item = ({ data, onClick, simple }: ItemProps) => {
+export const Item = ({ data, onClick, simple, isOwned = true }: ItemProps) => {
   const { img, filter, amount, rarity, name, purchasable, price } = data;
   if (simple)
     return (
@@ -27,7 +28,7 @@ export const Item = ({ data, onClick, simple }: ItemProps) => {
         <img
           src={img}
           style={{ filter }}
-          className={modifiers(s, 'tile__image', 'simple')}
+          className={modifiers(s, 'tile__image', 'simple', { isOwned })}
         />
         {amount ? <div className={s.tile__amount}>{amount}</div> : null}
       </div>
@@ -35,7 +36,11 @@ export const Item = ({ data, onClick, simple }: ItemProps) => {
   return (
     <button className={s.item} onClick={onClick}>
       <div className={modifiers(s, 'item__tile', `rarity-${rarity}`)}>
-        <img src={img} style={{ filter }} className={s.tile__image} />
+        <img
+          src={img}
+          style={{ filter }}
+          className={modifiers(s, 'tile__image', { isOwned })}
+        />
         <div className={modifiers(s, 'tile__rarity', `rarity-${rarity}`)}>
           Rarity {rarity}
         </div>

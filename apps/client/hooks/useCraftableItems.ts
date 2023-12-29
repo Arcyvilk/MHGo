@@ -1,11 +1,10 @@
 import { toast } from 'react-toastify';
 import { Material } from '@mhgo/types';
-import { useMaterialsApi } from '../api';
-
-import { items } from '../_mock/items';
+import { useItemsApi, useMaterialsApi } from '../api';
 
 export const useCraftableItems = () => {
   const { data: materials } = useMaterialsApi();
+  const { data: items } = useItemsApi();
 
   const craftableItems = items
     .filter(item => item.craftable)
