@@ -7,7 +7,6 @@ import {
   Material,
   MonsterDrop,
   MonsterMarker,
-  FieldByRarity,
   CraftType,
   UserMaterials,
   UserAmount,
@@ -15,11 +14,11 @@ import {
 } from '@mhgo/types';
 
 import { mongoInstance } from '../../../api';
-import { getMaterialsWithRarity } from '../../helpers/getMaterialsWithRarity';
 import {
   getUniqueItemDrops,
   getUniqueMaterialDrops,
 } from '../../helpers/getUniqueDrops';
+import { addFilterToMaterials } from '../../helpers/addFilterToMaterials';
 
 type ReqBody = { markerId: string; monsterLevel: number };
 type ReqParams = { userId: string };
@@ -44,21 +43,7 @@ export const getDropsForUser = async (
     for await (const el of cursorMaterials) {
       materials.push(el);
     }
-
-    // Get rarity of all materials
-    const collectionRarityMaterials =
-      db.collection<FieldByRarity>('rarityMaterials');
-    const rarityMaterials: FieldByRarity[] = [];
-    const cursorRarityMaterials = collectionRarityMaterials.find();
-    for await (const el of cursorRarityMaterials) {
-      rarityMaterials.push(el);
-    }
-
-    // Merge the two
-    const materialsWithRarity = getMaterialsWithRarity(
-      materials,
-      rarityMaterials,
-    );
+    const materialsWithFilter = await addFilterToMaterials(materials);
 
     // Get all items
     const collectionItems = db.collection<TItem>('items');
@@ -94,7 +79,7 @@ export const getDropsForUser = async (
 
     const uniqueMaterialDrops = getUniqueMaterialDrops(
       allDrops,
-      materialsWithRarity,
+      materialsWithFilter,
     );
     const uniqueItemDrops = getUniqueItemDrops(allDrops, items);
     const drops = [...uniqueMaterialDrops, ...uniqueItemDrops];

@@ -84,15 +84,9 @@ routerV1.get('/map/monsters/user/:userId', getMonsterMarkersByUserId);
  *         MATERIALS         *
  *****************************/
 
-import {
-  getMaterials,
-  getRarityMaterials,
-  getRarityMaterialsByRarity,
-} from './materials';
+import { getMaterials } from './materials';
 
 routerV1.get('/materials/list', getMaterials);
-routerV1.get('/materials/rarity/list', getRarityMaterials);
-routerV1.get('/materials/rarity/:rarityId', getRarityMaterialsByRarity);
 
 /****************************
  *         HABITATS         *

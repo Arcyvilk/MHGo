@@ -10,3 +10,8 @@ export type BaseStats = {
   critChance: number;
   critDamage: number;
 };
+
+export type RarityFilter = {
+  rarity: number;
+  filter: string;
+};

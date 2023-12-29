@@ -13,10 +13,3 @@ export type Material = {
   rarity: number;
   filter: string;
 };
-
-export type FieldByRarity = {
-  rarity: number;
-  prefix: string;
-  filter: string;
-  description: string;
-};
