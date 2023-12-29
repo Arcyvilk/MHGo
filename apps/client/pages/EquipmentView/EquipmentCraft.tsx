@@ -15,6 +15,8 @@ export const TABS = {
   UTILITY: 'Utility',
 };
 
+// TODO this should show not only craftable items,
+// but also ones that user has and the amount of those
 export const EquipmentCraft = () => (
   <QueryBoundary fallback={<Loader />}>
     <Load />

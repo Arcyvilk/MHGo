@@ -41,6 +41,7 @@ export const CraftConfirmation = ({
         will consume the following materials:
       </p>
       <div className={s.craftConfirmation__materials}>
+        {/* TODO show if user has sufficient materials to craft */}
         {matsToCraft.map((mat: Material, index: number) => (
           <Tooltip content={mat.name} key={index}>
             <Item data={{ ...mat, price: 0, purchasable: false }} simple />

@@ -1,10 +1,10 @@
 import { Request, Response } from 'express';
 import { log } from '@mhgo/utils';
-import { ItemUses } from '@mhgo/types';
+import { ItemActions } from '@mhgo/types';
 
 import { mongoInstance } from '../../../api';
 
-export const getItemUse = async (
+export const getItemActions = async (
   req: Request,
   res: Response,
 ): Promise<void> => {
@@ -12,7 +12,7 @@ export const getItemUse = async (
     const { itemId } = req.params;
 
     const { db } = mongoInstance.getDb();
-    const collectionItemUses = db.collection<ItemUses>('itemUse');
+    const collectionItemUses = db.collection<ItemActions>('itemActions');
     const itemUse = await collectionItemUses.findOne({ itemId });
 
     res.status(200).send(itemUse?.action ?? null);

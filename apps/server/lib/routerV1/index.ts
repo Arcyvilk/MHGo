@@ -25,9 +25,9 @@ routerV1.get('/monsters/list', getMonsters);
  *         ITEMS         *
  *************************/
 
-import { getItemUse } from './items';
+import { getItemActions } from './items';
 
-routerV1.get('/items/item/:itemId/uses', getItemUse);
+routerV1.get('/items/item/:itemId/actions', getItemActions);
 
 /*************************
  *         DROPS         *

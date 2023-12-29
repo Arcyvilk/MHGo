@@ -23,6 +23,12 @@
     font-weight: 400;
     gap: $size-16;
   }
+
+  &__itemImg {
+    max-width: 100%;
+    object-fit: contain;
+    aspect-ratio: 1/1;
+  }
 }
 
 

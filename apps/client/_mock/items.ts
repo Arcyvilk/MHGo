@@ -18,6 +18,8 @@ export const items: Item[] = [
     unique: false,
     obtainedAt: 'crafted',
     slot: null,
+    consumable: true,
+    quickUse: true,
   },
   {
     id: 'bomb',
@@ -35,6 +37,8 @@ export const items: Item[] = [
     unique: false,
     obtainedAt: 'crafted',
     slot: null,
+    consumable: true,
+    quickUse: false,
   },
   {
     id: 'pitfall',
@@ -52,6 +56,8 @@ export const items: Item[] = [
     unique: false,
     obtainedAt: 'crafted',
     slot: null,
+    consumable: true,
+    quickUse: false,
   },
   {
     id: 'paintball',
@@ -69,6 +75,8 @@ export const items: Item[] = [
     unique: false,
     obtainedAt: 'crafted',
     slot: null,
+    consumable: true,
+    quickUse: false,
   },
   {
     id: 'steak',
@@ -86,6 +94,8 @@ export const items: Item[] = [
     unique: false,
     obtainedAt: 'crafted',
     slot: null,
+    consumable: true,
+    quickUse: false,
   },
 
   // QUEST
@@ -109,6 +119,8 @@ export const items: Item[] = [
     unique: true,
     obtainedAt: 'crafted',
     slot: null,
+    consumable: false,
+    quickUse: false,
   },
   {
     id: 'grimoire_page_craftable',
@@ -131,6 +143,8 @@ export const items: Item[] = [
     unique: true,
     obtainedAt: 'crafted',
     slot: null,
+    consumable: false,
+    quickUse: false,
   },
   {
     id: 'grimoire_page_purchasable',
@@ -148,6 +162,8 @@ export const items: Item[] = [
     unique: true,
     obtainedAt: 'purchased',
     slot: null,
+    consumable: false,
+    quickUse: false,
   },
   {
     id: 'grimoire_page_bossdrop',
@@ -165,6 +181,8 @@ export const items: Item[] = [
     unique: true,
     obtainedAt: 'dropped from bossfight',
     slot: null,
+    consumable: false,
+    quickUse: false,
   },
   // WEAPON
   {
@@ -186,6 +204,8 @@ export const items: Item[] = [
     unique: false,
     obtainedAt: 'crafted',
     slot: 'weapon',
+    consumable: false,
+    quickUse: false,
   },
   // ARMOR
   {
@@ -209,6 +229,8 @@ export const items: Item[] = [
     unique: false,
     obtainedAt: 'crafted',
     slot: 'helmet',
+    consumable: false,
+    quickUse: false,
   },
   {
     id: 'soatt',
@@ -226,5 +248,7 @@ export const items: Item[] = [
     unique: true,
     obtainedAt: 'being cool',
     slot: 'weapon',
+    consumable: false,
+    quickUse: false,
   },
 ];

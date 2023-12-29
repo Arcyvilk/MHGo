@@ -1,9 +1,9 @@
 import { toast } from 'react-toastify';
-import { ItemUses, Item as TItem } from '@mhgo/types';
+import { ItemActions, Item as TItem } from '@mhgo/types';
 
 import { Button, Dropdown, Flash, Modal } from '../../components';
 import {
-  useItemUseApi,
+  useItemActionsApi,
   useUpdateUserHealth,
   useUserEquipItemApi,
 } from '../../api';
@@ -14,12 +14,12 @@ import s from './EquipmentCraft.module.scss';
 import { useState } from 'react';
 import { Item } from '../../containers';
 
-type Action = keyof ItemUses['action'] | 'craft';
+type Action = keyof ItemActions['action'] | 'craft';
 export const EquipmentDropdown = ({ item }: { item: TItem }) => {
   const [action, setAction] = useState<Action>('craft');
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const { data: itemUses } = useItemUseApi(item.id);
+  const { data: itemAction } = useItemActionsApi(item.id);
   const { userId } = useUser();
   const { mutate: mutateItemEquip } = useUserEquipItemApi(userId, item.id);
   const { mutate: mutateUserHealth, isSuccess: isHealedSuccessfully } =
@@ -31,23 +31,29 @@ export const EquipmentDropdown = ({ item }: { item: TItem }) => {
     setIsModalOpen(true);
   };
   const onItemEquip = () => {
+    // TODO if armor or weapon, show stats and how much they differ from current loadout
     if (item.equippable) mutateItemEquip();
   };
   const onItemUse = () => {
-    if (!item.usable || !itemUses) return;
-    if (itemUses.redirect) {
-      window.open(itemUses.redirect);
-      return;
-    }
-    if (itemUses.text) {
+    if (!item.usable || !itemAction) return;
+    if (itemAction.text) {
       setAction('text');
       setIsModalOpen(true);
       return;
     }
-    if (itemUses.heal) {
+    if (itemAction.img) {
+      setAction('img');
+      setIsModalOpen(true);
+      return;
+    }
+    if (itemAction.redirect) {
+      window.open(itemAction.redirect);
+      return;
+    }
+    if (itemAction.heal) {
       // TODO this doesn't consume the item
-      mutateUserHealth({ healthChange: itemUses.heal });
-      toast.success(`Healed for ${itemUses.heal}!`);
+      mutateUserHealth({ healthChange: itemAction.heal });
+      toast.success(`Healed for ${itemAction.heal}!`);
       return;
     }
     toast.info(`This item doesn't have any use yet!`);
@@ -62,7 +68,14 @@ export const EquipmentDropdown = ({ item }: { item: TItem }) => {
         )}
         {action === 'text' && (
           <div className={s.equipmentView__itemDesc}>
-            {itemUses?.text ?? 'Huh?'}
+            {itemAction?.text ??
+              'Here should be a description of this item, but it got lost somewhere. Sorry. :c'}
+            <Button label="OK " onClick={() => setIsModalOpen(false)} simple />
+          </div>
+        )}
+        {action === 'img' && (
+          <div className={s.equipmentView__itemDesc}>
+            <img src={itemAction?.img} className={s.equipmentView__itemImg} />
             <Button label="OK " onClick={() => setIsModalOpen(false)} simple />
           </div>
         )}
@@ -81,7 +94,7 @@ export const EquipmentDropdown = ({ item }: { item: TItem }) => {
               {item.equippable && (
                 <Button simple label="Equip" onClick={onItemEquip} />
               )}
-              {item.usable && itemUses && (
+              {item.usable && itemAction && (
                 <Button simple label="Use" onClick={onItemUse} />
               )}
             </div>

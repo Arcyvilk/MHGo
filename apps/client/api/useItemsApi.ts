@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { Item, ItemActions, ItemUses } from '@mhgo/types';
+import { Item, ItemAction } from '@mhgo/types';
 
 import { API_URL } from '../utils/consts';
 import { items as mockItems } from '../_mock/items';
@@ -29,20 +29,20 @@ export const useItemsApi = () => {
   return { data: mockItems, dataNew: data, isLoading, isFetched, isError };
 };
 
-export const useItemUseApi = (itemId: string) => {
-  const getItemUses = async (): Promise<ItemActions> => {
-    const res = await fetch(`${API_URL}/items/item/${itemId}/uses`);
+export const useItemActionsApi = (itemId: string) => {
+  const getItemActions = async (): Promise<ItemAction> => {
+    const res = await fetch(`${API_URL}/items/item/${itemId}/actions`);
     return res.json();
   };
 
   const { data, isLoading, isFetched, isError } = useQuery<
-    ItemActions,
+    ItemAction,
     unknown,
-    ItemActions,
+    ItemAction,
     string[]
   >({
-    queryKey: ['items', itemId, 'uses'],
-    queryFn: getItemUses,
+    queryKey: ['items', itemId, 'actions'],
+    queryFn: getItemActions,
     enabled: Boolean(itemId),
   });
 

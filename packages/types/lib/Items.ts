@@ -26,15 +26,18 @@ export type Item = {
   usable: boolean; // Can the item be used (if owned)
   unique: boolean; // Can user have only one copy of an item at once
   obtainedAt: string; // Short description of where this can be gotten from
-};
-
-export type ItemUses = {
-  itemId: string;
-  action: ItemActions;
+  consumable: boolean; // Does the item disappear upon use
+  quickUse: boolean; // Is the item present in the "quick use" menu
 };
 
 export type ItemActions = {
+  itemId: string;
+  action: ItemAction;
+};
+
+export type ItemAction = {
   text?: string;
+  img?: string;
   redirect?: string;
   heal?: number;
 };
