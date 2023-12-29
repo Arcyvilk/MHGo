@@ -5,7 +5,8 @@
     "dev:client": "turbo run dev:client",
     "dev:server": "turbo run dev:server",
     "build:client": "turbo run build:client",
-    "build:server": "turbo run build:server"
+    "build:server": "turbo run build:server",
+    "build:packages": "turbo run build:package"
   },
   "workspaces": [
     "apps/*",

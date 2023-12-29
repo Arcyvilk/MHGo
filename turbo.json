@@ -3,6 +3,7 @@
   "pipeline": {
     "dev:client": { "outputs": []},
     "dev:server": { "outputs": []},
+    "build:package": { "outputs": []},
     "build:client": {
       "outputs": ["dist/client/**"]
     },

@@ -4,7 +4,8 @@
   "main": "dist/index.mjs",
   "types": "dist/index.mjs",
   "scripts": {
-    "build": "vite --config vite.config.ts build"
+    "build": "vite --config vite.config.ts build",
+    "build:package": "yarn build"
   },
   "dependencies": {
     "typescript": "latest"
