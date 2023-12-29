@@ -37,7 +37,6 @@
   &__bottom {
     display: flex;
     justify-content: space-between;
-    align-items: center;
     padding: $size-16;
     // height: 130px;
     box-sizing: border-box;
@@ -50,7 +49,7 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    width: auto;
+    flex: 1 1 100%;
     height: 100%;
     gap: $size-8;
     max-width: 400px;
