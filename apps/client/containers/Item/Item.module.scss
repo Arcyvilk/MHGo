@@ -10,11 +10,6 @@
   max-width: 23%;
   flex: 1;
 
-  &--isOwned {
-    opacity: 0.7;
-    filter: grayscale(0.7)
-  }
-
   &__simple {
     position: relative;
     display: flex;
@@ -22,6 +17,10 @@
 
     .tile__amount {
       font-size: $size-10;
+
+      &--isNotOwned {
+        color: $color-danger;
+      }
     }
   }
 
@@ -80,6 +79,10 @@
     object-fit: contain;
     padding: $size-6;
 
+    &--isNotOwned {
+      opacity: 0.5;
+    }
+
     &--simple {
       max-width: $size-32;
       height: auto;
@@ -123,5 +126,9 @@
     font-size: $size-14;
     font-weight: 800;
     box-shadow: 0 0 5px rgba($color-black, 0.7);
+
+    &--isNotOwned {
+      color: $color-danger;
+    }
   }
 }

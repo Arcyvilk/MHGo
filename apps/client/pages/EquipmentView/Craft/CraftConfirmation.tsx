@@ -1,4 +1,3 @@
-import { useMemo } from 'react';
 import { Material } from '@mhgo/types';
 
 import { Button, Tooltip } from '../../../components';
@@ -7,6 +6,8 @@ import { useItems } from '../../../hooks/useItems';
 import { useCraftableItems } from '../../../hooks/useCraftableItems';
 
 import s from './CraftConfirmation.module.scss';
+import { useUser } from '../../../hooks/useUser';
+import { useItemCraftListApi } from '../../../api';
 
 type CraftConfirmationProps = {
   itemId: string;
@@ -17,11 +18,18 @@ export const CraftConfirmation = ({
   itemId,
   setIsModalOpen,
 }: CraftConfirmationProps) => {
+  const { userId } = useUser();
   const { getItem } = useItems();
   const { onCraft, getItemCraftingList } = useCraftableItems();
+  const { data: itemCraftList } = useItemCraftListApi(userId, itemId);
 
   const item = getItem(itemId);
   const matsToCraft = getItemCraftingList(itemId);
+
+  const canBeCrafted = itemCraftList.reduce((sum, curr) => {
+    if (curr.userAmount < curr.amount) return false;
+    return sum;
+  }, true);
 
   const onYes = () => {
     setIsModalOpen(false);
@@ -41,12 +49,39 @@ export const CraftConfirmation = ({
         will consume the following materials:
       </p>
       <div className={s.craftConfirmation__materials}>
-        {/* TODO show if user has sufficient materials to craft */}
-        {matsToCraft.map((mat: Material, index: number) => (
-          <Tooltip content={mat.name} key={index}>
-            <Item data={{ ...mat, price: 0, purchasable: false }} simple />
-          </Tooltip>
-        ))}
+        {matsToCraft.map((mat: Material, index: number) => {
+          const matRequirements = itemCraftList.find(i => i.id === mat.id);
+          const isNotOwned =
+            (matRequirements?.userAmount ?? 0) < (matRequirements?.amount ?? 0);
+
+          return (
+            <Tooltip
+              content={
+                <div>
+                  <div>{mat.name}</div>
+                  <div>
+                    <span style={{ fontWeight: 400 }}>
+                      Required for crafting:{' '}
+                    </span>
+                    <span
+                      style={
+                        isNotOwned ? { color: 'red' } : { color: 'green' }
+                      }>
+                      {matRequirements?.userAmount}
+                    </span>
+                    /{matRequirements?.amount}
+                  </div>
+                </div>
+              }
+              key={index}>
+              <Item
+                data={{ ...mat, price: 0, purchasable: false }}
+                simple
+                isNotOwned={isNotOwned}
+              />
+            </Tooltip>
+          );
+        })}
       </div>
       <div className={s.craftConfirmation__buttons}>
         <Button
@@ -55,7 +90,17 @@ export const CraftConfirmation = ({
           simple
           variant={Button.Variant.DANGER}
         />
-        <Button label="Craft" onClick={onYes} simple />
+        <Button
+          label="Craft"
+          onClick={onYes}
+          simple
+          disabled={!canBeCrafted}
+          title={
+            canBeCrafted
+              ? null
+              : 'You have insufficient materials to craft this!'
+          }
+        />
       </div>
     </div>
   );

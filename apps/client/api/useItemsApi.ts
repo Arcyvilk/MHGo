@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { Item, ItemAction } from '@mhgo/types';
+import { Item, ItemAction, ItemCraftingList } from '@mhgo/types';
 
 import { API_URL } from '../utils/consts';
 import { addCdnUrl } from '../utils/addCdnUrl';
@@ -43,6 +43,26 @@ export const useItemActionsApi = (itemId: string) => {
     queryKey: ['items', itemId, 'actions'],
     queryFn: getItemActions,
     enabled: Boolean(itemId),
+  });
+
+  return { data, isLoading, isFetched, isError };
+};
+
+export const useItemCraftListApi = (userId: string, itemId: string) => {
+  const getItemCraftList = async (): Promise<ItemCraftingList[]> => {
+    const res = await fetch(`${API_URL}/users/user/${userId}/craft/${itemId}`);
+    return res.json();
+  };
+
+  const {
+    data = [],
+    isLoading,
+    isFetched,
+    isError,
+  } = useQuery<ItemCraftingList[], unknown, ItemCraftingList[], string[]>({
+    queryKey: ['items', itemId, 'craftList'],
+    queryFn: getItemCraftList,
+    enabled: Boolean(itemId) && Boolean(userId),
   });
 
   return { data, isLoading, isFetched, isError };

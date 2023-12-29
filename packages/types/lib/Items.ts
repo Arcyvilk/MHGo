@@ -41,3 +41,9 @@ export type ItemAction = {
   redirect?: string;
   heal?: number;
 };
+
+export type ItemCraftingList = {
+  id: string;
+  amount: number;
+  userAmount: number;
+};

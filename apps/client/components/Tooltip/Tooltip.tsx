@@ -5,7 +5,7 @@ import s from './Tooltip.module.scss';
 
 type TooltipProps = {
   children: React.ReactElement;
-  content: string;
+  content: React.ReactNode;
   trigger?: string;
 };
 export const Tooltip = ({ children, content, trigger }: TooltipProps) => {
