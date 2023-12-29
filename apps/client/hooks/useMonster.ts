@@ -53,7 +53,8 @@ export const useMonsterMarkers = () => {
       });
       return {
         ...monsterMarker,
-        thumbnail: iconMarker,
+        iconMarker,
+        thumbnail,
         name,
       };
     });

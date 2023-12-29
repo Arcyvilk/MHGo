@@ -22,16 +22,26 @@ const Load = () => {
     <>
       {monsterMarkers.map(m => {
         const position = L.latLng(m.coords[0], m.coords[1]);
-        const positionStars = L.latLng(
-          m.coords[0] - 0.0003,
-          m.coords[1] - 0.00057,
-        );
 
         return (
           <Fragment key={m.id}>
             <Marker
               key={'monster-' + m.id}
-              icon={m.thumbnail}
+              icon={
+                new L.DivIcon({
+                  className: s.monsterMarker__stars,
+                  html: `<div style="display: flex; flex-direction: column;">
+                  <img src="${
+                    m.thumbnail
+                  }" style="width: 48px; height: 48px; filter: drop-shadow(0 0 2px #000);"/>
+                  <div style="display: flex; justify-content: center;margin-left: 20px;">
+                  ${new Array(m.level)
+                    .fill(null)
+                    .map(_ => '⭐')
+                    .join('')}
+                    </div></div>`,
+                })
+              }
               position={position}
               eventHandlers={{
                 click: () => {
@@ -39,33 +49,6 @@ const Load = () => {
                 },
               }}
             />
-            <Marker
-              key={'stars-' + m.id}
-              position={positionStars}
-              icon={
-                new L.DivIcon({
-                  className: s.monsterMarker__stars,
-                  html: `<div style="display: flex; justify-content: center; width: 60px !important">${new Array(
-                    m.level,
-                  )
-                    .fill(null)
-                    .map(_ => '⭐')
-                    .join('')}</div>`,
-                })
-              }
-            />
-            <text
-              x="20%"
-              y="90%"
-              fill="black"
-              stroke="black"
-              strokeWidth={1}
-              fontSize={14}
-              fontWeight={800}
-              filter="drop-shadow(0 0 4px #fff)"
-              z="2">
-              {m.level}⭐
-            </text>
           </Fragment>
         );
       })}
