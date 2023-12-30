@@ -6,6 +6,10 @@
   &__stars {
     font-size: $size-14;
     letter-spacing: -1rem;
-    text-shadow: 0 0 5px $color-black;
+    text-shadow:
+    1px 1px 0 $color-black,
+    -1px 1px 0 $color-black,
+    -1px -1px 0 $color-black,
+    1px -1px 0 $color-black;
   }
 }
