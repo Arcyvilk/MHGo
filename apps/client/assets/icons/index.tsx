@@ -25,6 +25,7 @@ import Shield from './Shield.svg?react';
 import Shop from './Shop.svg?react';
 import Spin from './Spin.svg?react';
 import Star from './Star.svg?react';
+import StarYellow from './StarYellow.svg?react';
 import Sword from './Sword.svg?react';
 import X from './X.svg?react';
 
@@ -54,6 +55,7 @@ const icons = {
   Shield,
   Spin,
   Star,
+  StarYellow,
   Sword,
   X,
 };

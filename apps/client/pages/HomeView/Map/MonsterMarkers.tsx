@@ -6,7 +6,9 @@ import L from 'leaflet';
 import { useMonsterMarkers } from '../../../hooks/useMonster';
 import { QueryBoundary } from '../../../components';
 
+import StarYellow from '../../../assets/icons/StarYellow.svg';
 import s from './MonsterMarkers.module.scss';
+import { Monster, MonsterMarker } from '@mhgo/types';
 
 export const MonsterMarkers = () => (
   <QueryBoundary fallback={null}>
@@ -22,36 +24,38 @@ const Load = () => {
     <>
       {monsterMarkers.map(m => {
         const position = L.latLng(m.coords[0], m.coords[1]);
+        const onClick = () => {
+          navigate(`/prepare?id=${m.id}&level=${m.level}`);
+        };
 
         return (
           <Fragment key={m.id}>
             <Marker
               key={'monster-' + m.id}
-              icon={
-                new L.DivIcon({
-                  className: s.monsterMarker__stars,
-                  html: `<div style="display: flex; flex-direction: column;">
-                  <img src="${
-                    m.thumbnail
-                  }" style="width: 48px; height: 48px; filter: drop-shadow(0 0 2px #000);"/>
-                  <div style="display: flex; justify-content: center;margin-left: 20px;">
-                  ${new Array(m.level)
-                    .fill(null)
-                    .map(_ => '⭐')
-                    .join('')}
-                    </div></div>`,
-                })
-              }
+              icon={getMonsterMarkerIcon(m.level, m.thumbnail)}
               position={position}
-              eventHandlers={{
-                click: () => {
-                  navigate(`/prepare?id=${m.id}&level=${m.level}`);
-                },
-              }}
+              eventHandlers={{ click: onClick }}
             />
           </Fragment>
         );
       })}
     </>
   );
+};
+
+const getMonsterMarkerIcon = (level: number | null = 0, thumbnail?: string) => {
+  const stars = new Array(level)
+    .fill(null)
+    .map(() => `<img src="${StarYellow}" class="${s.monsterMarker__star}" />`)
+    .join('');
+
+  return new L.DivIcon({
+    className: s.monsterMarker__icon,
+    html: `<div class="${s.monsterMarker__wrapper}">
+        <img src="${thumbnail}" class="${s.monsterMarker__thumbnail}"/>
+        <div class="${s.monsterMarker__stars}">
+          ${stars}
+        </div>
+      </div>`,
+  });
 };

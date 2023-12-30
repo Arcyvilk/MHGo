@@ -1,15 +1,28 @@
 @import '../../../styles/index.scss';
 
 .monsterMarker {
-  filter: drop-shadow(0 0 2px #000);
+  &__wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: $size-4;
+  }
+  
+  &__thumbnail {
+    min-width: $size-48;
+    min-height: $size-48;
+    max-width: $size-48;
+    max-height: $size-48;
+    filter: drop-shadow(0 0 2px $color-black);
+  }
 
   &__stars {
-    font-size: $size-14;
-    letter-spacing: -1rem;
-    text-shadow:
-    1px 1px 0 $color-black,
-    -1px 1px 0 $color-black,
-    -1px -1px 0 $color-black,
-    1px -1px 0 $color-black;
+    display: flex;
+    justify-content: center;
+    margin-left: $size-30;
+    filter: drop-shadow(0 0 2px $color-black);
+  }
+
+  &__star {
+    margin-left: -$size-10;
   }
 }
