@@ -6,8 +6,7 @@
   "main": "index.ts",
   "types": "index.ts",
   "scripts": {
-    "build": "vite --config vite.config.ts build",
-    "build:package": "yarn build"
+    "build": "vite --config vite.config.ts build"
   },
   "dependencies": {
     "react": "^18.2.0",
