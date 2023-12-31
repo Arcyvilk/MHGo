@@ -2,8 +2,10 @@
   "name": "mhgo",
   "private": true,
   "scripts": {
+    "dev:admin": "turbo run dev:admin",
     "dev:client": "turbo run dev:client",
     "dev:server": "turbo run dev:server",
+    "build:admin": "turbo run build:admin",
     "build:client": "turbo run build:client",
     "build:server": "turbo run build:server",
     "build:packages": "turbo run build:package"

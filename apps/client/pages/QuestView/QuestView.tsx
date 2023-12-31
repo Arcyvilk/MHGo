@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { CloseButton } from '@mhgo/front';
-import { Tabs } from '../../containers';
+import { Tabs } from '@mhgo/front';
 
 import s from './QuestView.module.scss';
 

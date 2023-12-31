@@ -1,6 +1,6 @@
 import { useUser, useUserLoadout } from '../../hooks/useUser';
 import { Loader, QueryBoundary, Tooltip } from '@mhgo/front';
-import { Item } from '../../containers';
+import { Item } from '@mhgo/front';
 
 import s from './EquipmentLoadout.module.scss';
 

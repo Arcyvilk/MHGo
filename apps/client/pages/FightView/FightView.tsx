@@ -8,13 +8,13 @@ import {
   Loader,
   QueryBoundary,
   Rays,
+  modifiers,
+  useUserStatsApi,
 } from '@mhgo/front';
-import { modifiers } from '@mhgo/front';
 import { useMonster } from '../../hooks/useMonster';
+import { useUser } from '../../hooks/useUser';
 import { ModalSuccess } from './ModalSuccess';
 import { ModalFailure } from './ModalFailure';
-import { useUserStatsApi } from '@mhgo/front';
-import { useUser } from '../../hooks/useUser';
 
 import s from './FightView.module.scss';
 

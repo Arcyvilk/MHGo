@@ -1,0 +1,11 @@
+@import '@mhgo/front/styles/index.scss';
+
+.app {
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    height: 100vh;
+    box-sizing: border-box;
+    overflow: hidden;
+    box-sizing: border-box;
+}

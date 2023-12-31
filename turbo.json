@@ -1,9 +1,13 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "pipeline": {
+    "dev:admin": { "outputs": []},
     "dev:client": { "outputs": []},
     "dev:server": { "outputs": []},
     "build:package": { "outputs": []},
+    "build:admin": {
+      "outputs": ["dist/client/**"]
+    },
     "build:client": {
       "outputs": ["dist/client/**"]
     },

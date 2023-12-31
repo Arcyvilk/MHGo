@@ -1,8 +1,14 @@
-import { useUserHealthApi, useUserStatsApi } from '@mhgo/front';
-import { Icon, Loader, QueryBoundary, Tooltip } from '@mhgo/front';
+import {
+  Icon,
+  Loader,
+  QueryBoundary,
+  Tooltip,
+  Size,
+  useUserHealthApi,
+  useUserStatsApi,
+} from '@mhgo/front';
 import { HealthBarSimple } from '../../containers';
 import { useUser } from '../../hooks/useUser';
-import { Size } from '@mhgo/front';
 
 import s from './EquipmentOverview.module.scss';
 

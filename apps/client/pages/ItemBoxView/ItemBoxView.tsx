@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 import { TABS, Tabs } from './Tabs';
-import { Item } from '../../containers';
+import { Item } from '@mhgo/front';
 import { CloseButton, Loader, QueryBoundary } from '@mhgo/front';
 import { useUserItems, useUserMaterials } from '../../hooks/useUser';
 

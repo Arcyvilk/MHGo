@@ -1,7 +1,7 @@
 import { Material } from '@mhgo/types';
 
 import { Button, Tooltip } from '@mhgo/front';
-import { Item } from '../../../containers';
+import { Item } from '@mhgo/front';
 import { useItemCraft } from '../../../hooks/useItemCraft';
 
 import s from './CraftConfirmation.module.scss';

@@ -14,7 +14,7 @@ import { CraftConfirmation } from './Craft/CraftConfirmation';
 
 import s from './EquipmentCraft.module.scss';
 import { useState } from 'react';
-import { Item } from '../../containers';
+import { Item } from '@mhgo/front';
 
 type Action = keyof ItemActions['action'] | 'craft';
 export const EquipmentDropdown = ({

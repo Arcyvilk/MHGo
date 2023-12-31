@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { ItemType } from '@mhgo/types';
 
 import { Loader, QueryBoundary } from '@mhgo/front';
-import { Tabs } from '../../containers';
+import { Tabs } from '@mhgo/front';
 import { EquipmentDropdown } from './EquipmentDropdown';
 import { useItems } from '../../hooks/useItems';
 

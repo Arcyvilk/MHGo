@@ -1,11 +1,16 @@
 import { useEffect } from 'react';
 
-import { useUpdateUserHealth, useUserHealthApi } from '@mhgo/front';
-import { useMonster } from '../../hooks/useMonster';
-import { useUser } from '../../hooks/useUser';
-import { useInterval } from '../../hooks/useInterval';
-import { Flash, Loader, QueryBoundary } from '@mhgo/front';
-import { modifiers } from '@mhgo/front';
+import {
+  useUpdateUserHealth,
+  useUserHealthApi,
+  Flash,
+  Loader,
+  QueryBoundary,
+  modifiers,
+} from '@mhgo/front';
+import { useMonster } from '../../../../apps/client/hooks/useMonster';
+import { useUser } from '../../../../apps/client/hooks/useUser';
+import { useInterval } from '../../../../apps/client/hooks/useInterval';
 
 import s from './HealthBar.module.scss';
 

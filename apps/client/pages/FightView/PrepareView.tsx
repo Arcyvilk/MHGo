@@ -1,13 +1,10 @@
 import { useNavigate } from 'react-router-dom';
 
-import { Button, Icon } from '@mhgo/front';
-import { modifiers } from '@mhgo/front';
-import { Size } from '@mhgo/front';
+import { Button, Icon, Size, modifiers, useUserHealthApi } from '@mhgo/front';
 import { useMonster } from '../../hooks/useMonster';
 
 import s from './FightView.module.scss';
 import { HealthBarSimple } from '../../containers';
-import { useUserHealthApi } from '@mhgo/front';
 import { useUser } from '../../hooks/useUser';
 
 export const PrepareView = () => {

@@ -1,6 +1,6 @@
 import { Material, Monster, Item as TItem, Drop } from '@mhgo/types';
 
-import { Item } from '../../containers';
+import { Item } from '@mhgo/front';
 import { CloseButton, Loader, QueryBoundary, Tooltip } from '@mhgo/front';
 import {
   useMonstersApi,

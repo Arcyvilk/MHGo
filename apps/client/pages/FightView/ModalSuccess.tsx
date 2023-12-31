@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from 'react';
 
-import { Item } from '../../containers';
+import { Item } from '@mhgo/front';
 import {
   addCdnUrl,
   useMonsterMarkerDropsApi,

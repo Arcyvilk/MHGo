@@ -1,9 +1,15 @@
 import { useState } from 'react';
 
-import { Button, Icon, Modal } from '@mhgo/front';
+import {
+  Button,
+  Icon,
+  Modal,
+  addCdnUrl,
+  Size,
+  useUserHealthApi,
+} from '@mhgo/front';
 import qr from '@mhgo/front/assets/qr.png';
 
-import { addCdnUrl, Size, useUserHealthApi } from '@mhgo/front';
 import { useUser } from '../../hooks/useUser';
 import { HealthBarSimple } from '../../containers';
 

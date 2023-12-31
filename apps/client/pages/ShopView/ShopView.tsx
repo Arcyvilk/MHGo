@@ -2,7 +2,7 @@ import { toast } from 'react-toastify';
 
 import { CloseButton, Icon, Loader, QueryBoundary } from '@mhgo/front';
 import { Size } from '@mhgo/front';
-import { Item } from '../../containers';
+import { Item } from '@mhgo/front';
 import { useItemsApi, useUserWealthApi } from '@mhgo/front';
 import { useUser } from '../../hooks/useUser';
 

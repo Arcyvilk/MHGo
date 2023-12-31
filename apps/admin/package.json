@@ -1,0 +1,44 @@
+{
+  "name": "@mhgo/admin",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "main": "index.tsx",
+  "author": "arcyvilk",
+  "scripts": {
+    "dev": "turbo dev:admin",
+    "dev:admin": "vite --config vite.config.ts --port 3093",
+    "build:admin": "vite --config vite.config.ts build",
+    "turbo:build": "turbo type-check build:admin",
+    "type-check": "tsc",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
+  },
+  "dependencies": {
+    "@mhgo/front": "*",
+    "@mhgo/types": "*",
+    "@mhgo/utils": "*",
+    "@tanstack/react-query": "^5.14.1",
+    "@tippyjs/react": "^4.2.6",
+    "leaflet": "^1.9.4",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-leaflet": "^4.2.1",
+    "react-router-dom": "^6.21.0",
+    "react-toastify": "^9.1.3",
+    "tippy.js": "^6.3.7"
+  },
+  "devDependencies": {
+    "@types/leaflet": "^1.9.8",
+    "@types/react": "^18.2.43",
+    "@types/react-dom": "^18.2.17",
+    "@typescript-eslint/eslint-plugin": "^6.14.0",
+    "@typescript-eslint/parser": "^6.14.0",
+    "@vitejs/plugin-react": "^4.2.1",
+    "eslint": "^8.55.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.5",
+    "typescript": "^5.2.2",
+    "vite": "^5.0.8",
+    "sass": "^1.69.5"
+  }
+}
