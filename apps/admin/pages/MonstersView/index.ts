@@ -1,0 +1,1 @@
+export { MonstersView } from './MonstersView';

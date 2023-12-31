@@ -1,0 +1,13 @@
+@import '@mhgo/front/styles/index.scss';
+
+.monstersView {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  box-sizing: border-box;
+
+  &__title {
+    margin: 0;
+    font-size: $size-18;
+  }
+}

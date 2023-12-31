@@ -21,13 +21,18 @@ dayjs.extend(timezone);
 dotenv.config();
 const app = express();
 
+const allowedOrigins = [
+  process.env.CORS_CLIENT ?? 'http://localhost:3091',
+  process.env.CORS_ADMIN ?? 'http://localhost:3093',
+];
+
 app.use(express.json({ limit: '5mb' }));
 app.use(express.urlencoded({ limit: '5mb', extended: false }));
 app.use(
   cors({
     credentials: true,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    origin: process.env.CORS ?? 'http://localhost:3091',
+    origin: allowedOrigins,
   }),
 );
 app.set('trust proxy', 1);

@@ -9,7 +9,7 @@
   padding-bottom: $size-48;
   box-sizing: border-box;
   align-items: center;
-  justify-content: space-between;
+  gap: $size-12;
 }
 
 .actions {
