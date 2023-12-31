@@ -1,5 +1,5 @@
 import { Icon } from '@mhgo/front';
-import { useNewsApi } from '../../api/useNewsApi';
+import { useNewsApi } from '@mhgo/front';
 
 import s from './ModalView.module.scss';
 

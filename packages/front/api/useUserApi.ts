@@ -1,6 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
-  Currency,
   CurrencyType,
   ItemToUse,
   Stats,
@@ -8,7 +7,7 @@ import {
   UserAmount,
 } from '@mhgo/types';
 
-import { API_URL } from '../utils/consts';
+import { API_URL } from '../env';
 
 export const useUserApi = (userId: string) => {
   const getUser = async (): Promise<User> => {

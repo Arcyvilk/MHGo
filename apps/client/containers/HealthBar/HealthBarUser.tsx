@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-import { useUpdateUserHealth, useUserHealthApi } from '../../api';
+import { useUpdateUserHealth, useUserHealthApi } from '@mhgo/front';
 import { useMonster } from '../../hooks/useMonster';
 import { useUser } from '../../hooks/useUser';
 import { useInterval } from '../../hooks/useInterval';

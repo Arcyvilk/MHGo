@@ -3,7 +3,7 @@ import { toast } from 'react-toastify';
 import { CloseButton, Icon, Loader, QueryBoundary } from '@mhgo/front';
 import { Size } from '@mhgo/front';
 import { Item } from '../../containers';
-import { useItemsApi, useUserWealthApi } from '../../api';
+import { useItemsApi, useUserWealthApi } from '@mhgo/front';
 import { useUser } from '../../hooks/useUser';
 
 import s from './ShopView.module.scss';

@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Loadout } from '@mhgo/types';
 
-import { API_URL } from '../utils/consts';
+import { API_URL } from '../env';
 
 export const useUserLoadoutApi = (userId: string) => {
   const getUserLoadout = async (): Promise<Loadout[]> => {

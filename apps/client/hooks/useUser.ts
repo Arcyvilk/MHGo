@@ -6,7 +6,7 @@ import {
   useUserItemsApi,
   useUserLoadoutApi,
   useUserMaterialsApi,
-} from '../api';
+} from '@mhgo/front';
 
 import { USER_ID, USER_NAME, LOADOUT_SLOTS } from '../_mock/settings';
 

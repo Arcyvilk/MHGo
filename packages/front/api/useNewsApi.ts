@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { News } from '@mhgo/types';
 
-import { API_URL } from '../utils/consts';
+import { API_URL } from '../env';
 import { addCdnUrl } from '../utils/addCdnUrl';
 
 /**

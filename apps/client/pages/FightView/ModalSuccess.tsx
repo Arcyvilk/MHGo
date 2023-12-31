@@ -2,12 +2,12 @@ import { useEffect, useState, useCallback } from 'react';
 
 import { Item } from '../../containers';
 import {
+  addCdnUrl,
   useMonsterMarkerDropsApi,
   useUpdateUserExp,
   useUpdateUserWealth,
-} from '../../api';
+} from '@mhgo/front';
 import { useUser } from '../../hooks/useUser';
-import { addCdnUrl } from '../../utils/addCdnUrl';
 import { Button, Loader, Modal, QueryBoundary } from '@mhgo/front';
 
 import s from './ModalResult.module.scss';

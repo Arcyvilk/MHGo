@@ -1,4 +1,4 @@
-import { useItemsApi } from '../api';
+import { useItemsApi } from '@mhgo/front';
 
 export const useItems = () => {
   const { data: items } = useItemsApi();

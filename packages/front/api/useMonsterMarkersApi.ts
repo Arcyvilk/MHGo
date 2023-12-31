@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { MonsterMarker } from '@mhgo/types';
 
-import { API_URL } from '../utils/consts';
+import { API_URL } from '../env';
 
 export const useMonsterMarkersApi = (userId?: string) => {
   const getMonsterMarkers = async (): Promise<MonsterMarker[]> => {

@@ -4,7 +4,7 @@ import { Icon } from '@mhgo/front';
 
 import s from './Experience.module.scss';
 
-import { useSettingsApi } from '../../api';
+import { useSettingsApi } from '@mhgo/front';
 
 export const Experience = () => {
   const { userExp } = useUser();

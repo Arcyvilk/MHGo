@@ -13,7 +13,7 @@ import { modifiers } from '@mhgo/front';
 import { useMonster } from '../../hooks/useMonster';
 import { ModalSuccess } from './ModalSuccess';
 import { ModalFailure } from './ModalFailure';
-import { useUserStatsApi } from '../../api';
+import { useUserStatsApi } from '@mhgo/front';
 import { useUser } from '../../hooks/useUser';
 
 import s from './FightView.module.scss';

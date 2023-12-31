@@ -1,4 +1,4 @@
-import { useUserHealthApi, useUserStatsApi } from '../../api';
+import { useUserHealthApi, useUserStatsApi } from '@mhgo/front';
 import { Icon, Loader, QueryBoundary, Tooltip } from '@mhgo/front';
 import { HealthBarSimple } from '../../containers';
 import { useUser } from '../../hooks/useUser';

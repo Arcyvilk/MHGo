@@ -8,7 +8,7 @@ import {
   useUpdateUserHealth,
   useUserConsumeItemsApi,
   useUserEquipItemApi,
-} from '../../api';
+} from '@mhgo/front';
 import { useUser } from '../../hooks/useUser';
 import { CraftConfirmation } from './Craft/CraftConfirmation';
 

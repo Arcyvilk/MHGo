@@ -1,4 +1,4 @@
-import { addCdnUrl } from '../utils/addCdnUrl';
+import { addCdnUrl } from '@mhgo/front';
 
 export type Resource = {
   id: string;

@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Material, MonsterDrop } from '@mhgo/types';
 
-import { API_URL } from '../utils/consts';
+import { API_URL } from '../env';
 
 export const useMonsterDropsApi = () => {
   const getMonsterMarkers = async (): Promise<MonsterDrop[]> => {

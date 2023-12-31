@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { API_URL } from '../utils/consts';
+import { API_URL } from '../env';
 
 /**
  *

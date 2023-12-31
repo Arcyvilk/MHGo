@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import L from 'leaflet';
 import { useUser } from '../hooks/useUser';
 import { MONSTER_MISSING, MONSTER_MARKER_MISSING } from '../utils/consts';
-import { useMonstersApi, useMonsterMarkersApi } from '../api';
+import { useMonstersApi, useMonsterMarkersApi } from '@mhgo/front';
 
 import s from '../pages/HomeView/Map/MonsterMarkers.module.scss';
 

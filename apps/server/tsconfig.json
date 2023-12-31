@@ -15,5 +15,5 @@
     "isolatedModules": true,
     "noEmit": true,
   },
-  "include": ["lib", "vite.config.server.ts"]
+  "include": ["lib", "./api.ts", "vite.config.server.ts"]
 }

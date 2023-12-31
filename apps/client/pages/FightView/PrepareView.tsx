@@ -7,7 +7,7 @@ import { useMonster } from '../../hooks/useMonster';
 
 import s from './FightView.module.scss';
 import { HealthBarSimple } from '../../containers';
-import { useUserHealthApi } from '../../api';
+import { useUserHealthApi } from '@mhgo/front';
 import { useUser } from '../../hooks/useUser';
 
 export const PrepareView = () => {

@@ -3,11 +3,9 @@ import { useState } from 'react';
 import { Button, Icon, Modal } from '@mhgo/front';
 import qr from '@mhgo/front/assets/qr.png';
 
-import { Size } from '@mhgo/front';
+import { addCdnUrl, Size, useUserHealthApi } from '@mhgo/front';
 import { useUser } from '../../hooks/useUser';
-import { addCdnUrl } from '../../utils/addCdnUrl';
 import { HealthBarSimple } from '../../containers';
-import { useUserHealthApi } from '../../api';
 
 import s from './Hunter.module.scss';
 
