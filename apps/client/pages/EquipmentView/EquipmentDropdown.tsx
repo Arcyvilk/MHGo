@@ -1,7 +1,8 @@
 import { toast } from 'react-toastify';
 import { ItemActions, Item as TItem } from '@mhgo/types';
+import { Button } from '@mhgo/components';
 
-import { Button, Dropdown, Flash, Modal } from '../../components';
+import { Dropdown, Flash, Modal } from '@mhgo/components';
 import {
   useItemActionsApi,
   useUpdateUserHealth,

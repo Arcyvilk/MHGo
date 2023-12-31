@@ -14,6 +14,7 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
   },
   "dependencies": {
+    "@mhgo/components": "*",
     "@mhgo/types": "*",
     "@mhgo/utils": "*",
     "@tanstack/react-query": "^5.14.1",

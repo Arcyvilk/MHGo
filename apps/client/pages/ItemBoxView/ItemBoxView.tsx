@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import { TABS, Tabs } from './Tabs';
 import { Item } from '../../containers';
-import { CloseButton, Loader, QueryBoundary } from '../../components';
+import { CloseButton, Loader, QueryBoundary } from '@mhgo/components';
 import { useUserItems, useUserMaterials } from '../../hooks/useUser';
 
 import s from './ItemBoxView.module.scss';

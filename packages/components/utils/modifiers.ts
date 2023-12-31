@@ -45,6 +45,7 @@ export const modifiers = <
     }
 
     return Object.entries(arg)
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       .filter(([_, value]) => value)
       .map(([modifier]) => s[`${baseClass}--${modifier}`]);
   };

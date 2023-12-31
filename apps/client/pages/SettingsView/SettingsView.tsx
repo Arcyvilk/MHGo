@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
-import { Button, CloseButton, Slider } from '../../components';
+import { Button, CloseButton, Slider } from '@mhgo/components';
 import { Volume, useVolume } from '../../hooks/useVolume';
 import { STATUS, useLogin } from '../../hooks/useLogin';
 import { APP_NAME, APP_VERSION } from '../../utils/consts';

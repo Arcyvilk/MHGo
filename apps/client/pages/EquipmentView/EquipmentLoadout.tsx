@@ -1,5 +1,5 @@
 import { useUser, useUserLoadout } from '../../hooks/useUser';
-import { Loader, QueryBoundary, Tooltip } from '../../components';
+import { Loader, QueryBoundary, Tooltip } from '@mhgo/components';
 import { Item } from '../../containers';
 
 import s from './EquipmentLoadout.module.scss';

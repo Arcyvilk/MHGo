@@ -4,8 +4,8 @@ import { useUpdateUserHealth, useUserHealthApi } from '../../api';
 import { useMonster } from '../../hooks/useMonster';
 import { useUser } from '../../hooks/useUser';
 import { useInterval } from '../../hooks/useInterval';
-import { Flash, Loader, QueryBoundary } from '../../components';
-import { modifiers } from '../../utils/modifiers';
+import { Flash, Loader, QueryBoundary } from '@mhgo/components';
+import { modifiers } from '@mhgo/components';
 
 import s from './HealthBar.module.scss';
 

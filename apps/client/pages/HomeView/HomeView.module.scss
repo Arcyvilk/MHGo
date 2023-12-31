@@ -1,4 +1,4 @@
-@import '../../styles/index.scss';
+@import '@mhgo/components/styles/index.scss';
 
 .homeView {
   display: flex;
@@ -10,8 +10,6 @@
   box-sizing: border-box;
   align-items: center;
   justify-content: space-between;
-  // background-image: url('../../assets/bg_map.png');
-  // background-size: contain;
 }
 
 .actions {

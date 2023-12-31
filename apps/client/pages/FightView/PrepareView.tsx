@@ -1,8 +1,8 @@
 import { useNavigate } from 'react-router-dom';
 
-import { Button, Icon } from '../../components';
-import { modifiers } from '../../utils/modifiers';
-import { Size } from '../../utils/size';
+import { Button, Icon } from '@mhgo/components';
+import { modifiers } from '@mhgo/components';
+import { Size } from '@mhgo/components';
 import { useMonster } from '../../hooks/useMonster';
 
 import s from './FightView.module.scss';

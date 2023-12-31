@@ -8,8 +8,8 @@ import {
   Loader,
   QueryBoundary,
   Rays,
-} from '../../components';
-import { modifiers } from '../../utils/modifiers';
+} from '@mhgo/components';
+import { modifiers } from '@mhgo/components';
 import { useMonster } from '../../hooks/useMonster';
 import { ModalSuccess } from './ModalSuccess';
 import { ModalFailure } from './ModalFailure';

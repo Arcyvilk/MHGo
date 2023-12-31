@@ -8,7 +8,7 @@ import {
 } from '../../api';
 import { useUser } from '../../hooks/useUser';
 import { addCdnUrl } from '../../utils/addCdnUrl';
-import { Button, Loader, Modal, QueryBoundary } from '../../components';
+import { Button, Loader, Modal, QueryBoundary } from '@mhgo/components';
 
 import s from './ModalResult.module.scss';
 import { useMonster } from '../../hooks/useMonster';

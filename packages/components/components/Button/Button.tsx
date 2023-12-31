@@ -1,6 +1,7 @@
 import { CSSProperties } from 'react';
+import { modifiers } from '@mhgo/components';
 import { Tooltip } from '..';
-import { modifiers } from '../../utils/modifiers';
+
 import s from './Button.module.scss';
 
 enum Variant {

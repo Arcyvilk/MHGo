@@ -1,4 +1,4 @@
-import { modifiers } from '../../utils/modifiers';
+import { modifiers } from '@mhgo/components';
 import s from './HealthBar.module.scss';
 
 type HealthBarMonster = {

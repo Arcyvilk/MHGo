@@ -1,4 +1,4 @@
-import { Button, Modal } from '../../components';
+import { Button, Modal } from '@mhgo/components';
 
 import s from './ModalResult.module.scss';
 

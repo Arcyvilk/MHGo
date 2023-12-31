@@ -1,4 +1,4 @@
-import { Icon } from '../../components';
+import { Icon } from '@mhgo/components';
 import { useNewsApi } from '../../api/useNewsApi';
 
 import s from './ModalView.module.scss';

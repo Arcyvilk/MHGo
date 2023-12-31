@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 
-import { Button, CloseButton, Icon } from '../../components';
-import { Size } from '../../utils/size';
+import { Button, CloseButton, Icon } from '@mhgo/components';
+import { Size } from '@mhgo/components';
 import { addCdnUrl } from '../../utils/addCdnUrl';
 import { usePaintballs } from '../../hooks/usePaintballs';
 

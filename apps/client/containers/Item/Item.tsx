@@ -1,6 +1,6 @@
-import { Icon } from '../../components';
-import { modifiers } from '../../utils/modifiers';
-import { Size } from '../../utils/size';
+import { Icon } from '@mhgo/components';
+import { modifiers } from '@mhgo/components';
+import { Size } from '@mhgo/components';
 
 import s from './Item.module.scss';
 

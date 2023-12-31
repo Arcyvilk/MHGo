@@ -2,8 +2,8 @@ import React from 'react';
 import icons, { IconType as AssetIconType } from '../../assets/icons';
 
 import s from './Icon.module.scss';
-import { modifiers } from '../../utils/modifiers';
-import { Size } from '../../utils/size';
+import { modifiers } from '@mhgo/components';
+import { Size } from '@mhgo/components';
 
 type Props = {
   className?: string;

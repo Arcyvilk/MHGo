@@ -1,6 +1,6 @@
 import L from 'leaflet';
 
-import Marker from '../../../assets/icons/Marker.svg';
+import Marker from '@mhgo/components/assets/icons/Marker.svg';
 
 const iconMarker = new L.Icon({
   iconUrl: Marker,

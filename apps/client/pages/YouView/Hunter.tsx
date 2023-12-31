@@ -1,14 +1,15 @@
 import { useState } from 'react';
 
-import { Button, Icon, Modal } from '../../components';
-import { Size } from '../../utils/size';
+import { Button, Icon, Modal } from '@mhgo/components';
+import qr from '@mhgo/components/assets/qr.png';
+
+import { Size } from '@mhgo/components';
 import { useUser } from '../../hooks/useUser';
 import { addCdnUrl } from '../../utils/addCdnUrl';
 import { HealthBarSimple } from '../../containers';
-
-import qr from '../../assets/qr.png';
-import s from './Hunter.module.scss';
 import { useUserHealthApi } from '../../api';
+
+import s from './Hunter.module.scss';
 
 export const Hunter = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { modifiers } from '../../../utils/modifiers';
+import { modifiers } from '@mhgo/components';
 import s from './Flash.module.scss';
 
 type FlashProps = {

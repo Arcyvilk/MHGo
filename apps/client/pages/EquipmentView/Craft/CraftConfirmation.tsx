@@ -1,6 +1,6 @@
 import { Material } from '@mhgo/types';
 
-import { Button, Tooltip } from '../../../components';
+import { Button, Tooltip } from '@mhgo/components';
 import { Item } from '../../../containers';
 import { useItemCraft } from '../../../hooks/useItemCraft';
 

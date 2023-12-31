@@ -1,4 +1,4 @@
-import { CloseButton } from '../../components';
+import { CloseButton } from '@mhgo/components';
 
 import s from './NotImplementedView.module.scss';
 
