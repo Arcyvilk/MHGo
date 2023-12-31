@@ -116,7 +116,7 @@ export const getDropsForUser = async (
       { userId },
       {
         $set: {
-          materials: itemsToUpdate,
+          items: itemsToUpdate,
         },
       },
       { upsert: true },
@@ -138,10 +138,12 @@ export const putUserMaterials = (
   oldUserMaterials: UserAmount[],
   uniqueMaterialDrops: (Material & { dropClass: CraftType; amount: number })[],
 ): UserAmount[] => {
-  const newUserMaterials = uniqueMaterialDrops.filter(
-    (material: Material) =>
-      !oldUserMaterials.some((m: UserAmount) => m.id === material.id),
-  );
+  const newUserMaterials = uniqueMaterialDrops
+    .filter(
+      (material: Material) =>
+        !oldUserMaterials.some((m: UserAmount) => m.id === material.id),
+    )
+    .map(m => ({ id: m.id, amount: m.amount }));
 
   const oldUserMaterialsUpdated = oldUserMaterials.map(
     (material: UserAmount) => {
@@ -151,7 +153,7 @@ export const putUserMaterials = (
       if (!newMaterialAmount) return material;
       const newAmount = (material.amount ?? 0) + newMaterialAmount;
       return {
-        ...material,
+        id: material.id,
         amount: newAmount,
       };
     },
@@ -164,10 +166,12 @@ export const putUserItems = (
   oldUserItems: UserAmount[],
   uniqueItemDrops: (TItem & { dropClass: CraftType; amount: number })[],
 ): UserAmount[] => {
-  const newUserItems = uniqueItemDrops.filter(
-    (material: TItem) =>
-      !oldUserItems.some((m: UserAmount) => m.id === material.id),
-  );
+  const newUserItems = uniqueItemDrops
+    .filter(
+      (material: TItem) =>
+        !oldUserItems.some((m: UserAmount) => m.id === material.id),
+    )
+    .map(i => ({ id: i.id, amount: i.amount }));
 
   const oldUserItemsUpdated = oldUserItems.map((item: UserAmount) => {
     const newItemAmount = uniqueItemDrops.find(
@@ -176,7 +180,7 @@ export const putUserItems = (
     if (!newItemAmount) return item;
     const newAmount = (item.amount ?? 0) + newItemAmount;
     return {
-      ...item,
+      id: item.id,
       amount: newAmount,
     };
   });

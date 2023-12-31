@@ -5,6 +5,7 @@ import { Button, Dropdown, Flash, Modal } from '../../components';
 import {
   useItemActionsApi,
   useUpdateUserHealth,
+  useUserConsumeItemsApi,
   useUserEquipItemApi,
 } from '../../api';
 import { useUser } from '../../hooks/useUser';
@@ -22,6 +23,7 @@ export const EquipmentDropdown = ({ item }: { item: TItem }) => {
   const { data: itemAction } = useItemActionsApi(item.id);
   const { userId } = useUser();
   const { mutate: mutateItemEquip } = useUserEquipItemApi(userId, item.id);
+  const { mutate: mutateConsumeItem } = useUserConsumeItemsApi(userId);
   const { mutate: mutateUserHealth, isSuccess: isHealedSuccessfully } =
     useUpdateUserHealth(userId);
 
@@ -35,28 +37,28 @@ export const EquipmentDropdown = ({ item }: { item: TItem }) => {
     if (item.equippable) mutateItemEquip();
   };
   const onItemUse = () => {
-    if (!item.usable || !itemAction) return;
+    if (!item.usable || !itemAction) {
+      toast.info(`This item doesn't have any use yet!`);
+      return;
+    }
     if (itemAction.text) {
       setAction('text');
       setIsModalOpen(true);
-      return;
     }
     if (itemAction.img) {
       setAction('img');
       setIsModalOpen(true);
-      return;
     }
     if (itemAction.redirect) {
       window.open(itemAction.redirect);
-      return;
     }
     if (itemAction.heal) {
-      // TODO this doesn't consume the item
       mutateUserHealth({ healthChange: itemAction.heal });
       toast.success(`Healed for ${itemAction.heal}!`);
-      return;
     }
-    toast.info(`This item doesn't have any use yet!`);
+    if (item.consumable) {
+      mutateConsumeItem([{ itemId: item.id, amountUsed: 1 }]);
+    }
   };
 
   return (

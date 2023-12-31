@@ -56,6 +56,7 @@ import {
   getUserHealth,
   updateUserExp,
   updateUserHealth,
+  updateUserItems,
   updateUserWealth,
 } from './users';
 
@@ -71,7 +72,9 @@ routerV1.get('/users/user/:userId/health', getUserHealth);
 routerV1.put('/users/user/:userId/health', updateUserHealth);
 
 routerV1.put('/users/user/:userId/exp', updateUserExp);
+routerV1.put('/users/user/:userId/items', updateUserItems);
 routerV1.put('/users/user/:userId/wealth', updateUserWealth);
+
 /****************************
  *         MAP         *
  ****************************/

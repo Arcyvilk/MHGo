@@ -24,7 +24,6 @@ export type Item = {
   craftList: CraftList[];
   equippable: boolean; // Can the item be equipped (if owned)
   usable: boolean; // Can the item be used (if owned)
-  unique: boolean; // Can user have only one copy of an item at once
   obtainedAt: string; // Short description of where this can be gotten from
   consumable: boolean; // Does the item disappear upon use
   quickUse: boolean; // Is the item present in the "quick use" menu
@@ -46,4 +45,9 @@ export type ItemCraftingList = {
   id: string;
   amount: number;
   userAmount: number;
+};
+
+export type ItemToUse = {
+  itemId: string;
+  amountUsed: number;
 };

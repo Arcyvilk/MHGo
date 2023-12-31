@@ -1,5 +1,12 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { Currency, CurrencyType, Stats, User, UserAmount } from '@mhgo/types';
+import {
+  Currency,
+  CurrencyType,
+  ItemToUse,
+  Stats,
+  User,
+  UserAmount,
+} from '@mhgo/types';
 
 import { API_URL } from '../utils/consts';
 
@@ -203,4 +210,29 @@ export const useUpdateUserWealth = (userId: string) => {
   });
 
   return { mutate, status, isPending, isSuccess, isError };
+};
+
+export const useUserConsumeItemsApi = (userId: string) => {
+  const queryClient = useQueryClient();
+
+  const consumeItems = async (variables: ItemToUse[]): Promise<void> => {
+    await fetch(`${API_URL}/users/user/${userId}/items`, {
+      method: 'PUT',
+      body: JSON.stringify(variables),
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+    });
+    queryClient.invalidateQueries({
+      queryKey: ['user', userId, 'items'],
+    });
+  };
+
+  const { mutate, isPending, isSuccess, isError } = useMutation({
+    mutationKey: ['user', userId, 'items', 'consume'],
+    mutationFn: consumeItems,
+  });
+
+  return { mutate, isPending, isSuccess, isError };
 };
