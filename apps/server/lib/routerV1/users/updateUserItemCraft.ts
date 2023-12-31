@@ -1,6 +1,12 @@
 import { Request, Response } from 'express';
 import { log } from '@mhgo/utils';
-import { UserItems } from '@mhgo/types';
+import {
+  Item,
+  ItemCraftList,
+  UserAmount,
+  UserItems,
+  UserMaterials,
+} from '@mhgo/types';
 
 import { mongoInstance } from '../../../api';
 
@@ -9,40 +15,136 @@ export const updateUserItemCraft = async (
   res: Response,
 ): Promise<void> => {
   try {
-    // const { db } = mongoInstance.getDb();
-    // const { userId, itemId } = req.params;
+    const { db } = mongoInstance.getDb();
+    const { userId, itemId } = req.params;
+    const { amount = 1 } = req.body;
 
-    // // Get user items
-    // const collectionUserItems = db.collection<UserItems>('userItems');
-    // const userItems = (
-    //   await collectionUserItems.findOne({
-    //     userId,
-    //   })
-    // )?.items;
+    // Check if item is craftable
+    const collectionItems = db.collection<Item>('items');
+    const item = await collectionItems.findOne({ id: itemId });
+    if (!item) throw new Error('Requested item does not exist');
+    if (!item.craftable) throw new Error('Requested item is not craftable');
 
-    // const updatedUserItems = userItems.map(userItem => {
-    //   const itemUsed = itemsUsed.find(i => i.itemId === userItem.id);
-    //   if (itemUsed) {
-    //     const newAmount = userItem.amount - itemUsed.amountUsed;
-    //     return {
-    //       ...userItem,
-    //       amount: newAmount >= 0 ? newAmount : 0,
-    //     };
-    //   }
-    //   return userItem;
-    // });
+    // Get item crafting list
+    const collectionItemCraftList = db.collection<ItemCraftList>('itemCraft');
+    const itemCraftList = (await collectionItemCraftList.findOne({ itemId }))
+      ?.craftList;
+    if (!itemCraftList)
+      throw new Error('This item has no ingredients to be crafted from!');
 
-    // const response = await collectionUserItems.updateOne(
-    //   { userId },
-    //   { $set: { items: updatedUserItems } },
-    // );
+    // Filter item crafting list by craft type
+    const ingredientsMaterial = itemCraftList.filter(
+      ingredient => ingredient.craftType === 'material',
+    );
+    const ingredientsItem = itemCraftList.filter(
+      ingredient => ingredient.craftType === 'item',
+    );
 
-    // if (!response.acknowledged) {
-    //   res.status(400).send({ error: 'Could not update user items.' });
-    // } else {
-    //   res.sendStatus(200);
-    // }
-    res.sendStatus(404);
+    // Get user items
+    const collectionUserItems = db.collection<UserItems>('userItems');
+    const userItems =
+      (
+        await collectionUserItems.findOne({
+          userId,
+        })
+      )?.items ?? [];
+
+    // Get user materials
+    const collectionUserMaterials =
+      db.collection<UserMaterials>('userMaterials');
+    const userMaterials =
+      (
+        await collectionUserMaterials.findOne({
+          userId,
+        })
+      )?.materials ?? [];
+
+    // Check if user has enough item ingredients to craft the item
+    const userOwnedItems = ingredientsItem.map(ingredient => {
+      const ownedItem = userItems.find(i => i.id === ingredient.id);
+      const amountNeeded = ingredient.amount * amount;
+      if (!ownedItem || ownedItem.amount < amountNeeded)
+        throw new Error(
+          "User doesn't have enough ingredients to craft this item!",
+        );
+      return { ...ingredient, amount: ownedItem.amount - amountNeeded };
+    });
+
+    // Check if user has enough material ingredients to craft the item
+    const userOwnedMaterials = ingredientsMaterial.map(ingredient => {
+      const ownedMat = userMaterials.find(m => m.id === ingredient.id);
+      const amountNeeded = ingredient.amount * amount;
+      if (!ownedMat || ownedMat.amount < amountNeeded)
+        throw new Error(
+          "User doesn't have enough ingredients to craft this item",
+        );
+      return { ...ingredient, amount: ownedMat.amount - amountNeeded };
+    });
+
+    // Remove item ingredients from user's inventory
+    let updatedUserItems: UserAmount[] = userItems.map(userItem => {
+      const ownedItem = userOwnedItems.find(
+        ownedItem => ownedItem.id === userItem.id,
+      );
+      if (ownedItem)
+        return {
+          ...userItem,
+          amount: ownedItem.amount,
+        };
+      else return userItem;
+    });
+
+    // Remove material ingredients from user's inventory
+    const updatedUserMaterials: UserAmount[] = userMaterials.map(
+      userMaterial => {
+        const ownedMat = userOwnedMaterials.find(
+          ownedMat => ownedMat.id === userMaterial.id,
+        );
+        if (ownedMat)
+          return {
+            ...userMaterial,
+            amount: ownedMat.amount,
+          };
+        else return userMaterial;
+      },
+    );
+
+    // Add newly crafted item to user's inventory
+    const userHasItem = updatedUserItems.find(
+      userItem => userItem.id === itemId,
+    );
+
+    // User already has item, bump its amount
+    if (userHasItem) {
+      const update = updatedUserItems.map(userItem => {
+        if (userItem.id === itemId)
+          return { ...userItem, amount: userItem.amount + amount };
+        else return userItem;
+      });
+      updatedUserItems = update;
+    }
+    // User does not have item, add it
+    else {
+      updatedUserItems.push({ id: itemId, amount });
+    }
+
+    // Save everything to database
+    const responseItems = await collectionUserItems.updateOne(
+      { userId },
+      { $set: { items: updatedUserItems } },
+    );
+    const responseMaterials = await collectionUserMaterials.updateOne(
+      { userId },
+      { $set: { materials: updatedUserMaterials } },
+    );
+
+    if (!responseMaterials.acknowledged)
+      throw new Error('Could not update user materials.');
+    if (!responseItems.acknowledged)
+      throw new Error('Could not update user items.');
+
+    // Fin!
+    res.sendStatus(201);
   } catch (err: any) {
     log.WARN(err);
     res.status(500).send({ error: err.message ?? 'Internal server error' });

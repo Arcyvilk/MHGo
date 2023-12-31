@@ -236,3 +236,28 @@ export const useUserConsumeItemsApi = (userId: string) => {
 
   return { mutate, isPending, isSuccess, isError };
 };
+
+export const useUserCraftItemApi = (userId: string, itemId: string) => {
+  const queryClient = useQueryClient();
+
+  const craftItems = async (variables: { amount: number }): Promise<void> => {
+    await fetch(`${API_URL}/users/user/${userId}/craft/${itemId}`, {
+      method: 'PUT',
+      body: JSON.stringify(variables),
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+    });
+    queryClient.invalidateQueries({ queryKey: ['user', userId, 'items'] });
+    queryClient.invalidateQueries({ queryKey: ['user', userId, 'materials'] });
+    queryClient.invalidateQueries({ queryKey: ['items', itemId, 'craftList'] });
+  };
+
+  const { mutate, isPending, isSuccess, isError } = useMutation({
+    mutationKey: ['user', userId, 'craft', itemId],
+    mutationFn: craftItems,
+  });
+
+  return { mutate, isPending, isSuccess, isError };
+};

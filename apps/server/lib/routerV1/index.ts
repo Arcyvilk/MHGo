@@ -75,7 +75,7 @@ routerV1.put('/users/user/:userId/health', updateUserHealth);
 routerV1.put('/users/user/:userId/wealth', updateUserWealth);
 routerV1.put('/users/user/:userId/exp', updateUserExp);
 routerV1.put('/users/user/:userId/consume', updateUserItemsConsume);
-routerV1.put('/users/user/:userId/craft', updateUserItemCraft);
+routerV1.put('/users/user/:userId/craft/:itemId', updateUserItemCraft);
 
 /****************************
  *         MAP         *

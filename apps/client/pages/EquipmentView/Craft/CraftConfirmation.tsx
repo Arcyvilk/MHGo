@@ -2,12 +2,9 @@ import { Material } from '@mhgo/types';
 
 import { Button, Tooltip } from '../../../components';
 import { Item } from '../../../containers';
-import { useItems } from '../../../hooks/useItems';
-import { useCraftableItems } from '../../../hooks/useCraftableItems';
+import { useItemCraft } from '../../../hooks/useItemCraft';
 
 import s from './CraftConfirmation.module.scss';
-import { useUser } from '../../../hooks/useUser';
-import { useItemCraftListApi } from '../../../api';
 
 type CraftConfirmationProps = {
   itemId: string;
@@ -18,22 +15,18 @@ export const CraftConfirmation = ({
   itemId,
   setIsModalOpen,
 }: CraftConfirmationProps) => {
-  const { userId } = useUser();
-  const { getItem } = useItems();
-  const { onCraft, getItemCraftingList } = useCraftableItems();
-  const { data: itemCraftList } = useItemCraftListApi(userId, itemId);
+  const { item, ingredientAmounts, onCraft, getItemIngredients } =
+    useItemCraft(itemId);
+  const ingredients = getItemIngredients();
 
-  const item = getItem(itemId);
-  const matsToCraft = getItemCraftingList(itemId);
-
-  const canBeCrafted = itemCraftList.reduce((sum, curr) => {
+  const canBeCrafted = ingredientAmounts.reduce((sum, curr) => {
     if (curr.userAmount < curr.amount) return false;
     return sum;
   }, true);
 
   const onYes = () => {
     setIsModalOpen(false);
-    onCraft(itemId);
+    onCraft();
   };
   const onNo = () => {
     setIsModalOpen(false);
@@ -49,10 +42,10 @@ export const CraftConfirmation = ({
         will consume the following materials:
       </p>
       <div className={s.craftConfirmation__materials}>
-        {matsToCraft.map((mat: Material, index: number) => {
-          const matRequirements = itemCraftList.find(i => i.id === mat.id);
+        {ingredients.map((mat: Material, index: number) => {
+          const requirements = ingredientAmounts.find(i => i.id === mat.id);
           const isNotOwned =
-            (matRequirements?.userAmount ?? 0) < (matRequirements?.amount ?? 0);
+            (requirements?.userAmount ?? 0) < (requirements?.amount ?? 0);
 
           return (
             <Tooltip
@@ -67,9 +60,9 @@ export const CraftConfirmation = ({
                       style={
                         isNotOwned ? { color: 'red' } : { color: 'green' }
                       }>
-                      {matRequirements?.userAmount}
+                      {requirements?.userAmount}
                     </span>
-                    /{matRequirements?.amount}
+                    /{requirements?.amount}
                   </div>
                 </div>
               }

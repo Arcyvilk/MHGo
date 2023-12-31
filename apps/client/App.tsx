@@ -32,6 +32,7 @@ const toastOptions: ToastContainerProps = {
   closeOnClick: true,
   theme: 'dark',
   autoClose: 2500,
+  style: { fontSize: '16px', fontWeight: 400 },
 };
 
 export const App = () => {

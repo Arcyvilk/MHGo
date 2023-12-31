@@ -47,6 +47,7 @@ export const Hunter = () => {
           <Button
             simple
             onClick={onHunterViewToggle}
+            style={{ maxWidth: '150px' }}
             label={
               <div className={s.hunter__button}>
                 <Icon icon="QR" size={Size.TINY} />

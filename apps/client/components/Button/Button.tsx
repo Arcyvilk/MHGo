@@ -1,3 +1,4 @@
+import { CSSProperties } from 'react';
 import { Tooltip } from '..';
 import { modifiers } from '../../utils/modifiers';
 import s from './Button.module.scss';
@@ -13,6 +14,7 @@ type Props = {
   disabled?: boolean;
   simple?: boolean;
   title?: string | null;
+  style?: CSSProperties;
   onClick: () => void;
 };
 export const Button = ({
@@ -21,6 +23,7 @@ export const Button = ({
   disabled = false,
   simple = false,
   title,
+  style = {},
   onClick,
 }: Props) => {
   const btn = (
@@ -28,7 +31,7 @@ export const Button = ({
       className={modifiers(s, 'button', variant, { simple, disabled })}
       onClick={onClick}
       disabled={disabled}
-      style={{ width: '100%' }}>
+      style={{ width: '100%', ...style }}>
       <div className={s.button__label}>{label}</div>
     </button>
   );
