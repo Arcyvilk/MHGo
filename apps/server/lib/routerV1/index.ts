@@ -56,8 +56,9 @@ import {
   getUserHealth,
   updateUserExp,
   updateUserHealth,
-  updateUserItems,
   updateUserWealth,
+  updateUserItemCraft,
+  updateUserItemsConsume,
 } from './users';
 
 routerV1.get('/users/user/:userId', getUser);
@@ -71,9 +72,10 @@ routerV1.get('/users/user/:userId/item/:itemId/equip', getUserEquipItem);
 routerV1.get('/users/user/:userId/health', getUserHealth);
 routerV1.put('/users/user/:userId/health', updateUserHealth);
 
-routerV1.put('/users/user/:userId/exp', updateUserExp);
-routerV1.put('/users/user/:userId/items', updateUserItems);
 routerV1.put('/users/user/:userId/wealth', updateUserWealth);
+routerV1.put('/users/user/:userId/exp', updateUserExp);
+routerV1.put('/users/user/:userId/consume', updateUserItemsConsume);
+routerV1.put('/users/user/:userId/craft', updateUserItemCraft);
 
 /****************************
  *         MAP         *

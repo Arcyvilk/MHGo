@@ -216,7 +216,7 @@ export const useUserConsumeItemsApi = (userId: string) => {
   const queryClient = useQueryClient();
 
   const consumeItems = async (variables: ItemToUse[]): Promise<void> => {
-    await fetch(`${API_URL}/users/user/${userId}/items`, {
+    await fetch(`${API_URL}/users/user/${userId}/consume`, {
       method: 'PUT',
       body: JSON.stringify(variables),
       headers: {
@@ -230,7 +230,7 @@ export const useUserConsumeItemsApi = (userId: string) => {
   };
 
   const { mutate, isPending, isSuccess, isError } = useMutation({
-    mutationKey: ['user', userId, 'items', 'consume'],
+    mutationKey: ['user', userId, 'consume'],
     mutationFn: consumeItems,
   });
 

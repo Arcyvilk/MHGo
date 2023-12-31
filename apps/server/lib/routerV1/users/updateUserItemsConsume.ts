@@ -4,7 +4,7 @@ import { Item, ItemToUse, UserItems } from '@mhgo/types';
 
 import { mongoInstance } from '../../../api';
 
-export const updateUserItems = async (
+export const updateUserItemsConsume = async (
   req: Request,
   res: Response,
 ): Promise<void> => {
@@ -38,11 +38,16 @@ export const updateUserItems = async (
 
     const updatedUserItems = userItems.map(userItem => {
       const itemUsed = itemsUsed.find(i => i.itemId === userItem.id);
-      if (itemUsed)
+      if (itemUsed) {
+        const newAmount = userItem.amount - itemUsed.amountUsed;
+        if (newAmount < 0) {
+          throw new Error('Insufficient amount of items to consume!');
+        }
         return {
           ...userItem,
-          amount: userItem.amount - itemUsed.amountUsed,
+          amount: newAmount >= 0 ? newAmount : 0,
         };
+      }
       return userItem;
     });
 

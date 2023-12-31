@@ -9,5 +9,7 @@ export { getUserHealth } from './getUserHealth';
 
 export { updateUserExp } from './updateUserExp';
 export { updateUserHealth } from './updateUserHealth';
-export { updateUserItems } from './updateUserItems';
 export { updateUserWealth } from './updateUserWealth';
+
+export { updateUserItemsConsume } from './updateUserItemsConsume';
+export { updateUserItemCraft } from './updateUserItemCraft';

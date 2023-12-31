@@ -26,7 +26,6 @@ export const Item = ({
   simple,
   isNotOwned = false,
 }: ItemProps) => {
-  console.log(isNotOwned);
   const { img, filter, amount, rarity, name, purchasable, price } = data;
   if (simple)
     return (

@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { log } from '@mhgo/utils';
 import { Item, Material, UserItems, UserMaterials } from '@mhgo/types';
 
+import { getItemsCraftList } from '../../helpers/getItemsCraftList';
 import { mongoInstance } from '../../../api';
 
 export const getItemCraftingList = async (
@@ -17,6 +18,14 @@ export const getItemCraftingList = async (
     const collectionItems = db.collection<Item>('items');
     const itemToCraft = await collectionItems.findOne({ id: itemId });
 
+    if (!itemToCraft.craftable) {
+      throw new Error('This item is not craftable!');
+    }
+
+    const craftList =
+      (await getItemsCraftList([itemId])).find(c => c.itemId === itemId)
+        ?.craftList ?? [];
+
     // Get how many needed materials user has
     const collectionUserMaterials =
       db.collection<UserMaterials>('userMaterials');
@@ -24,7 +33,7 @@ export const getItemCraftingList = async (
       ?.materials;
 
     // Get materials that are needed to craft this item
-    const materialCraftList = itemToCraft.craftList
+    const materialCraftList = craftList
       .filter(item => item.craftType === 'material')
       .map(material => ({ id: material.id, amount: material.amount }));
     const materialCraftIdsList = materialCraftList.map(m => m.id);
@@ -45,7 +54,7 @@ export const getItemCraftingList = async (
     const userItems = (await collectionUserItems.findOne({ userId }))?.items;
 
     // Get items that are needed to craft this item
-    const itemCraftList = itemToCraft.craftList
+    const itemCraftList = craftList
       .filter(item => item.craftType === 'item')
       .map(item => ({ id: item.id, amount: item.amount }));
     const itemCraftIdsList = itemCraftList.map(i => i.id);

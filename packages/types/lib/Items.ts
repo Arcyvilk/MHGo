@@ -4,12 +4,6 @@ export type ItemSlot = 'weapon' | 'helmet' | 'chest' | 'arm' | 'waist' | 'leg';
 
 export type CraftType = 'item' | 'material';
 
-export type CraftList = {
-  id: string;
-  craftType: CraftType;
-  amount: number;
-};
-
 export type Item = {
   id: string;
   type: ItemType;
@@ -21,7 +15,7 @@ export type Item = {
   price: number;
   purchasable: boolean;
   craftable: boolean; // Can the item be crafted
-  craftList: CraftList[];
+  craftList?: CraftList[];
   equippable: boolean; // Can the item be equipped (if owned)
   usable: boolean; // Can the item be used (if owned)
   obtainedAt: string; // Short description of where this can be gotten from
@@ -32,6 +26,11 @@ export type Item = {
 export type ItemActions = {
   itemId: string;
   action: ItemAction;
+};
+
+export type ItemCraftList = {
+  itemId: string;
+  craftList: CraftList[];
 };
 
 export type ItemAction = {
@@ -50,4 +49,10 @@ export type ItemCraftingList = {
 export type ItemToUse = {
   itemId: string;
   amountUsed: number;
+};
+
+export type CraftList = {
+  id: string;
+  craftType: CraftType;
+  amount: number;
 };

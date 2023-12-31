@@ -65,7 +65,7 @@ export const EquipmentDropdown = ({ item }: { item: TItem }) => {
     <div className={s.equipmentView__itemWrapper} key={item.id}>
       <Flash type="green" isActivated={isHealedSuccessfully} />
       <Modal isOpen={isModalOpen} setIsOpen={setIsModalOpen} onClose={() => {}}>
-        {action === 'craft' && (
+        {action === 'craft' && item.craftable && (
           <CraftConfirmation itemId={item.id} setIsModalOpen={setIsModalOpen} />
         )}
         {action === 'text' && (
