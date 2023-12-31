@@ -1,8 +1,10 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { IconType } from '../../assets/icons';
-import { Icon } from '../../components';
+import { Icon, Modal } from '../../components';
 import { Size } from '../../utils/size';
+import { QuickUseModal } from '../ModalView';
 import { Map } from './Map';
 
 import s from './HomeView.module.scss';
@@ -11,10 +13,11 @@ const TEMP_SRC =
   'https://cdn.masochist.me/badges/1003590_6423923a819d3d1917bfa22b.png';
 
 export const HomeView = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
 
   const onEquipmentClick = () => navigate('/equipment');
-  const onItemsClick = () => navigate('/items');
+  const onItemsClick = () => setIsModalOpen(true);
   const onPaintballClick = () => navigate('/paintball');
   const onYouClick = () => navigate('/you');
   const onShopClick = () => navigate('/shop');
@@ -25,6 +28,9 @@ export const HomeView = () => {
       <h1>HomeView</h1>
       <Map />
       <div className={s.actions}>
+        <Modal isOpen={isModalOpen} setIsOpen={setIsModalOpen}>
+          <QuickUseModal />
+        </Modal>
         <div className={s.actions__top}>
           <ActionButton icon="Face" onClick={onYouClick} />
           <ActionButton icon="Armory" onClick={onEquipmentClick} />

@@ -19,14 +19,14 @@ export const useCraftableItems = () => {
 
   const getItemCraftingList = (itemId: string) => {
     const itemToCraft = items.find(item => item.id === itemId)!;
-    const materialMats = itemToCraft.craftList
+    const materialMats = (itemToCraft.craftList ?? [])
       .filter(item => item.craftType === 'material')
       .map(material => ({
         ...materials.find(m => m.id === material.id),
         amount: material.amount,
       }))
       .filter(Boolean);
-    const itemMats = itemToCraft.craftList
+    const itemMats = (itemToCraft.craftList ?? [])
       .filter(item => item.craftType === 'item')
       .map(item => ({
         ...items.find(i => i.id === item.id),

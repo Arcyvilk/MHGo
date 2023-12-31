@@ -25,6 +25,21 @@
     gap: $size-16;
     font-size: $size-16;
   }
+
+  &__quickUse {
+    display: flex;
+    flex-direction: column;
+    gap: $size-12;
+    
+    &__title {
+      margin: 0;
+      margin-bottom: $size-12;
+      font-size: $size-18;
+    }
+    &__items {
+      @include item-grid;
+    }
+  }
 }
 
 // Modal View - posts

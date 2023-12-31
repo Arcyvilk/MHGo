@@ -29,8 +29,6 @@ export const getItems = async (_req: Request, res: Response): Promise<void> => {
       };
     });
 
-    console.log(itemsWithCraft);
-
     res.status(200).send(itemsWithCraft);
   } catch (err: any) {
     log.WARN(err);

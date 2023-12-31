@@ -16,7 +16,13 @@ import { useState } from 'react';
 import { Item } from '../../containers';
 
 type Action = keyof ItemActions['action'] | 'craft';
-export const EquipmentDropdown = ({ item }: { item: TItem }) => {
+export const EquipmentDropdown = ({
+  item,
+  useOnly = false,
+}: {
+  item: TItem;
+  useOnly?: boolean;
+}) => {
   const [action, setAction] = useState<Action>('craft');
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -64,8 +70,8 @@ export const EquipmentDropdown = ({ item }: { item: TItem }) => {
   return (
     <div className={s.equipmentView__itemWrapper} key={item.id}>
       <Flash type="green" isActivated={isHealedSuccessfully} />
-      <Modal isOpen={isModalOpen} setIsOpen={setIsModalOpen} onClose={() => {}}>
-        {action === 'craft' && item.craftable && (
+      <Modal isOpen={isModalOpen} setIsOpen={setIsModalOpen}>
+        {!useOnly && action === 'craft' && item.craftable && (
           <CraftConfirmation itemId={item.id} setIsModalOpen={setIsModalOpen} />
         )}
         {action === 'text' && (
@@ -90,10 +96,10 @@ export const EquipmentDropdown = ({ item }: { item: TItem }) => {
               <span style={{ fontStyle: 'italic' }}>"{item.description}"</span>
             </div>
             <div className={s.equipmentDropdown__section}>
-              {item.craftable && (
+              {!useOnly && item.craftable && (
                 <Button simple label="Craft" onClick={onItemCraft} />
               )}
-              {item.equippable && (
+              {!useOnly && item.equippable && (
                 <Button simple label="Equip" onClick={onItemEquip} />
               )}
               {item.usable && itemAction && (
