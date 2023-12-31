@@ -7,5 +7,6 @@ export * from './Icon';
 export * from './Loader';
 export * from './Modal';
 export * from './QueryBoundary';
+export * from './Select';
 export * from './Slider';
 export * from './Tooltip';
