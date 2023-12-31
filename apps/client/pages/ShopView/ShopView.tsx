@@ -1,7 +1,7 @@
 import { toast } from 'react-toastify';
 
-import { CloseButton, Icon, Loader, QueryBoundary } from '@mhgo/components';
-import { Size } from '@mhgo/components';
+import { CloseButton, Icon, Loader, QueryBoundary } from '@mhgo/front';
+import { Size } from '@mhgo/front';
 import { Item } from '../../containers';
 import { useItemsApi, useUserWealthApi } from '../../api';
 import { useUser } from '../../hooks/useUser';

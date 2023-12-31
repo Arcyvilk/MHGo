@@ -1,4 +1,4 @@
-import { CloseButton, Flash } from '@mhgo/components';
+import { CloseButton, Flash } from '@mhgo/front';
 import { addCdnUrl } from '../../utils/addCdnUrl';
 import { EquipmentCraft } from './EquipmentCraft';
 import { EquipmentLoadout } from './EquipmentLoadout';

@@ -1,5 +1,5 @@
 import { CSSProperties } from 'react';
-import { modifiers } from '@mhgo/components';
+import { modifiers } from '@mhgo/front';
 import { Tooltip } from '..';
 
 import s from './Button.module.scss';

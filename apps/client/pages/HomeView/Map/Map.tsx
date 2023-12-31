@@ -6,7 +6,7 @@ import { iconMarker } from './Marker';
 import { useLocalStorage } from '../../../hooks/useLocalStorage';
 import { MonsterMarkers } from './MonsterMarkers';
 import { useSettingsApi } from '../../../api';
-import { Loader, QueryBoundary } from '@mhgo/components';
+import { Loader, QueryBoundary } from '@mhgo/front';
 import { DEFAULT_COORDS } from '../../../utils/consts';
 
 import 'leaflet/dist/leaflet.css';

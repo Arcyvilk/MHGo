@@ -2,8 +2,8 @@ import { Fragment } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Marker } from 'react-leaflet';
 import L from 'leaflet';
-import { QueryBoundary } from '@mhgo/components';
-import StarYellow from '@mhgo/components/assets/icons/StarYellow.svg';
+import { QueryBoundary } from '@mhgo/front';
+import StarYellow from '@mhgo/front/assets/icons/StarYellow.svg';
 
 import { useMonsterMarkers } from '../../../hooks/useMonster';
 

@@ -1,4 +1,4 @@
-import { CloseButton } from '@mhgo/components';
+import { CloseButton } from '@mhgo/front';
 import { Buttons } from './Buttons';
 import { Experience } from './Experience';
 import { Hunter } from './Hunter';

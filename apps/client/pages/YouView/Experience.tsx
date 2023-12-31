@@ -1,6 +1,6 @@
-import { Size } from '@mhgo/components';
+import { Size } from '@mhgo/front';
 import { useUser } from '../../hooks/useUser';
-import { Icon } from '@mhgo/components';
+import { Icon } from '@mhgo/front';
 
 import s from './Experience.module.scss';
 

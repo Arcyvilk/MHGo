@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { Icon } from '../Icon';
 
 import s from './CloseButton.module.scss';
-import { Size } from '@mhgo/components';
+import { Size } from '@mhgo/front';
 
 export const CloseButton = () => {
   const navigate = useNavigate();

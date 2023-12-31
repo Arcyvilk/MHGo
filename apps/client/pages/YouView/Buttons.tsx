@@ -2,10 +2,10 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-import { IconType } from '@mhgo/components/assets/icons';
-import { Button, Icon, Modal } from '@mhgo/components';
+import { IconType } from '@mhgo/front/assets/icons';
+import { Button, Icon, Modal } from '@mhgo/front';
 
-import { Size } from '@mhgo/components';
+import { Size } from '@mhgo/front';
 import { AppearanceModal, NewsModal, PartyModal } from '../ModalView';
 
 import s from './Buttons.module.scss';

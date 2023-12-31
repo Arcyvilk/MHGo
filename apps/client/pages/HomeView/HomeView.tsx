@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { Icon, IconType, Modal } from '@mhgo/components';
-import { Size } from '@mhgo/components';
+import { Icon, IconType, Modal } from '@mhgo/front';
+import { Size } from '@mhgo/front';
 import { QuickUseModal } from '../ModalView';
 import { Map } from './Map';
 
