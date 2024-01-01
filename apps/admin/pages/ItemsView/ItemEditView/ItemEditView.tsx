@@ -110,19 +110,6 @@ export const ItemEditView = () => {
                 onNumberPropertyChange(newRarity, 'rarity')
               }
             />
-            <FormControlLabel
-              label="Available in quick use menu?"
-              //
-              control={
-                <Switch
-                  color="default"
-                  checked={updatedItem?.quickUse}
-                  onChange={(_, checked) =>
-                    onBoolPropertyChange(checked, 'quickUse')
-                  }
-                />
-              }
-            />
           </div>
         </div>
         <div className={s.itemEditView__content}>
@@ -214,6 +201,19 @@ export const ItemEditView = () => {
                       checked={updatedItem?.consumable}
                       onChange={(_, checked) =>
                         onBoolPropertyChange(checked, 'consumable')
+                      }
+                    />
+                  }
+                />
+                <FormControlLabel
+                  label="Available in quick use menu?"
+                  //
+                  control={
+                    <Switch
+                      color="default"
+                      checked={updatedItem?.quickUse}
+                      onChange={(_, checked) =>
+                        onBoolPropertyChange(checked, 'quickUse')
                       }
                     />
                   }
