@@ -14,4 +14,16 @@
   &__title {
     @include page-title;
   }
+
+  &__itemDetail {
+    display: flex;
+    align-items: center;
+    gap: $size-8;
+    font-weight: 600;
+  }
+
+  &__itemIcon {
+    max-width: $size-24;
+    max-height: $size-24;
+  }
 }

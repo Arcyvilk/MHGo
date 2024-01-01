@@ -6,7 +6,7 @@ export const UsersView = () => {
       <div className={s.usersView__header}>
         <h1 className={s.usersView__title}>USERS</h1>
       </div>
-      <div className={s.usersView__content}>gfrew2</div>
+      <div className={s.usersView__content}>TODO</div>
     </div>
   );
 };

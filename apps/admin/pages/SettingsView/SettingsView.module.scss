@@ -8,6 +8,8 @@
   }
 
   &__content {
+    display: flex;
+    gap: $size-16;
     padding: $size-8;
   }
 

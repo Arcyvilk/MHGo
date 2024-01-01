@@ -12,6 +12,10 @@
   &__wrapper {
     display: flex;
     flex-direction: column;
-    gap: $size-4;
+    gap: $size-8;
+  }
+
+  &__label {
+    font-weight: 600;
   }
 }
