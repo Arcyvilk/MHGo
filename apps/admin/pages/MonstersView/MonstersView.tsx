@@ -9,9 +9,17 @@ export const MonstersView = () => {
 
   return (
     <div className={s.monstersView}>
-      <h1 className={s.monstersView__title}>MONSTERS</h1>
-      <Select data={monsters} name="monsters" setValue={setSelectedMonsterId} />
-      <h2 className={s.monstersView__title}>Editing: {selectedMonsterId}</h2>
+      <div className={s.monstersView__header}>
+        <h1 className={s.monstersView__title}>MONSTERS</h1>
+      </div>
+      <div className={s.monstersView__content}>
+        <Select
+          data={monsters}
+          name="monsters"
+          setValue={setSelectedMonsterId}
+        />
+        <h2 className={s.monstersView__title}>Editing: {selectedMonsterId}</h2>
+      </div>
     </div>
   );
 };

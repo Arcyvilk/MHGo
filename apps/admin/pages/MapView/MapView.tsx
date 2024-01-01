@@ -15,10 +15,14 @@ export const MapView = () => {
 
   return (
     <div className={s.mapView}>
-      <h1 className={s.mapView__title}>MAP</h1>
-      <Select data={data} name="stuff" setValue={setValue} />
-      <div>{value}</div>
-      <Input name="stuff2" value={value} setValue={setValue} />
+      <div className={s.mapView__header}>
+        <h1 className={s.mapView__title}>MAP</h1>
+      </div>
+      <div className={s.mapView__content}>
+        <Select data={data} name="stuff" setValue={setValue} />
+        <div>{value}</div>
+        <Input name="stuff2" value={value} setValue={setValue} />
+      </div>
     </div>
   );
 };

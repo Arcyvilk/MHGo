@@ -3,6 +3,14 @@
 .materialsView {
   @include page-wrapper-admin;
 
+  &__header {
+    @include page-header-admin;
+  }
+
+  &__content {
+    padding: $size-8;
+  }
+
   &__title {
     @include page-title;
   }

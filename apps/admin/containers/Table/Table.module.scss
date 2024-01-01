@@ -1,0 +1,39 @@
+@import '@mhgo/front/styles/index.scss';
+
+.table {
+  width: 100%;
+  color: $admin-color-primary-text;
+
+  table {
+    background-color: $admin-color-secondary-bg;
+
+    thead {
+      tr {
+        th {
+          background-color: $admin-color-tertiary-bg;
+          color: $admin-color-primary-text;
+          font-size: $size-14;
+          font-weight: 600;
+          padding: $size-12 $size-16;
+          border-bottom: 5px solid black;
+          border-right: 2px solid black;
+        }
+      }
+    }
+
+    tbody {
+      tr {
+        td {
+          background-color: $admin-color-tertiary-bg;
+          color: $admin-color-primary-text;
+          font-size: $size-12;
+          font-weight: 400;
+          padding: $size-8 $size-12;
+          border-bottom: 2px solid black;
+          border-right: 2px solid black;
+        }
+        &:last-child td, &:last-child th { border-bottom: 0 }
+      }
+    }
+  }
+}

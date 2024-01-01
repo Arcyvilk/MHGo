@@ -74,9 +74,22 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  padding: $size-16;
   box-sizing: border-box;
   align-items: flex-start;
   justify-content: flex-start;
-  gap: $size-12;
+  font-weight: 400;
+  font-size: $size-12;
+}
+
+@mixin page-header-admin {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: $size-24;
+  background-color: $admin-color-primary-bg;
+  z-index: $zindex-header;
 }
