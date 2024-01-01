@@ -8,6 +8,7 @@ enum Variant {
   DEFAULT = 'default',
   DANGER = 'danger',
   ACTION = 'action',
+  GHOST = 'ghost',
 }
 type Props = {
   label: React.ReactNode;

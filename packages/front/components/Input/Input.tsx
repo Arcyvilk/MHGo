@@ -14,7 +14,7 @@ export const Input = ({
   ...inputProps
 }: InputProps) => {
   const onSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
-    return event;
+    if (setValue) setValue(event.target.value);
   };
 
   return (

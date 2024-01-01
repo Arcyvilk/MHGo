@@ -29,6 +29,12 @@
     background-color: $color-action;
   }
 
+  &--ghost {
+    background-color: transparent;
+    border: none;
+    color: $color-white;
+  }
+
   &--disabled {
     cursor: not-allowed;
     filter: grayscale(1);

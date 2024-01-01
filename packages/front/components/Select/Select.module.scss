@@ -19,8 +19,6 @@
   &__option {
     font-size: $size-12;
     font-weight: 400;
-    font-family: 'Open Sans', 'Georgia', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+    font-family: $font-open-sans;
   }
 }

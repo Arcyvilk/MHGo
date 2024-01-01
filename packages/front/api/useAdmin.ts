@@ -7,14 +7,20 @@ export const useAdminUpdateItemApi = () => {
 
   const adminUpdateItem = async (variables: Item): Promise<void> => {
     const { id, ...itemProperties } = variables;
-    await fetch(`${API_URL}/admin/items/item/${variables.id}`, {
-      method: 'PUT',
-      body: JSON.stringify(itemProperties),
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
+    const response = await fetch(
+      `${API_URL}/admin/items/item/${variables.id}`,
+      {
+        method: 'PUT',
+        body: JSON.stringify(itemProperties),
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
       },
-    });
+    );
+
+    if (response.status !== 200 && response.status !== 201)
+      throw new Error('Did not work!');
     queryClient.invalidateQueries({ queryKey: ['items'] });
   };
 

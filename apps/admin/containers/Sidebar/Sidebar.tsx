@@ -14,14 +14,16 @@ export const Sidebar = ({ title }: Props) => {
   return (
     <div className={s.sidebar}>
       {title && <h2>{title}</h2>}
-      {entries.map(entry => (
-        <button
-          className={s.sidebar__entry}
-          onClick={() => onEntryClick(entry)}>
-          <Icon icon={entry.icon} size={Size.MICRO} />
-          {entry.title}
-        </button>
-      ))}
+      {entries
+        .filter(entry => entry.mainRoute)
+        .map(entry => (
+          <button
+            className={s.sidebar__entry}
+            onClick={() => onEntryClick(entry)}>
+            <Icon icon={entry.icon} size={Size.MICRO} />
+            {entry.title}
+          </button>
+        ))}
     </div>
   );
 };

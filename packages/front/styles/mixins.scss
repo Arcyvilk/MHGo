@@ -93,3 +93,16 @@
   background-color: $admin-color-primary-bg;
   z-index: $zindex-header;
 }
+
+@mixin page-footer-admin {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  gap: $size-8;
+  padding: $size-8 $size-16;
+  width: 100%;
+
+  button {
+    flex: 0 0 100px;
+  }
+}

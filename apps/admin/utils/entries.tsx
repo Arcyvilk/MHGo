@@ -8,27 +8,32 @@ import {
   SettingsView,
   UsersView,
 } from '../pages';
+import { ItemEditView } from '../pages/ItemsView';
 
 export type Entry = {
   id: string;
   title: string;
   link: string;
   icon: IconType;
+  mainRoute?: boolean;
   component: React.ReactNode;
 };
 export const entries: Entry[] = [
+  // MAIN ROUTES
   {
     id: 'home',
     title: 'Home',
     link: '/',
-    icon: 'Paw',
+    icon: 'Home',
+    mainRoute: true,
     component: <HomeView />,
   },
   {
     id: 'map',
     title: 'Map',
     link: '/map',
-    icon: 'Marker',
+    icon: 'Map',
+    mainRoute: true,
     component: <MapView />,
   },
   {
@@ -36,6 +41,7 @@ export const entries: Entry[] = [
     title: 'Monsters',
     link: '/monsters',
     icon: 'Monster',
+    mainRoute: true,
     component: <MonstersView />,
   },
   {
@@ -43,6 +49,7 @@ export const entries: Entry[] = [
     title: 'Items',
     link: '/items',
     icon: 'Armory',
+    mainRoute: true,
     component: <ItemsView />,
   },
   {
@@ -50,6 +57,7 @@ export const entries: Entry[] = [
     title: 'Materials',
     link: '/materials',
     icon: 'ItemBox',
+    mainRoute: true,
     component: <MaterialsView />,
   },
   {
@@ -57,6 +65,7 @@ export const entries: Entry[] = [
     title: 'Settings',
     link: '/settings',
     icon: 'Gear',
+    mainRoute: true,
     component: <SettingsView />,
   },
   {
@@ -64,6 +73,16 @@ export const entries: Entry[] = [
     title: 'Users',
     link: '/users',
     icon: 'Friends',
+    mainRoute: true,
     component: <UsersView />,
+  },
+  // SUBROUTES
+  {
+    id: 'item_edit',
+    title: 'Edit item',
+    link: '/items/edit',
+    icon: 'Armory',
+    mainRoute: false,
+    component: <ItemEditView />,
   },
 ];

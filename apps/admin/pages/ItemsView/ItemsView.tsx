@@ -1,38 +1,48 @@
+import { useEffect } from 'react';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 import { Switch } from '@mui/material';
 import { Item as TItem } from '@mhgo/types';
-import { useAdminUpdateItemApi, useItemsApi } from '@mhgo/front';
+import {
+  Button,
+  Icon,
+  Size,
+  useAdminUpdateItemApi,
+  useItemsApi,
+} from '@mhgo/front';
+
 import { Table } from '../../containers';
 
 import s from './ItemsView.module.scss';
-import { useEffect } from 'react';
-import { toast } from 'react-toastify';
+
+const tableHeaders = [
+  'Name',
+  'Type',
+  'Rarity',
+  'Purchasable?',
+  'Craftable?',
+  'Usable?',
+  'Equippable?',
+  'Consumable?',
+  'Quick use?',
+  'Actions',
+];
 
 export const ItemsView = () => {
+  const navigate = useNavigate();
   const { data: items } = useItemsApi();
-  const {
-    mutate: mutateUpdateItem,
-    isSuccess,
-    isError,
-  } = useAdminUpdateItemApi();
-
-  const tableHeaders = [
-    'Name',
-    'Type',
-    'Rarity',
-    'Purchasable?',
-    'Craftable?',
-    'Usable?',
-    'Equippable?',
-    'Consumable?',
-    'Quick use?',
-  ];
+  const { mutate, isSuccess, isError } = useAdminUpdateItemApi();
 
   const onSwitch = (checked: boolean, item: TItem, property: keyof TItem) => {
     const updatedItem = {
       ...item,
       [property]: checked,
     };
-    mutateUpdateItem(updatedItem);
+    mutate(updatedItem);
+  };
+
+  const onItemEdit = (item: TItem) => {
+    navigate(`/items/edit?id=${item.id}`);
   };
 
   // TODO Make those two into a hook
@@ -78,6 +88,11 @@ export const ItemsView = () => {
       color="default"
       checked={item.quickUse}
       onChange={(_, checked) => onSwitch(checked, item, 'quickUse')}
+    />,
+    <Button
+      label={<Icon icon="Edit" size={Size.MICRO} />}
+      onClick={() => onItemEdit(item)}
+      style={{ width: '40px' }}
     />,
   ]);
 

@@ -2,14 +2,18 @@
 
 import Appearance from './Appearance.svg?react';
 import Armory from './Armory.svg?react';
+import Back from './Back.svg?react';
 import Burst from './Burst.svg?react';
 import Coin from './Coin.svg?react';
+import Edit from './Edit.svg?react';
 import Face from './Face.svg?react';
 import Fire from './Fire.svg?react';
 import Friends from './Friends.svg?react';
 import Gear from './Gear.svg?react';
+import Home from './Home.svg?react';
 import ItemBox from './ItemBox.svg?react';
 import Luck from './Luck.svg?react';
+import Map from './Map.svg?react';
 import Marker from './Marker.svg?react';
 import Medal from './Medal.svg?react';
 import Monster from './Monster.svg?react';
@@ -32,14 +36,18 @@ import X from './X.svg?react';
 const icons = {
   Appearance,
   Armory,
+  Back,
   Burst,
   Coin,
+  Edit,
   Face,
   Fire,
   Friends,
   Gear,
+  Home,
   ItemBox,
   Luck,
+  Map,
   Marker,
   Medal,
   Monster,
