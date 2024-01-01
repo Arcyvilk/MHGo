@@ -4,6 +4,7 @@ export * from './Button';
 export * from './CloseButton';
 export * from './Dropdown';
 export * from './Icon';
+export * from './Input';
 export * from './Loader';
 export * from './Modal';
 export * from './QueryBoundary';

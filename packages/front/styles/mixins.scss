@@ -69,3 +69,14 @@
     height: 100%;
   }
 }
+
+@mixin page-wrapper-admin {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: $size-16;
+  box-sizing: border-box;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: $size-12;
+}

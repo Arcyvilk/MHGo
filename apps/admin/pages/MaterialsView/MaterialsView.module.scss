@@ -1,8 +1,9 @@
 @import '@mhgo/front/styles/index.scss';
 
 .materialsView {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  box-sizing: border-box;
+  @include page-wrapper-admin;
+
+  &__title {
+    @include page-title;
+  }
 }

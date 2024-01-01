@@ -1,0 +1,36 @@
+@import '@mhgo/front/styles/index.scss';
+
+.sidebar {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  flex: 0 0 $sidebar-width;
+  width: $sidebar-width;
+  max-width: 100%;
+  height: 100%;
+  align-items: flex-start;
+  padding: $size-16;
+  gap: $size-8;
+  background-color: $admin-color-primary-bg;
+
+  &__entry {
+    outline: none;
+    border: none;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: $size-16;
+    width: 100%;
+    padding: $size-12 $size-16;
+    color: $admin-color-primary-text;
+    background-color: rgba($admin-color-tertiary-bg, 0.5);
+    font-size: $size-14;
+    font-weight: 600;
+    text-transform: uppercase;
+    cursor: pointer;
+
+    &:hover {
+      background-color: rgba($admin-color-tertiary-bg, 0.8);
+    }
+  }
+}

@@ -2,10 +2,15 @@
 
 .app {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     width: 100vw;
     height: 100vh;
     box-sizing: border-box;
-    overflow: hidden;
+    overflow-x: hidden;
     box-sizing: border-box;
+
+    &__routeWrapper {
+        margin-left: $sidebar-width;
+        width: 100%;
+    }
 }

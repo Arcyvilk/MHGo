@@ -3,6 +3,8 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import { ToastContainer, ToastContainerProps } from 'react-toastify';
 
+import { Entry, entries } from './utils/entries';
+import { Sidebar } from './containers';
 import { HomeView } from './pages';
 
 import s from './App.module.scss';
@@ -38,12 +40,21 @@ export const App = () => {
     <QueryClientProvider client={queryClient}>
       <div className={s.app}>
         <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<HomeView />} />
-          </Routes>
+          <Sidebar />
+          <RouteWrapper>
+            <Routes>
+              {entries.map(entry => (
+                <Route path={entry.link} element={entry.component} />
+              ))}
+            </Routes>
+          </RouteWrapper>
         </BrowserRouter>
         <ToastContainer {...toastOptions} />
       </div>
     </QueryClientProvider>
   );
+};
+
+const RouteWrapper = ({ children }: React.PropsWithChildren) => {
+  return <div className={s.app__routeWrapper}>{children}</div>;
 };
