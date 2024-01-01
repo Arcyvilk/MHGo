@@ -3,18 +3,6 @@
 .itemEditView {
   @include page-wrapper-admin;
 
-  &__header {
-    @include page-header-admin;
-  }
-
-  &__title {
-    @include page-title;
-  }
-
-  &__footer {
-    @include page-footer-admin;
-  }
-
   &__content {
     display: flex;
     flex-direction: row;

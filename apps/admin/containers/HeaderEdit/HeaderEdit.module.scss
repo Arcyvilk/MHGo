@@ -1,0 +1,46 @@
+@import '@mhgo/front/styles/index.scss';
+
+.headerEdit {
+  &__header {
+    @include page-header-admin;
+  }
+
+  &__title {
+    @include page-title;
+  }
+
+  &__status {
+    font-size: $size-28;
+    font-weight: 600;
+    text-transform: uppercase;
+    &--isPending {
+      color: $color-white;
+    }
+    &--isSuccess {
+      color: $color-success;
+    }
+    &--isError {
+      color: $color-danger;
+    }
+  }
+}
+
+.subheaderEdit {  
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  padding: $size-8 $size-16;
+  width: 100%;
+  background-color: rgba($admin-color-primary-bg, 0.4);
+
+  &__title {
+    margin: 0;
+  }
+
+  &__buttons {
+    display: flex;
+    gap: $size-8;
+    width: 200px;
+  }
+}

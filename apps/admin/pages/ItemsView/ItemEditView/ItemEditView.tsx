@@ -1,18 +1,19 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FormControlLabel, Switch } from '@mui/material';
-
 import { CDN_URL } from '@mhgo/front/env';
-import { Item as TItem } from '@mhgo/types';
+import { Item as TItem, ItemAction } from '@mhgo/types';
 import {
   Button,
-  Icon,
   Input,
-  Size,
+  Item,
+  Select,
   modifiers,
   useAdminUpdateItemApi,
+  useItemActionsApi,
   useItemsApi,
 } from '@mhgo/front';
+import { HeaderEdit, SubheaderEdit } from '../../../containers';
 
 import s from './ItemEditView.module.scss';
 
@@ -21,15 +22,18 @@ export const ItemEditView = () => {
   const {
     item,
     updatedItem,
+    updatedItemAction,
     itemImg,
     onTextPropertyChange,
     onNumberPropertyChange,
     onBoolPropertyChange,
+    onSelectionPropertyChange,
     onSave,
     isSuccess,
     isPending,
     isError,
   } = useUpdateItem();
+  const status = { isSuccess, isPending, isError };
 
   if (!item)
     return (
@@ -45,39 +49,10 @@ export const ItemEditView = () => {
 
   return (
     <div className={s.itemEditView}>
-      <div className={s.itemEditView__header}>
-        <h1 className={s.itemEditView__title}>
-          <Button
-            label={<Icon icon="Back" size={Size.MICRO} />}
-            onClick={() => navigate(-1)}
-            style={{ width: '48px' }}
-            variant={Button.Variant.GHOST}
-          />
-          Edit item
-        </h1>
-        {isPending && 'Saving...'}
-        {isSuccess && 'Saved!'}
-        {isError && 'Could not save!'}
-      </div>
-      <div className={s.itemEditView__footer}>
-        <Button
-          label="Cancel"
-          onClick={() => navigate(-1)}
-          variant={Button.Variant.DANGER}
-        />
-        <Button label="Save" onClick={onSave} variant={Button.Variant.ACTION} />
-      </div>
+      <HeaderEdit status={status} />
+      <SubheaderEdit title={`Item ID: ${updatedItem?.id}`} onSave={onSave} />
       <div className={s.itemEditView__content}>
         <div className={s.itemEditView__content}>
-          <div className={s.itemEditView__section}>
-            <Input
-              name="item_img"
-              label="Path to item image"
-              value={itemImg}
-              setValue={newPath => onTextPropertyChange(newPath, 'img')}
-            />
-            <img src={`${CDN_URL}${itemImg}`} />
-          </div>
           <div className={s.itemEditView__section}>
             <Input
               name="item_name"
@@ -109,6 +84,23 @@ export const ItemEditView = () => {
               setValue={newRarity =>
                 onNumberPropertyChange(newRarity, 'rarity')
               }
+            />
+          </div>
+          <div
+            className={s.itemEditView__section}
+            style={{ alignItems: 'center' }}>
+            <Input
+              name="item_img"
+              label="Path to item image"
+              value={itemImg}
+              setValue={newPath => onTextPropertyChange(newPath, 'img')}
+            />
+            <Item
+              data={{
+                ...(updatedItem ?? item),
+                purchasable: false,
+                img: `${CDN_URL}${itemImg}`,
+              }}
             />
           </div>
         </div>
@@ -218,6 +210,29 @@ export const ItemEditView = () => {
                     />
                   }
                 />
+                <Select
+                  data={['img', 'text', 'heal', 'redirect'].map(item => ({
+                    id: item,
+                    name: item,
+                  }))}
+                  name="Action"
+                  label="Action on use"
+                  defaultSelected={Object.keys(updatedItemAction)?.[0]}
+                  setValue={newAction =>
+                    onSelectionPropertyChange(newAction as ItemAction)
+                  }
+                />
+                <Input
+                  name="item_action"
+                  label="Action value"
+                  value={String(Object.values(updatedItemAction)?.[0] ?? '')}
+                  setValue={newActionValue =>
+                    onSelectionPropertyChange(
+                      Object.keys(updatedItemAction)?.[0] as ItemAction,
+                      newActionValue,
+                    )
+                  }
+                />
               </div>
             ) : null}
           </div>
@@ -253,17 +268,31 @@ export const ItemEditView = () => {
 };
 
 const useUpdateItem = () => {
-  const { data: items, isFetched } = useItemsApi();
   const params = new URLSearchParams(location.search);
   const id = params.get('id');
-  const item = useMemo(() => items.find(i => i.id === id), [items, isFetched]);
-  const [updatedItem, setUpdatedItem] = useState(item);
 
-  const { mutate, isSuccess, isError, isPending } = useAdminUpdateItemApi();
+  const { data: items, isFetched: isItemFetched } = useItemsApi();
+  const { data: itemAction, isFetched: isItemActionFetched } =
+    useItemActionsApi(id!);
+
+  const item = useMemo(
+    () => items.find(i => i.id === id),
+    [items, isItemFetched],
+  );
+  const [updatedItem, setUpdatedItem] = useState(item);
+  const [updatedItemAction, setUpdatedItemAction] = useState<ItemAction>(
+    itemAction ?? {},
+  );
 
   useEffect(() => {
     setUpdatedItem(item);
-  }, [isFetched]);
+  }, [isItemFetched]);
+  useEffect(() => {
+    console.log(itemAction);
+    setUpdatedItemAction(itemAction ?? {});
+  }, [isItemActionFetched]);
+
+  const { mutate, isSuccess, isError, isPending } = useAdminUpdateItemApi();
 
   const itemImg = useMemo(
     () => updatedItem?.img.replace(CDN_URL, '') ?? '',
@@ -296,6 +325,17 @@ const useUpdateItem = () => {
     });
   };
 
+  const onSelectionPropertyChange = (
+    newKey: ItemAction,
+    newValue?: string | number,
+  ) => {
+    if (!updatedItemAction) return;
+    setUpdatedItemAction({
+      ...updatedItemAction,
+      [newKey as string]: newValue,
+    });
+  };
+
   const onBoolPropertyChange = (
     checked: boolean,
     property: keyof Pick<
@@ -317,11 +357,13 @@ const useUpdateItem = () => {
 
   return {
     item,
-    updatedItem,
     itemImg,
+    updatedItem,
+    updatedItemAction,
     onTextPropertyChange,
     onNumberPropertyChange,
     onBoolPropertyChange,
+    onSelectionPropertyChange,
     onSave,
     isSuccess,
     isPending,
