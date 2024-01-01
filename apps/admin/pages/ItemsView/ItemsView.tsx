@@ -1,11 +1,19 @@
+import { Switch } from '@mui/material';
 import { Item as TItem } from '@mhgo/types';
-import { useItemsApi } from '@mhgo/front';
+import { useAdminUpdateItemApi, useItemsApi } from '@mhgo/front';
 import { Table } from '../../containers';
 
 import s from './ItemsView.module.scss';
+import { useEffect } from 'react';
+import { toast } from 'react-toastify';
 
 export const ItemsView = () => {
   const { data: items } = useItemsApi();
+  const {
+    mutate: mutateUpdateItem,
+    isSuccess,
+    isError,
+  } = useAdminUpdateItemApi();
 
   const tableHeaders = [
     'Name',
@@ -19,16 +27,58 @@ export const ItemsView = () => {
     'Quick use?',
   ];
 
+  const onSwitch = (checked: boolean, item: TItem, property: keyof TItem) => {
+    const updatedItem = {
+      ...item,
+      [property]: checked,
+    };
+    mutateUpdateItem(updatedItem);
+  };
+
+  // TODO Make those two into a hook
+  // and don't display a toast, show "Saving..." and "Saved!" in the header instead
+  useEffect(() => {
+    if (isSuccess) toast.success('Item saved successfully!');
+  }, [isSuccess]);
+
+  useEffect(() => {
+    if (isError) toast.error('Could not save the item :c');
+  }, [isError]);
+
   const tableRows = items.map(item => [
     <ItemCell item={item} />,
     item.type,
     item.rarity,
-    String(item.purchasable),
-    String(item.craftable),
-    String(item.usable),
-    String(item.equippable),
-    String(item.consumable),
-    String(item.quickUse),
+    <Switch
+      color="default"
+      checked={item.purchasable}
+      onChange={(_, checked) => onSwitch(checked, item, 'purchasable')}
+    />,
+    <Switch
+      color="default"
+      checked={item.craftable}
+      onChange={(_, checked) => onSwitch(checked, item, 'craftable')}
+    />,
+    <Switch
+      color="default"
+      checked={item.usable}
+      onChange={(_, checked) => onSwitch(checked, item, 'usable')}
+    />,
+    <Switch
+      color="default"
+      checked={item.equippable}
+      onChange={(_, checked) => onSwitch(checked, item, 'equippable')}
+    />,
+    <Switch
+      color="default"
+      checked={item.consumable}
+      onChange={(_, checked) => onSwitch(checked, item, 'consumable')}
+    />,
+    <Switch
+      color="default"
+      checked={item.quickUse}
+      onChange={(_, checked) => onSwitch(checked, item, 'quickUse')}
+    />,
   ]);
 
   return (

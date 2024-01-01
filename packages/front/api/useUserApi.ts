@@ -1,11 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import {
-  CurrencyType,
-  ItemToUse,
-  Stats,
-  User,
-  UserAmount,
-} from '@mhgo/types';
+import { CurrencyType, ItemToUse, Stats, User, UserAmount } from '@mhgo/types';
 
 import { API_URL } from '../env';
 

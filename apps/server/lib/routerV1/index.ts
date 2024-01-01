@@ -9,9 +9,10 @@ export const routerV1 = express.Router();
  *         ADMIN ROUTES         *
  ********************************/
 
-import { adminUpdateUser } from './admin';
+import { adminUpdateUser, adminUpdateItem } from './admin';
 
 routerV1.put('/admin/users/user/:userId', adminUpdateUser);
+routerV1.put('/admin/items/item/:itemId', adminUpdateItem);
 
 /****************************
  *         MONSTERS         *
