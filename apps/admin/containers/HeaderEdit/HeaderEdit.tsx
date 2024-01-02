@@ -48,26 +48,3 @@ export const HeaderEdit = ({ title, status }: HeaderEditProps) => {
     </div>
   );
 };
-
-export const SubheaderEdit = ({
-  title,
-  onSave,
-}: {
-  title: string;
-  onSave: () => void;
-}) => {
-  const navigate = useNavigate();
-  return (
-    <div className={s.subheaderEdit}>
-      <h2 className={s.subheaderEdit__title}>{title}</h2>
-      <div className={s.subheaderEdit__buttons}>
-        <Button
-          label="Cancel"
-          onClick={() => navigate(-1)}
-          variant={Button.Variant.DANGER}
-        />
-        <Button label="Save" onClick={onSave} variant={Button.Variant.ACTION} />
-      </div>
-    </div>
-  );
-};

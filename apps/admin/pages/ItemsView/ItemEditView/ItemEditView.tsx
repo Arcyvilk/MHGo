@@ -13,7 +13,7 @@ import {
   useItemActionsApi,
   useItemsApi,
 } from '@mhgo/front';
-import { HeaderEdit, SubheaderEdit } from '../../../containers';
+import { ActionBar, HeaderEdit } from '../../../containers';
 
 import s from './ItemEditView.module.scss';
 
@@ -50,7 +50,23 @@ export const ItemEditView = () => {
   return (
     <div className={s.itemEditView}>
       <HeaderEdit status={status} title="Edit item" />
-      <SubheaderEdit title={`Item ID: ${updatedItem?.id}`} onSave={onSave} />
+      <ActionBar
+        title={`Item ID: ${updatedItem?.id}`}
+        buttons={
+          <>
+            <Button
+              label="Cancel"
+              onClick={() => navigate(-1)}
+              variant={Button.Variant.DANGER}
+            />
+            <Button
+              label="Save"
+              onClick={onSave}
+              variant={Button.Variant.ACTION}
+            />
+          </>
+        }
+      />
       <div className={s.itemEditView__content}>
         <div className={s.itemEditView__content}>
           <div className={s.itemEditView__section}>

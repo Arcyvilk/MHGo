@@ -11,7 +11,7 @@ import {
   useItemsApi,
 } from '@mhgo/front';
 
-import { Table } from '../../containers';
+import { ActionBar, Table } from '../../containers';
 
 import s from './ItemsView.module.scss';
 
@@ -101,6 +101,16 @@ export const ItemsView = () => {
       <div className={s.itemsView__header}>
         <h1 className={s.itemsView__title}>ITEMS</h1>
       </div>
+      <ActionBar
+        buttons={
+          <>
+            <Button
+              label="Create new item"
+              onClick={() => navigate('create')}
+            />
+          </>
+        }
+      />
       <div className={s.itemsView__content}>
         <Table tableHeaders={tableHeaders} items={tableRows} />
       </div>

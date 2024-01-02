@@ -9,7 +9,7 @@ import {
   // useAdminUpdateMaterialApi,
   useMaterialsApi,
 } from '@mhgo/front';
-import { HeaderEdit, SubheaderEdit } from '../../../containers';
+import { ActionBar, HeaderEdit } from '../../../containers';
 
 import s from './MaterialEditView.module.scss';
 import { toast } from 'react-toastify';
@@ -50,9 +50,22 @@ export const MaterialEditView = () => {
         status={{ isSuccess: false, isPending: false, isError: false }}
         title="Edit material"
       />
-      <SubheaderEdit
+      <ActionBar
         title={`Material ID: ${updatedMaterial?.id}`}
-        onSave={onSave}
+        buttons={
+          <>
+            <Button
+              label="Cancel"
+              onClick={() => navigate(-1)}
+              variant={Button.Variant.DANGER}
+            />
+            <Button
+              label="Save"
+              onClick={onSave}
+              variant={Button.Variant.ACTION}
+            />
+          </>
+        }
       />
       <div className={s.materialEditView__content}>
         <div className={s.materialEditView__content}>

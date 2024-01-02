@@ -1,13 +1,13 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 import { CDN_URL } from '@mhgo/front/env';
 import { HabitatType, Monster } from '@mhgo/types';
 import { Button, Input, Select, useMonstersApi } from '@mhgo/front';
-import { HeaderEdit, SubheaderEdit } from '../../../containers';
+import { ActionBar, HeaderEdit } from '../../../containers';
 
 import s from './MonsterEditView.module.scss';
-import { toast } from 'react-toastify';
 
 export const MonsterEditView = () => {
   const navigate = useNavigate();
@@ -43,9 +43,22 @@ export const MonsterEditView = () => {
   return (
     <div className={s.monsterEditView}>
       <HeaderEdit status={status} title="Edit monster" />
-      <SubheaderEdit
+      <ActionBar
         title={`Monster ID: ${updatedMonster?.id}`}
-        onSave={onSave}
+        buttons={
+          <>
+            <Button
+              label="Cancel"
+              onClick={() => navigate(-1)}
+              variant={Button.Variant.DANGER}
+            />
+            <Button
+              label="Save"
+              onClick={onSave}
+              variant={Button.Variant.ACTION}
+            />
+          </>
+        }
       />
       <div className={s.monsterEditView__content}>
         <div className={s.monsterEditView__content}>

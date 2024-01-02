@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button, Icon, Size, useMaterialsApi } from '@mhgo/front';
 import { Material } from '@mhgo/types';
 
-import { Table } from '../../containers';
+import { ActionBar, Table } from '../../containers';
 
 import s from './MaterialsView.module.scss';
 
@@ -31,6 +31,16 @@ export const MaterialsView = () => {
       <div className={s.materialsView__header}>
         <h1 className={s.materialsView__title}>MATERIALS</h1>
       </div>
+      <ActionBar
+        buttons={
+          <>
+            <Button
+              label="Create new material"
+              onClick={() => navigate('create')}
+            />
+          </>
+        }
+      />
       <div className={s.materialsView__content}>
         <Table tableHeaders={tableHeaders} items={tableRows} />
       </div>

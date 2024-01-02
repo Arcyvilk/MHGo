@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { Monster } from '@mhgo/types';
 import { Button, Icon, Size, useMonstersApi } from '@mhgo/front';
-import { Table } from '../../containers';
+import { ActionBar, Table } from '../../containers';
 
 import s from './MonstersView.module.scss';
 
@@ -46,6 +46,16 @@ export const MonstersView = () => {
       <div className={s.monstersView__header}>
         <h1 className={s.monstersView__title}>MONSTERS</h1>
       </div>
+      <ActionBar
+        buttons={
+          <>
+            <Button
+              label="Create new monster"
+              onClick={() => navigate('create')}
+            />
+          </>
+        }
+      />
       <div className={s.monstersView__content}>
         <Table tableHeaders={tableHeaders} items={tableRows} />
       </div>

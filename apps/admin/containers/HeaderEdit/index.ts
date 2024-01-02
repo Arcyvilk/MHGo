@@ -1,1 +1,1 @@
-export { HeaderEdit, SubheaderEdit } from './HeaderEdit';
+export { HeaderEdit } from './HeaderEdit';

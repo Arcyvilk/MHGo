@@ -89,6 +89,25 @@
   overflow: scroll;
 }
 
+@mixin page-section-admin {
+  display: flex;
+  flex-direction: column;
+  gap: $size-16;
+  width: 250px;
+
+  &--hidden {
+    background-color: rgba($admin-color-primary-bg, 0.3);
+    border: 1px solid $admin-color-primary-bg;
+    border-radius: $size-8;
+    padding: $size-8;
+  }
+
+  h2 {
+    margin: 0;
+    font-size: $size-12;
+  }
+}
+
 @mixin page-header-admin {
   position: sticky;
   top: 0;
