@@ -10,8 +10,7 @@ import {
   useAdminUpdateMonsterApi,
   useMonstersApi,
 } from '@mhgo/front';
-import { ActionBar, HeaderEdit } from '../../../containers';
-import { IconInfo } from './IconInfo';
+import { ActionBar, HeaderEdit, IconInfo } from '../../../containers';
 
 import s from './SingleMonsterView.module.scss';
 
@@ -98,7 +97,8 @@ export const MonsterEditView = () => {
               <p
                 style={{ fontWeight: 600 }}
                 className={s.singleMonsterView__withInfo}>
-                <IconInfo /> Monster's DPS (base attack * base AS)
+                <IconInfo tooltip="Base value is multiplied by monster level" />{' '}
+                Monster's DPS (base attack * base AS)
               </p>
               <p style={{ fontWeight: 900, fontSize: '14px' }}>
                 {(updatedMonster?.baseDamage ?? 0) *
@@ -140,7 +140,7 @@ export const MonsterEditView = () => {
             <Input
               label={
                 <span className={s.singleMonsterView__withInfo}>
-                  <IconInfo />
+                  <IconInfo tooltip="Base value is multiplied by monster level" />
                   Monster base HP
                 </span>
               }
@@ -153,7 +153,7 @@ export const MonsterEditView = () => {
             <Input
               label={
                 <span className={s.singleMonsterView__withInfo}>
-                  <IconInfo />
+                  <IconInfo tooltip="Base value is multiplied by monster level" />
                   Monster base damage
                 </span>
               }
@@ -168,7 +168,7 @@ export const MonsterEditView = () => {
             <Input
               label={
                 <span className={s.singleMonsterView__withInfo}>
-                  <IconInfo />
+                  <IconInfo tooltip="Base value is multiplied by monster level" />
                   Monster base attack speed (attacks per second)
                 </span>
               }
@@ -185,7 +185,7 @@ export const MonsterEditView = () => {
             <Input
               label={
                 <span className={s.singleMonsterView__withInfo}>
-                  <IconInfo />
+                  <IconInfo tooltip="Base value is multiplied by monster level" />
                   Monster EXP drop (base)
                 </span>
               }
@@ -200,7 +200,7 @@ export const MonsterEditView = () => {
               disabled
               label={
                 <span className={s.singleMonsterView__withInfo}>
-                  <IconInfo />
+                  <IconInfo tooltip="Base value is multiplied by monster level" />
                   Monster basic currency drop (base)
                 </span>
               }
@@ -218,7 +218,7 @@ export const MonsterEditView = () => {
               disabled
               label={
                 <span className={s.singleMonsterView__withInfo}>
-                  <IconInfo />
+                  <IconInfo tooltip="Base value is multiplied by monster level" />
                   Monster premium currency drop (base)
                 </span>
               }

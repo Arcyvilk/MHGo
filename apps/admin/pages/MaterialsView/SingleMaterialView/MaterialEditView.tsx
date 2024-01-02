@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
+
 import { CDN_URL } from '@mhgo/front/env';
 import { Material } from '@mhgo/types';
 import {
@@ -8,8 +8,8 @@ import {
   Input,
   Item,
   useAdminUpdateMaterialApi,
-  // useAdminUpdateMaterialApi,
   useMaterialsApi,
+  useMonsterDropsApi,
 } from '@mhgo/front';
 import { ActionBar, HeaderEdit } from '../../../containers';
 
@@ -21,6 +21,7 @@ export const MaterialEditView = () => {
     material,
     updatedMaterial,
     materialImg,
+    materialDrops,
     onTextPropertyChange,
     onNumberPropertyChange,
     onSave,
@@ -81,14 +82,6 @@ export const MaterialEditView = () => {
               value={updatedMaterial?.description ?? ''}
               setValue={newDesc => onTextPropertyChange(newDesc, 'description')}
             />
-            {/* <Input
-              name="material_obtainedAt"
-              label="Where material can be obtained?"
-              value={updatedMaterial?.obtainedAt ?? ''}
-              setValue={newObtained =>
-                onTextPropertyChange(newObtained, 'obtainedAt')
-              }
-            /> */}
             <Input
               name="material_rarity"
               label="Material's rarity"
@@ -119,6 +112,25 @@ export const MaterialEditView = () => {
               }}
             />
           </div>
+          <div className={s.singleMaterialView__section}>
+            <div className={s.singleMaterialView__infoSection}>
+              <p
+                style={{ fontWeight: 600 }}
+                className={s.singleMaterialView__withInfo}>
+                Dropped by
+              </p>
+              {materialDrops.map(drop => (
+                <Button
+                  variant={Button.Variant.GHOST}
+                  simple
+                  label={`${drop.monsterId} (level ${drop.level})`}
+                  onClick={() =>
+                    navigate(`/monsters/edit?id=${drop.monsterId}`)
+                  }
+                />
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -129,17 +141,29 @@ const useUpdateMaterial = () => {
   const params = new URLSearchParams(location.search);
   const id = params.get('id');
 
-  const { data: materials, isFetched } = useMaterialsApi();
+  const { data: materials, isFetched: isMaterialsFetched } = useMaterialsApi();
+  const { data: drops, isFetched: isDropsFetched } = useMonsterDropsApi();
 
   const material = useMemo(
     () => materials.find(i => i.id === id),
-    [materials, isFetched],
+    [materials, isMaterialsFetched],
   );
   const [updatedMaterial, setUpdatedMaterial] = useState(material);
 
+  const materialDrops = useMemo(() => {
+    const monsters: { monsterId: string; level: number }[] = [];
+    drops.forEach(drop =>
+      drop.drops.map(levelDrop => {
+        if (levelDrop.drops.some(d => d.id === material?.id))
+          monsters.push({ monsterId: drop.monsterId, level: levelDrop.level });
+      }),
+    );
+    return monsters;
+  }, [drops, isDropsFetched]);
+
   useEffect(() => {
     setUpdatedMaterial(material);
-  }, [isFetched]);
+  }, [isMaterialsFetched]);
 
   const { mutate, isSuccess, isError, isPending } = useAdminUpdateMaterialApi();
 
@@ -174,6 +198,7 @@ const useUpdateMaterial = () => {
   return {
     material,
     materialImg,
+    materialDrops,
     updatedMaterial,
     onTextPropertyChange,
     onNumberPropertyChange,

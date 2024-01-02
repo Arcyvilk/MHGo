@@ -20,4 +20,13 @@
   &__section {
     @include page-section-admin;
   }
+
+  &__infoSection {
+    display: flex;
+    flex-direction: column;
+    gap: $size-8;
+    p {
+      margin: 0;
+    }
+  }
 }

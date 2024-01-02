@@ -4,9 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { CDN_URL } from '@mhgo/front/env';
 import { HabitatType, Monster } from '@mhgo/types';
 import { Button, Input, Select, useAdminCreateMonsterApi } from '@mhgo/front';
-import { ActionBar, HeaderEdit } from '../../../containers';
+import { ActionBar, HeaderEdit, IconInfo } from '../../../containers';
 import { DEFAULT_MONSTER } from '../../../utils/defaults';
-import { IconInfo } from './IconInfo';
 
 import s from './SingleMonsterView.module.scss';
 
@@ -78,7 +77,8 @@ export const MonsterCreateView = () => {
               <p
                 style={{ fontWeight: 600 }}
                 className={s.singleMonsterView__withInfo}>
-                <IconInfo /> Monster's DPS (base attack * base AS)
+                <IconInfo tooltip="Base value is multiplied by monster level" />{' '}
+                Monster's DPS (base attack * base AS)
               </p>
               <p style={{ fontWeight: 900, fontSize: '14px' }}>
                 {(monster?.baseDamage ?? 0) * (monster?.baseAttackSpeed ?? 0)}
@@ -119,7 +119,7 @@ export const MonsterCreateView = () => {
             <Input
               label={
                 <span className={s.singleMonsterView__withInfo}>
-                  <IconInfo />
+                  <IconInfo tooltip="Base value is multiplied by monster level" />
                   Monster base HP
                 </span>
               }
@@ -132,7 +132,7 @@ export const MonsterCreateView = () => {
             <Input
               label={
                 <span className={s.singleMonsterView__withInfo}>
-                  <IconInfo />
+                  <IconInfo tooltip="Base value is multiplied by monster level" />
                   Monster base damage
                 </span>
               }
@@ -147,7 +147,7 @@ export const MonsterCreateView = () => {
             <Input
               label={
                 <span className={s.singleMonsterView__withInfo}>
-                  <IconInfo />
+                  <IconInfo tooltip="Base value is multiplied by monster level" />
                   Monster base attack speed
                 </span>
               }
@@ -164,7 +164,7 @@ export const MonsterCreateView = () => {
             <Input
               label={
                 <span className={s.singleMonsterView__withInfo}>
-                  <IconInfo />
+                  <IconInfo tooltip="Base value is multiplied by monster level" />
                   Monster EXP drop (base)
                 </span>
               }
@@ -179,7 +179,7 @@ export const MonsterCreateView = () => {
               disabled
               label={
                 <span className={s.singleMonsterView__withInfo}>
-                  <IconInfo />
+                  <IconInfo tooltip="Base value is multiplied by monster level" />
                   Monster basic currency drop (base)
                 </span>
               }
@@ -196,7 +196,7 @@ export const MonsterCreateView = () => {
               disabled
               label={
                 <span className={s.singleMonsterView__withInfo}>
-                  <IconInfo />
+                  <IconInfo tooltip="Base value is multiplied by monster level" />
                   Monster premium currency drop (base)
                 </span>
               }

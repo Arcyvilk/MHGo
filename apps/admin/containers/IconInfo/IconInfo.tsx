@@ -1,8 +1,8 @@
 import { Icon, Size, Tooltip } from '@mhgo/front';
 
-export const IconInfo = () => {
+export const IconInfo = ({ tooltip }: { tooltip: React.ReactNode }) => {
   return (
-    <Tooltip content="Base value is multiplied by monster level">
+    <Tooltip content={tooltip}>
       <Icon icon="Info" size={Size.MICRO} />
     </Tooltip>
   );
