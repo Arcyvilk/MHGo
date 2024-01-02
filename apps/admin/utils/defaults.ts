@@ -1,4 +1,4 @@
-import { Material, Monster } from '@mhgo/types';
+import { Material, Monster, MonsterMarker } from '@mhgo/types';
 
 export const DEFAULT_MONSTER: Monster = {
   id: '',
@@ -31,3 +31,10 @@ export const DEFAULT_MATERIAL: Material = {
   img: '/materials/XXX.jpg',
   filter: '',
 };
+
+export const DEFAULT_MONSTER_MARKER: Omit<MonsterMarker, 'respawnTime' | 'id'> =
+  {
+    monsterId: '',
+    level: null,
+    coords: [],
+  };

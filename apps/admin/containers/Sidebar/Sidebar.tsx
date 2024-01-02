@@ -18,6 +18,7 @@ export const Sidebar = ({ title }: Props) => {
         .filter(entry => entry.mainRoute)
         .map(entry => (
           <button
+            key={entry.id}
             className={s.sidebar__entry}
             onClick={() => onEntryClick(entry)}>
             <Icon icon={entry.icon} size={Size.MICRO} />

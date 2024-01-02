@@ -1,6 +1,6 @@
 @import '@mhgo/front/styles/index.scss';
 
-.mapView {
+.markerView {
   @include page-wrapper-admin;
   &__header {
     @include page-header-admin;
@@ -8,22 +8,16 @@
   &__content {
     @include page-content-admin;
     width: 100%;
+    span {
+      font-family: $font-open-sans;
+      font-size: $size-12;
+      font-weight: 600;
+    }
   }
   &__title {
     @include page-title;
   }
   &__section {
     @include page-section-admin;
-  }
-
-  .mapContainer {
-    position: relative;
-    width: 100%;
-    height: 400px;
-    z-index: $zindex-map;
-  }
-  
-  .popup {
-    font-size: $size-12;
   }
 }

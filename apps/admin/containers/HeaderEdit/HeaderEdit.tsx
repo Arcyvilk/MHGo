@@ -1,11 +1,14 @@
-import { Button, Icon, Size, modifiers } from '@mhgo/front';
-import s from './HeaderEdit.module.scss';
-import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+import { Button, Icon, Size, modifiers } from '@mhgo/front';
+import { Status } from '../../utils/types';
+
+import s from './HeaderEdit.module.scss';
 
 type HeaderEditProps = {
   title: string;
-  status: { isSuccess: boolean; isError: boolean; isPending: boolean };
+  status: Status;
 };
 export const HeaderEdit = ({ title, status }: HeaderEditProps) => {
   const navigate = useNavigate();

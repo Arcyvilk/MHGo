@@ -1,12 +1,12 @@
-import { useEffect, useMemo, useState } from 'react';
-import { MapContainer, TileLayer, useMap } from 'react-leaflet';
+import { useMemo, useState } from 'react';
+import { MapContainer } from 'react-leaflet';
 import L from 'leaflet';
 import { Button, Loader, QueryBoundary, useLocalStorage } from '@mhgo/front';
-
-import { MonsterMarkers } from './Markers';
+import { ActionBar, HeaderEdit } from '../../containers';
+import { MapLayer } from './MapLayer';
+import { MonsterMarkerCreateView, MonsterMarkerEditView } from './SingleMarker';
 
 import s from './MapView.module.scss';
-import { ActionBar } from '../../containers';
 
 export const DEFAULT_COORDS = [59.892131, 10.6194067];
 
@@ -18,11 +18,20 @@ export const MapView = () => (
 
 const Load = () => {
   const geo = useMemo(() => navigator.geolocation, []);
+  const [status, setStatus] = useState({
+    isSuccess: false,
+    isError: false,
+    isPending: false,
+  });
+
   const [coords, setCoords] = useLocalStorage(
     'MHGO_LAST_KNOWN_LOCATION',
     DEFAULT_COORDS,
   );
+
+  const [createView, setCreateView] = useState(false);
   const [selectedCoords, setSelectedCoords] = useState<number[]>(coords);
+  const [selectedMarker, setSelectedMarker] = useState<string | null>(null);
 
   const onCenterMap = () => {
     geo.getCurrentPosition(
@@ -38,55 +47,40 @@ const Load = () => {
 
   return (
     <div className={s.mapView}>
-      <div className={s.mapView__header}>
-        <h1 className={s.mapView__title}>MAP</h1>
-      </div>
+      <HeaderEdit status={status} title="MAP" />
+      <ActionBar
+        buttons={<Button label="Center on me" onClick={onCenterMap} />}
+      />
       <div className={s.mapView__content}>
-        <ActionBar
-          buttons={<Button label="Center on me" onClick={onCenterMap} />}
-        />
         <MapContainer
           center={L.latLng(coords[0], coords[1])}
           className={s.mapContainer}
           zoom={16}
           style={{ height: '400px' }}>
           <MapLayer
+            selectedMarker={selectedMarker}
+            setSelectedMarker={setSelectedMarker}
             currentCoords={coords}
             setSelectedCoords={setSelectedCoords}
+            setCreateView={setCreateView}
           />
         </MapContainer>
       </div>
+      {selectedMarker && (
+        <MonsterMarkerEditView
+          selectedMarker={selectedMarker}
+          selectedCoords={selectedCoords}
+          onCancel={() => setSelectedMarker(null)}
+          setStatus={setStatus}
+        />
+      )}
+      {!selectedMarker && createView && (
+        <MonsterMarkerCreateView
+          selectedCoords={selectedCoords}
+          onCancel={() => setCreateView(false)}
+          setStatus={setStatus}
+        />
+      )}
     </div>
-  );
-};
-
-type MapLayerProps = {
-  currentCoords: number[];
-  setSelectedCoords: (selectedCoords: number[]) => void;
-};
-const MapLayer = ({ currentCoords, setSelectedCoords }: MapLayerProps) => {
-  const map = useMap();
-
-  useEffect(() => {
-    map.invalidateSize();
-  }, [map]);
-
-  useEffect(() => {
-    if (map) map.flyTo(L.latLng(currentCoords[0], currentCoords[1]));
-  }, [currentCoords, map]);
-
-  map.on('click', ev => {
-    const latlng = map.mouseEventToLatLng(ev.originalEvent);
-    setSelectedCoords([latlng.lat, latlng.lng]);
-  });
-
-  return (
-    <>
-      <TileLayer
-        attribution='&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-        url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
-      />
-      <MonsterMarkers />
-    </>
   );
 };
