@@ -19,7 +19,10 @@ export const adminCreateMonster = async (
     };
 
     // Create monster
-    const responseMonsters = await collectionMonsters.insertOne(monster);
+    const responseMonsters = await collectionMonsters.insertOne({
+      ...monster,
+      img: monster.img.replace(process.env.CDN_URL, ''),
+    });
     if (!responseMonsters.acknowledged) {
       res.status(400).send({ error: 'Could not create this monster.' });
       return;

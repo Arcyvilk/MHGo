@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
+import { WithId } from 'mongodb';
 import { log } from '@mhgo/utils';
 import { Item } from '@mhgo/types';
 
 import { mongoInstance } from '../../../api';
-import { WithId } from 'mongodb';
 
 export const adminUpdateItem = async (
   req: Request,
@@ -18,11 +18,14 @@ export const adminUpdateItem = async (
       WithId<Item>
     >;
 
-    // TODO allow updating image, but remove CDN_URL from url
-
     const response = await collection.updateOne(
       { id: itemId },
-      { $set: updatedFields },
+      {
+        $set: {
+          ...updatedFields,
+          img: img.replace(process.env.CDN_URL, ''),
+        },
+      },
     );
 
     if (!response.acknowledged) {

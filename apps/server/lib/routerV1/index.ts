@@ -10,17 +10,21 @@ export const routerV1 = express.Router();
  ********************************/
 
 import {
+  adminCreateMaterial,
   adminCreateMonster,
   adminUpdateItem,
+  adminUpdateMaterial,
   adminUpdateMonster,
   adminUpdateUser,
 } from './admin';
 
+routerV1.post('/admin/materials/create', adminCreateMaterial);
 routerV1.post('/admin/monsters/create', adminCreateMonster);
 
+routerV1.put('/admin/items/item/:itemId', adminUpdateItem);
+routerV1.put('/admin/materials/material/:materialId', adminUpdateMaterial);
 routerV1.put('/admin/monsters/monster/:monsterId', adminUpdateMonster);
 routerV1.put('/admin/users/user/:userId', adminUpdateUser);
-routerV1.put('/admin/items/item/:itemId', adminUpdateItem);
 
 /****************************
  *         MONSTERS         *

@@ -1,4 +1,4 @@
-import { Monster } from '@mhgo/types';
+import { Material, Monster } from '@mhgo/types';
 
 export const DEFAULT_MONSTER: Monster = {
   id: '',
@@ -21,4 +21,13 @@ export const DEFAULT_MONSTER: Monster = {
       amount: 0,
     },
   ],
+};
+
+export const DEFAULT_MATERIAL: Material = {
+  id: '',
+  name: '',
+  description: '',
+  rarity: 1,
+  img: '/materials/XXX.jpg',
+  filter: '',
 };

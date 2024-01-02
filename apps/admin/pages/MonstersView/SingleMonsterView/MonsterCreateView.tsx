@@ -232,7 +232,7 @@ const useUpdateMonster = () => {
 
   const onCreate = () => {
     if (monster) {
-      const monsterId = monster.name.toLowerCase().replace(' ', '_');
+      const monsterId = monster.name.toLowerCase().replace(/ /g, '_');
       mutate({
         monster: { ...monster, id: monsterId },
         drops: { monsterId, drops: [] },

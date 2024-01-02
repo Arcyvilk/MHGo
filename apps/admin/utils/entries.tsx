@@ -9,6 +9,7 @@ import {
   UsersView,
   //
   ItemEditView,
+  MaterialCreateView,
   MaterialEditView,
   MonsterEditView,
   MonsterCreateView,
@@ -88,6 +89,14 @@ export const entries: Entry[] = [
     icon: 'Armory',
     mainRoute: false,
     component: <ItemEditView />,
+  },
+  {
+    id: 'material_create',
+    title: 'Create material',
+    link: '/materials/create',
+    icon: 'ItemBox',
+    mainRoute: false,
+    component: <MaterialCreateView />,
   },
   {
     id: 'material_edit',

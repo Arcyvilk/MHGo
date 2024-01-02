@@ -1,18 +1,19 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { CDN_URL } from '@mhgo/front/env';
 import { Material } from '@mhgo/types';
 import {
   Button,
   Input,
   Item,
+  useAdminUpdateMaterialApi,
   // useAdminUpdateMaterialApi,
   useMaterialsApi,
 } from '@mhgo/front';
 import { ActionBar, HeaderEdit } from '../../../containers';
 
-import s from './MaterialEditView.module.scss';
-import { toast } from 'react-toastify';
+import s from './SingleMaterialView.module.scss';
 
 export const MaterialEditView = () => {
   const navigate = useNavigate();
@@ -23,31 +24,29 @@ export const MaterialEditView = () => {
     onTextPropertyChange,
     onNumberPropertyChange,
     onSave,
-    // isSuccess,
-    // isPending,
-    // isError,
+    isSuccess,
+    isPending,
+    isError,
   } = useUpdateMaterial();
-  // const status = { isSuccess, isPending, isError };
 
   if (!material)
     return (
-      <div className={s.materialEditView}>
-        <div className={s.materialEditView__header}>
-          <h1 className={s.materialEditView__title}>
+      <div className={s.singleMaterialView}>
+        <div className={s.singleMaterialView__header}>
+          <h1 className={s.singleMaterialView__title}>
             This material does not exist
           </h1>
         </div>
-        <div className={s.materialEditView__footer}>
+        <div className={s.singleMaterialView__footer}>
           <Button label="Back" onClick={() => navigate(-1)} />
         </div>
       </div>
     );
 
   return (
-    <div className={s.materialEditView}>
+    <div className={s.singleMaterialView}>
       <HeaderEdit
-        // TODO TEMP
-        status={{ isSuccess: false, isPending: false, isError: false }}
+        status={{ isSuccess, isPending, isError }}
         title="Edit material"
       />
       <ActionBar
@@ -67,9 +66,9 @@ export const MaterialEditView = () => {
           </>
         }
       />
-      <div className={s.materialEditView__content}>
-        <div className={s.materialEditView__content}>
-          <div className={s.materialEditView__section}>
+      <div className={s.singleMaterialView__content}>
+        <div className={s.singleMaterialView__content}>
+          <div className={s.singleMaterialView__section}>
             <Input
               name="material_name"
               label="Material's name"
@@ -103,7 +102,7 @@ export const MaterialEditView = () => {
             />
           </div>
           <div
-            className={s.materialEditView__section}
+            className={s.singleMaterialView__section}
             style={{ alignItems: 'center' }}>
             <Input
               name="material_img"
@@ -142,7 +141,7 @@ const useUpdateMaterial = () => {
     setUpdatedMaterial(material);
   }, [isFetched]);
 
-  // const { mutate, isSuccess, isError, isPending } = useAdminUpdateMaterialApi();
+  const { mutate, isSuccess, isError, isPending } = useAdminUpdateMaterialApi();
 
   const materialImg = useMemo(
     () => updatedMaterial?.img.replace(CDN_URL, '') ?? '',
@@ -150,10 +149,7 @@ const useUpdateMaterial = () => {
   );
 
   const onSave = () => {
-    if (updatedMaterial) {
-      toast.info('I would save it here but its still TODO');
-      // mutate(updatedMaterial);
-    }
+    if (updatedMaterial) mutate(updatedMaterial);
   };
 
   const onTextPropertyChange = (newValue: string, property: keyof Material) => {
@@ -182,8 +178,8 @@ const useUpdateMaterial = () => {
     onTextPropertyChange,
     onNumberPropertyChange,
     onSave,
-    // isSuccess,
-    // isPending,
-    // isError,
+    isSuccess,
+    isPending,
+    isError,
   };
 };
