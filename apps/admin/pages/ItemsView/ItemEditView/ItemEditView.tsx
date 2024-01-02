@@ -49,7 +49,7 @@ export const ItemEditView = () => {
 
   return (
     <div className={s.itemEditView}>
-      <HeaderEdit status={status} />
+      <HeaderEdit status={status} title="Edit item" />
       <SubheaderEdit title={`Item ID: ${updatedItem?.id}`} onSave={onSave} />
       <div className={s.itemEditView__content}>
         <div className={s.itemEditView__content}>
@@ -210,6 +210,7 @@ export const ItemEditView = () => {
                     />
                   }
                 />
+                {/* TODO this sometimes does not update properly */}
                 <Select
                   data={['img', 'text', 'heal', 'redirect'].map(item => ({
                     id: item,

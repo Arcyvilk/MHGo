@@ -4,9 +4,10 @@ import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
 type HeaderEditProps = {
+  title: string;
   status: { isSuccess: boolean; isError: boolean; isPending: boolean };
 };
-export const HeaderEdit = ({ status }: HeaderEditProps) => {
+export const HeaderEdit = ({ title, status }: HeaderEditProps) => {
   const navigate = useNavigate();
   const [saveStatus, setSaveStatus] = useState(status);
 
@@ -32,7 +33,7 @@ export const HeaderEdit = ({ status }: HeaderEditProps) => {
           style={{ width: '48px' }}
           variant={Button.Variant.GHOST}
         />
-        Edit item
+        {title}
       </h1>
       <div
         className={modifiers(s, 'headerEdit__status', {

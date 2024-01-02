@@ -3,11 +3,12 @@
 .select {
   all: unset;
   font-size: $size-12;
-  font-weight: 400;
+  font-weight: 600;
   padding: $size-8 $size-12;
   border: 1px solid rgba($color-primary-text, 0.5);
   border-radius: $size-16;
   background-color: $color-white;
+  color: $color-primary-text;
   cursor: pointer;
 
   &__wrapper {

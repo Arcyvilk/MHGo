@@ -1,0 +1,38 @@
+@import '@mhgo/front/styles/index.scss';
+
+.monsterEditView {
+  @include page-wrapper-admin;
+
+  &__content {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+    padding: $size-8;
+    gap: $size-32;
+    span {
+      font-family: $font-open-sans;
+      font-size: $size-12;
+      font-weight: 600;
+    }
+  }
+
+  &__section {
+    display: flex;
+    flex-direction: column;
+    gap: $size-16;
+    width: 300px;
+
+    &--hidden {
+      background-color: rgba($admin-color-primary-bg, 0.3);
+      border: 1px solid $admin-color-primary-bg;
+      border-radius: $size-8;
+      padding: $size-8;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: $size-12;
+    }
+  }
+}

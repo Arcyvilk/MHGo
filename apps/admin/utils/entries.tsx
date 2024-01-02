@@ -7,8 +7,11 @@ import {
   MonstersView,
   SettingsView,
   UsersView,
+  //
+  ItemEditView,
+  MaterialEditView,
+  MonsterEditView,
 } from '../pages';
-import { ItemEditView } from '../pages/ItemsView';
 
 export type Entry = {
   id: string;
@@ -84,5 +87,21 @@ export const entries: Entry[] = [
     icon: 'Armory',
     mainRoute: false,
     component: <ItemEditView />,
+  },
+  {
+    id: 'material_edit',
+    title: 'Edit material',
+    link: '/materials/edit',
+    icon: 'ItemBox',
+    mainRoute: false,
+    component: <MaterialEditView />,
+  },
+  {
+    id: 'monster_edit',
+    title: 'Edit monster',
+    link: '/monsters/edit',
+    icon: 'Monster',
+    mainRoute: false,
+    component: <MonsterEditView />,
   },
 ];

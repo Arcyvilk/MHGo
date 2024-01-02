@@ -1,7 +1,7 @@
-export { HomeView } from './HomeView';
-export { ItemsView } from './ItemsView';
-export { MapView } from './MapView';
-export { MaterialsView } from './MaterialsView';
-export { MonstersView } from './MonstersView';
-export { SettingsView } from './SettingsView';
-export { UsersView } from './UsersView';
+export * from './HomeView';
+export * from './ItemsView';
+export * from './MapView';
+export * from './MaterialsView';
+export * from './MonstersView';
+export * from './SettingsView';
+export * from './UsersView';

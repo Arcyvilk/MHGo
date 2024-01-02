@@ -1,22 +1,29 @@
-import { useMonstersApi } from '@mhgo/front';
+import { useNavigate } from 'react-router-dom';
+import { Monster } from '@mhgo/types';
+import { Button, Icon, Size, useMonstersApi } from '@mhgo/front';
 import { Table } from '../../containers';
 
 import s from './MonstersView.module.scss';
-import { Monster } from '@mhgo/types';
+
+const tableHeaders = [
+  'Name',
+  'Habitat',
+  'Base HP',
+  'Base damage',
+  'Base AS',
+  'Base DPS',
+  'Base EXP',
+  'Base payment',
+  'Actions',
+];
 
 export const MonstersView = () => {
+  const navigate = useNavigate();
   const { data: monsters } = useMonstersApi();
 
-  const tableHeaders = [
-    'Name',
-    'Habitat',
-    'Base HP',
-    'Base damage',
-    'Base AS',
-    'Base DPS',
-    'Base EXP',
-    'Base payment',
-  ];
+  const onMonsterEdit = (monster: Monster) => {
+    navigate(`/monsters/edit?id=${monster.id}`);
+  };
 
   const tableRows = monsters.map(monster => [
     <MonsterCell monster={monster} />,
@@ -27,6 +34,11 @@ export const MonstersView = () => {
     monster.baseAttackSpeed * monster.baseDamage,
     monster.baseExp,
     String(monster.baseWealth),
+    <Button
+      label={<Icon icon="Edit" size={Size.MICRO} />}
+      onClick={() => onMonsterEdit(monster)}
+      style={{ width: '40px' }}
+    />,
   ]);
 
   return (

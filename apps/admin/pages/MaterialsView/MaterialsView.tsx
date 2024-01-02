@@ -1,17 +1,30 @@
-import { useMaterialsApi } from '@mhgo/front';
-import s from './MaterialsView.module.scss';
+import { useNavigate } from 'react-router-dom';
+import { Button, Icon, Size, useMaterialsApi } from '@mhgo/front';
 import { Material } from '@mhgo/types';
+
 import { Table } from '../../containers';
 
+import s from './MaterialsView.module.scss';
+
+const tableHeaders = ['Name', 'Rarity', 'Description', 'Actions'];
+
 export const MaterialsView = () => {
+  const navigate = useNavigate();
   const { data: materials } = useMaterialsApi();
 
-  const tableHeaders = ['Name', 'Rarity', 'Description'];
+  const onMaterialEdit = (material: Material) => {
+    navigate(`/materials/edit?id=${material.id}`);
+  };
 
   const tableRows = materials.map(material => [
     <MaterialCell material={material} />,
     material.rarity,
     material.description,
+    <Button
+      label={<Icon icon="Edit" size={Size.MICRO} />}
+      onClick={() => onMaterialEdit(material)}
+      style={{ width: '40px' }}
+    />,
   ]);
   return (
     <div className={s.materialsView}>
