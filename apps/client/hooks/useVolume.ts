@@ -1,4 +1,4 @@
-import { useLocalStorage } from './useLocalStorage';
+import { useLocalStorage } from '@mhgo/front';
 
 export type Volume = 'master' | 'bgm' | 'se';
 export const DEFAULT_VOLUME = {
