@@ -5,17 +5,15 @@ import { CDN_URL } from '@mhgo/front/env';
 import { HabitatType, Monster } from '@mhgo/types';
 import {
   Button,
-  Icon,
   Input,
   Select,
-  Size,
-  Tooltip,
   useAdminUpdateMonsterApi,
   useMonstersApi,
 } from '@mhgo/front';
 import { ActionBar, HeaderEdit } from '../../../containers';
+import { IconInfo } from './IconInfo';
 
-import s from './MonsterEditView.module.scss';
+import s from './SingleMonsterView.module.scss';
 
 export const MonsterEditView = () => {
   const navigate = useNavigate();
@@ -35,20 +33,20 @@ export const MonsterEditView = () => {
 
   if (!monster)
     return (
-      <div className={s.monsterEditView}>
-        <div className={s.monsterEditView__header}>
-          <h1 className={s.monsterEditView__title}>
+      <div className={s.singleMonsterView}>
+        <div className={s.singleMonsterView__header}>
+          <h1 className={s.singleMonsterView__title}>
             This monster does not exist!
           </h1>
         </div>
-        <div className={s.monsterEditView__footer}>
+        <div className={s.singleMonsterView__footer}>
           <Button label="Back" onClick={() => navigate(-1)} />
         </div>
       </div>
     );
 
   return (
-    <div className={s.monsterEditView}>
+    <div className={s.singleMonsterView}>
       <HeaderEdit status={status} title="Edit monster" />
       <ActionBar
         title={`Monster ID: ${updatedMonster?.id}`}
@@ -67,9 +65,9 @@ export const MonsterEditView = () => {
           </>
         }
       />
-      <div className={s.monsterEditView__content}>
-        <div className={s.monsterEditView__content}>
-          <div className={s.monsterEditView__section}>
+      <div className={s.singleMonsterView__content}>
+        <div className={s.singleMonsterView__content}>
+          <div className={s.singleMonsterView__section}>
             <Input
               name="monster_name"
               label="Monster's name"
@@ -96,11 +94,11 @@ export const MonsterEditView = () => {
                 onTextPropertyChange(newHabitat, 'habitat')
               }
             />
-            <div className={s.monsterEditView__infoSection}>
+            <div className={s.singleMonsterView__infoSection}>
               <p
                 style={{ fontWeight: 600 }}
-                className={s.monsterEditView__withInfo}>
-                <IconInfo /> Monster's base DPS (base attack * base AS)
+                className={s.singleMonsterView__withInfo}>
+                <IconInfo /> Monster's DPS (base attack * base AS)
               </p>
               <p style={{ fontWeight: 900, fontSize: '14px' }}>
                 {(updatedMonster?.baseDamage ?? 0) *
@@ -109,7 +107,7 @@ export const MonsterEditView = () => {
             </div>
           </div>
           <div
-            className={s.monsterEditView__section}
+            className={s.singleMonsterView__section}
             style={{ alignItems: 'center' }}>
             <Input
               name="monster_img"
@@ -123,7 +121,7 @@ export const MonsterEditView = () => {
             />
           </div>
           <div
-            className={s.monsterEditView__section}
+            className={s.singleMonsterView__section}
             style={{ alignItems: 'center' }}>
             <Input
               name="monster_thumbnail"
@@ -137,11 +135,11 @@ export const MonsterEditView = () => {
             />
           </div>
         </div>
-        <div className={s.monsterEditView__content}>
-          <div className={s.monsterEditView__section}>
+        <div className={s.singleMonsterView__content}>
+          <div className={s.singleMonsterView__section}>
             <Input
               label={
-                <span className={s.monsterEditView__withInfo}>
+                <span className={s.singleMonsterView__withInfo}>
                   <IconInfo />
                   Monster base HP
                 </span>
@@ -154,7 +152,7 @@ export const MonsterEditView = () => {
             />
             <Input
               label={
-                <span className={s.monsterEditView__withInfo}>
+                <span className={s.singleMonsterView__withInfo}>
                   <IconInfo />
                   Monster base damage
                 </span>
@@ -169,7 +167,7 @@ export const MonsterEditView = () => {
             />
             <Input
               label={
-                <span className={s.monsterEditView__withInfo}>
+                <span className={s.singleMonsterView__withInfo}>
                   <IconInfo />
                   Monster base attack speed (attacks per second)
                 </span>
@@ -183,11 +181,10 @@ export const MonsterEditView = () => {
               }
             />
           </div>
-          <div className={s.monsterEditView__section}>
+          <div className={s.singleMonsterView__section}>
             <Input
-              disabled
               label={
-                <span className={s.monsterEditView__withInfo}>
+                <span className={s.singleMonsterView__withInfo}>
                   <IconInfo />
                   Monster EXP drop (base)
                 </span>
@@ -198,10 +195,11 @@ export const MonsterEditView = () => {
               value={String(updatedMonster?.baseExp ?? 0)}
               setValue={newPrice => onNumberPropertyChange(newPrice, 'baseExp')}
             />
+            {/* TODO monster currency drops */}
             <Input
               disabled
               label={
-                <span className={s.monsterEditView__withInfo}>
+                <span className={s.singleMonsterView__withInfo}>
                   <IconInfo />
                   Monster basic currency drop (base)
                 </span>
@@ -219,7 +217,7 @@ export const MonsterEditView = () => {
             <Input
               disabled
               label={
-                <span className={s.monsterEditView__withInfo}>
+                <span className={s.singleMonsterView__withInfo}>
                   <IconInfo />
                   Monster premium currency drop (base)
                 </span>
@@ -326,12 +324,4 @@ const useUpdateMonster = () => {
     isPending,
     isError,
   };
-};
-
-const IconInfo = () => {
-  return (
-    <Tooltip content="Base value is multiplied by monster level">
-      <Icon icon="Info" size={Size.MICRO} />
-    </Tooltip>
-  );
 };

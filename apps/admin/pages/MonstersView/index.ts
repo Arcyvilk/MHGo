@@ -1,3 +1,3 @@
 export { MonstersView } from './MonstersView';
-export { MonsterCreateView } from './MonsterCreateView';
-export { MonsterEditView } from './MonsterEditView';
+
+export { MonsterCreateView, MonsterEditView } from './SingleMonsterView';

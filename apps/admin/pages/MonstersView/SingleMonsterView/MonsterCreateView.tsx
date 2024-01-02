@@ -1,14 +1,14 @@
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
 
 import { CDN_URL } from '@mhgo/front/env';
 import { HabitatType, Monster } from '@mhgo/types';
 import { Button, Input, Select, useAdminCreateMonsterApi } from '@mhgo/front';
 import { ActionBar, HeaderEdit } from '../../../containers';
 import { DEFAULT_MONSTER } from '../../../utils/defaults';
+import { IconInfo } from './IconInfo';
 
-import s from './MonsterCreateView.module.scss';
+import s from './SingleMonsterView.module.scss';
 
 export const MonsterCreateView = () => {
   const navigate = useNavigate();
@@ -27,7 +27,7 @@ export const MonsterCreateView = () => {
   const status = { isSuccess, isPending, isError };
 
   return (
-    <div className={s.monsterCreateView}>
+    <div className={s.singleMonsterView}>
       <HeaderEdit status={status} title="Create monster" />
       <ActionBar
         buttons={
@@ -45,9 +45,9 @@ export const MonsterCreateView = () => {
           </>
         }
       />
-      <div className={s.monsterCreateView__content}>
-        <div className={s.monsterCreateView__content}>
-          <div className={s.monsterCreateView__section}>
+      <div className={s.singleMonsterView__content}>
+        <div className={s.singleMonsterView__content}>
+          <div className={s.singleMonsterView__section}>
             <Input
               name="monster_name"
               label="Monster's name"
@@ -74,9 +74,19 @@ export const MonsterCreateView = () => {
                 onSelectionPropertyChange(newHabitat as HabitatType)
               }
             />
+            <div className={s.singleMonsterView__infoSection}>
+              <p
+                style={{ fontWeight: 600 }}
+                className={s.singleMonsterView__withInfo}>
+                <IconInfo /> Monster's DPS (base attack * base AS)
+              </p>
+              <p style={{ fontWeight: 900, fontSize: '14px' }}>
+                {(monster?.baseDamage ?? 0) * (monster?.baseAttackSpeed ?? 0)}
+              </p>
+            </div>
           </div>
           <div
-            className={s.monsterCreateView__section}
+            className={s.singleMonsterView__section}
             style={{ alignItems: 'center' }}>
             <Input
               name="monster_img"
@@ -90,7 +100,7 @@ export const MonsterCreateView = () => {
             />
           </div>
           <div
-            className={s.monsterCreateView__section}
+            className={s.singleMonsterView__section}
             style={{ alignItems: 'center' }}>
             <Input
               name="monster_thumbnail"
@@ -104,10 +114,15 @@ export const MonsterCreateView = () => {
             />
           </div>
         </div>
-        <div className={s.monsterCreateView__content}>
-          <div className={s.monsterCreateView__section}>
+        <div className={s.singleMonsterView__content}>
+          <div className={s.singleMonsterView__section}>
             <Input
-              label="Monster base HP"
+              label={
+                <span className={s.singleMonsterView__withInfo}>
+                  <IconInfo />
+                  Monster base HP
+                </span>
+              }
               name="monster_basehp"
               type="number"
               min={0}
@@ -115,7 +130,12 @@ export const MonsterCreateView = () => {
               setValue={newPrice => onNumberPropertyChange(newPrice, 'baseHP')}
             />
             <Input
-              label="Monster base damage"
+              label={
+                <span className={s.singleMonsterView__withInfo}>
+                  <IconInfo />
+                  Monster base damage
+                </span>
+              }
               name="monster_basedmg"
               type="number"
               min={0}
@@ -125,7 +145,12 @@ export const MonsterCreateView = () => {
               }
             />
             <Input
-              label="Monster base attack speed"
+              label={
+                <span className={s.singleMonsterView__withInfo}>
+                  <IconInfo />
+                  Monster base attack speed
+                </span>
+              }
               name="monster_baseas"
               type="number"
               min={0}
@@ -135,13 +160,53 @@ export const MonsterCreateView = () => {
               }
             />
           </div>
-          <div className={s.monsterCreateView__section}>
+          <div className={s.singleMonsterView__section}>
             <Input
-              label="Monster base EXP dropped"
+              label={
+                <span className={s.singleMonsterView__withInfo}>
+                  <IconInfo />
+                  Monster EXP drop (base)
+                </span>
+              }
               name="monster_baseexp"
               type="number"
               min={0}
               value={String(monster?.baseExp ?? 0)}
+              setValue={newPrice => onNumberPropertyChange(newPrice, 'baseExp')}
+            />
+            {/* TODO monster currency drops */}
+            <Input
+              disabled
+              label={
+                <span className={s.singleMonsterView__withInfo}>
+                  <IconInfo />
+                  Monster basic currency drop (base)
+                </span>
+              }
+              name="monster_basecurr"
+              type="number"
+              min={0}
+              value={String(
+                monster?.baseWealth.find(wealth => wealth.type === 'base')
+                  ?.amount ?? 0,
+              )}
+              setValue={newPrice => onNumberPropertyChange(newPrice, 'baseExp')}
+            />
+            <Input
+              disabled
+              label={
+                <span className={s.singleMonsterView__withInfo}>
+                  <IconInfo />
+                  Monster premium currency drop (base)
+                </span>
+              }
+              name="monster_premium"
+              type="number"
+              min={0}
+              value={String(
+                monster?.baseWealth.find(wealth => wealth.type === 'premium')
+                  ?.amount ?? 0,
+              )}
               setValue={newPrice => onNumberPropertyChange(newPrice, 'baseExp')}
             />
           </div>

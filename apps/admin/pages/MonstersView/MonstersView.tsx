@@ -33,7 +33,9 @@ export const MonstersView = () => {
     monster.baseAttackSpeed,
     monster.baseAttackSpeed * monster.baseDamage,
     monster.baseExp,
-    String(monster.baseWealth),
+    monster.baseWealth
+      .map(wealth => `${wealth.type}: ${wealth.amount}`)
+      .join('; '),
     <Button
       label={<Icon icon="Edit" size={Size.MICRO} />}
       onClick={() => onMonsterEdit(monster)}
