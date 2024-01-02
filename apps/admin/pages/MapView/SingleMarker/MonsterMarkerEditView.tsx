@@ -5,7 +5,9 @@ import {
   Button,
   Input,
   Select,
+  modifiers,
   useAdminAllMonsterMarkers,
+  useAdminDeleteMonsterMarkerApi,
   useAdminUpdateMonsterMarkerApi,
   useMonstersApi,
 } from '@mhgo/front';
@@ -16,12 +18,14 @@ import { Status } from '../../../utils/types';
 
 type MonsterMarkerProps = {
   selectedMarker: string;
+  setSelectedMarker: (selectedMarker: string | null) => void;
   selectedCoords: number[];
   onCancel: () => void;
   setStatus: (status: Status) => void;
 };
 export const MonsterMarkerEditView = ({
   selectedMarker,
+  setSelectedMarker,
   selectedCoords,
   onCancel,
   setStatus,
@@ -33,7 +37,13 @@ export const MonsterMarkerEditView = ({
     onTextPropertyChange,
     onNumberPropertyChange,
     onSave,
-  } = useUpdateMonsterMarker(selectedMarker, selectedCoords, setStatus);
+    onDelete,
+  } = useUpdateMonsterMarker(
+    selectedMarker,
+    setSelectedMarker,
+    selectedCoords,
+    setStatus,
+  );
 
   return (
     <div className={s.markerView__content}>
@@ -77,17 +87,24 @@ export const MonsterMarkerEditView = ({
                 color="default"
                 checked={!updatedMarker?.level}
                 onChange={(_, checked) =>
-                  onNumberPropertyChange(String(checked ? null : 1), 'level')
+                  onNumberPropertyChange(checked ? null : '1', 'level')
                 }
               />
             }
           />
-          <Input
-            name="marker_level"
-            label="Monster level"
-            value={String(updatedMarker?.level)}
-            setValue={newLevel => onNumberPropertyChange(newLevel, 'level')}
-          />
+          {updatedMarker?.level !== null ? (
+            <div
+              className={modifiers(s, 'markerView__section', {
+                hidden: true,
+              })}>
+              <Input
+                name="marker_level"
+                label="Monster level"
+                value={String(updatedMarker?.level)}
+                setValue={newLevel => onNumberPropertyChange(newLevel, 'level')}
+              />
+            </div>
+          ) : null}
         </div>
       </div>
       <ActionBar
@@ -95,8 +112,13 @@ export const MonsterMarkerEditView = ({
           <>
             <Button
               label="Cancel"
-              variant={Button.Variant.DANGER}
+              variant={Button.Variant.GHOST}
               onClick={onCancel}
+            />
+            <Button
+              label="Delete"
+              variant={Button.Variant.DANGER}
+              onClick={onDelete}
             />
             <Button label="Save" onClick={onSave} />
           </>
@@ -109,6 +131,7 @@ export const MonsterMarkerEditView = ({
 // selectedMarker is in fact ObjectId from MongoDB
 const useUpdateMonsterMarker = (
   selectedMarker: string,
+  setSelectedMarker: (selectedMarker: string | null) => void,
   selectedCoords: number[],
   setStatus: (status: Status) => void,
 ) => {
@@ -140,19 +163,48 @@ const useUpdateMonsterMarker = (
     });
   }, [selectedCoords]);
 
-  const { mutate, isSuccess, isError, isPending } =
-    useAdminUpdateMonsterMarkerApi();
+  const {
+    mutate: mutateUpdate,
+    isSuccess: isUpdateSuccess,
+    isError: isUpdateError,
+    isPending: isUpdatePending,
+  } = useAdminUpdateMonsterMarkerApi();
+  const {
+    mutate: mutateDelete,
+    isSuccess: isDeleteSuccess,
+    isError: isDeleteError,
+    isPending: isDeletePending,
+  } = useAdminDeleteMonsterMarkerApi();
 
   useEffect(() => {
-    setStatus({ isSuccess, isError, isPending });
-  }, [isSuccess, isError, isPending]);
+    setStatus({
+      isSuccess: isDeleteSuccess,
+      isError: isDeleteError,
+      isPending: isDeletePending,
+    });
+  }, [isDeleteSuccess, isDeletePending, isDeleteError]);
+
+  useEffect(() => {
+    setStatus({
+      isSuccess: isUpdateSuccess,
+      isError: isUpdateError,
+      isPending: isUpdatePending,
+    });
+  }, [isUpdateSuccess, isUpdatePending, isUpdateError]);
 
   const onSave = () => {
     if (updatedMarker) {
-      mutate({
+      mutateUpdate({
         ...updatedMarker,
         id: String(selectedMarker),
       });
+    }
+  };
+
+  const onDelete = () => {
+    if (selectedMarker) {
+      mutateDelete({ markerId: selectedMarker });
+      setSelectedMarker(null);
     }
   };
 
@@ -168,7 +220,7 @@ const useUpdateMonsterMarker = (
   };
 
   const onNumberPropertyChange = (
-    newValue: string,
+    newValue: string | null,
     property: keyof Pick<MonsterMarker, 'level'> | 'lat' | 'long',
   ) => {
     if (!updatedMarker) return;
@@ -202,8 +254,6 @@ const useUpdateMonsterMarker = (
     onTextPropertyChange,
     onNumberPropertyChange,
     onSave,
-    isSuccess,
-    isPending,
-    isError,
+    onDelete,
   };
 };

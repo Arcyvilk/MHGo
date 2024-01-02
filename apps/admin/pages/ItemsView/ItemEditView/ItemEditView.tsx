@@ -57,7 +57,7 @@ export const ItemEditView = () => {
             <Button
               label="Cancel"
               onClick={() => navigate(-1)}
-              variant={Button.Variant.DANGER}
+              variant={Button.Variant.GHOST}
             />
             <Button
               label="Save"

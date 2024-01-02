@@ -75,22 +75,24 @@ export const MonsterMarkerCreateView = ({
                 color="default"
                 checked={!marker?.level}
                 onChange={(_, checked) =>
-                  onNumberPropertyChange(String(checked ? null : 1), 'level')
+                  onNumberPropertyChange(checked ? null : '1', 'level')
                 }
               />
             }
           />
-          <div
-            className={modifiers(s, 'markerView__section', {
-              hidden: !marker?.level,
-            })}>
-            <Input
-              name="marker_level"
-              label="Monster level"
-              value={String(marker?.level)}
-              setValue={newLevel => onNumberPropertyChange(newLevel, 'level')}
-            />
-          </div>
+          {marker?.level !== null ? (
+            <div
+              className={modifiers(s, 'markerView__section', {
+                hidden: true,
+              })}>
+              <Input
+                name="marker_level"
+                label="Monster level"
+                value={String(marker?.level)}
+                setValue={newLevel => onNumberPropertyChange(newLevel, 'level')}
+              />
+            </div>
+          ) : null}
         </div>
       </div>
       <ActionBar
@@ -98,7 +100,7 @@ export const MonsterMarkerCreateView = ({
           <>
             <Button
               label="Cancel"
-              variant={Button.Variant.DANGER}
+              variant={Button.Variant.GHOST}
               onClick={onCancel}
             />
             <Button label="Save" onClick={onCreate} />
@@ -152,7 +154,7 @@ const useUpdateMonsterMarker = (
   };
 
   const onNumberPropertyChange = (
-    newValue: string,
+    newValue: string | null,
     property: keyof Pick<MonsterMarker, 'level'> | 'lat' | 'long',
   ) => {
     if (!marker) return;

@@ -84,3 +84,29 @@ export const useAdminUpdateMonsterMarkerApi = () => {
 
   return { mutate, status, isPending, isSuccess, isError };
 };
+
+// Delete monster marker
+export const useAdminDeleteMonsterMarkerApi = () => {
+  const queryClient = useQueryClient();
+
+  const adminDeleteMonsterMarker = async (variables: {
+    markerId: string;
+  }): Promise<void> => {
+    const response = await fetch(
+      `${API_URL}/admin/marker/monster/${variables.markerId}`,
+      { method: 'DELETE' },
+    );
+
+    if (response.status !== 200)
+      throw new Error('Could not delete the monster marker!');
+
+    queryClient.invalidateQueries({ queryKey: ['markers', 'monsters', 'all'] });
+  };
+
+  const { mutate, status, isPending, isSuccess, isError } = useMutation({
+    mutationKey: ['admin', 'marker', 'monster', 'delete'],
+    mutationFn: adminDeleteMonsterMarker,
+  });
+
+  return { mutate, status, isPending, isSuccess, isError };
+};

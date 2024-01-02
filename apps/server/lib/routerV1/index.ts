@@ -18,6 +18,7 @@ import {
   adminUpdateMonster,
   adminUpdateMonsterMarker,
   adminUpdateUser,
+  adminDeleteMonsterMarker,
 } from './admin';
 
 routerV1.post('/admin/materials/create', adminCreateMaterial);
@@ -29,6 +30,8 @@ routerV1.put('/admin/materials/material/:materialId', adminUpdateMaterial);
 routerV1.put('/admin/monsters/monster/:monsterId', adminUpdateMonster);
 routerV1.put('/admin/marker/monster/:markerId', adminUpdateMonsterMarker);
 routerV1.put('/admin/users/user/:userId', adminUpdateUser);
+
+routerV1.delete('/admin/marker/monster/:markerId', adminDeleteMonsterMarker);
 
 /****************************
  *         MONSTERS         *

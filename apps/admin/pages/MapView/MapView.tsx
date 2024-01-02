@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { MapContainer } from 'react-leaflet';
 import L from 'leaflet';
 import { Button, Loader, QueryBoundary, useLocalStorage } from '@mhgo/front';
@@ -45,6 +45,10 @@ const Load = () => {
     );
   };
 
+  useEffect(() => {
+    if (!selectedMarker) setCreateView(false);
+  }, [selectedMarker]);
+
   return (
     <div className={s.mapView}>
       <HeaderEdit status={status} title="MAP" />
@@ -69,6 +73,7 @@ const Load = () => {
       {selectedMarker && (
         <MonsterMarkerEditView
           selectedMarker={selectedMarker}
+          setSelectedMarker={setSelectedMarker}
           selectedCoords={selectedCoords}
           onCancel={() => setSelectedMarker(null)}
           setStatus={setStatus}

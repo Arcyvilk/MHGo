@@ -81,7 +81,7 @@ export const CraftConfirmation = ({
           label="Cancel"
           onClick={onNo}
           simple
-          variant={Button.Variant.DANGER}
+          variant={Button.Variant.GHOST}
         />
         <Button
           label="Craft"
