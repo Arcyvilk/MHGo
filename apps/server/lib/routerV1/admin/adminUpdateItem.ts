@@ -53,6 +53,7 @@ export const adminUpdateItemAction = async (
     const response = await collection.updateOne(
       { itemId },
       { $set: { action } },
+      { upsert: true },
     );
 
     if (!response.acknowledged) {
