@@ -86,7 +86,11 @@ const MapLayer = ({ coords }: MapLayerProps) => {
         url="https://tiles.stadiamaps.com/tiles/stamen_watercolor/{z}/{x}/{y}.jpg"
       />
       <MonsterMarkers />
-      <Circle center={L.latLng(coords[0], coords[1])} radius={mapRadius} />
+      <Circle
+        center={L.latLng(coords[0], coords[1])}
+        radius={mapRadius}
+        color="#fdc000"
+      />
       <Marker icon={iconMarker} position={L.latLng(coords[0], coords[1])} />
     </>
   );

@@ -5,7 +5,7 @@ import Marker from '@mhgo/front/assets/icons/Marker.svg';
 const iconMarker = new L.Icon({
   iconUrl: Marker,
   iconRetinaUrl: Marker,
-  iconSize: new L.Point(32, 28),
+  iconSize: new L.Point(24, 20),
   className: 'marker',
 });
 
