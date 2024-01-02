@@ -21,6 +21,8 @@ export const getMonsterMarkersByUserId = async (
     const collectionMonsterMarkers =
       db.collection<MonsterMarker>('monsterMarkers');
 
+    // TODO filter monster markers by user's level requirement
+
     const user = await collectionUsers.findOne({ id: userId });
     const expPerLevel =
       (await collectionSettings.findOne({ key: 'exp_per_level' }))?.value ??
