@@ -1,10 +1,18 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
 
 import { CDN_URL } from '@mhgo/front/env';
 import { HabitatType, Monster } from '@mhgo/types';
-import { Button, Input, Select, useMonstersApi } from '@mhgo/front';
+import {
+  Button,
+  Icon,
+  Input,
+  Select,
+  Size,
+  Tooltip,
+  useAdminUpdateMonsterApi,
+  useMonstersApi,
+} from '@mhgo/front';
 import { ActionBar, HeaderEdit } from '../../../containers';
 
 import s from './MonsterEditView.module.scss';
@@ -18,7 +26,6 @@ export const MonsterEditView = () => {
     monsterThumbnail,
     onTextPropertyChange,
     onNumberPropertyChange,
-    onSelectionPropertyChange,
     onSave,
     isSuccess,
     isPending,
@@ -86,9 +93,20 @@ export const MonsterEditView = () => {
               label="Monster's habitat"
               defaultSelected={updatedMonster?.habitat}
               setValue={newHabitat =>
-                onSelectionPropertyChange(newHabitat as HabitatType)
+                onTextPropertyChange(newHabitat, 'habitat')
               }
             />
+            <div className={s.monsterEditView__infoSection}>
+              <p
+                style={{ fontWeight: 600 }}
+                className={s.monsterEditView__withInfo}>
+                <IconInfo /> Monster's base DPS (base attack * base AS)
+              </p>
+              <p style={{ fontWeight: 900, fontSize: '14px' }}>
+                {(updatedMonster?.baseDamage ?? 0) *
+                  (updatedMonster?.baseAttackSpeed ?? 0)}
+              </p>
+            </div>
           </div>
           <div
             className={s.monsterEditView__section}
@@ -122,7 +140,12 @@ export const MonsterEditView = () => {
         <div className={s.monsterEditView__content}>
           <div className={s.monsterEditView__section}>
             <Input
-              label="Monster base HP"
+              label={
+                <span className={s.monsterEditView__withInfo}>
+                  <IconInfo />
+                  Monster base HP
+                </span>
+              }
               name="monster_basehp"
               type="number"
               min={0}
@@ -130,7 +153,12 @@ export const MonsterEditView = () => {
               setValue={newPrice => onNumberPropertyChange(newPrice, 'baseHP')}
             />
             <Input
-              label="Monster base damage"
+              label={
+                <span className={s.monsterEditView__withInfo}>
+                  <IconInfo />
+                  Monster base damage
+                </span>
+              }
               name="monster_basedmg"
               type="number"
               min={0}
@@ -140,7 +168,12 @@ export const MonsterEditView = () => {
               }
             />
             <Input
-              label="Monster base attack speed"
+              label={
+                <span className={s.monsterEditView__withInfo}>
+                  <IconInfo />
+                  Monster base attack speed (attacks per second)
+                </span>
+              }
               name="monster_baseas"
               type="number"
               min={0}
@@ -152,11 +185,53 @@ export const MonsterEditView = () => {
           </div>
           <div className={s.monsterEditView__section}>
             <Input
-              label="Monster base EXP dropped"
+              disabled
+              label={
+                <span className={s.monsterEditView__withInfo}>
+                  <IconInfo />
+                  Monster EXP drop (base)
+                </span>
+              }
               name="monster_baseexp"
               type="number"
               min={0}
               value={String(updatedMonster?.baseExp ?? 0)}
+              setValue={newPrice => onNumberPropertyChange(newPrice, 'baseExp')}
+            />
+            <Input
+              disabled
+              label={
+                <span className={s.monsterEditView__withInfo}>
+                  <IconInfo />
+                  Monster basic currency drop (base)
+                </span>
+              }
+              name="monster_basecurr"
+              type="number"
+              min={0}
+              value={String(
+                updatedMonster?.baseWealth.find(
+                  wealth => wealth.type === 'base',
+                )?.amount ?? 0,
+              )}
+              setValue={newPrice => onNumberPropertyChange(newPrice, 'baseExp')}
+            />
+            <Input
+              disabled
+              label={
+                <span className={s.monsterEditView__withInfo}>
+                  <IconInfo />
+                  Monster premium currency drop (base)
+                </span>
+              }
+              name="monster_premium"
+              type="number"
+              min={0}
+              value={String(
+                updatedMonster?.baseWealth.find(
+                  wealth => wealth.type === 'premium',
+                )?.amount ?? 0,
+              )}
               setValue={newPrice => onNumberPropertyChange(newPrice, 'baseExp')}
             />
           </div>
@@ -182,7 +257,7 @@ const useUpdateMonster = () => {
     setUpdatedMonster(monster);
   }, [isMonsterFetched]);
 
-  // const { mutate, isSuccess, isError, isPending } = useAdminUpdateMonsterApi();
+  const { mutate, isSuccess, isError, isPending } = useAdminUpdateMonsterApi();
 
   const monsterImg = useMemo(
     () => updatedMonster?.img.replace(CDN_URL, '') ?? '',
@@ -195,14 +270,16 @@ const useUpdateMonster = () => {
 
   const onSave = () => {
     if (updatedMonster) {
-      toast.info('I would save those changes if it was implemented! TODO');
-      // mutate(updatedMonster);
+      mutate(updatedMonster);
     }
   };
 
   const onTextPropertyChange = (
     newValue: string,
-    property: keyof Pick<Monster, 'name' | 'description' | 'img' | 'thumbnail'>,
+    property: keyof Pick<
+      Monster,
+      'name' | 'description' | 'img' | 'thumbnail' | 'habitat'
+    >,
   ) => {
     if (!updatedMonster) return;
     setUpdatedMonster({
@@ -245,9 +322,16 @@ const useUpdateMonster = () => {
     onNumberPropertyChange,
     onSelectionPropertyChange,
     onSave,
-    // TODO get from mutation
-    isSuccess: false,
-    isPending: false,
-    isError: false,
+    isSuccess,
+    isPending,
+    isError,
   };
+};
+
+const IconInfo = () => {
+  return (
+    <Tooltip content="Base value is multiplied by monster level">
+      <Icon icon="Info" size={Size.MICRO} />
+    </Tooltip>
+  );
 };

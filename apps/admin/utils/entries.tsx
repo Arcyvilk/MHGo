@@ -11,6 +11,7 @@ import {
   ItemEditView,
   MaterialEditView,
   MonsterEditView,
+  MonsterCreateView,
 } from '../pages';
 
 export type Entry = {
@@ -95,6 +96,14 @@ export const entries: Entry[] = [
     icon: 'ItemBox',
     mainRoute: false,
     component: <MaterialEditView />,
+  },
+  {
+    id: 'monster_create',
+    title: 'Create monster',
+    link: '/monsters/create',
+    icon: 'Monster',
+    mainRoute: false,
+    component: <MonsterCreateView />,
   },
   {
     id: 'monster_edit',

@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Item } from '@mhgo/types';
-import { API_URL } from '../env';
+
+import { API_URL } from '../../env';
 
 export const useAdminUpdateItemApi = () => {
   const queryClient = useQueryClient();

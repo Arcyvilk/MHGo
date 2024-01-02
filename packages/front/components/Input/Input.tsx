@@ -2,7 +2,7 @@ import s from './Input.module.scss';
 
 type InputProps = {
   name: string;
-  label?: string;
+  label?: React.ReactNode;
   value: string;
   setValue?: (value: string) => void;
 } & React.InputHTMLAttributes<HTMLInputElement>;

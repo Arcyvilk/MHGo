@@ -33,7 +33,7 @@ export const adminCreateMonster = async (
     }
 
     // Fin!
-    res.sendStatus(201);
+    res.status(201).send({ responseMonsters, responseDrops });
   } catch (err: any) {
     log.WARN(err);
     res.status(500).send({ error: err.message ?? 'Internal server error' });

@@ -1,6 +1,6 @@
 @import '@mhgo/front/styles/index.scss';
 
-.monsterEditView {
+.monsterCreateView {
   @include page-wrapper-admin;
 
   &__content {
@@ -17,19 +17,7 @@
     }
   }
 
-  &__withInfo {
-    display: flex;
-    align-items: center;
-    gap: $size-4;
-  }
-
   &__section {
     @include page-section-admin;
-  }
-
-  &__infoSection {
-    p {
-      margin: 0;
-    }
   }
 }

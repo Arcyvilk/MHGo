@@ -1,4 +1,5 @@
-export * from './useAdmin';
+export * from './admin';
+
 export * from './useHabitatsApi';
 export * from './useItemsApi';
 export * from './useLoadoutApi';
