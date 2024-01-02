@@ -117,18 +117,20 @@ export const MaterialEditView = () => {
               <p
                 style={{ fontWeight: 600 }}
                 className={s.singleMaterialView__withInfo}>
-                Dropped by
+                Dropped by:
               </p>
-              {materialDrops.map(drop => (
-                <Button
-                  variant={Button.Variant.GHOST}
-                  simple
-                  label={`${drop.monsterId} (level ${drop.level})`}
-                  onClick={() =>
-                    navigate(`/monsters/edit?id=${drop.monsterId}`)
-                  }
-                />
-              ))}
+              {materialDrops.length > 0
+                ? materialDrops.map(drop => (
+                    <Button
+                      variant={Button.Variant.GHOST}
+                      simple
+                      label={`${drop.monsterId} (level ${drop.level})`}
+                      onClick={() =>
+                        navigate(`/monsters/edit?id=${drop.monsterId}`)
+                      }
+                    />
+                  ))
+                : '-'}
             </div>
           </div>
         </div>
@@ -173,7 +175,11 @@ const useUpdateMaterial = () => {
   );
 
   const onSave = () => {
-    if (updatedMaterial) mutate(updatedMaterial);
+    if (updatedMaterial)
+      mutate({
+        ...updatedMaterial,
+        img: materialImg,
+      });
   };
 
   const onTextPropertyChange = (newValue: string, property: keyof Material) => {

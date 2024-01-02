@@ -9,6 +9,7 @@ import {
   Item,
   Select,
   modifiers,
+  useAdminUpdateItemActionApi,
   useAdminUpdateItemApi,
   useItemActionsApi,
   useItemsApi,
@@ -313,7 +314,7 @@ const useUpdateItem = () => {
 
   const { data: drops, isFetched: isDropsFetched } = useMonsterDropsApi();
   const { data: items, isFetched: isItemFetched } = useItemsApi();
-  const { data: itemAction, isFetched: isItemActionFetched } =
+  const { data: itemAction = {}, isFetched: isItemActionFetched } =
     useItemActionsApi(id!);
 
   const item = useMemo(
@@ -321,9 +322,7 @@ const useUpdateItem = () => {
     [items, isItemFetched],
   );
   const [updatedItem, setUpdatedItem] = useState(item);
-  const [updatedItemAction, setUpdatedItemAction] = useState<ItemAction>(
-    itemAction ?? {},
-  );
+  const [updatedItemAction, setUpdatedItemAction] = useState(itemAction);
 
   const itemDrops = useMemo(() => {
     const monsters: { monsterId: string; level: number }[] = [];
@@ -340,11 +339,22 @@ const useUpdateItem = () => {
     setUpdatedItem(item);
   }, [isItemFetched]);
   useEffect(() => {
-    console.log(itemAction);
-    setUpdatedItemAction(itemAction ?? {});
+    setUpdatedItemAction(itemAction);
   }, [isItemActionFetched]);
 
-  const { mutate, isSuccess, isError, isPending } = useAdminUpdateItemApi();
+  const {
+    mutate: mutateItem,
+    isSuccess: isUpdateItemSuccess,
+    isError: isUpdateItemError,
+    isPending: isUpdateItemPending,
+  } = useAdminUpdateItemApi();
+
+  const {
+    mutate: mutateItemAction,
+    isSuccess: isUpdateActionSuccess,
+    isError: isUpdateActionError,
+    isPending: isUpdateActionPending,
+  } = useAdminUpdateItemActionApi();
 
   const itemImg = useMemo(
     () => updatedItem?.img.replace(CDN_URL, '') ?? '',
@@ -352,7 +362,9 @@ const useUpdateItem = () => {
   );
 
   const onSave = () => {
-    if (updatedItem) mutate(updatedItem);
+    if (updatedItem) mutateItem({ ...updatedItem, img: itemImg });
+    if (updatedItemAction)
+      mutateItemAction({ itemId: item!.id, ...updatedItemAction });
   };
 
   const onTextPropertyChange = (
@@ -418,8 +430,8 @@ const useUpdateItem = () => {
     onBoolPropertyChange,
     onSelectionPropertyChange,
     onSave,
-    isSuccess,
-    isPending,
-    isError,
+    isSuccess: isUpdateActionSuccess && isUpdateItemSuccess,
+    isPending: isUpdateActionPending || isUpdateItemPending,
+    isError: isUpdateActionError || isUpdateItemError,
   };
 };

@@ -62,6 +62,7 @@ export const MonsterCreateView = () => {
             <Input
               name="monster_req"
               label="Monster spawn level requirement"
+              type="number"
               min={0}
               value={String(monster?.levelRequirements ?? 0)}
               setValue={newRequirement =>
@@ -82,17 +83,6 @@ export const MonsterCreateView = () => {
                 onSelectionPropertyChange(newHabitat as HabitatType)
               }
             />
-            <div className={s.singleMonsterView__infoSection}>
-              <p
-                style={{ fontWeight: 600 }}
-                className={s.singleMonsterView__withInfo}>
-                <IconInfo tooltip="Base value is multiplied by monster level" />{' '}
-                Monster's DPS (base attack * base AS)
-              </p>
-              <p style={{ fontWeight: 900, fontSize: '14px' }}>
-                {(monster?.baseDamage ?? 0) * (monster?.baseAttackSpeed ?? 0)}
-              </p>
-            </div>
           </div>
           <div
             className={s.singleMonsterView__section}
@@ -168,6 +158,18 @@ export const MonsterCreateView = () => {
                 onNumberPropertyChange(newPrice, 'baseAttackSpeed')
               }
             />
+            <div className={s.singleMonsterView__infoSection}>
+              <p
+                style={{ fontWeight: 600 }}
+                className={s.singleMonsterView__withInfo}>
+                Monster's base DPS:{' '}
+                <span style={{ fontWeight: 900, fontSize: '14px' }}>
+                  {(
+                    (monster?.baseDamage ?? 0) * (monster?.baseAttackSpeed ?? 0)
+                  ).toFixed(1)}
+                </span>
+              </p>
+            </div>
           </div>
           <div className={s.singleMonsterView__section}>
             <Input

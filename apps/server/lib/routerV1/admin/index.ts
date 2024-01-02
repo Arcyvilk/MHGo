@@ -2,7 +2,7 @@ export { adminCreateMaterial } from './adminCreateMaterial';
 export { adminCreateMonster } from './adminCreateMonster';
 export { adminCreateMonsterMarker } from './adminCreateMonsterMarker';
 
-export { adminUpdateItem } from './adminUpdateItem';
+export { adminUpdateItem, adminUpdateItemAction } from './adminUpdateItem';
 export { adminUpdateMaterial } from './adminUpdateMaterial';
 export { adminUpdateMonster } from './adminUpdateMonster';
 export {

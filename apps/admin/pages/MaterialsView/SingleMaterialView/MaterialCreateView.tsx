@@ -115,7 +115,11 @@ const useUpdateMaterial = () => {
   );
 
   const onCreate = () => {
-    if (material) mutate(material);
+    if (material)
+      mutate({
+        ...material,
+        img: materialImg,
+      });
   };
 
   const onTextPropertyChange = (newValue: string, property: keyof Material) => {
