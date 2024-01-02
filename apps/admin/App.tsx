@@ -3,11 +3,11 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import { ToastContainer, ToastContainerProps } from 'react-toastify';
 
-import { Entry, entries } from './utils/entries';
+import { entries } from './utils/entries';
 import { Sidebar } from './containers';
-import { HomeView } from './pages';
 
 import s from './App.module.scss';
+import 'leaflet/dist/leaflet.css';
 
 const queryClient = new QueryClient({
   defaultOptions: {

@@ -94,8 +94,12 @@ routerV1.put('/users/user/:userId/craft/:itemId', updateUserItemCraft);
  *         MAP         *
  ****************************/
 
-import { getMonsterMarkersByUserId } from './monsterMarkers';
+import {
+  getMonsterMarkersByUserId,
+  getAllMonsterMarkers,
+} from './monsterMarkers';
 
+routerV1.get('/map/markers/monsters/list', getAllMonsterMarkers);
 routerV1.get('/map/monsters/user/:userId', getMonsterMarkersByUserId);
 
 /*****************************

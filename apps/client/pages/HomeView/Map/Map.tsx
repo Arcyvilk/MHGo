@@ -1,12 +1,11 @@
 import { useEffect, useMemo } from 'react';
 import { MapContainer, TileLayer, Marker, useMap, Circle } from 'react-leaflet';
 import L, { Zoom } from 'leaflet';
+import { useLocalStorage, useSettingsApi } from '@mhgo/front';
+import { Loader, QueryBoundary } from '@mhgo/front';
 
 import { iconMarker } from './Marker';
-import { useLocalStorage } from '../../../hooks/useLocalStorage';
 import { MonsterMarkers } from './MonsterMarkers';
-import { useSettingsApi } from '@mhgo/front';
-import { Loader, QueryBoundary } from '@mhgo/front';
 import { DEFAULT_COORDS } from '../../../utils/consts';
 
 import 'leaflet/dist/leaflet.css';
