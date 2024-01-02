@@ -76,7 +76,7 @@
   flex-direction: column;
   width: calc(100vw - $sidebar-width);
   height: 100vh;
-  overflow: scroll;
+  overflow: auto;
   box-sizing: border-box;
   align-items: flex-start;
   justify-content: flex-start;
@@ -85,8 +85,9 @@
 }
 
 @mixin page-content-admin {
+  width: 100%;
   padding: $size-8;
-  overflow: scroll;
+  box-sizing: border-box;
 }
 
 @mixin page-section-admin {

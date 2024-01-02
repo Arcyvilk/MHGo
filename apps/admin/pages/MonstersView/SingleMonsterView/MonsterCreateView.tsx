@@ -59,6 +59,15 @@ export const MonsterCreateView = () => {
               value={monster?.description ?? ''}
               setValue={newDesc => onTextPropertyChange(newDesc, 'description')}
             />
+            <Input
+              name="monster_req"
+              label="Monster spawn level requirement"
+              min={0}
+              value={String(monster?.levelRequirements ?? 0)}
+              setValue={newRequirement =>
+                onNumberPropertyChange(newRequirement, 'levelRequirements')
+              }
+            />
             <Select
               data={(
                 ['swamp', 'forest', 'cave', 'desert'] as HabitatType[]
@@ -234,7 +243,13 @@ const useUpdateMonster = () => {
     if (monster) {
       const monsterId = monster.name.toLowerCase().replace(/ /g, '_');
       mutate({
-        monster: { ...monster, id: monsterId },
+        monster: {
+          ...monster,
+          id: monsterId,
+          img: monsterImg,
+          thumbnail: monsterThumbnail,
+          levelRequirements: monster.levelRequirements ?? null,
+        },
         drops: { monsterId, drops: [] },
       });
     }
@@ -255,7 +270,11 @@ const useUpdateMonster = () => {
     newValue: string,
     property: keyof Pick<
       Monster,
-      'baseAttackSpeed' | 'baseDamage' | 'baseExp' | 'baseHP'
+      | 'baseAttackSpeed'
+      | 'baseDamage'
+      | 'baseExp'
+      | 'baseHP'
+      | 'levelRequirements'
     >,
   ) => {
     if (!monster) return;

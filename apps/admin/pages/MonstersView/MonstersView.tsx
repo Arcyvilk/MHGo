@@ -14,6 +14,7 @@ const tableHeaders = [
   'Base DPS',
   'Base EXP',
   'Base payment',
+  'Level requirement',
   'Actions',
 ];
 
@@ -36,6 +37,7 @@ export const MonstersView = () => {
     monster.baseWealth
       .map(wealth => `${wealth.type}: ${wealth.amount}`)
       .join('; '),
+    monster.levelRequirements,
     <Button
       label={<Icon icon="Edit" size={Size.MICRO} />}
       onClick={() => onMonsterEdit(monster)}

@@ -74,7 +74,8 @@
 .tile {
   &__image {
     display: flex;
-    max-height: $size-72;
+    max-width: $size-72;
+    min-width: $size-64;
     flex-grow: 1;
     object-fit: contain;
     padding: $size-6;

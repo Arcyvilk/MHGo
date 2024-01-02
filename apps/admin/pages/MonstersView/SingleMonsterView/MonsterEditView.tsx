@@ -79,6 +79,15 @@ export const MonsterEditView = () => {
               value={updatedMonster?.description ?? ''}
               setValue={newDesc => onTextPropertyChange(newDesc, 'description')}
             />
+            <Input
+              name="monster_req"
+              label="Monster spawn level requirement"
+              min={0}
+              value={String(updatedMonster?.levelRequirements ?? 0)}
+              setValue={newRequirement =>
+                onNumberPropertyChange(newRequirement, 'levelRequirements')
+              }
+            />
             <Select
               data={(
                 ['swamp', 'forest', 'cave', 'desert'] as HabitatType[]
@@ -259,16 +268,21 @@ const useUpdateMonster = () => {
 
   const monsterImg = useMemo(
     () => updatedMonster?.img.replace(CDN_URL, '') ?? '',
-    [monsters],
+    [monster],
   );
   const monsterThumbnail = useMemo(
     () => updatedMonster?.thumbnail.replace(CDN_URL, '') ?? '',
-    [monsters],
+    [monster],
   );
 
   const onSave = () => {
     if (updatedMonster) {
-      mutate(updatedMonster);
+      mutate({
+        ...updatedMonster,
+        img: monsterImg,
+        thumbnail: monsterThumbnail,
+        levelRequirements: updatedMonster.levelRequirements ?? null,
+      });
     }
   };
 
@@ -290,7 +304,11 @@ const useUpdateMonster = () => {
     newValue: string,
     property: keyof Pick<
       Monster,
-      'baseAttackSpeed' | 'baseDamage' | 'baseExp' | 'baseHP'
+      | 'baseAttackSpeed'
+      | 'baseDamage'
+      | 'baseExp'
+      | 'baseHP'
+      | 'levelRequirements'
     >,
   ) => {
     if (!updatedMonster) return;
