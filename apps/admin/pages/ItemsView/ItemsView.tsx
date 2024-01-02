@@ -101,7 +101,9 @@ export const ItemsView = () => {
       <div className={s.itemsView__header}>
         <h1 className={s.itemsView__title}>ITEMS</h1>
       </div>
-      <Table tableHeaders={tableHeaders} items={tableRows} />
+      <div className={s.itemsView__content}>
+        <Table tableHeaders={tableHeaders} items={tableRows} />
+      </div>
     </div>
   );
 };

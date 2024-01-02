@@ -2,15 +2,12 @@
 
 .usersView {
   @include page-wrapper-admin;
-
   &__header {
     @include page-header-admin;
   }
-
   &__content {
-    padding: $size-8;
+    @include page-content-admin;
   }
-
   &__title {
     @include page-title;
   }

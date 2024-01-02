@@ -2,17 +2,15 @@
 
 .settingsView {
   @include page-wrapper-admin;
-
   &__header {
     @include page-header-admin;
   }
-
   &__content {
+    @include page-content-admin;
     display: flex;
     gap: $size-16;
     padding: $size-8;
   }
-
   &__title {
     @include page-title;
   }

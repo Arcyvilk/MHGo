@@ -31,7 +31,9 @@ export const MaterialsView = () => {
       <div className={s.materialsView__header}>
         <h1 className={s.materialsView__title}>MATERIALS</h1>
       </div>
-      <Table tableHeaders={tableHeaders} items={tableRows} />
+      <div className={s.materialsView__content}>
+        <Table tableHeaders={tableHeaders} items={tableRows} />
+      </div>
     </div>
   );
 };

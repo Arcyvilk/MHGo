@@ -31,7 +31,7 @@ export const MonsterEditView = () => {
       <div className={s.monsterEditView}>
         <div className={s.monsterEditView__header}>
           <h1 className={s.monsterEditView__title}>
-            This monster does not exist
+            This monster does not exist!
           </h1>
         </div>
         <div className={s.monsterEditView__footer}>

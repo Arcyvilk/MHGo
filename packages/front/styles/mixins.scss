@@ -71,9 +71,12 @@
 }
 
 @mixin page-wrapper-admin {
+  position: relative;
   display: flex;
   flex-direction: column;
-  width: 100%;
+  width: calc(100vw - $sidebar-width);
+  height: 100vh;
+  overflow: scroll;
   box-sizing: border-box;
   align-items: flex-start;
   justify-content: flex-start;
@@ -81,9 +84,15 @@
   font-size: $size-12;
 }
 
+@mixin page-content-admin {
+  padding: $size-8;
+  overflow: scroll;
+}
+
 @mixin page-header-admin {
   position: sticky;
   top: 0;
+  left: 0;
   width: 100%;
   display: flex;
   flex-direction: row;

@@ -46,7 +46,9 @@ export const MonstersView = () => {
       <div className={s.monstersView__header}>
         <h1 className={s.monstersView__title}>MONSTERS</h1>
       </div>
-      <Table tableHeaders={tableHeaders} items={tableRows} />
+      <div className={s.monstersView__content}>
+        <Table tableHeaders={tableHeaders} items={tableRows} />
+      </div>
     </div>
   );
 };
