@@ -12,10 +12,11 @@ import {
   useAdminUpdateItemApi,
   useItemActionsApi,
   useItemsApi,
+  useMonsterDropsApi,
 } from '@mhgo/front';
 import { ActionBar, HeaderEdit } from '../../../containers';
 
-import s from './ItemEditView.module.scss';
+import s from './SingleItemView.module.scss';
 
 export const ItemEditView = () => {
   const navigate = useNavigate();
@@ -24,6 +25,7 @@ export const ItemEditView = () => {
     updatedItem,
     updatedItemAction,
     itemImg,
+    itemDrops,
     onTextPropertyChange,
     onNumberPropertyChange,
     onBoolPropertyChange,
@@ -37,18 +39,18 @@ export const ItemEditView = () => {
 
   if (!item)
     return (
-      <div className={s.itemEditView}>
-        <div className={s.itemEditView__header}>
-          <h1 className={s.itemEditView__title}>This item does not exist</h1>
+      <div className={s.singleItemView}>
+        <div className={s.singleItemView__header}>
+          <h1 className={s.singleItemView__title}>This item does not exist</h1>
         </div>
-        <div className={s.itemEditView__footer}>
+        <div className={s.singleItemView__footer}>
           <Button label="Back" onClick={() => navigate(-1)} />
         </div>
       </div>
     );
 
   return (
-    <div className={s.itemEditView}>
+    <div className={s.singleItemView}>
       <HeaderEdit status={status} title="Edit item" />
       <ActionBar
         title={`Item ID: ${updatedItem?.id}`}
@@ -67,9 +69,9 @@ export const ItemEditView = () => {
           </>
         }
       />
-      <div className={s.itemEditView__content}>
-        <div className={s.itemEditView__content}>
-          <div className={s.itemEditView__section}>
+      <div className={s.singleItemView__content}>
+        <div className={s.singleItemView__content}>
+          <div className={s.singleItemView__section}>
             <Input
               name="item_name"
               label="Item's name"
@@ -103,7 +105,7 @@ export const ItemEditView = () => {
             />
           </div>
           <div
-            className={s.itemEditView__section}
+            className={s.singleItemView__section}
             style={{ alignItems: 'center' }}>
             <Input
               name="item_img"
@@ -119,12 +121,33 @@ export const ItemEditView = () => {
               }}
             />
           </div>
+          <div className={s.singleItemView__section}>
+            <div className={s.singleItemView__infoSection}>
+              <p
+                style={{ fontWeight: 600 }}
+                className={s.singleItemView__withInfo}>
+                Dropped by:
+              </p>
+              {itemDrops.length > 0
+                ? itemDrops.map(drop => (
+                    <Button
+                      variant={Button.Variant.GHOST}
+                      simple
+                      label={`${drop.monsterId} (level ${drop.level})`}
+                      onClick={() =>
+                        navigate(`/monsters/edit?id=${drop.monsterId}`)
+                      }
+                    />
+                  ))
+                : '-'}
+            </div>
+          </div>
         </div>
-        <div className={s.itemEditView__content}>
+        <div className={s.singleItemView__content}>
           {/* 
               PURCHASABLE ITEM SECTION 
           */}
-          <div className={s.itemEditView__section}>
+          <div className={s.singleItemView__section}>
             <FormControlLabel
               label="Purchasable?"
               control={
@@ -139,7 +162,7 @@ export const ItemEditView = () => {
             />
             {updatedItem?.purchasable ? (
               <div
-                className={modifiers(s, 'itemEditView__section', {
+                className={modifiers(s, 'singleItemView__section', {
                   hidden: true,
                 })}>
                 <Input
@@ -158,7 +181,7 @@ export const ItemEditView = () => {
           {/* 
               CRAFTABLE ITEM SECTION 
           */}
-          <div className={s.itemEditView__section}>
+          <div className={s.singleItemView__section}>
             <FormControlLabel
               label="Craftable?"
               control={
@@ -173,7 +196,7 @@ export const ItemEditView = () => {
             />
             {updatedItem?.craftable ? (
               <div
-                className={modifiers(s, 'itemEditView__section', {
+                className={modifiers(s, 'singleItemView__section', {
                   hidden: true,
                 })}>
                 TODO
@@ -183,7 +206,7 @@ export const ItemEditView = () => {
           {/* 
               USABLE ITEM SECTION 
           */}
-          <div className={s.itemEditView__section}>
+          <div className={s.singleItemView__section}>
             <FormControlLabel
               label="Usable?"
               control={
@@ -198,7 +221,7 @@ export const ItemEditView = () => {
             />
             {updatedItem?.usable ? (
               <div
-                className={modifiers(s, 'itemEditView__section', {
+                className={modifiers(s, 'singleItemView__section', {
                   hidden: true,
                 })}>
                 <FormControlLabel
@@ -256,7 +279,7 @@ export const ItemEditView = () => {
           {/* 
               EQUIPPABLE ITEM SECTION 
           */}
-          <div className={s.itemEditView__section}>
+          <div className={s.singleItemView__section}>
             <FormControlLabel
               label="Equippable?"
               control={
@@ -271,7 +294,7 @@ export const ItemEditView = () => {
             />
             {updatedItem?.equippable ? (
               <div
-                className={modifiers(s, 'itemEditView__section', {
+                className={modifiers(s, 'singleItemView__section', {
                   hidden: true,
                 })}>
                 TODO
@@ -288,6 +311,7 @@ const useUpdateItem = () => {
   const params = new URLSearchParams(location.search);
   const id = params.get('id');
 
+  const { data: drops, isFetched: isDropsFetched } = useMonsterDropsApi();
   const { data: items, isFetched: isItemFetched } = useItemsApi();
   const { data: itemAction, isFetched: isItemActionFetched } =
     useItemActionsApi(id!);
@@ -300,6 +324,17 @@ const useUpdateItem = () => {
   const [updatedItemAction, setUpdatedItemAction] = useState<ItemAction>(
     itemAction ?? {},
   );
+
+  const itemDrops = useMemo(() => {
+    const monsters: { monsterId: string; level: number }[] = [];
+    drops.forEach(drop =>
+      drop.drops.map(levelDrop => {
+        if (levelDrop.drops.some(d => d.id === item?.id))
+          monsters.push({ monsterId: drop.monsterId, level: levelDrop.level });
+      }),
+    );
+    return monsters;
+  }, [drops, isDropsFetched]);
 
   useEffect(() => {
     setUpdatedItem(item);
@@ -377,6 +412,7 @@ const useUpdateItem = () => {
     itemImg,
     updatedItem,
     updatedItemAction,
+    itemDrops,
     onTextPropertyChange,
     onNumberPropertyChange,
     onBoolPropertyChange,

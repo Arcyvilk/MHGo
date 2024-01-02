@@ -1,2 +1,2 @@
 export { ItemsView } from './ItemsView';
-export { ItemEditView } from './ItemEditView';
+export { ItemEditView } from './SingleItemView';
