@@ -6,7 +6,7 @@ import {
   Input,
   Select,
   modifiers,
-  useAdminAllMonsterMarkers,
+  useAdminAllMonsterMarkersApi,
   useAdminDeleteMonsterMarkerApi,
   useAdminUpdateMonsterMarkerApi,
   useMonstersApi,
@@ -55,17 +55,6 @@ export const MonsterMarkerEditView = ({
           gap: '16px',
         }}>
         <div className={s.markerView__section}>
-          <Select
-            name="monster_marker"
-            label="Monster on marker"
-            data={monsters.map(m => ({ id: m.id, name: m.name }))}
-            defaultSelected={marker?.monsterId}
-            setValue={newMonster =>
-              onTextPropertyChange(newMonster, 'monsterId')
-            }
-          />
-        </div>
-        <div className={s.markerView__section}>
           <Input
             name="marker_lat"
             label="Latitude"
@@ -77,6 +66,17 @@ export const MonsterMarkerEditView = ({
             label="Longitude"
             value={String(updatedMarker?.coords[1])}
             setValue={newLong => onNumberPropertyChange(newLong, 'long')}
+          />
+        </div>
+        <div className={s.markerView__section}>
+          <Select
+            name="monster_marker"
+            label="Monster on marker"
+            data={monsters.map(m => ({ id: m.id, name: m.name }))}
+            defaultSelected={marker?.monsterId}
+            setValue={newMonster =>
+              onTextPropertyChange(newMonster, 'monsterId')
+            }
           />
         </div>
         <div className={s.markerView__section}>
@@ -139,7 +139,7 @@ const useUpdateMonsterMarker = (
 ) => {
   const { data: monsters } = useMonstersApi();
   const { data: monsterMarkers, isFetched: isMarkersFetched } =
-    useAdminAllMonsterMarkers();
+    useAdminAllMonsterMarkersApi();
 
   const marker = useMemo(() => {
     return monsterMarkers.find(
@@ -200,6 +200,7 @@ const useUpdateMonsterMarker = (
         ...updatedMarker,
         id: String(selectedMarker),
       });
+      setSelectedMarker(null);
     }
   };
 

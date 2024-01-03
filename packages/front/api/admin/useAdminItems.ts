@@ -22,7 +22,7 @@ export const useAdminUpdateItemApi = () => {
 
     if (response.status !== 200 && response.status !== 201)
       throw new Error('Did not work!');
-    queryClient.invalidateQueries({ queryKey: ['items'] });
+    queryClient.invalidateQueries({ queryKey: ['items'], exact: false });
   };
 
   const { mutate, status, isPending, isSuccess, isError } = useMutation({
@@ -53,7 +53,7 @@ export const useAdminUpdateItemActionApi = () => {
     );
 
     if (response.status !== 200) throw new Error('Did not work!');
-    queryClient.invalidateQueries({ queryKey: ['items'] });
+    queryClient.invalidateQueries({ queryKey: ['items'], exact: false });
   };
 
   const { mutate, status, isPending, isSuccess, isError } = useMutation({
@@ -85,7 +85,7 @@ export const useAdminUpdateItemCraftlistApi = () => {
     );
 
     if (response.status !== 200) throw new Error('Did not work!');
-    queryClient.invalidateQueries({ queryKey: ['items'] });
+    queryClient.invalidateQueries({ queryKey: ['items'], exact: false });
   };
 
   const { mutate, status, isPending, isSuccess, isError } = useMutation({

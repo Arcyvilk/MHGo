@@ -3,7 +3,7 @@ import { Marker } from 'react-leaflet';
 import L from 'leaflet';
 import {
   QueryBoundary,
-  useAdminAllMonsterMarkers,
+  useAdminAllMonsterMarkersApi,
   useMonstersApi,
 } from '@mhgo/front';
 
@@ -22,7 +22,7 @@ export const MonsterMarkers = (props: MonsterMarkerProps) => (
 
 const Load = ({ selectedMarker, setSelectedMarker }: MonsterMarkerProps) => {
   const { data: monsters } = useMonstersApi();
-  const { data: monsterMarkers } = useAdminAllMonsterMarkers();
+  const { data: monsterMarkers } = useAdminAllMonsterMarkersApi();
 
   return (
     <>

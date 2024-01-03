@@ -10,6 +10,7 @@ export const routerV1 = express.Router();
  ********************************/
 
 import {
+  adminGetAllUsers,
   adminCreateMaterial,
   adminCreateMonster,
   adminCreateMonsterMarker,
@@ -22,6 +23,8 @@ import {
   adminUpdateUser,
   adminDeleteMonsterMarker,
 } from './admin';
+
+routerV1.get('/admin/users/list', adminGetAllUsers);
 
 routerV1.post('/admin/materials/create', adminCreateMaterial);
 routerV1.post('/admin/monsters/create', adminCreateMonster);
@@ -36,6 +39,14 @@ routerV1.put('/admin/marker/monster/:markerId', adminUpdateMonsterMarker);
 routerV1.put('/admin/users/user/:userId', adminUpdateUser);
 
 routerV1.delete('/admin/marker/monster/:markerId', adminDeleteMonsterMarker);
+
+/*****************************
+ *         RESOURCES         *
+ *****************************/
+
+import { getResources } from './resources';
+
+routerV1.get('/resources/list', getResources);
 
 /****************************
  *         MONSTERS         *
@@ -67,11 +78,22 @@ routerV1.get('/users/user/:userId/craft/:itemId', getItemCraftingList);
  *         DROPS         *
  *************************/
 
-import { getDrops, getDropsByMonsterId, getDropsForUser } from './drops';
+import {
+  getMonsterDrops,
+  getMonsterDropsForUser,
+  getDropsByMonsterId,
+  getResourceDrops,
+  getResourceDropsForUser,
+  getDropsByResourceId,
+} from './drops';
 
-routerV1.get('/drops/list', getDrops);
+routerV1.get('/drops/monster/list', getMonsterDrops);
 routerV1.get('/drops/monster/:monsterId', getDropsByMonsterId);
-routerV1.put('/drops/user/:userId', getDropsForUser);
+routerV1.put('/drops/monster/user/:userId', getMonsterDropsForUser);
+
+routerV1.get('/drops/resource/list', getResourceDrops);
+routerV1.get('/drops/resource/:resourceId', getDropsByResourceId);
+routerV1.put('/drops/resource/user/:userId', getResourceDropsForUser);
 
 /************************
  *         USER         *
@@ -114,11 +136,13 @@ routerV1.put('/users/user/:userId/craft/:itemId', updateUserItemCraft);
  ****************************/
 
 import {
-  getMonsterMarkersByUserId,
   getAllMonsterMarkers,
-} from './monsterMarkers';
+  getAllResourceMarkers,
+  getMonsterMarkersByUserId,
+} from './markers';
 
 routerV1.get('/map/markers/monsters/list', getAllMonsterMarkers);
+routerV1.get('/map/markers/resources/list', getAllResourceMarkers);
 routerV1.get('/map/monsters/user/:userId', getMonsterMarkersByUserId);
 
 /*****************************

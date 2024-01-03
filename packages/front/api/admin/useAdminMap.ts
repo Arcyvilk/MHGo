@@ -2,7 +2,7 @@ import { MonsterMarker } from '@mhgo/types';
 import { API_URL } from '../../env';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
-export const useAdminAllMonsterMarkers = () => {
+export const useAdminAllMonsterMarkersApi = () => {
   const getAllMonsterMarkers = async (): Promise<MonsterMarker[]> => {
     const res = await fetch(`${API_URL}/map/markers/monsters/list`);
     return res.json();
@@ -14,7 +14,7 @@ export const useAdminAllMonsterMarkers = () => {
     isFetched,
     isError,
   } = useQuery<MonsterMarker[], unknown, MonsterMarker[], string[]>({
-    queryKey: ['markers', 'monsters', 'all'],
+    queryKey: ['admin', 'markers', 'monsters', 'all'],
     queryFn: getAllMonsterMarkers,
   });
 

@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { MonsterMarker } from '@mhgo/types';
+import { MonsterMarker, ResourceMarker } from '@mhgo/types';
 
 import { API_URL } from '../env';
 
@@ -18,6 +18,25 @@ export const useMonsterMarkersApi = (userId?: string) => {
     queryKey: ['monster', 'markers', userId!],
     queryFn: getMonsterMarkers,
     enabled: Boolean(userId),
+  });
+
+  return { data, isLoading, isFetched, isError };
+};
+
+export const useAllResourceMarkersApi = () => {
+  const getResourceMarkers = async (): Promise<ResourceMarker[]> => {
+    const res = await fetch(`${API_URL}/map/markers/resources/list`);
+    return res.json();
+  };
+
+  const {
+    data = [],
+    isLoading,
+    isFetched,
+    isError,
+  } = useQuery<ResourceMarker[], unknown, ResourceMarker[], string[]>({
+    queryKey: ['markers', 'resource'],
+    queryFn: getResourceMarkers,
   });
 
   return { data, isLoading, isFetched, isError };

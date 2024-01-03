@@ -64,7 +64,7 @@ const Load = () => {
 
 type MapLayerProps = { coords: number[] };
 const MapLayer = ({ coords }: MapLayerProps) => {
-  const { setting: mapRadius } = useSettingsApi('map_radius', 75);
+  const { setting: mapRadius } = useSettingsApi('map_radius', 0);
   const map = useMap();
 
   useEffect(() => {

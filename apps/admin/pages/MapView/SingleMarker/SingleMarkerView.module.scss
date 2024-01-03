@@ -20,4 +20,10 @@
   &__section {
     @include page-section-admin;
   }
+
+  &__switch {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-evenly;
+  }
 }
