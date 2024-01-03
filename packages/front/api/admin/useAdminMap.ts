@@ -152,7 +152,7 @@ export const useAdminUpdateResourceMarkerApi = () => {
   const queryClient = useQueryClient();
 
   const adminUpdateResourceMarker = async (
-    variables: ResourceMarker,
+    variables: Omit<ResourceMarker, 'respawnTime'>,
   ): Promise<void> => {
     const { id, ...resourceProperties } = variables;
     const response = await fetch(

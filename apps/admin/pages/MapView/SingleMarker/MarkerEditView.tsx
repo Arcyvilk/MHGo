@@ -8,19 +8,32 @@ import {
   modifiers,
   useAdminAllMonsterMarkersApi,
   useAdminDeleteMonsterMarkerApi,
+  useAdminDeleteResourceMarkerApi,
   useAdminUpdateMonsterMarkerApi,
+  useAdminUpdateResourceMarkerApi,
+  useAllResourceMarkersApi,
   useMonstersApi,
+  useResourcesApi,
 } from '@mhgo/front';
 import { ActionBar } from '../../../containers';
 
 import s from './SingleMarkerView.module.scss';
 import { Status } from '../../../utils/types';
-import { DEFAULT_MONSTER_MARKER } from '../../../utils/defaults';
+import {
+  DEFAULT_MONSTER_MARKER,
+  DEFAULT_RESOURCE_MARKER,
+} from '../../../utils/defaults';
+
+enum MarkerType {
+  RESOURCE = 'resource',
+  MONSTER = 'monster',
+}
 
 type MarkerProps = {
   selectedMarker: string;
   setSelectedMarker: (selectedMarker: string | null) => void;
   selectedCoords: number[];
+  setSelectedCoords: (selectedCoords: number[]) => void;
   onCancel: () => void;
   setStatus: (status: Status) => void;
 };
@@ -28,16 +41,27 @@ export const MarkerEditView = ({
   selectedMarker,
   setSelectedMarker,
   selectedCoords,
+  setSelectedCoords,
   onCancel,
   setStatus,
 }: MarkerProps) => {
-  const { monsters, monsterMarker, setMonsterMarker, onSave, onDelete } =
-    useUpdateMonsterMarker(
-      selectedMarker,
-      setSelectedMarker,
-      selectedCoords,
-      setStatus,
-    );
+  const {
+    markerType,
+    monsters,
+    monsterMarker,
+    setMonsterMarker,
+    resources,
+    resourceMarker,
+    setResourceMarker,
+    onSave,
+    onDelete,
+  } = useUpdateMonsterMarker(
+    selectedMarker,
+    setSelectedMarker,
+    selectedCoords,
+    setSelectedCoords,
+    setStatus,
+  );
 
   return (
     <div className={s.markerView__content}>
@@ -72,61 +96,82 @@ export const MarkerEditView = ({
             }
           />
         </div>
-        <div className={s.markerView__section}>
-          <Select
-            // If this is not present, the select will never update
-            // upon switching the selected monster markers
-            // Ugly hack but works lol
-            key={new Date().valueOf().toString()}
-            name="monster_marker"
-            label="Monster on marker"
-            data={monsters.map(m => ({ id: m.id, name: m.name }))}
-            defaultSelected={monsterMarker?.monsterId}
-            setValue={monsterId =>
-              setMonsterMarker({
-                ...monsterMarker,
-                monsterId,
-              })
-            }
-          />
-        </div>
-        <div className={s.markerView__section}>
-          <FormControlLabel
-            label="Random level?"
-            control={
-              <Switch
-                color="default"
-                checked={!monsterMarker?.level}
-                onChange={(_, checked) =>
-                  setMonsterMarker({
-                    ...monsterMarker,
-                    level: checked ? null : 1,
-                  })
-                }
-              />
-            }
-          />
-          {monsterMarker?.level !== null ? (
-            <div
-              className={modifiers(s, 'markerView__section', {
-                hidden: true,
-              })}>
-              <Input
-                name="marker_level"
-                label="Monster level"
-                min={0}
-                type="number"
-                value={String(monsterMarker?.level)}
-                setValue={newLevel =>
-                  setMonsterMarker({
-                    ...monsterMarker,
-                    level: newLevel === null ? null : Number(newLevel),
-                  })
-                }
-              />
-            </div>
-          ) : null}
-        </div>
+        {markerType === MarkerType.RESOURCE && (
+          <div className={s.markerView__section}>
+            <Select
+              // If this is not present, the select will never update
+              // upon switching the selected monster markers
+              // Ugly hack but works lol
+              key={new Date().valueOf().toString()}
+              name="resource_marker"
+              label="Resource on marker"
+              data={resources.map(r => ({ id: r.id, name: r.name }))}
+              defaultSelected={resourceMarker?.resourceId}
+              setValue={resourceId =>
+                setResourceMarker({
+                  ...resourceMarker,
+                  resourceId,
+                })
+              }
+            />
+          </div>
+        )}
+        {markerType === MarkerType.MONSTER && (
+          <div className={s.markerView__section}>
+            <Select
+              // If this is not present, the select will never update
+              // upon switching the selected monster markers
+              // Ugly hack but works lol
+              key={new Date().valueOf().toString()}
+              name="monster_marker"
+              label="Monster on marker"
+              data={monsters.map(m => ({ id: m.id, name: m.name }))}
+              defaultSelected={monsterMarker?.monsterId}
+              setValue={monsterId =>
+                setMonsterMarker({
+                  ...monsterMarker,
+                  monsterId,
+                })
+              }
+            />
+
+            <FormControlLabel
+              label="Random level?"
+              control={
+                <Switch
+                  color="default"
+                  checked={!monsterMarker?.level}
+                  onChange={(_, checked) =>
+                    setMonsterMarker({
+                      ...monsterMarker,
+                      level: checked ? null : 1,
+                    })
+                  }
+                />
+              }
+            />
+            {monsterMarker?.level !== null ? (
+              <div
+                className={modifiers(s, 'markerView__section', {
+                  hidden: true,
+                })}>
+                <Input
+                  name="marker_level"
+                  label="Monster level"
+                  min={0}
+                  type="number"
+                  value={String(monsterMarker?.level)}
+                  setValue={newLevel =>
+                    setMonsterMarker({
+                      ...monsterMarker,
+                      level: newLevel === null ? null : Number(newLevel),
+                    })
+                  }
+                />
+              </div>
+            ) : null}
+          </div>
+        )}
       </div>
       <ActionBar
         buttons={
@@ -159,11 +204,23 @@ const useUpdateMonsterMarker = (
   selectedMarker: string,
   setSelectedMarker: (selectedMarker: string | null) => void,
   selectedCoords: number[],
+  setSelectedCoords: (selectedCoords: number[]) => void,
   setStatus: (status: Status) => void,
 ) => {
+  const [markerType, setMarkerType] = useState(MarkerType.MONSTER);
   const { data: monsters } = useMonstersApi();
+  const { data: resources } = useResourcesApi();
   const { data: monsterMarkers, isFetched: isMonstersFetched } =
     useAdminAllMonsterMarkersApi();
+  const { data: resourceMarkers, isFetched: isResourcesFetched } =
+    useAllResourceMarkersApi();
+
+  const {
+    mutateUpdateMonsterMarker,
+    mutateDeleteMonsterMarker,
+    mutateUpdateResourceMarker,
+    mutateDeleteResourceMarker,
+  } = useStatus(setStatus);
 
   const [monsterMarker, setMonsterMarker] = useState<MonsterMarkerFixed>(
     monsterMarkers.find(
@@ -171,6 +228,23 @@ const useUpdateMonsterMarker = (
       m => String(m._id) === selectedMarker,
     ) ?? DEFAULT_MONSTER_MARKER,
   );
+  const [resourceMarker, setResourceMarker] = useState<ResourceMarkerFixed>(
+    resourceMarkers.find(
+      // @ts-expect-error it DOES have _id
+      m => String(m._id) === selectedMarker,
+    ) ?? DEFAULT_RESOURCE_MARKER,
+  );
+
+  useEffect(() => {
+    const marker = monsterMarkers.find(
+      // @ts-expect-error it DOES have _id
+      m => String(m._id) === selectedMarker,
+    );
+    if (marker) {
+      setMonsterMarker(marker);
+      setMarkerType(MarkerType.MONSTER);
+    }
+  }, [selectedMarker, isMonstersFetched]);
 
   useEffect(() => {
     if (!monsterMarker) return;
@@ -182,49 +256,33 @@ const useUpdateMonsterMarker = (
       ...monsterMarker,
       coords: selectedCoords,
     });
+
+    console.log(selectedCoords);
   }, [selectedCoords]);
 
   useEffect(() => {
-    const marker = monsterMarkers.find(
+    const marker = resourceMarkers.find(
       // @ts-expect-error it DOES have _id
       m => String(m._id) === selectedMarker,
     );
-    if (marker) setMonsterMarker(marker);
+    if (marker) {
+      setResourceMarker(marker);
+      setMarkerType(MarkerType.RESOURCE);
+      setSelectedCoords(marker.coords);
+    }
   }, [selectedMarker, isMonstersFetched]);
 
-  const {
-    mutate: mutateUpdate,
-    isSuccess: isUpdateSuccess,
-    isError: isUpdateError,
-    isPending: isUpdatePending,
-  } = useAdminUpdateMonsterMarkerApi();
-  const {
-    mutate: mutateDelete,
-    isSuccess: isDeleteSuccess,
-    isError: isDeleteError,
-    isPending: isDeletePending,
-  } = useAdminDeleteMonsterMarkerApi();
-
-  useEffect(() => {
-    setStatus({
-      isSuccess: isDeleteSuccess,
-      isError: isDeleteError,
-      isPending: isDeletePending,
-    });
-  }, [isDeleteSuccess, isDeletePending, isDeleteError]);
-
-  useEffect(() => {
-    setStatus({
-      isSuccess: isUpdateSuccess,
-      isError: isUpdateError,
-      isPending: isUpdatePending,
-    });
-  }, [isUpdateSuccess, isUpdatePending, isUpdateError]);
-
   const onSave = () => {
-    if (monsterMarker) {
-      mutateUpdate({
+    if (markerType === MarkerType.MONSTER && monsterMarker) {
+      mutateUpdateMonsterMarker({
         ...monsterMarker,
+        id: String(selectedMarker),
+      });
+      setSelectedMarker(null);
+    }
+    if (markerType === MarkerType.RESOURCE && resourceMarker) {
+      mutateUpdateResourceMarker({
+        ...resourceMarker,
         id: String(selectedMarker),
       });
       setSelectedMarker(null);
@@ -232,17 +290,89 @@ const useUpdateMonsterMarker = (
   };
 
   const onDelete = () => {
-    if (selectedMarker) {
-      mutateDelete({ markerId: selectedMarker });
-      setSelectedMarker(null);
-    }
+    if (!selectedMarker) return;
+    if (markerType === MarkerType.MONSTER)
+      mutateDeleteMonsterMarker({ markerId: selectedMarker });
+    if (markerType === MarkerType.RESOURCE)
+      mutateDeleteResourceMarker({ markerId: selectedMarker });
+    setSelectedMarker(null);
   };
 
   return {
+    markerType,
     monsters,
     monsterMarker,
     setMonsterMarker,
+    resources,
+    resourceMarker,
+    setResourceMarker,
     onSave,
     onDelete,
+  };
+};
+
+const useStatus = (setStatus: (status: Status) => void) => {
+  const {
+    mutate: mutateUpdateMonsterMarker,
+    isSuccess: isUpdateMSuccess,
+    isError: isUpdateMError,
+    isPending: isUpdateMPending,
+  } = useAdminUpdateMonsterMarkerApi();
+  const {
+    mutate: mutateDeleteMonsterMarker,
+    isSuccess: isDeleteMSuccess,
+    isError: isDeleteMError,
+    isPending: isDeleteMPending,
+  } = useAdminDeleteMonsterMarkerApi();
+  const {
+    mutate: mutateUpdateResourceMarker,
+    isSuccess: isUpdateRSuccess,
+    isError: isUpdateRError,
+    isPending: isUpdateRPending,
+  } = useAdminUpdateResourceMarkerApi();
+  const {
+    mutate: mutateDeleteResourceMarker,
+    isSuccess: isDeleteRSuccess,
+    isError: isDeleteRError,
+    isPending: isDeleteRPending,
+  } = useAdminDeleteResourceMarkerApi();
+
+  useEffect(() => {
+    setStatus({
+      isSuccess: isUpdateMSuccess,
+      isError: isUpdateMError,
+      isPending: isUpdateMPending,
+    });
+  }, [isUpdateMSuccess, isUpdateMPending, isUpdateMError]);
+
+  useEffect(() => {
+    setStatus({
+      isSuccess: isDeleteMSuccess,
+      isError: isDeleteMError,
+      isPending: isDeleteMPending,
+    });
+  }, [isDeleteMSuccess, isDeleteMPending, isDeleteMError]);
+
+  useEffect(() => {
+    setStatus({
+      isSuccess: isUpdateRSuccess,
+      isError: isUpdateRError,
+      isPending: isUpdateRPending,
+    });
+  }, [isUpdateRSuccess, isUpdateRPending, isUpdateRError]);
+
+  useEffect(() => {
+    setStatus({
+      isSuccess: isDeleteRSuccess,
+      isError: isDeleteRError,
+      isPending: isDeleteRPending,
+    });
+  }, [isDeleteRSuccess, isDeleteRPending, isDeleteRError]);
+
+  return {
+    mutateUpdateMonsterMarker,
+    mutateDeleteMonsterMarker,
+    mutateUpdateResourceMarker,
+    mutateDeleteResourceMarker,
   };
 };

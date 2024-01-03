@@ -89,75 +89,76 @@ export const MarkerCreateView = ({
             />
             <span>Monster</span>
           </div>
-        </div>
-        {/* 
+
+          {/* 
           MARKER TYPE - MONSTER
         */}
-        {markerType === MarkerType.MONSTER && (
-          <div
-            className={modifiers(s, 'markerView__section', { hidden: true })}>
-            <Select
-              name="monster_marker"
-              label="Monster on marker"
-              data={monsters.map(m => ({ id: m.id, name: m.name }))}
-              defaultSelected={monsterMarker?.monsterId ?? monsters[0].id}
-              setValue={monsterId =>
-                setMonsterMarker({
-                  ...monsterMarker,
-                  monsterId,
-                })
-              }
-            />
-            <FormControlLabel
-              label="Random level?"
-              control={
-                <Switch
-                  color="default"
-                  checked={!monsterMarker?.level}
-                  onChange={(_, checked) =>
-                    setMonsterMarker({
-                      ...monsterMarker,
-                      level: checked ? null : 1,
-                    })
-                  }
-                />
-              }
-            />
-            {monsterMarker?.level !== null ? (
-              <Input
-                name="marker_level"
-                label="Monster level"
-                value={String(monsterMarker?.level)}
-                setValue={newLevel =>
+          {markerType === MarkerType.MONSTER && (
+            <div
+              className={modifiers(s, 'markerView__section', { hidden: true })}>
+              <Select
+                name="monster_marker"
+                label="Monster on marker"
+                data={monsters.map(m => ({ id: m.id, name: m.name }))}
+                defaultSelected={monsterMarker?.monsterId ?? monsters[0].id}
+                setValue={monsterId =>
                   setMonsterMarker({
                     ...monsterMarker,
-                    level: newLevel === null ? null : Number(newLevel),
+                    monsterId,
                   })
                 }
               />
-            ) : null}
-          </div>
-        )}
-        {/* 
+              <FormControlLabel
+                label="Random level?"
+                control={
+                  <Switch
+                    color="default"
+                    checked={!monsterMarker?.level}
+                    onChange={(_, checked) =>
+                      setMonsterMarker({
+                        ...monsterMarker,
+                        level: checked ? null : 1,
+                      })
+                    }
+                  />
+                }
+              />
+              {monsterMarker?.level !== null ? (
+                <Input
+                  name="marker_level"
+                  label="Monster level"
+                  value={String(monsterMarker?.level)}
+                  setValue={newLevel =>
+                    setMonsterMarker({
+                      ...monsterMarker,
+                      level: newLevel === null ? null : Number(newLevel),
+                    })
+                  }
+                />
+              ) : null}
+            </div>
+          )}
+          {/* 
           MARKER TYPE - RESOURCE
         */}
-        {markerType === MarkerType.RESOURCE && (
-          <div
-            className={modifiers(s, 'markerView__section', { hidden: true })}>
-            <Select
-              name="resource_marker"
-              label="Resource on marker"
-              data={resources.map(m => ({ id: m.id, name: m.name }))}
-              defaultSelected={resourceMarker?.resourceId ?? resources[0].id}
-              setValue={resourceId =>
-                setResourceMarker({
-                  ...resourceMarker,
-                  resourceId,
-                })
-              }
-            />
-          </div>
-        )}
+          {markerType === MarkerType.RESOURCE && (
+            <div
+              className={modifiers(s, 'markerView__section', { hidden: true })}>
+              <Select
+                name="resource_marker"
+                label="Resource on marker"
+                data={resources.map(m => ({ id: m.id, name: m.name }))}
+                defaultSelected={resourceMarker?.resourceId ?? resources[0].id}
+                setValue={resourceId =>
+                  setResourceMarker({
+                    ...resourceMarker,
+                    resourceId,
+                  })
+                }
+              />
+            </div>
+          )}
+        </div>
       </div>
       <ActionBar
         buttons={
@@ -195,6 +196,7 @@ const useUpdateMarker = (
   const [resourceMarker, setResourceMarker] = useState<ResourceMarkerFixed>(
     DEFAULT_RESOURCE_MARKER,
   );
+  const { mutateMarkerMonster, mutateResourceMarker } = useStatus(setStatus);
 
   const { data: monsters } = useMonstersApi();
   const { data: resources } = useResourcesApi();
@@ -206,35 +208,6 @@ const useUpdateMarker = (
       JSON.stringify(updatedCoords) !== JSON.stringify(selectedCoords);
     if (coordsChanged) setUpdatedCoords(selectedCoords);
   }, [selectedCoords]);
-
-  const {
-    mutate: mutateMarkerMonster,
-    isSuccess: isSuccessMonster,
-    isError: isErrorMonster,
-    isPending: isPendingMonster,
-  } = useAdminCreateMonsterMarkerApi();
-  const {
-    mutate: mutateResourceMarker,
-    isSuccess: isSuccessResource,
-    isError: isErrorResource,
-    isPending: isPendingResource,
-  } = useAdminCreateResourceMarkerApi();
-
-  useEffect(() => {
-    setStatus({
-      isSuccess: isSuccessMonster,
-      isError: isErrorMonster,
-      isPending: isPendingMonster,
-    });
-  }, [isSuccessMonster, isErrorMonster, isPendingMonster]);
-
-  useEffect(() => {
-    setStatus({
-      isSuccess: isSuccessResource,
-      isError: isErrorResource,
-      isPending: isPendingResource,
-    });
-  }, [isSuccessResource, isErrorResource, isPendingResource]);
 
   const onCreate = () => {
     if (markerType === MarkerType.MONSTER) {
@@ -268,4 +241,37 @@ const useUpdateMarker = (
     resources,
     onCreate,
   };
+};
+
+const useStatus = (setStatus: (status: Status) => void) => {
+  const {
+    mutate: mutateMarkerMonster,
+    isSuccess: isSuccessMonster,
+    isError: isErrorMonster,
+    isPending: isPendingMonster,
+  } = useAdminCreateMonsterMarkerApi();
+  const {
+    mutate: mutateResourceMarker,
+    isSuccess: isSuccessResource,
+    isError: isErrorResource,
+    isPending: isPendingResource,
+  } = useAdminCreateResourceMarkerApi();
+
+  useEffect(() => {
+    setStatus({
+      isSuccess: isSuccessMonster,
+      isError: isErrorMonster,
+      isPending: isPendingMonster,
+    });
+  }, [isSuccessMonster, isErrorMonster, isPendingMonster]);
+
+  useEffect(() => {
+    setStatus({
+      isSuccess: isSuccessResource,
+      isError: isErrorResource,
+      isPending: isPendingResource,
+    });
+  }, [isSuccessResource, isErrorResource, isPendingResource]);
+
+  return { mutateMarkerMonster, mutateResourceMarker };
 };

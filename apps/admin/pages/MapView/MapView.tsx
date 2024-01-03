@@ -84,6 +84,7 @@ const Load = () => {
           selectedMarker={selectedMarker}
           setSelectedMarker={setSelectedMarker}
           selectedCoords={selectedCoords}
+          setSelectedCoords={setSelectedCoords}
           onCancel={() => setSelectedMarker(null)}
           setStatus={setStatus}
         />
