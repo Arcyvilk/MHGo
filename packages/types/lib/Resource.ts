@@ -4,7 +4,7 @@ export type Resource = {
   description: string;
   img: string;
   thumbnail: string;
-  drops: ResourceDrop;
+  drops: ResourceDrop[];
 };
 
 export type ResourceDrop = {
