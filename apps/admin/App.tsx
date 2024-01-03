@@ -44,7 +44,11 @@ export const App = () => {
           <RouteWrapper>
             <Routes>
               {entries.map(entry => (
-                <Route path={entry.link} element={entry.component} />
+                <Route
+                  key={entry.id}
+                  path={entry.link}
+                  element={entry.component}
+                />
               ))}
             </Routes>
           </RouteWrapper>

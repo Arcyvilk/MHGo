@@ -1,2 +1,2 @@
-export { MonsterMarkerCreateView } from './MonsterMarkerCreateView';
-export { MonsterMarkerEditView } from './MonsterMarkerEditView';
+export { MarkerCreateView } from './MarkerCreateView';
+export { MarkerEditView } from './MarkerEditView';

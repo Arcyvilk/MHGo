@@ -4,7 +4,7 @@ import L from 'leaflet';
 import { Button, Loader, QueryBoundary, useLocalStorage } from '@mhgo/front';
 import { ActionBar, HeaderEdit } from '../../containers';
 import { MapLayer } from './MapLayer';
-import { MonsterMarkerCreateView, MonsterMarkerEditView } from './SingleMarker';
+import { MarkerCreateView, MarkerEditView } from './SingleMarker';
 
 import s from './MapView.module.scss';
 
@@ -80,7 +80,7 @@ const Load = () => {
         </MapContainer>
       </div>
       {selectedMarker && (
-        <MonsterMarkerEditView
+        <MarkerEditView
           selectedMarker={selectedMarker}
           setSelectedMarker={setSelectedMarker}
           selectedCoords={selectedCoords}
@@ -89,7 +89,7 @@ const Load = () => {
         />
       )}
       {!selectedMarker && createView && (
-        <MonsterMarkerCreateView
+        <MarkerCreateView
           selectedCoords={selectedCoords}
           onCancel={() => setCreateView(false)}
           setStatus={setStatus}

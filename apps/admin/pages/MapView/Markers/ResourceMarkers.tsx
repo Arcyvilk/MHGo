@@ -5,6 +5,7 @@ import L from 'leaflet';
 import { CDN_URL } from '@mhgo/front/env';
 import {
   QueryBoundary,
+  modifiers,
   useAllResourceMarkersApi,
   useResourcesApi,
 } from '@mhgo/front';
@@ -27,21 +28,29 @@ const Load = ({
   setSelectedMarker,
   setSelectedCoords,
 }: ResourceMarkerProps) => {
-  const { data: monsters } = useResourcesApi();
-  const { data: monsterMarkers } = useAllResourceMarkersApi();
+  const { data: resources } = useResourcesApi();
+  const { data: resourceMarkers } = useAllResourceMarkersApi();
 
   return (
     <>
-      {monsterMarkers.map(marker => {
-        const monster = monsters.find(m => m.id === marker.resourceId) ?? {
+      {resourceMarkers.map(marker => {
+        const monster = resources.find(r => r.id === marker.resourceId) ?? {
           thumbnail: `${CDN_URL}/misc/question.svg`,
         };
         const position = L.latLng(marker.coords[0], marker.coords[1]);
-        const icon = new L.Icon({
-          iconUrl: monster.thumbnail,
-          iconRetinaUrl: monster.thumbnail,
-          iconSize: new L.Point(32, 32),
-          className: s.monsterMarker,
+        const icon = new L.DivIcon({
+          className: s.marker__icon,
+          html: `<div class="${s.marker__wrapper}" key="markericon-${String(
+            // @ts-expect-error But _id in fact DOES exist
+            marker._id,
+          )}">
+              <img src="${monster.thumbnail}" class="${modifiers(
+                s,
+                'marker__thumbnail',
+                // @ts-expect-error it DOES have _id
+                { isSelected: String(marker._id) === selectedMarker },
+              )}"/>
+            </div>`,
         });
 
         const onClick = () => {
@@ -50,9 +59,11 @@ const Load = ({
         };
 
         return (
-          <Fragment key={marker.id}>
+          // @ts-expect-error But _id in fact DOES exist
+          <Fragment key={String(marker._id)}>
             <Marker
-              key={'marker-' + marker.id}
+              // @ts-expect-error But _id in fact DOES exist
+              key={'marker-' + String(marker._id)}
               icon={icon}
               position={position}
               eventHandlers={{ click: onClick }}

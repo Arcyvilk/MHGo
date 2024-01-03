@@ -17,20 +17,20 @@ import s from './SingleMarkerView.module.scss';
 import { Status } from '../../../utils/types';
 import { DEFAULT_MONSTER_MARKER } from '../../../utils/defaults';
 
-type MonsterMarkerProps = {
+type MarkerProps = {
   selectedMarker: string;
   setSelectedMarker: (selectedMarker: string | null) => void;
   selectedCoords: number[];
   onCancel: () => void;
   setStatus: (status: Status) => void;
 };
-export const MonsterMarkerEditView = ({
+export const MarkerEditView = ({
   selectedMarker,
   setSelectedMarker,
   selectedCoords,
   onCancel,
   setStatus,
-}: MonsterMarkerProps) => {
+}: MarkerProps) => {
   const { monsters, monsterMarker, setMonsterMarker, onSave, onDelete } =
     useUpdateMonsterMarker(
       selectedMarker,

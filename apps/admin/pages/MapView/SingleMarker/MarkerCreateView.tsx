@@ -25,16 +25,16 @@ enum MarkerType {
   MONSTER = 'monster',
 }
 
-type MonsterMarkerProps = {
+type MarkerProps = {
   selectedCoords: number[];
   onCancel: () => void;
   setStatus: (status: Status) => void;
 };
-export const MonsterMarkerCreateView = ({
+export const MarkerCreateView = ({
   selectedCoords,
   onCancel,
   setStatus,
-}: MonsterMarkerProps) => {
+}: MarkerProps) => {
   const {
     markerType,
     setMarkerType,

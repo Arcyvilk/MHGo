@@ -37,13 +37,15 @@ const Load = ({
           thumbnail: `${CDN_URL}/misc/question.svg`,
         };
         const position = L.latLng(marker.coords[0], marker.coords[1]);
-
         const icon = new L.DivIcon({
-          className: s.monsterMarker__icon,
-          html: `<div class="${s.monsterMarker__wrapper}">
+          className: s.marker__icon,
+          html: `<div class="${s.marker__wrapper}" key="markericon-${String(
+            // @ts-expect-error _id in fact DOES exist
+            marker._id,
+          )}">
               <img src="${monster.thumbnail}" class="${modifiers(
                 s,
-                'monsterMarker__thumbnail',
+                'marker__thumbnail',
                 // @ts-expect-error it DOES have _id
                 { isSelected: String(marker._id) === selectedMarker },
               )}"/>
@@ -56,9 +58,11 @@ const Load = ({
         };
 
         return (
-          <Fragment key={marker.id}>
+          // @ts-expect-error But _id in fact DOES exist
+          <Fragment key={String(marker._id)}>
             <Marker
-              key={'marker-' + marker.id}
+              // @ts-expect-error But _id in fact DOES exist
+              key={'marker-' + String(marker._id)}
               icon={icon}
               position={position}
               eventHandlers={{ click: onClick }}
