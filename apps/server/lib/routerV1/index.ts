@@ -47,10 +47,18 @@ routerV1.get('/monsters/list', getMonsters);
  *         ITEMS         *
  *************************/
 
-import { getItems, getItemActions, getItemCraftingList } from './items';
+import {
+  getItems,
+  getItemActions,
+  getItemCrafts,
+  getItemStats,
+  getItemCraftingList,
+} from './items';
 
 routerV1.get('/items/list', getItems);
 routerV1.get('/items/item/:itemId/actions', getItemActions);
+routerV1.get('/items/item/:itemId/crafts', getItemCrafts);
+routerV1.get('/items/item/:itemId/stats', getItemStats);
 routerV1.get('/users/user/:userId/craft/:itemId', getItemCraftingList);
 
 /*************************

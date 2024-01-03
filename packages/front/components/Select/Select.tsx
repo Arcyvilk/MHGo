@@ -7,13 +7,9 @@ type SelectProps<T> = {
   label?: string;
   setValue: (value: string) => void;
 };
-export function Select<T extends { id: string; name: string }>({
-  data,
-  name,
-  defaultSelected,
-  label,
-  setValue,
-}: SelectProps<T>) {
+export function Select<
+  T extends { id: string; name: string; disabled?: boolean },
+>({ data, name, defaultSelected, label, setValue }: SelectProps<T>) {
   const onSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const value = event.target.value;
     setValue(value);
@@ -33,7 +29,10 @@ export function Select<T extends { id: string; name: string }>({
         onChange={onSelect}
         defaultValue={defaultSelected}>
         {data.map(item => (
-          <option className={s.select__option} value={item.id}>
+          <option
+            className={s.select__option}
+            value={item.id}
+            disabled={item.disabled}>
             {item.name}
           </option>
         ))}

@@ -19,5 +19,15 @@
 
   &__section {
     @include page-section-admin;
+
+    &--wide {
+      width: 350px;
+    }
+  }
+
+  &__craftMaterial {
+    display: flex;
+    flex-direction: row;
+    gap: $size-4;
   }
 }

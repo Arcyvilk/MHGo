@@ -97,6 +97,7 @@
   width: 250px;
 
   &--hidden {
+    position: relative;
     background-color: rgba($admin-color-primary-bg, 0.3);
     border: 1px solid $admin-color-primary-bg;
     border-radius: $size-8;

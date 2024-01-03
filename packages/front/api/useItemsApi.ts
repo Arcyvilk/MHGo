@@ -1,5 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
-import { Item, ItemAction, ItemCraftingList } from '@mhgo/types';
+import {
+  CraftList,
+  Item,
+  ItemAction,
+  ItemCraftingList,
+  Stats,
+} from '@mhgo/types';
 
 import { API_URL } from '../env';
 import { addCdnUrl } from '../utils/addCdnUrl';
@@ -28,7 +34,7 @@ export const useItemsApi = () => {
   return { data, isLoading, isFetched, isError };
 };
 
-export const useItemActionsApi = (itemId: string) => {
+export const useItemActionsApi = (itemId: string | null) => {
   const getItemActions = async (): Promise<ItemAction> => {
     const res = await fetch(`${API_URL}/items/item/${itemId}/actions`);
     return res.json();
@@ -40,8 +46,48 @@ export const useItemActionsApi = (itemId: string) => {
     ItemAction,
     string[]
   >({
-    queryKey: ['items', itemId, 'actions'],
+    queryKey: ['items', itemId!, 'actions'],
     queryFn: getItemActions,
+    enabled: Boolean(itemId),
+  });
+
+  return { data, isLoading, isFetched, isError };
+};
+
+export const useItemCraftsApi = (itemId: string | null) => {
+  const getItemCraft = async (): Promise<CraftList[]> => {
+    const res = await fetch(`${API_URL}/items/item/${itemId}/crafts`);
+    return res.json();
+  };
+
+  const { data, isLoading, isFetched, isError } = useQuery<
+    CraftList[],
+    unknown,
+    CraftList[],
+    string[]
+  >({
+    queryKey: ['items', itemId!, 'crafts'],
+    queryFn: getItemCraft,
+    enabled: Boolean(itemId),
+  });
+
+  return { data, isLoading, isFetched, isError };
+};
+
+export const useItemStatsApi = (itemId: string | null) => {
+  const getItemStats = async (): Promise<Stats> => {
+    const res = await fetch(`${API_URL}/items/item/${itemId}/stats`);
+    return res.json();
+  };
+
+  const { data, isLoading, isFetched, isError } = useQuery<
+    Stats,
+    unknown,
+    Stats,
+    string[]
+  >({
+    queryKey: ['items', itemId!, 'stats'],
+    queryFn: getItemStats,
     enabled: Boolean(itemId),
   });
 
@@ -60,7 +106,7 @@ export const useItemCraftListApi = (userId: string, itemId: string) => {
     isFetched,
     isError,
   } = useQuery<ItemCraftingList[], unknown, ItemCraftingList[], string[]>({
-    queryKey: ['items', itemId, 'craftList'],
+    queryKey: ['items', itemId, 'craftList', userId],
     queryFn: getItemCraftList,
     enabled: Boolean(itemId) && Boolean(userId),
   });
