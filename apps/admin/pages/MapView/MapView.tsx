@@ -53,7 +53,16 @@ const Load = () => {
     <div className={s.mapView}>
       <HeaderEdit status={status} title="MAP" />
       <ActionBar
-        buttons={<Button label="Center on me" onClick={onCenterMap} />}
+        buttons={
+          <>
+            {selectedMarker && (
+              <span style={{ fontWeight: 600 }}>
+                Editing marker {selectedMarker}
+              </span>
+            )}
+            <Button label="Center on me" onClick={onCenterMap} />
+          </>
+        }
       />
       <div className={s.mapView__content}>
         <MapContainer

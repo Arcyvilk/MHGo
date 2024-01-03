@@ -1,13 +1,13 @@
 import { useEffect } from 'react';
 import { TileLayer, useMap } from 'react-leaflet';
 import L from 'leaflet';
-import { MonsterMarkers } from './Markers';
+import { MonsterMarkers, ResourceMarkers } from './Markers';
 
 type MapLayerProps = {
   currentCoords: number[];
   setSelectedCoords: (selectedCoords: number[]) => void;
   selectedMarker: string | null;
-  setSelectedMarker: (selectedMarker: string) => void;
+  setSelectedMarker: (selectedMarker: string | null) => void;
   setCreateView: (createView: boolean) => void;
 };
 export const MapLayer = ({
@@ -42,6 +42,12 @@ export const MapLayer = ({
       <MonsterMarkers
         selectedMarker={selectedMarker}
         setSelectedMarker={setSelectedMarker}
+        setSelectedCoords={setSelectedCoords}
+      />
+      <ResourceMarkers
+        selectedMarker={selectedMarker}
+        setSelectedMarker={setSelectedMarker}
+        setSelectedCoords={setSelectedCoords}
       />
     </>
   );

@@ -1,6 +1,6 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FormControlLabel, Switch } from '@mui/material';
-import { MonsterMarker } from '@mhgo/types';
+import { MonsterMarker, ResourceMarker } from '@mhgo/types';
 import {
   Button,
   Input,
@@ -15,6 +15,7 @@ import { ActionBar } from '../../../containers';
 
 import s from './SingleMarkerView.module.scss';
 import { Status } from '../../../utils/types';
+import { DEFAULT_MONSTER_MARKER } from '../../../utils/defaults';
 
 type MonsterMarkerProps = {
   selectedMarker: string;
@@ -30,20 +31,13 @@ export const MonsterMarkerEditView = ({
   onCancel,
   setStatus,
 }: MonsterMarkerProps) => {
-  const {
-    marker,
-    monsters,
-    updatedMarker,
-    onTextPropertyChange,
-    onNumberPropertyChange,
-    onSave,
-    onDelete,
-  } = useUpdateMonsterMarker(
-    selectedMarker,
-    setSelectedMarker,
-    selectedCoords,
-    setStatus,
-  );
+  const { monsters, monsterMarker, setMonsterMarker, onSave, onDelete } =
+    useUpdateMonsterMarker(
+      selectedMarker,
+      setSelectedMarker,
+      selectedCoords,
+      setStatus,
+    );
 
   return (
     <div className={s.markerView__content}>
@@ -58,24 +52,41 @@ export const MonsterMarkerEditView = ({
           <Input
             name="marker_lat"
             label="Latitude"
-            value={String(updatedMarker?.coords[0])}
-            setValue={newLat => onNumberPropertyChange(newLat, 'lat')}
+            value={String(monsterMarker?.coords[0])}
+            setValue={newLat =>
+              setMonsterMarker({
+                ...monsterMarker,
+                coords: [Number(newLat), monsterMarker.coords[1]],
+              })
+            }
           />
           <Input
-            name="marker_long"
+            name="marker_lng"
             label="Longitude"
-            value={String(updatedMarker?.coords[1])}
-            setValue={newLong => onNumberPropertyChange(newLong, 'long')}
+            value={String(monsterMarker?.coords[1])}
+            setValue={newLong =>
+              setMonsterMarker({
+                ...monsterMarker,
+                coords: [monsterMarker.coords[0], Number(newLong)],
+              })
+            }
           />
         </div>
         <div className={s.markerView__section}>
           <Select
+            // If this is not present, the select will never update
+            // upon switching the selected monster markers
+            // Ugly hack but works lol
+            key={new Date().valueOf().toString()}
             name="monster_marker"
             label="Monster on marker"
             data={monsters.map(m => ({ id: m.id, name: m.name }))}
-            defaultSelected={marker?.monsterId}
-            setValue={newMonster =>
-              onTextPropertyChange(newMonster, 'monsterId')
+            defaultSelected={monsterMarker?.monsterId}
+            setValue={monsterId =>
+              setMonsterMarker({
+                ...monsterMarker,
+                monsterId,
+              })
             }
           />
         </div>
@@ -85,14 +96,17 @@ export const MonsterMarkerEditView = ({
             control={
               <Switch
                 color="default"
-                checked={!updatedMarker?.level}
+                checked={!monsterMarker?.level}
                 onChange={(_, checked) =>
-                  onNumberPropertyChange(checked ? null : '1', 'level')
+                  setMonsterMarker({
+                    ...monsterMarker,
+                    level: checked ? null : 1,
+                  })
                 }
               />
             }
           />
-          {updatedMarker?.level !== null ? (
+          {monsterMarker?.level !== null ? (
             <div
               className={modifiers(s, 'markerView__section', {
                 hidden: true,
@@ -100,8 +114,15 @@ export const MonsterMarkerEditView = ({
               <Input
                 name="marker_level"
                 label="Monster level"
-                value={String(updatedMarker?.level)}
-                setValue={newLevel => onNumberPropertyChange(newLevel, 'level')}
+                min={0}
+                type="number"
+                value={String(monsterMarker?.level)}
+                setValue={newLevel =>
+                  setMonsterMarker({
+                    ...monsterMarker,
+                    level: newLevel === null ? null : Number(newLevel),
+                  })
+                }
               />
             </div>
           ) : null}
@@ -130,6 +151,9 @@ export const MonsterMarkerEditView = ({
   );
 };
 
+type MonsterMarkerFixed = Omit<MonsterMarker, 'id' | 'respawnTime'>;
+type ResourceMarkerFixed = Omit<ResourceMarker, 'id' | 'respawnTime'>;
+
 // selectedMarker is in fact ObjectId from MongoDB
 const useUpdateMonsterMarker = (
   selectedMarker: string,
@@ -138,32 +162,35 @@ const useUpdateMonsterMarker = (
   setStatus: (status: Status) => void,
 ) => {
   const { data: monsters } = useMonstersApi();
-  const { data: monsterMarkers, isFetched: isMarkersFetched } =
+  const { data: monsterMarkers, isFetched: isMonstersFetched } =
     useAdminAllMonsterMarkersApi();
 
-  const marker = useMemo(() => {
-    return monsterMarkers.find(
+  const [monsterMarker, setMonsterMarker] = useState<MonsterMarkerFixed>(
+    monsterMarkers.find(
       // @ts-expect-error it DOES have _id
-      monsterMarker => String(monsterMarker._id) === selectedMarker,
-    );
-  }, [selectedMarker, isMarkersFetched]);
-
-  const [updatedMarker, setUpdatedMarker] = useState(marker);
+      m => String(m._id) === selectedMarker,
+    ) ?? DEFAULT_MONSTER_MARKER,
+  );
 
   useEffect(() => {
-    setUpdatedMarker(marker);
-  }, [isMarkersFetched]);
+    if (!monsterMarker) return;
+    const coordsChanged =
+      JSON.stringify(monsterMarker.coords) !== JSON.stringify(selectedCoords);
+    if (!coordsChanged) return;
 
-  useEffect(() => {
-    if (!updatedMarker) return;
-    if (JSON.stringify(updatedMarker.coords) === JSON.stringify(selectedCoords))
-      return;
-
-    setUpdatedMarker({
-      ...updatedMarker,
+    setMonsterMarker({
+      ...monsterMarker,
       coords: selectedCoords,
     });
   }, [selectedCoords]);
+
+  useEffect(() => {
+    const marker = monsterMarkers.find(
+      // @ts-expect-error it DOES have _id
+      m => String(m._id) === selectedMarker,
+    );
+    if (marker) setMonsterMarker(marker);
+  }, [selectedMarker, isMonstersFetched]);
 
   const {
     mutate: mutateUpdate,
@@ -195,9 +222,9 @@ const useUpdateMonsterMarker = (
   }, [isUpdateSuccess, isUpdatePending, isUpdateError]);
 
   const onSave = () => {
-    if (updatedMarker) {
+    if (monsterMarker) {
       mutateUpdate({
-        ...updatedMarker,
+        ...monsterMarker,
         id: String(selectedMarker),
       });
       setSelectedMarker(null);
@@ -211,51 +238,10 @@ const useUpdateMonsterMarker = (
     }
   };
 
-  const onTextPropertyChange = (
-    newValue: string,
-    property: keyof Pick<MonsterMarker, 'monsterId'>,
-  ) => {
-    if (!updatedMarker) return;
-    setUpdatedMarker({
-      ...updatedMarker,
-      [property]: newValue,
-    });
-  };
-
-  const onNumberPropertyChange = (
-    newValue: string | null,
-    property: keyof Pick<MonsterMarker, 'level'> | 'lat' | 'long',
-  ) => {
-    if (!updatedMarker) return;
-
-    if (property !== 'lat' && property !== 'long') {
-      setUpdatedMarker({
-        ...updatedMarker,
-        [property]: newValue === null ? null : Number(newValue),
-      });
-    }
-
-    if (property === 'lat') {
-      setUpdatedMarker({
-        ...updatedMarker,
-        coords: [Number(newValue), updatedMarker.coords[1]],
-      });
-    }
-
-    if (property === 'long') {
-      setUpdatedMarker({
-        ...updatedMarker,
-        coords: [updatedMarker.coords[0], Number(newValue)],
-      });
-    }
-  };
-
   return {
-    marker,
     monsters,
-    updatedMarker,
-    onTextPropertyChange,
-    onNumberPropertyChange,
+    monsterMarker,
+    setMonsterMarker,
     onSave,
     onDelete,
   };

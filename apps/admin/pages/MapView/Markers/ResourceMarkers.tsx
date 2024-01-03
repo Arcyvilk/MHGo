@@ -1,22 +1,22 @@
 import { Fragment } from 'react';
 import { Marker } from 'react-leaflet';
 import L from 'leaflet';
+
+import { CDN_URL } from '@mhgo/front/env';
 import {
   QueryBoundary,
-  modifiers,
-  useAdminAllMonsterMarkersApi,
-  useMonstersApi,
+  useAllResourceMarkersApi,
+  useResourcesApi,
 } from '@mhgo/front';
 
 import s from './Markers.module.scss';
-import { CDN_URL } from '@mhgo/front/env';
 
-type MonsterMarkerProps = {
+type ResourceMarkerProps = {
   selectedMarker: string | null;
-  setSelectedMarker: (selectedMarker: string | null) => void;
+  setSelectedMarker: (selectedMarker: string) => void;
   setSelectedCoords: (selectedCoords: number[]) => void;
 };
-export const MonsterMarkers = (props: MonsterMarkerProps) => (
+export const ResourceMarkers = (props: ResourceMarkerProps) => (
   <QueryBoundary fallback={null}>
     <Load {...props} />
   </QueryBoundary>
@@ -26,28 +26,22 @@ const Load = ({
   selectedMarker,
   setSelectedMarker,
   setSelectedCoords,
-}: MonsterMarkerProps) => {
-  const { data: monsters } = useMonstersApi();
-  const { data: monsterMarkers } = useAdminAllMonsterMarkersApi();
+}: ResourceMarkerProps) => {
+  const { data: monsters } = useResourcesApi();
+  const { data: monsterMarkers } = useAllResourceMarkersApi();
 
   return (
     <>
       {monsterMarkers.map(marker => {
-        const monster = monsters.find(m => m.id === marker.monsterId) ?? {
+        const monster = monsters.find(m => m.id === marker.resourceId) ?? {
           thumbnail: `${CDN_URL}/misc/question.svg`,
         };
         const position = L.latLng(marker.coords[0], marker.coords[1]);
-
-        const icon = new L.DivIcon({
-          className: s.monsterMarker__icon,
-          html: `<div class="${s.monsterMarker__wrapper}">
-              <img src="${monster.thumbnail}" class="${modifiers(
-                s,
-                'monsterMarker__thumbnail',
-                // @ts-expect-error it DOES have _id
-                { isSelected: String(marker._id) === selectedMarker },
-              )}"/>
-            </div>`,
+        const icon = new L.Icon({
+          iconUrl: monster.thumbnail,
+          iconRetinaUrl: monster.thumbnail,
+          iconSize: new L.Point(32, 32),
+          className: s.monsterMarker,
         });
 
         const onClick = () => {

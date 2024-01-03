@@ -35,7 +35,7 @@ export const useAllResourceMarkersApi = () => {
     isFetched,
     isError,
   } = useQuery<ResourceMarker[], unknown, ResourceMarker[], string[]>({
-    queryKey: ['markers', 'resource'],
+    queryKey: ['markers', 'resource', 'all'],
     queryFn: getResourceMarkers,
   });
 

@@ -1,9 +1,12 @@
+// USERS
 export { adminGetAllUsers } from './adminGetAllUsers';
+export { adminUpdateUser } from './adminUpdateUser';
 
+// CREATION
 export { adminCreateMaterial } from './adminCreateMaterial';
 export { adminCreateMonster } from './adminCreateMonster';
-export { adminCreateMonsterMarker } from './adminCreateMonsterMarker';
 
+// UPDATION
 export {
   adminUpdateItem,
   adminUpdateItemAction,
@@ -11,8 +14,15 @@ export {
 } from './adminUpdateItem';
 export { adminUpdateMaterial } from './adminUpdateMaterial';
 export { adminUpdateMonster } from './adminUpdateMonster';
+
+// MARKERS
+export {
+  adminCreateMonsterMarker,
+  adminCreateResourceMarker,
+} from './adminCreateMarker';
 export {
   adminUpdateMonsterMarker,
   adminDeleteMonsterMarker,
-} from './adminUpdateMonsterMarker';
-export { adminUpdateUser } from './adminUpdateUser';
+  adminUpdateResourceMarker,
+  adminDeleteResourceMarker,
+} from './adminUpdateMarker';

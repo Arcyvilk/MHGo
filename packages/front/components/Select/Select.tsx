@@ -34,6 +34,7 @@ export function Select<
         defaultValue={fakeDefault}>
         {[{ id: '_blank', name: '', disabled: true }, ...data].map(item => (
           <option
+            // key={`option-${item.id}`}
             className={s.select__option}
             value={item.id}
             disabled={item.disabled}>

@@ -434,7 +434,6 @@ export const ItemEditView = () => {
                 </div>
                 {updatedItemCraft?.map((mat, index) => {
                   const matSelection = getSelect(mat);
-                  console.log(mat);
                   return (
                     <div
                       className={s.singleItemView__craftMaterial}

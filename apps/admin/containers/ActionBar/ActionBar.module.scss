@@ -18,5 +18,13 @@
   &__buttons {
     display: flex;
     gap: $size-8;
+    align-items: center;
+    justify-content: flex-end;
+
+    button {
+      width: auto;
+    }
+
+
   }
 }

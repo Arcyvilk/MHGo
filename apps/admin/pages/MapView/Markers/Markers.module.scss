@@ -1,6 +1,6 @@
 @import '@mhgo/front/styles/index.scss';
 
-.marker {
+.monsterMarker {
   &__wrapper {
     display: flex;
     flex-direction: column;
@@ -8,21 +8,18 @@
   }
   
   &__thumbnail {
-    min-width: $size-32;
-    min-height: $size-32;
-    max-width: $size-32;
-    max-height: $size-32;
+    min-width: $size-24;
+    min-height: $size-24;
+    max-width: $size-24;
+    max-height: $size-24;
     filter: drop-shadow(0 0 2px $color-black);
-  }
 
-  &__stars {
-    display: flex;
-    justify-content: center;
-    margin-left: $size-20;
-    filter: drop-shadow(0 0 2px $color-black);
-  }
-
-  &__star {
-    margin-left: -$size-8;
+    &--isSelected {
+      min-width: $size-42;
+      min-height: $size-42;
+      max-width: $size-42;
+      max-height: $size-42;
+      filter: drop-shadow(0 0 5px $color-danger) contrast(100) brightness(100);
+    }
   }
 }

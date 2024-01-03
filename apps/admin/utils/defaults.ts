@@ -1,4 +1,4 @@
-import { Material, Monster, MonsterMarker } from '@mhgo/types';
+import { Material, Monster, MonsterMarker, ResourceMarker } from '@mhgo/types';
 
 export const DEFAULT_MONSTER: Monster = {
   id: '',
@@ -7,6 +7,7 @@ export const DEFAULT_MONSTER: Monster = {
   habitat: 'swamp',
   name: '',
   description: '',
+  levelRequirements: 0,
   baseAttackSpeed: 0,
   baseHP: 0,
   baseDamage: 0,
@@ -38,3 +39,11 @@ export const DEFAULT_MONSTER_MARKER: Omit<MonsterMarker, 'respawnTime' | 'id'> =
     level: null,
     coords: [],
   };
+
+export const DEFAULT_RESOURCE_MARKER: Omit<
+  ResourceMarker,
+  'respawnTime' | 'id'
+> = {
+  resourceId: '',
+  coords: [],
+};
