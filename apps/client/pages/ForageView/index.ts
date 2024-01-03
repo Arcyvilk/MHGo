@@ -1,0 +1,1 @@
+export { ForageView } from './ForageView';

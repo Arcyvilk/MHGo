@@ -4,6 +4,7 @@ import { ToastContainer, ToastContainerProps } from 'react-toastify';
 
 import {
   EquipmentView,
+  ForageView,
   HomeView,
   ItemBoxView,
   NotImplementedView,
@@ -18,6 +19,7 @@ import { useEffect } from 'react';
 import { PaintballView } from './pages/PaintballView';
 import { FightView, PrepareView } from './pages/FightView';
 import { MonsterGuideView } from './pages/MonsterGuideView';
+import { SoundBG, useSounds } from '@mhgo/front';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -36,6 +38,8 @@ const toastOptions: ToastContainerProps = {
 };
 
 export const App = () => {
+  const { playBgSound } = useSounds();
+
   useEffect(() => {
     const isInsideInstalledApp =
       window.matchMedia('(display-mode: standalone)').matches || // @ts-ignore
@@ -44,6 +48,7 @@ export const App = () => {
       // Size window after open the app
       window.resizeTo(400, 800);
     }
+    playBgSound(SoundBG.BEWITCHING, true);
   }, []);
 
   return (
@@ -56,6 +61,7 @@ export const App = () => {
             {/* INTERACTIVE PATHS */}
             <Route path="/prepare" element={<PrepareView />} />
             <Route path="/fight" element={<FightView />} />
+            <Route path="/forage" element={<ForageView />} />
 
             {/* STATIC PATHS */}
             <Route path="/guide" element={<MonsterGuideView />} />
