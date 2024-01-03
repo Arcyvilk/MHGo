@@ -24,7 +24,6 @@ export const HomeView = () => {
 
   return (
     <div className={s.homeView}>
-      <h1>HomeView</h1>
       <Map />
       <div className={s.actions}>
         <Modal isOpen={isModalOpen} setIsOpen={setIsModalOpen}>
