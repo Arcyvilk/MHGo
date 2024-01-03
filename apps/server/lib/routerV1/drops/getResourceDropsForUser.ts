@@ -9,6 +9,7 @@ import {
   UserAmount,
   ResourceMarker,
   Resource,
+  ResourceDrop,
 } from '@mhgo/types';
 
 import { mongoInstance } from '../../../api';
@@ -59,7 +60,10 @@ export const getResourceDropsForUser = async (
         return d;
       })
       .flat()
-      .map(drop => ({ id: drop.id, type: drop.type }));
+      .map((drop: ResourceDrop) => ({
+        id: drop.materialId,
+        type: 'material' as CraftType,
+      }));
 
     const drops = getUniqueMaterialDrops(allDrops, materialsWithFilter);
 
