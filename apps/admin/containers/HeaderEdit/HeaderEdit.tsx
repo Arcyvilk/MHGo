@@ -34,6 +34,7 @@ export const HeaderEdit = ({ title, status }: HeaderEditProps) => {
           label={<Icon icon="Back" size={Size.MICRO} />}
           onClick={() => navigate(-1)}
           style={{ width: '48px' }}
+          inverted
           variant={Button.Variant.GHOST}
         />
         {title}

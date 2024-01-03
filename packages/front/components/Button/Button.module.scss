@@ -32,6 +32,9 @@
   &--ghost {
     background-color: transparent;
     border: none;
+  }
+
+  &--inverted {
     color: $color-white;
   }
 

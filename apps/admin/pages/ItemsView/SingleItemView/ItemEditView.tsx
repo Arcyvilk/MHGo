@@ -94,6 +94,8 @@ export const ItemEditView = () => {
           <>
             <Button
               label="Cancel"
+              inverted
+              simple
               onClick={() => navigate(-1)}
               variant={Button.Variant.GHOST}
             />
@@ -195,6 +197,7 @@ export const ItemEditView = () => {
                     <Button
                       key={`monsterlink-${drop.monsterId}`}
                       variant={Button.Variant.GHOST}
+                      inverted
                       simple
                       label={`${drop.monsterId} (level ${drop.level})`}
                       onClick={() =>
@@ -483,6 +486,7 @@ export const ItemEditView = () => {
                         }
                         style={{ padding: 0 }}
                         simple
+                        inverted
                         variant={Button.Variant.GHOST}
                       />
                     </div>

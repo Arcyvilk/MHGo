@@ -15,6 +15,7 @@ type Props = {
   variant?: Variant;
   disabled?: boolean;
   simple?: boolean;
+  inverted?: boolean;
   title?: string | null;
   style?: CSSProperties;
   onClick: () => void;
@@ -24,13 +25,18 @@ export const Button = ({
   variant = Variant.DEFAULT,
   disabled = false,
   simple = false,
+  inverted = false,
   title,
   style = {},
   onClick,
 }: Props) => {
   const btn = (
     <button
-      className={modifiers(s, 'button', variant, { simple, disabled })}
+      className={modifiers(s, 'button', variant, {
+        simple,
+        inverted,
+        disabled,
+      })}
       onClick={onClick}
       disabled={disabled}
       style={{ width: '100%', ...style }}>

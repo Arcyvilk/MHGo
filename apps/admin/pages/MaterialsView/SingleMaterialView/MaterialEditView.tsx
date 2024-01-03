@@ -56,6 +56,8 @@ export const MaterialEditView = () => {
           <>
             <Button
               label="Cancel"
+              inverted
+              simple
               onClick={() => navigate(-1)}
               variant={Button.Variant.GHOST}
             />
@@ -124,6 +126,7 @@ export const MaterialEditView = () => {
                     <Button
                       variant={Button.Variant.GHOST}
                       simple
+                      inverted
                       label={`${drop.monsterId} (level ${drop.level})`}
                       onClick={() =>
                         navigate(`/monsters/edit?id=${drop.monsterId}`)

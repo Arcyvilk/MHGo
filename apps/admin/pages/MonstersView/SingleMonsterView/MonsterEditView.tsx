@@ -53,6 +53,8 @@ export const MonsterEditView = () => {
           <>
             <Button
               label="Cancel"
+              inverted
+              simple
               onClick={() => navigate(-1)}
               variant={Button.Variant.GHOST}
             />
@@ -164,15 +166,11 @@ export const MonsterEditView = () => {
               }
             />
             <Input
-              label={
-                <span className={s.singleMonsterView__withInfo}>
-                  <IconInfo tooltip="Base value is multiplied by monster level" />
-                  Monster base attack speed (attacks per second)
-                </span>
-              }
+              label="Monster attack speed"
               name="monster_baseas"
               type="number"
               min={0}
+              step={0.1}
               value={String(updatedMonster?.baseAttackSpeed ?? 0)}
               setValue={newPrice =>
                 onNumberPropertyChange(newPrice, 'baseAttackSpeed')

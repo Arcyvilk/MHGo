@@ -33,6 +33,8 @@ export const MonsterCreateView = () => {
           <>
             <Button
               label="Cancel"
+              inverted
+              simple
               onClick={() => navigate(-1)}
               variant={Button.Variant.GHOST}
             />

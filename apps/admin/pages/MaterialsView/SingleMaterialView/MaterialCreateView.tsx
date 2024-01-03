@@ -34,6 +34,8 @@ export const MaterialCreateView = () => {
           <>
             <Button
               label="Cancel"
+              inverted
+              simple
               onClick={() => navigate(-1)}
               variant={Button.Variant.GHOST}
             />

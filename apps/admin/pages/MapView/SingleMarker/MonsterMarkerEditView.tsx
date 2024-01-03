@@ -112,6 +112,8 @@ export const MonsterMarkerEditView = ({
           <>
             <Button
               label="Cancel"
+              inverted
+              simple
               variant={Button.Variant.GHOST}
               onClick={onCancel}
             />
