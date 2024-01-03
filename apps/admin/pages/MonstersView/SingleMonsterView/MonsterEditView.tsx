@@ -2,33 +2,38 @@ import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { CDN_URL } from '@mhgo/front/env';
-import { HabitatType, Monster } from '@mhgo/types';
+import { BaseWealth, HabitatType, MonsterDrop } from '@mhgo/types';
 import {
   Button,
   Input,
   Select,
   useAdminUpdateMonsterApi,
   useMonstersApi,
+  useAdminUpdateMonsterDropsApi,
 } from '@mhgo/front';
 import { ActionBar, HeaderEdit, IconInfo } from '../../../containers';
+import { MonsterDrops } from './MonsterDrops';
 
 import s from './SingleMonsterView.module.scss';
+import { Status } from '../../../utils/types';
 
 export const MonsterEditView = () => {
+  const [updatedDrops, setUpdatedDrops] = useState<MonsterDrop['drops']>([]);
+  const [status, setStatus] = useState({
+    isSuccess: false,
+    isError: false,
+    isPending: false,
+  });
+
   const navigate = useNavigate();
   const {
     monster,
     updatedMonster,
+    setUpdatedMonster,
     monsterImg,
     monsterThumbnail,
-    onTextPropertyChange,
-    onNumberPropertyChange,
     onSave,
-    isSuccess,
-    isPending,
-    isError,
-  } = useUpdateMonster();
-  const status = { isSuccess, isPending, isError };
+  } = useUpdateMonster(updatedDrops, setStatus);
 
   if (!monster)
     return (
@@ -73,13 +78,25 @@ export const MonsterEditView = () => {
               name="monster_name"
               label="Monster's name"
               value={updatedMonster?.name ?? ''}
-              setValue={newName => onTextPropertyChange(newName, 'name')}
+              setValue={name =>
+                updatedMonster &&
+                setUpdatedMonster({
+                  ...updatedMonster,
+                  name,
+                })
+              }
             />
             <Input
               name="monster_desc"
               label="Monster's description"
               value={updatedMonster?.description ?? ''}
-              setValue={newDesc => onTextPropertyChange(newDesc, 'description')}
+              setValue={description =>
+                updatedMonster &&
+                setUpdatedMonster({
+                  ...updatedMonster,
+                  description,
+                })
+              }
             />
             <Input
               name="monster_req"
@@ -87,8 +104,12 @@ export const MonsterEditView = () => {
               type="number"
               min={0}
               value={String(updatedMonster?.levelRequirements ?? 0)}
-              setValue={newRequirement =>
-                onNumberPropertyChange(newRequirement, 'levelRequirements')
+              setValue={levelRequirements =>
+                updatedMonster &&
+                setUpdatedMonster({
+                  ...updatedMonster,
+                  levelRequirements: Number(levelRequirements),
+                })
               }
             />
             <Select
@@ -101,8 +122,12 @@ export const MonsterEditView = () => {
               name="monster_habitat"
               label="Monster's habitat"
               defaultSelected={updatedMonster?.habitat}
-              setValue={newHabitat =>
-                onTextPropertyChange(newHabitat, 'habitat')
+              setValue={habitat =>
+                updatedMonster &&
+                setUpdatedMonster({
+                  ...updatedMonster,
+                  habitat,
+                })
               }
             />
           </div>
@@ -113,7 +138,13 @@ export const MonsterEditView = () => {
               name="monster_img"
               label="Path to monster image"
               value={monsterImg}
-              setValue={newPath => onTextPropertyChange(newPath, 'img')}
+              setValue={img =>
+                updatedMonster &&
+                setUpdatedMonster({
+                  ...updatedMonster,
+                  img,
+                })
+              }
             />
             <img
               src={`${CDN_URL}${monsterImg}`}
@@ -127,7 +158,13 @@ export const MonsterEditView = () => {
               name="monster_thumbnail"
               label="Path to monster thumbnail"
               value={monsterThumbnail}
-              setValue={newPath => onTextPropertyChange(newPath, 'thumbnail')}
+              setValue={thumbnail =>
+                updatedMonster &&
+                setUpdatedMonster({
+                  ...updatedMonster,
+                  thumbnail,
+                })
+              }
             />
             <img
               src={`${CDN_URL}${monsterThumbnail}`}
@@ -148,7 +185,13 @@ export const MonsterEditView = () => {
               type="number"
               min={0}
               value={String(updatedMonster?.baseHP ?? 0)}
-              setValue={newPrice => onNumberPropertyChange(newPrice, 'baseHP')}
+              setValue={baseHP =>
+                updatedMonster &&
+                setUpdatedMonster({
+                  ...updatedMonster,
+                  baseHP: Number(baseHP),
+                })
+              }
             />
             <Input
               label={
@@ -161,8 +204,12 @@ export const MonsterEditView = () => {
               type="number"
               min={0}
               value={String(updatedMonster?.baseDamage ?? 0)}
-              setValue={newPrice =>
-                onNumberPropertyChange(newPrice, 'baseDamage')
+              setValue={baseDamage =>
+                updatedMonster &&
+                setUpdatedMonster({
+                  ...updatedMonster,
+                  baseDamage: Number(baseDamage),
+                })
               }
             />
             <Input
@@ -172,8 +219,12 @@ export const MonsterEditView = () => {
               min={0}
               step={0.1}
               value={String(updatedMonster?.baseAttackSpeed ?? 0)}
-              setValue={newPrice =>
-                onNumberPropertyChange(newPrice, 'baseAttackSpeed')
+              setValue={baseAttackSpeed =>
+                updatedMonster &&
+                setUpdatedMonster({
+                  ...updatedMonster,
+                  baseAttackSpeed: Number(baseAttackSpeed),
+                })
               }
             />
             <div className={s.singleMonsterView__infoSection}>
@@ -202,11 +253,15 @@ export const MonsterEditView = () => {
               type="number"
               min={0}
               value={String(updatedMonster?.baseExp ?? 0)}
-              setValue={newPrice => onNumberPropertyChange(newPrice, 'baseExp')}
+              setValue={baseExp =>
+                updatedMonster &&
+                setUpdatedMonster({
+                  ...updatedMonster,
+                  baseExp: Number(baseExp),
+                })
+              }
             />
-            {/* TODO monster currency drops */}
             <Input
-              disabled
               label={
                 <span className={s.singleMonsterView__withInfo}>
                   <IconInfo tooltip="Base value is multiplied by monster level" />
@@ -221,10 +276,24 @@ export const MonsterEditView = () => {
                   wealth => wealth.type === 'base',
                 )?.amount ?? 0,
               )}
-              setValue={newPrice => onNumberPropertyChange(newPrice, 'baseExp')}
+              setValue={baseCurr => {
+                if (!updatedMonster?.baseWealth) return;
+                const newWealth: BaseWealth = {
+                  type: 'base',
+                  amount: Number(baseCurr),
+                };
+                setUpdatedMonster({
+                  ...updatedMonster,
+                  baseWealth: [
+                    ...updatedMonster.baseWealth.filter(
+                      wealth => wealth.type !== 'base',
+                    ),
+                    newWealth,
+                  ],
+                });
+              }}
             />
             <Input
-              disabled
               label={
                 <span className={s.singleMonsterView__withInfo}>
                   <IconInfo tooltip="Base value is multiplied by monster level" />
@@ -239,16 +308,40 @@ export const MonsterEditView = () => {
                   wealth => wealth.type === 'premium',
                 )?.amount ?? 0,
               )}
-              setValue={newPrice => onNumberPropertyChange(newPrice, 'baseExp')}
+              setValue={baseCurr => {
+                if (!updatedMonster?.baseWealth) return;
+                const newWealth: BaseWealth = {
+                  type: 'premium',
+                  amount: Number(baseCurr),
+                };
+                setUpdatedMonster({
+                  ...updatedMonster,
+                  baseWealth: [
+                    ...updatedMonster.baseWealth.filter(
+                      wealth => wealth.type !== 'premium',
+                    ),
+                    newWealth,
+                  ],
+                });
+              }}
             />
           </div>
+        </div>
+        <div className={s.singleMonsterView__content}>
+          <MonsterDrops
+            updatedDrops={updatedDrops}
+            setUpdatedDrops={setUpdatedDrops}
+          />
         </div>
       </div>
     </div>
   );
 };
 
-const useUpdateMonster = () => {
+const useUpdateMonster = (
+  updatedDrops: MonsterDrop['drops'],
+  setStatus: (status: Status) => void,
+) => {
   const params = new URLSearchParams(location.search);
   const id = params.get('id');
 
@@ -264,7 +357,7 @@ const useUpdateMonster = () => {
     setUpdatedMonster(monster);
   }, [isMonsterFetched]);
 
-  const { mutate, isSuccess, isError, isPending } = useAdminUpdateMonsterApi();
+  const { mutateMonster, mutateMonsterDrops } = useStatus(setStatus);
 
   const monsterImg = useMemo(
     () => updatedMonster?.img.replace(CDN_URL, '') ?? '',
@@ -276,46 +369,15 @@ const useUpdateMonster = () => {
   );
 
   const onSave = () => {
-    if (updatedMonster) {
-      mutate({
+    if (updatedMonster)
+      mutateMonster({
         ...updatedMonster,
         img: monsterImg,
         thumbnail: monsterThumbnail,
         levelRequirements: updatedMonster.levelRequirements ?? null,
       });
-    }
-  };
-
-  const onTextPropertyChange = (
-    newValue: string,
-    property: keyof Pick<
-      Monster,
-      'name' | 'description' | 'img' | 'thumbnail' | 'habitat'
-    >,
-  ) => {
-    if (!updatedMonster) return;
-    setUpdatedMonster({
-      ...updatedMonster,
-      [property]: newValue,
-    });
-  };
-
-  const onNumberPropertyChange = (
-    newValue: string,
-    property: keyof Pick<
-      Monster,
-      | 'baseAttackSpeed'
-      | 'baseDamage'
-      | 'baseExp'
-      | 'baseHP'
-      | 'levelRequirements'
-    >,
-  ) => {
-    if (!updatedMonster) return;
-    setUpdatedMonster({
-      ...updatedMonster,
-      [property]: Number(newValue),
-    });
+    if (updatedDrops)
+      mutateMonsterDrops({ monsterId: monster!.id, drops: updatedDrops });
   };
 
   const onSelectionPropertyChange = (
@@ -334,12 +396,42 @@ const useUpdateMonster = () => {
     monsterImg,
     monsterThumbnail,
     updatedMonster,
-    onTextPropertyChange,
-    onNumberPropertyChange,
+    setUpdatedMonster,
     onSelectionPropertyChange,
     onSave,
-    isSuccess,
-    isPending,
-    isError,
   };
+};
+
+const useStatus = (setStatus: (status: Status) => void) => {
+  const {
+    mutate: mutateMonster,
+    isSuccess: isSuccessMonster,
+    isError: isErrorMonster,
+    isPending: isPendingMonster,
+  } = useAdminUpdateMonsterApi();
+
+  const {
+    mutate: mutateMonsterDrops,
+    isSuccess: isSuccessDrops,
+    isError: isErrorDrops,
+    isPending: isPendingDrops,
+  } = useAdminUpdateMonsterDropsApi();
+
+  useEffect(() => {
+    setStatus({
+      isSuccess: isSuccessMonster,
+      isError: isErrorMonster,
+      isPending: isPendingMonster,
+    });
+  }, [isSuccessMonster, isErrorMonster, isPendingMonster]);
+
+  useEffect(() => {
+    setStatus({
+      isSuccess: isSuccessDrops,
+      isError: isErrorDrops,
+      isPending: isPendingDrops,
+    });
+  }, [isSuccessDrops, isErrorDrops, isPendingDrops]);
+
+  return { mutateMonster, mutateMonsterDrops };
 };

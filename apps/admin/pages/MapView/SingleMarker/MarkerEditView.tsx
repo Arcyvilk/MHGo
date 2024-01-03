@@ -256,8 +256,6 @@ const useUpdateMonsterMarker = (
       ...monsterMarker,
       coords: selectedCoords,
     });
-
-    console.log(selectedCoords);
   }, [selectedCoords]);
 
   useEffect(() => {

@@ -16,6 +16,7 @@ export {
 export { adminUpdateMaterial } from './adminUpdateMaterial';
 export { adminUpdateMonster } from './adminUpdateMonster';
 export { adminUpdateResource } from './adminUpdateResource';
+export { adminUpdateMonsterDrops } from './adminUpdateMonsterDrops';
 
 // MARKERS
 export {

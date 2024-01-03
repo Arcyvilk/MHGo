@@ -27,6 +27,7 @@ import {
   adminDeleteResourceMarker,
   adminCreateResource,
   adminUpdateResource,
+  adminUpdateMonsterDrops,
 } from './admin';
 
 routerV1.get('/admin/users/list', adminGetAllUsers);
@@ -51,6 +52,11 @@ routerV1.delete('/admin/marker/monster/:markerId', adminDeleteMonsterMarker);
 routerV1.post('/admin/marker/resource/create', adminCreateResourceMarker);
 routerV1.put('/admin/marker/resource/:markerId', adminUpdateResourceMarker);
 routerV1.delete('/admin/marker/resource/:markerId', adminDeleteResourceMarker);
+
+routerV1.put(
+  '/admin/monsters/monster/:monsterId/drops',
+  adminUpdateMonsterDrops,
+);
 
 /*****************************
  *         RESOURCES         *
