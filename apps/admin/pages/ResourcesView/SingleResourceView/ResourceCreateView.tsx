@@ -26,7 +26,7 @@ export const ResourceCreateView = () => {
     <div className={s.singleResourceView}>
       <HeaderEdit
         status={{ isSuccess, isPending, isError }}
-        title="Edit resource"
+        title="Create resource"
       />
       <ActionBar
         buttons={
@@ -85,7 +85,7 @@ export const ResourceCreateView = () => {
               name="resource_thumbnail"
               label="Path to resource thumbnail"
               value={resourceThumbnail}
-              setValue={img => setResource({ ...resource, img })}
+              setValue={thumbnail => setResource({ ...resource, thumbnail })}
             />
             <img
               className={s.singleResourceView__thumbnail}
@@ -117,6 +117,7 @@ const useUpdateResource = () => {
       mutate({
         ...resource,
         img: resourceImg,
+        thumbnail: resourceThumbnail,
       });
   };
 

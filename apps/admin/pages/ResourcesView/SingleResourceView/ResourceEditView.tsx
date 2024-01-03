@@ -72,6 +72,7 @@ export const ResourceEditView = () => {
               label="Resource's name"
               value={updatedResource?.name ?? ''}
               setValue={name =>
+                updatedResource &&
                 setUpdatedResource({ ...updatedResource, name })
               }
             />
@@ -80,6 +81,7 @@ export const ResourceEditView = () => {
               label="Resource's description"
               value={updatedResource?.description ?? ''}
               setValue={description =>
+                updatedResource &&
                 setUpdatedResource({ ...updatedResource, description })
               }
             />
@@ -91,7 +93,10 @@ export const ResourceEditView = () => {
               name="resource_img"
               label="Path to resource image"
               value={resourceImg}
-              setValue={img => setUpdatedResource({ ...updatedResource, img })}
+              setValue={img =>
+                updatedResource &&
+                setUpdatedResource({ ...updatedResource, img })
+              }
             />
             <img
               className={s.singleResourceView__img}
@@ -106,6 +111,7 @@ export const ResourceEditView = () => {
               label="Path to resource thumbnail"
               value={resourceThumbnail}
               setValue={thumbnail =>
+                updatedResource &&
                 setUpdatedResource({ ...updatedResource, thumbnail })
               }
             />
@@ -155,6 +161,10 @@ const useUpdateResource = () => {
   const [updatedResource, setUpdatedResource] = useState(resource);
 
   useEffect(() => {
+    console.log(updatedResource);
+  }, [updatedResource]);
+
+  useEffect(() => {
     setUpdatedResource(resource);
   }, [isResourcesFetched]);
 
@@ -174,6 +184,7 @@ const useUpdateResource = () => {
       mutate({
         ...updatedResource,
         img: resourceImg,
+        thumbnail: resourceThumbnail,
       });
   };
 
