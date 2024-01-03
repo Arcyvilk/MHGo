@@ -1,3 +1,5 @@
+export { adminGetAllUsers } from './adminGetAllUsers';
+
 export { adminCreateMaterial } from './adminCreateMaterial';
 export { adminCreateMonster } from './adminCreateMonster';
 export { adminCreateMonsterMarker } from './adminCreateMonsterMarker';

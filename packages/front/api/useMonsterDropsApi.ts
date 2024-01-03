@@ -5,7 +5,7 @@ import { API_URL } from '../env';
 
 export const useMonsterDropsApi = () => {
   const getMonsterMarkers = async (): Promise<MonsterDrop[]> => {
-    const res = await fetch(`${API_URL}/drops/list`);
+    const res = await fetch(`${API_URL}/drops/monster/list`);
     return res.json();
   };
 
@@ -15,7 +15,7 @@ export const useMonsterDropsApi = () => {
     isFetched,
     isError,
   } = useQuery<MonsterDrop[], unknown, MonsterDrop[], string[]>({
-    queryKey: ['monster', 'drops'],
+    queryKey: ['drops', 'monster'],
     queryFn: getMonsterMarkers,
   });
 
@@ -29,7 +29,7 @@ export const useMonsterMarkerDropsApi = (userId: string) => {
     markerId: string;
     monsterLevel?: number;
   }): Promise<Material[]> => {
-    const res = await fetch(`${API_URL}/drops/user/${userId}`, {
+    const res = await fetch(`${API_URL}/drops/monster/user/${userId}`, {
       method: 'PUT',
       body: JSON.stringify(variables),
       headers: {
@@ -51,7 +51,7 @@ export const useMonsterMarkerDropsApi = (userId: string) => {
     isPending,
     status,
   } = useMutation({
-    mutationKey: ['drops', 'user', userId],
+    mutationKey: ['drops', 'monster', 'user', userId],
     mutationFn: getDropsForUser,
   });
 

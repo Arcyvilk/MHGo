@@ -23,7 +23,7 @@ import { addFilterToMaterials } from '../../helpers/addFilterToMaterials';
 type ReqBody = { markerId: string; monsterLevel: number };
 type ReqParams = { userId: string };
 
-export const getDropsForUser = async (
+export const getMonsterDropsForUser = async (
   req: Request<ReqParams, ReqBody>,
   res: Response,
 ): Promise<void> => {
@@ -55,7 +55,7 @@ export const getDropsForUser = async (
 
     // Get the specified monster marker
     const collectionMonsterMarkers =
-      db.collection<MonsterMarker>('markersMonster');;
+      db.collection<MonsterMarker>('markersMonster');
     const marker = await collectionMonsterMarkers.findOne({
       _id: new ObjectId(markerId),
     });
