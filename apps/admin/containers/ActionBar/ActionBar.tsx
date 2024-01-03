@@ -4,7 +4,7 @@ export const ActionBar = ({
   title,
   buttons,
 }: {
-  title?: string;
+  title?: React.ReactNode;
   buttons: React.ReactNode;
 }) => {
   return (

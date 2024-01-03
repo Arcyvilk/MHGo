@@ -7,6 +7,7 @@ import { MapLayer } from './MapLayer';
 import { MarkerCreateView, MarkerEditView } from './SingleMarker';
 
 import s from './MapView.module.scss';
+import { FormControlLabel, Switch } from '@mui/material';
 
 export const DEFAULT_COORDS = [59.892131, 10.6194067];
 
@@ -33,6 +34,9 @@ const Load = () => {
   const [selectedCoords, setSelectedCoords] = useState<number[]>(coords);
   const [selectedMarker, setSelectedMarker] = useState<string | null>(null);
 
+  const [showResources, setShowResources] = useState(true);
+  const [showMonsters, setShowMonsters] = useState(true);
+
   const onCenterMap = () => {
     geo.getCurrentPosition(
       (position: GeolocationPosition) => {
@@ -53,15 +57,39 @@ const Load = () => {
     <div className={s.mapView}>
       <HeaderEdit status={status} title="MAP" />
       <ActionBar
+        title={
+          selectedMarker ? (
+            <span style={{ fontWeight: 600 }}>Marker ID: {selectedMarker}</span>
+          ) : (
+            ''
+          )
+        }
         buttons={
-          <>
-            {selectedMarker && (
-              <span style={{ fontWeight: 600 }}>
-                Editing marker {selectedMarker}
-              </span>
-            )}
+          <div style={{ display: 'flex', gap: '8px' }}>
+            <FormControlLabel
+              label="Resources"
+              control={
+                <Switch
+                  defaultChecked={true}
+                  value={showResources}
+                  color="default"
+                  onChange={(_, checked) => setShowResources(checked)}
+                />
+              }
+            />
+            <FormControlLabel
+              label="Monsters"
+              control={
+                <Switch
+                  defaultChecked={true}
+                  value={showMonsters}
+                  color="default"
+                  onChange={(_, checked) => setShowMonsters(checked)}
+                />
+              }
+            />
             <Button label="Center on me" onClick={onCenterMap} />
-          </>
+          </div>
         }
       />
       <div className={s.mapView__content}>
@@ -76,6 +104,8 @@ const Load = () => {
             currentCoords={coords}
             setSelectedCoords={setSelectedCoords}
             setCreateView={setCreateView}
+            showMonsters={showMonsters}
+            showResources={showResources}
           />
         </MapContainer>
       </div>

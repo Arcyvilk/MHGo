@@ -9,6 +9,8 @@ type MapLayerProps = {
   selectedMarker: string | null;
   setSelectedMarker: (selectedMarker: string | null) => void;
   setCreateView: (createView: boolean) => void;
+  showMonsters: boolean;
+  showResources: boolean;
 };
 export const MapLayer = ({
   currentCoords,
@@ -16,6 +18,8 @@ export const MapLayer = ({
   selectedMarker,
   setSelectedMarker,
   setCreateView,
+  showMonsters,
+  showResources,
 }: MapLayerProps) => {
   const map = useMap();
 
@@ -39,16 +43,20 @@ export const MapLayer = ({
         attribution='&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
         url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      <MonsterMarkers
-        selectedMarker={selectedMarker}
-        setSelectedMarker={setSelectedMarker}
-        setSelectedCoords={setSelectedCoords}
-      />
-      <ResourceMarkers
-        selectedMarker={selectedMarker}
-        setSelectedMarker={setSelectedMarker}
-        setSelectedCoords={setSelectedCoords}
-      />
+      {showMonsters && (
+        <MonsterMarkers
+          selectedMarker={selectedMarker}
+          setSelectedMarker={setSelectedMarker}
+          setSelectedCoords={setSelectedCoords}
+        />
+      )}
+      {showResources && (
+        <ResourceMarkers
+          selectedMarker={selectedMarker}
+          setSelectedMarker={setSelectedMarker}
+          setSelectedCoords={setSelectedCoords}
+        />
+      )}
     </>
   );
 };

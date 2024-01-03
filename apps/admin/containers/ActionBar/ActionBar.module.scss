@@ -24,7 +24,11 @@
     button {
       width: auto;
     }
-
+    span {
+      font-family: $font-open-sans;
+      font-size: $size-14;
+      font-weight: 600;
+    }
 
   }
 }
