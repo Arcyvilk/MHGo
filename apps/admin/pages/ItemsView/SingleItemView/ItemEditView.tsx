@@ -11,6 +11,7 @@ import {
   modifiers,
   useAdminUpdateItemActionApi,
   useAdminUpdateItemApi,
+  useAdminUpdateItemCraftlistApi,
   useItemActionsApi,
   useItemCraftsApi,
   useItemsApi,
@@ -49,9 +50,14 @@ export const ItemEditView = () => {
       return items.map(i => ({
         id: i.id,
         name: i.name,
-        // Dont allow to select items which are already part of recipe
+
         disabled: Boolean(
-          i.id === mat.id || updatedItemCraft.find(entry => entry.id === i.id),
+          // Dont allow to select item currently selected
+          i.id === mat.id ||
+            // Dont allow to select items which are already part of recipe
+            updatedItemCraft.find(entry => entry.id === i.id) ||
+            // Dont allow to select item which you are editing atm
+            i.id === item?.id,
         ),
       }));
 
@@ -397,8 +403,12 @@ export const ItemEditView = () => {
                       setUpdatedItemCraft([
                         ...updatedItemCraft,
                         {
-                          id: '',
-                          amount: 0,
+                          // We fake this id because if we select first item from list
+                          // it will duplicate if user creates more fields at once
+                          // Having a fake ID set as date ensures their uniqueness
+                          // Hacky and ugly I know. It's 2:26AM, I deserve some leniency
+                          id: new Date().valueOf().toString(),
+                          amount: 1,
                           craftType: 'item',
                         },
                       ])
@@ -410,8 +420,9 @@ export const ItemEditView = () => {
                       setUpdatedItemCraft([
                         ...updatedItemCraft,
                         {
-                          id: '',
-                          amount: 0,
+                          // As above
+                          id: new Date().valueOf().toString(),
+                          amount: 1,
                           craftType: 'material',
                         },
                       ])
@@ -420,6 +431,7 @@ export const ItemEditView = () => {
                 </div>
                 {updatedItemCraft?.map((mat, index) => {
                   const matSelection = getSelect(mat);
+                  console.log(mat);
                   return (
                     <div
                       className={s.singleItemView__craftMaterial}
@@ -446,7 +458,19 @@ export const ItemEditView = () => {
                         name="craft_amount"
                         type="number"
                         value={String(mat.amount)}
+                        min={1}
                         style={{ maxWidth: '75px' }}
+                        setValue={selectedMatAmount => {
+                          const updatedEntries = updatedItemCraft.map(entry => {
+                            if (entry.id === mat.id)
+                              return {
+                                ...entry,
+                                amount: Number(selectedMatAmount),
+                              };
+                            return entry;
+                          });
+                          return setUpdatedItemCraft(updatedEntries);
+                        }}
                       />
                       <Button
                         label={<Icon icon="X" />}
@@ -527,7 +551,7 @@ const useUpdateItem = () => {
     isSuccess: isUpdateCraftSuccess,
     isError: isUpdateCraftError,
     isPending: isUpdateCraftPending,
-  } = useAdminUpdateItemActionApi();
+  } = useAdminUpdateItemCraftlistApi();
 
   useEffect(() => {
     setUpdatedItemCraft(itemCraft);
@@ -557,8 +581,9 @@ const useUpdateItem = () => {
     if (updatedItem) mutateItem({ ...updatedItem, img: itemImg });
     if (updatedItemAction)
       mutateItemAction({ itemId: item!.id, ...updatedItemAction });
-    if (updatedItemCraft)
-      mutateItemCraft({ itemId: item!.id, ...updatedItemCraft });
+    if (updatedItemCraft) {
+      mutateItemCraft({ itemId: item!.id, craftList: updatedItemCraft });
+    }
   };
 
   return {
@@ -572,7 +597,8 @@ const useUpdateItem = () => {
     setUpdatedItemAction,
     setUpdatedItemCraft,
     onSave,
-    isSuccess: isUpdateActionSuccess && isUpdateItemSuccess,
+    isSuccess:
+      isUpdateActionSuccess && isUpdateItemSuccess && isUpdateCraftSuccess,
     isPending:
       isUpdateActionPending || isUpdateItemPending || isUpdateCraftPending,
     isError: isUpdateActionError || isUpdateItemError || isUpdateCraftError,

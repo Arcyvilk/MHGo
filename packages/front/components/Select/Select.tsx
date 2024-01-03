@@ -15,6 +15,10 @@ export function Select<
     setValue(value);
   };
 
+  const fakeDefault = data.find(d => d.id === defaultSelected)
+    ? defaultSelected
+    : '_blank';
+
   return (
     <div className={s.select__wrapper}>
       {label && (
@@ -27,8 +31,8 @@ export function Select<
         name={name}
         id={name}
         onChange={onSelect}
-        defaultValue={defaultSelected}>
-        {data.map(item => (
+        defaultValue={fakeDefault}>
+        {[{ id: '_blank', name: '', disabled: true }, ...data].map(item => (
           <option
             className={s.select__option}
             value={item.id}

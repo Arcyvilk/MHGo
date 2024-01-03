@@ -1,7 +1,13 @@
 import { Request, Response } from 'express';
 import { WithId } from 'mongodb';
 import { log } from '@mhgo/utils';
-import { Item, ItemAction } from '@mhgo/types';
+import {
+  CraftList,
+  Item,
+  ItemAction,
+  ItemCraftList,
+  Material,
+} from '@mhgo/types';
 
 import { mongoInstance } from '../../../api';
 
@@ -58,6 +64,63 @@ export const adminUpdateItemAction = async (
 
     if (!response.acknowledged) {
       res.status(400).send({ error: 'Could not update this item action.' });
+    } else {
+      res.status(200).send(response);
+    }
+  } catch (err: any) {
+    log.WARN(err);
+    res.status(500).send({ error: err.message ?? 'Internal server error' });
+  }
+};
+
+export const adminUpdateItemCrafts = async (
+  req: Request,
+  res: Response,
+): Promise<void> => {
+  try {
+    const { db } = mongoInstance.getDb();
+    const { itemId } = req.params;
+
+    const collection = db.collection<ItemCraftList>('itemCraft');
+    const craftList = req.body as CraftList[];
+
+    // Get all items
+    const collectionItems = db.collection<Item>('items');
+    const items: Item[] = [];
+    const cursorItems = collectionItems.find({});
+    for await (const el of cursorItems) {
+      items.push(el);
+    }
+
+    // Get all materials
+    const collectionMaterials = db.collection<Material>('materials');
+    const materials: Material[] = [];
+    const cursorMaterials = collectionMaterials.find({});
+    for await (const el of cursorMaterials) {
+      materials.push(el);
+    }
+
+    // Dont add as crafting ingredients items/materials that dont exist
+    const itemIngredients = craftList.filter(
+      entry => entry.craftType === 'item' && items.find(i => i.id === entry.id),
+    );
+    const materialIngredients = craftList.filter(
+      entry =>
+        entry.craftType === 'material' &&
+        materials.find(i => i.id === entry.id),
+    );
+
+    const updatedCraftList = [...itemIngredients, ...materialIngredients];
+
+    // Update crafting list
+    const response = await collection.updateOne(
+      { itemId },
+      { $set: { craftList: updatedCraftList } },
+      { upsert: true },
+    );
+
+    if (!response.acknowledged) {
+      res.status(400).send({ error: 'Could not update this item craft list.' });
     } else {
       res.status(200).send(response);
     }
