@@ -19,7 +19,7 @@ export const getMonsterMarkersByUserId = async (
     const collectionUsers = db.collection<User>('users');
     const collectionSettings = db.collection<Setting<number>>('settings');
     const collectionMonsterMarkers =
-      db.collection<MonsterMarker>('monsterMarkers');
+      db.collection<MonsterMarker>('markersMonster');
 
     // TODO filter monster markers by user's level requirement
 

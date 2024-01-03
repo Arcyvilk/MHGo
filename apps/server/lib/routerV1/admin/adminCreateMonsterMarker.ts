@@ -11,7 +11,7 @@ export const adminCreateMonsterMarker = async (
   try {
     const { db } = mongoInstance.getDb();
 
-    const collection = db.collection<MonsterMarker>('monsterMarkers');
+    const collection = db.collection<MonsterMarker>('markersMonster');;
     const monsterMarker = req.body as MonsterMarker;
 
     const response = await collection.insertOne(monsterMarker);

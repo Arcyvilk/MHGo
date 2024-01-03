@@ -13,7 +13,7 @@ export const adminUpdateMonsterMarker = async (
     const { db } = mongoInstance.getDb();
     const { markerId } = req.params;
 
-    const collection = db.collection<MonsterMarker>('monsterMarkers');
+    const collection = db.collection<MonsterMarker>('markersMonster');;
     const { _id, ...updatedFields } = req.body as Partial<
       WithId<MonsterMarker>
     >;
@@ -42,7 +42,7 @@ export const adminDeleteMonsterMarker = async (
     const { db } = mongoInstance.getDb();
     const { markerId } = req.params;
 
-    const collection = db.collection<MonsterMarker>('monsterMarkers');
+    const collection = db.collection<MonsterMarker>('markersMonster');;
 
     const response = await collection.deleteOne({
       _id: new ObjectId(markerId),

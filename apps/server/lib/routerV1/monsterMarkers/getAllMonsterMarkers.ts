@@ -12,7 +12,7 @@ export const getAllMonsterMarkers = async (
     const { db } = mongoInstance.getDb();
 
     const collectionMonsterMarkers =
-      db.collection<MonsterMarker>('monsterMarkers');
+      db.collection<MonsterMarker>('markersMonster');;
     const monsterMarkers: MonsterMarker[] = [];
 
     const cursorMonsterMarkers = collectionMonsterMarkers.find({});
