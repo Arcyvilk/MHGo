@@ -161,10 +161,6 @@ const useUpdateResource = () => {
   const [updatedResource, setUpdatedResource] = useState(resource);
 
   useEffect(() => {
-    console.log(updatedResource);
-  }, [updatedResource]);
-
-  useEffect(() => {
     setUpdatedResource(resource);
   }, [isResourcesFetched]);
 
