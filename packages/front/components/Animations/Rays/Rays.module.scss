@@ -1,28 +1,38 @@
 @import '../../../styles/index.scss';
 
-.center {
-    position: absolute;
-	top:0;
-	left:0;
-	right:0;
-	bottom:0;
-	margin: auto;  
-	width:30%;
-	height:30%;
-	border-radius:50%;	
-	background:white;
-	opacity:0.9;	
-	box-shadow: 0px 0px 60px 50px white;  
+.rayBox {
+    position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+	width: 100vw;
+	height: 100vh;
+    overflow: visible;
 }
 
-.rayBox {
+
+.center {
+    position: absolute;
+    background: $color-white;
+    top: calc(100vh /2 - 75px);
+    left: calc(100vw /2 - 75px);
+    width: 150px;
+    height: 150px;
+    border-radius: 150px;
+	opacity: 0.9;
+	box-shadow: 0 0 60px 50px $color-white;
+}
+	
+.rays {
   position: absolute;
+  top:0;
+  left:0;
   margin: auto;
-    top:0px;
-    left:0;
-    right:0;
-    bottom:0;	
-  width:70px;  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;  
   -webkit-animation: ray_anim 90s linear infinite;
   animation: ray_anim 90s linear infinite;
 }
@@ -30,80 +40,47 @@
 .ray {
   background: -webkit-linear-gradient(top, rgba(255,255,255,0) 0%, rgba(255,255,255,0.8) 50%, rgba(255,255,255,0) 100%);
   background: linear-gradient(top, rgba(255,255,255,0) 0%, rgba(255,255,255,0.8) 50%, rgba(255,255,255,0) 100%); 
-  margin-left:10px;
   border-radius:80% 80% 0 0;
-  position:absolute;
+  position: absolute;
   opacity:0.6;
+  width: 30px;
+  height: 100vh;
 
   &--1 {
-      height:270px;
-      width:30px;
       transform: rotate(180deg);
-      top:-175px;
-      left: 15px;
+      width: 20px;
   }
   &--2 {
-      height:200px;
-      width:16px;
      transform: rotate(220deg);
-      top:-90px;
-      left: 75px;
   }
   &--3 {
-      height:270px;
-      width:50px;
-     transform: rotate(250deg);
-      top:-80px;
-      left: 100px;
+    transform: rotate(250deg);
+    width: 50px;
   }
   &--4 {
-      height:220px;
-      width:28px;
-     transform: rotate(305deg);
-      top:30px;
-      left: 100px;
+    transform: rotate(305deg);
+    width: 20px;
   }
   &--5 {
-      height:240px;
-      width:30px;
-     transform: rotate(-15deg);
-      top:60px;
-      left: 40px;
+    transform: rotate(-15deg);
   }
   &--6 {
-      height:190px;
-      width:10px;
-     transform: rotate(30deg);
-      top:60px;
-      left: -40px;
+    transform: rotate(30deg);
   }
   &--7 {
-      height:280px;
-      width:16px;
-     transform: rotate(70deg);
-      top:-35px;
-      left: -40px;
+    transform: rotate(70deg);
+    width: 50px;
   }
   &--8 {
-      height:220px;
-      width:60px;
-     transform: rotate(100deg);
-      top:-45px;
-      left:-90px;
+    transform: rotate(100deg);
   }
   &--9 {
-      height:180px;
-      width:20px;
-     transform: rotate(120deg);
-      top:-65px;
-      left:-60px;
+    transform: rotate(120deg);
+    width: 20px;
   }
   &--10 {
-      height:290px;
-      width:46px;
-     transform: rotate(150deg);
-      top:-185px;
-      left: -60px;
+    transform: rotate(150deg);
+    width: 40px;
   }
 }
 

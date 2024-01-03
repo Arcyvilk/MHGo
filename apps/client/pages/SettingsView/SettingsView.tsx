@@ -1,8 +1,14 @@
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
-import { addCdnUrl, Button, CloseButton, Slider } from '@mhgo/front';
-import { Volume, useVolume } from '../../hooks/useVolume';
+import {
+  Volume,
+  useVolume,
+  addCdnUrl,
+  Button,
+  CloseButton,
+  Slider,
+} from '@mhgo/front';
 import { STATUS, useLogin } from '../../hooks/useLogin';
 import { APP_NAME, APP_VERSION } from '../../utils/consts';
 

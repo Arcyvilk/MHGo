@@ -1,13 +1,16 @@
-import { Fragment } from 'react';
+import { Fragment, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Marker } from 'react-leaflet';
 import L from 'leaflet';
-import { QueryBoundary } from '@mhgo/front';
+import {
+  QueryBoundary,
+  useMonsterMarkersApi,
+  useMonstersApi,
+} from '@mhgo/front';
 import StarYellow from '@mhgo/front/assets/icons/StarYellow.svg';
 
-import { useMonsterMarkers } from '../../../hooks/useMonster';
-
-import s from './MonsterMarkers.module.scss';
+import s from './Marker.module.scss';
+import { useUser } from '../../../hooks/useUser';
 
 export const MonsterMarkers = () => (
   <QueryBoundary fallback={null}>
@@ -45,16 +48,36 @@ const Load = () => {
 const getMonsterMarkerIcon = (level: number | null = 0, thumbnail?: string) => {
   const stars = new Array(level)
     .fill(null)
-    .map(() => `<img src="${StarYellow}" class="${s.monsterMarker__star}" />`)
+    .map(() => `<img src="${StarYellow}" class="${s.marker__star}" />`)
     .join('');
 
   return new L.DivIcon({
-    className: s.monsterMarker__icon,
-    html: `<div class="${s.monsterMarker__wrapper}">
-        <img src="${thumbnail}" class="${s.monsterMarker__thumbnail}"/>
-        <div class="${s.monsterMarker__stars}">
+    className: s.marker__icon,
+    html: `<div class="${s.marker__wrapper}">
+        <img src="${thumbnail}" class="${s.marker__thumbnail}"/>
+        <div class="${s.marker__stars}">
           ${stars}
         </div>
       </div>`,
   });
+};
+
+const useMonsterMarkers = () => {
+  const { userId } = useUser();
+  const { data: monsters } = useMonstersApi();
+  const { data: monsterMarkers } = useMonsterMarkersApi(userId);
+
+  const monsterMarkersData = useMemo(() => {
+    return monsterMarkers?.map(monsterMarker => {
+      const { thumbnail, name } =
+        monsters?.find(m => m.id === monsterMarker.monsterId) ?? {};
+      return {
+        ...monsterMarker,
+        thumbnail,
+        name,
+      };
+    });
+  }, [monsterMarkers, monsters]);
+
+  return monsterMarkersData;
 };

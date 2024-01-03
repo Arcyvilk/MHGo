@@ -4,11 +4,13 @@ import { useNavigate } from 'react-router-dom';
 import { HealthBarMonster, HealthBarUser } from '../../containers';
 import {
   CloseButton,
-  Explosions,
   Loader,
+  Nuke,
   QueryBoundary,
   Rays,
+  SoundSE,
   modifiers,
+  useSounds,
   useUserStatsApi,
 } from '@mhgo/front';
 import { useMonster } from '../../hooks/useMonster';
@@ -25,6 +27,7 @@ export const FightView = () => (
 );
 
 const Load = () => {
+  const { playSESound } = useSounds();
   const navigate = useNavigate();
   const { userId } = useUser();
   const { data: userStats } = useUserStatsApi(userId);
@@ -42,8 +45,10 @@ const Load = () => {
     const newHP = monsterHP - (userStats?.attack ?? 1);
 
     if (newHP > 0) {
+      playSESound(SoundSE.SLAP);
       setMonsterHP(newHP);
     } else {
+      playSESound(SoundSE.NUKE);
       setMonsterHP(0);
       setIsMonsterAlive(false);
     }
@@ -75,7 +80,7 @@ const Load = () => {
         <ModalFailure isOpen setIsOpen={setIsModalOpen} onClose={onFightEnd} />
       )}
       <Header name={name} maxHP={level * baseHP} currentHP={monsterHP} />
-      {!isMonsterAlive && <Explosions />}
+      {!isMonsterAlive && <Nuke />}
       <div className={s.fightView__wrapper}>
         {isMonsterAlive && <Rays />}
         <img

@@ -1,6 +1,6 @@
 import { toast } from 'react-toastify';
 import { ItemActions, Item as TItem } from '@mhgo/types';
-import { Button } from '@mhgo/front';
+import { Button, SoundSE, useSounds } from '@mhgo/front';
 
 import { Dropdown, Flash, Modal } from '@mhgo/front';
 import {
@@ -24,6 +24,7 @@ export const EquipmentDropdown = ({
   item: TItem;
   useOnly?: boolean;
 }) => {
+  const { playSESound } = useSounds();
   const [action, setAction] = useState<Action>('craft');
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -60,6 +61,7 @@ export const EquipmentDropdown = ({
       window.open(itemAction.redirect);
     }
     if (itemAction.heal) {
+      playSESound(SoundSE.BUBBLE);
       mutateUserHealth({ healthChange: itemAction.heal });
       toast.success(`Healed for ${itemAction.heal}!`);
     }

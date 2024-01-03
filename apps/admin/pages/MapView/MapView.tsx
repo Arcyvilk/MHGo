@@ -37,7 +37,7 @@ const Load = () => {
   const [showResources, setShowResources] = useState(true);
   const [showMonsters, setShowMonsters] = useState(true);
 
-  const onCenterMap = () => {
+  const onCenterMapOnMe = () => {
     geo.getCurrentPosition(
       (position: GeolocationPosition) => {
         const { latitude, longitude } = position.coords;
@@ -88,7 +88,7 @@ const Load = () => {
                 />
               }
             />
-            <Button label="Center on me" onClick={onCenterMap} />
+            <Button label="Center on me" onClick={onCenterMapOnMe} />
           </div>
         }
       />

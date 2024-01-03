@@ -6,6 +6,7 @@ import { Loader, QueryBoundary } from '@mhgo/front';
 
 import { iconMarker } from './Marker';
 import { MonsterMarkers } from './MonsterMarkers';
+import { ResourceMarkers } from './ResourceMarkers';
 import { DEFAULT_COORDS } from '../../../utils/consts';
 
 import 'leaflet/dist/leaflet.css';
@@ -68,6 +69,10 @@ const MapLayer = ({ coords }: MapLayerProps) => {
   const map = useMap();
 
   useEffect(() => {
+    map.invalidateSize();
+  }, [map]);
+
+  useEffect(() => {
     if (map) map.flyTo(L.latLng(coords[0], coords[1]));
   }, [coords, map]);
 
@@ -81,6 +86,7 @@ const MapLayer = ({ coords }: MapLayerProps) => {
         url="https://tiles.stadiamaps.com/tiles/stamen_watercolor/{z}/{x}/{y}.jpg"
       />
       <MonsterMarkers />
+      <ResourceMarkers />
       <Circle
         center={L.latLng(coords[0], coords[1])}
         radius={mapRadius}

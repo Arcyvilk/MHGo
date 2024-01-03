@@ -1,5 +1,6 @@
 export * from './HomeView';
 export * from './EquipmentView';
+export * from './ForageView';
 export * from './ItemBoxView';
 export * from './NotImplementedView';
 export * from './QuestView';

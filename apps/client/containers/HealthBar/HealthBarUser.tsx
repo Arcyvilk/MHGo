@@ -7,6 +7,8 @@ import {
   Loader,
   QueryBoundary,
   modifiers,
+  useSounds,
+  SoundSE,
 } from '@mhgo/front';
 import { useMonster } from '../../../../apps/client/hooks/useMonster';
 import { useUser } from '../../../../apps/client/hooks/useUser';
@@ -25,6 +27,7 @@ export const HealthBarUser = (props: HealthBarUserProps) => (
 );
 
 const Load = ({ isFightFinished, setIsPlayerAlive }: HealthBarUserProps) => {
+  const { playSESound } = useSounds();
   const { userId } = useUser();
   const { mutate, isSuccess: isUserHit } = useUpdateUserHealth(userId);
   const { data: userHealth } = useUserHealthApi(userId);
@@ -35,6 +38,7 @@ const Load = ({ isFightFinished, setIsPlayerAlive }: HealthBarUserProps) => {
 
   useInterval(
     () => {
+      playSESound(SoundSE.OUCH);
       mutate({
         healthChange: baseDamage * level * -1,
       });
@@ -43,7 +47,10 @@ const Load = ({ isFightFinished, setIsPlayerAlive }: HealthBarUserProps) => {
   );
 
   useEffect(() => {
-    if (userHealth?.currentHealth <= 0) setIsPlayerAlive(false);
+    if (userHealth?.currentHealth <= 0) {
+      playSESound(SoundSE.DEATH);
+      setIsPlayerAlive(false);
+    }
   }, [userHealth.currentHealth]);
 
   return (
