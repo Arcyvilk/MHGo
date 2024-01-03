@@ -5,6 +5,7 @@ import {
   MapView,
   MaterialsView,
   MonstersView,
+  ResourcesView,
   SettingsView,
   UsersView,
   //
@@ -13,6 +14,8 @@ import {
   MaterialEditView,
   MonsterEditView,
   MonsterCreateView,
+  ResourceCreateView,
+  ResourceEditView,
 } from '../pages';
 
 export type Entry = {
@@ -48,6 +51,14 @@ export const entries: Entry[] = [
     icon: 'Monster',
     mainRoute: true,
     component: <MonstersView />,
+  },
+  {
+    id: 'resources',
+    title: 'Resources',
+    link: '/resources',
+    icon: 'Star',
+    mainRoute: true,
+    component: <ResourcesView />,
   },
   {
     id: 'items',
@@ -121,5 +132,21 @@ export const entries: Entry[] = [
     icon: 'Monster',
     mainRoute: false,
     component: <MonsterEditView />,
+  },
+  {
+    id: 'resource_create',
+    title: 'Create resource',
+    link: '/resources/create',
+    icon: 'Star',
+    mainRoute: false,
+    component: <ResourceCreateView />,
+  },
+  {
+    id: 'resource_edit',
+    title: 'Edit resource',
+    link: '/resources/edit',
+    icon: 'Star',
+    mainRoute: false,
+    component: <ResourceEditView />,
   },
 ];

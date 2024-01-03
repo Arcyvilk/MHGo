@@ -5,6 +5,7 @@ export { adminUpdateUser } from './adminUpdateUser';
 // CREATION
 export { adminCreateMaterial } from './adminCreateMaterial';
 export { adminCreateMonster } from './adminCreateMonster';
+export { adminCreateResource } from './adminCreateResource';
 
 // UPDATION
 export {
@@ -14,6 +15,7 @@ export {
 } from './adminUpdateItem';
 export { adminUpdateMaterial } from './adminUpdateMaterial';
 export { adminUpdateMonster } from './adminUpdateMonster';
+export { adminUpdateResource } from './adminUpdateResource';
 
 // MARKERS
 export {

@@ -29,7 +29,6 @@ export const MaterialCreateView = () => {
         title="Edit material"
       />
       <ActionBar
-        title={`Material ID: ${material?.id}`}
         buttons={
           <>
             <Button

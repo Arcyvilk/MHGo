@@ -1,0 +1,45 @@
+@import '@mhgo/front/styles/index.scss';
+
+.singleResourceView {
+  @include page-wrapper-admin;
+
+  &__content {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+    padding: $size-8;
+    gap: $size-32;
+    span {
+      font-family: $font-open-sans;
+      font-size: $size-12;
+      font-weight: 600;
+    }
+  }
+
+  &__section {
+    @include page-section-admin;
+  }
+
+  &__infoSection {
+    display: flex;
+    flex-direction: column;
+    gap: $size-8;
+    p {
+      margin: 0;
+    }
+  }
+
+  &__img {
+    max-width: $size-72;
+    min-width: $size-72;
+    max-height: $size-72;
+    min-height: $size-72;
+  }
+  &__thumbnail {
+    max-width: $size-48;
+    min-width: $size-48;
+    max-height: $size-48;
+    min-height: $size-48;
+  }
+}

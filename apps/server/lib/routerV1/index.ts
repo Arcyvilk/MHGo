@@ -25,6 +25,8 @@ import {
   adminCreateResourceMarker,
   adminUpdateResourceMarker,
   adminDeleteResourceMarker,
+  adminCreateResource,
+  adminUpdateResource,
 } from './admin';
 
 routerV1.get('/admin/users/list', adminGetAllUsers);
@@ -32,12 +34,15 @@ routerV1.put('/admin/users/user/:userId', adminUpdateUser);
 
 routerV1.post('/admin/materials/create', adminCreateMaterial);
 routerV1.post('/admin/monsters/create', adminCreateMonster);
+routerV1.post('/admin/resources/create', adminCreateResource);
 
 routerV1.put('/admin/items/item/:itemId', adminUpdateItem);
 routerV1.put('/admin/items/item/:itemId/action', adminUpdateItemAction);
 routerV1.put('/admin/items/item/:itemId/crafts', adminUpdateItemCrafts);
+
 routerV1.put('/admin/materials/material/:materialId', adminUpdateMaterial);
 routerV1.put('/admin/monsters/monster/:monsterId', adminUpdateMonster);
+routerV1.put('/admin/resources/resource/:resourceId', adminUpdateResource);
 
 routerV1.post('/admin/marker/monster/create', adminCreateMonsterMarker);
 routerV1.put('/admin/marker/monster/:markerId', adminUpdateMonsterMarker);

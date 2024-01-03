@@ -10,6 +10,7 @@ import {
   useAdminUpdateMaterialApi,
   useMaterialsApi,
   useMonsterDropsApi,
+  useResourcesApi,
 } from '@mhgo/front';
 import { ActionBar, HeaderEdit } from '../../../containers';
 
@@ -119,10 +120,10 @@ export const MaterialEditView = () => {
               <p
                 style={{ fontWeight: 600 }}
                 className={s.singleMaterialView__withInfo}>
-                Dropped by:
+                Dropped by monsters:
               </p>
-              {materialDrops.length > 0
-                ? materialDrops.map(drop => (
+              {materialDrops.monsters.length > 0
+                ? materialDrops.monsters.map(drop => (
                     <Button
                       variant={Button.Variant.GHOST}
                       simple
@@ -130,6 +131,28 @@ export const MaterialEditView = () => {
                       label={`${drop.monsterId} (level ${drop.level})`}
                       onClick={() =>
                         navigate(`/monsters/edit?id=${drop.monsterId}`)
+                      }
+                    />
+                  ))
+                : '-'}
+            </div>
+          </div>
+          <div className={s.singleMaterialView__section}>
+            <div className={s.singleMaterialView__infoSection}>
+              <p
+                style={{ fontWeight: 600 }}
+                className={s.singleMaterialView__withInfo}>
+                Dropped by resource points:
+              </p>
+              {materialDrops.resourceDrops.length > 0
+                ? materialDrops.resourceDrops.map(resource => (
+                    <Button
+                      variant={Button.Variant.GHOST}
+                      simple
+                      inverted
+                      label={resource.name}
+                      onClick={() =>
+                        navigate(`/resources/edit?id=${resource.id}`)
                       }
                     />
                   ))
@@ -148,6 +171,7 @@ const useUpdateMaterial = () => {
 
   const { data: materials, isFetched: isMaterialsFetched } = useMaterialsApi();
   const { data: drops, isFetched: isDropsFetched } = useMonsterDropsApi();
+  const { data: resources, isFetched: isResourcesFetched } = useResourcesApi();
 
   const material = useMemo(
     () => materials.find(i => i.id === id),
@@ -163,7 +187,13 @@ const useUpdateMaterial = () => {
           monsters.push({ monsterId: drop.monsterId, level: levelDrop.level });
       }),
     );
-    return monsters;
+    const resourceDrops = resources
+      .filter(resource =>
+        resource.drops.some(resource => resource.materialId === material?.id),
+      )
+      .map(resource => ({ name: resource.name, id: resource.id }));
+
+    return { monsters, resourceDrops };
   }, [drops, isDropsFetched]);
 
   useEffect(() => {

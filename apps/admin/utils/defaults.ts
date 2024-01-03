@@ -1,4 +1,10 @@
-import { Material, Monster, MonsterMarker, ResourceMarker } from '@mhgo/types';
+import {
+  Material,
+  Monster,
+  MonsterMarker,
+  Resource,
+  ResourceMarker,
+} from '@mhgo/types';
 
 export const DEFAULT_MONSTER: Monster = {
   id: '',
@@ -31,6 +37,15 @@ export const DEFAULT_MATERIAL: Material = {
   rarity: 1,
   img: '/materials/XXX.jpg',
   filter: '',
+};
+
+export const DEFAULT_RESOURCE: Resource = {
+  id: '',
+  name: '',
+  description: '',
+  img: '/resources/XXX.jpg',
+  thumbnail: '/resources/thumbnail-XXX.jpg',
+  drops: [],
 };
 
 export const DEFAULT_MONSTER_MARKER: Omit<MonsterMarker, 'respawnTime' | 'id'> =
