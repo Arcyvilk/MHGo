@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   CloseButton,
   Loader,
@@ -9,9 +9,11 @@ import {
   useAllResourceMarkersApi,
   useResourcesApi,
 } from '@mhgo/front';
-
-import s from './ForageView.module.scss';
 import { SoundSE, useSounds } from '@mhgo/front/hooks';
+
+import { ModalForage } from './ModalForage';
+import s from './ForageView.module.scss';
+import { useNavigate } from 'react-router-dom';
 
 export const ForageView = () => (
   <QueryBoundary fallback={<Loader />}>
@@ -20,6 +22,8 @@ export const ForageView = () => (
 );
 
 const Load = () => {
+  const navigate = useNavigate();
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [remainingHits, setRemainingHits] = useState(10);
   const { resource } = useResource();
   const { playSESound } = useSounds();
@@ -34,9 +38,24 @@ const Load = () => {
     }
   };
 
+  const onFinish = () => {
+    setIsModalOpen(false);
+    navigate('/');
+  };
+
+  useEffect(() => {
+    if (!isActive)
+      setTimeout(() => {
+        setIsModalOpen(true);
+      }, 2000);
+  }, [isActive]);
+
   if (!resource) return null;
   return (
     <div className={s.forageView}>
+      {!isActive && isModalOpen && (
+        <ModalForage isOpen setIsOpen={setIsModalOpen} onClose={onFinish} />
+      )}
       <Header name={resource.name} />
       <div className={s.forageView__resourceWrapper}>
         {isActive && <Rays />}

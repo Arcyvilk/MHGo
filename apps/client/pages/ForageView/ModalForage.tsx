@@ -1,25 +1,18 @@
 import { useEffect, useState, useCallback } from 'react';
 
 import { Item } from '@mhgo/front';
-import {
-  addCdnUrl,
-  useMonsterMarkerDropsApi,
-  useUpdateUserExp,
-  useUpdateUserWealth,
-} from '@mhgo/front';
+import { addCdnUrl, useResourceMarkerDropsApi } from '@mhgo/front';
 import { useUser } from '../../hooks/useUser';
 import { Button, Loader, Modal, QueryBoundary } from '@mhgo/front';
 
-import s from './ModalResult.module.scss';
-import { useMonster } from '../../hooks/useMonster';
-import { CurrencyType } from '@mhgo/types';
+import s from './ModalForage.module.scss';
 
 type ModalProps = {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
   onClose: () => void;
 };
-export const ModalSuccess = ({ isOpen, setIsOpen, onClose }: ModalProps) => (
+export const ModalForage = ({ isOpen, setIsOpen, onClose }: ModalProps) => (
   <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
     <div className={s.result}>
       <h1 className={s.result__title}>Success!</h1>
@@ -33,34 +26,15 @@ export const ModalSuccess = ({ isOpen, setIsOpen, onClose }: ModalProps) => (
 const Load = ({ onClose }: { onClose: () => void }) => {
   const params = new URLSearchParams(location.search);
   const markerId = params.get('id') ?? '';
-  const level = params.get('level') ?? '0';
 
   const [isLootRedeemed, setIsLootRedeemed] = useState(false);
   const { userId } = useUser();
-  const { monster } = useMonster();
-  const {
-    data: drops,
-    mutate: mutateUserDrops,
-    isSuccess,
-  } = useMonsterMarkerDropsApi(userId);
-  const { mutate: mutateUserExp } = useUpdateUserExp(userId);
-  const { mutate: mutateUserWealth } = useUpdateUserWealth(userId);
-
-  const expChange = Number(level) * monster.baseExp;
-  const wealthChange: { [key in CurrencyType]?: number } = {};
-  monster.baseWealth.forEach(currency => {
-    wealthChange[currency.type] = currency.amount;
-  });
+  const { data: drops, mutate, isSuccess } = useResourceMarkerDropsApi(userId);
 
   const redeemLoot = useCallback(() => {
     if (isLootRedeemed) return;
     setIsLootRedeemed(true);
-    mutateUserWealth(wealthChange);
-    mutateUserExp({ expChange });
-    mutateUserDrops({
-      markerId,
-      monsterLevel: Number(level),
-    });
+    mutate({ markerId });
   }, [isLootRedeemed]);
 
   useEffect(() => {
@@ -79,17 +53,7 @@ const Load = ({ onClose }: { onClose: () => void }) => {
 
   return (
     <div className={s.modalSuccess}>
-      <div className={s.result__misc}>
-        <div>
-          <span style={{ fontWeight: 900 }}>EXP:</span> +{expChange}
-        </div>
-        {/* TODO display money properly */}
-        <div>
-          <span style={{ fontWeight: 900 }}>Money:</span>
-          {JSON.stringify(wealthChange)}
-        </div>
-      </div>
-      <p className={s.result__desc}>Monster dropped the following items:</p>
+      <p className={s.result__desc}>You foraged the following items:</p>
       <div className={s.result__drops}>
         {isSuccess ? (
           listOfDrops?.length ? (

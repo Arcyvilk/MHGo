@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { ObjectId } from 'mongodb';
 
 import { happensWithAChanceOf, log } from '@mhgo/utils';
 import {
@@ -43,7 +44,7 @@ export const getResourceDropsForUser = async (
     const collectionResourceMarkers =
       db.collection<ResourceMarker>('markersResource');
     const marker = await collectionResourceMarkers.findOne({
-      id: markerId,
+      _id: new ObjectId(markerId),
     });
 
     // Get drops from the specified resource
