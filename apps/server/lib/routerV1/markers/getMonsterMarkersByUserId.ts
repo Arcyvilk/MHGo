@@ -1,5 +1,11 @@
 import { Request, Response } from 'express';
-import { Monster, MonsterMarker, Setting, User } from '@mhgo/types';
+import {
+  Monster,
+  MonsterMarker,
+  Setting,
+  User,
+  UserRespawn,
+} from '@mhgo/types';
 import { log } from '@mhgo/utils';
 
 import { mongoInstance } from '../../../api';
@@ -7,6 +13,7 @@ import {
   determineMonsterLevel,
   getUserLevel,
 } from '../../helpers/getUserLevel';
+import { ObjectId } from 'mongodb';
 
 export const getMonsterMarkersByUserId = async (
   req: Request,
@@ -28,12 +35,7 @@ export const getMonsterMarkersByUserId = async (
     const userLevel = getUserLevel(user, expPerLevel);
     const maxMonsterLevel = userLevel;
 
-    // Get all the monster markers
-    const collectionMonsterMarkers =
-      db.collection<MonsterMarker>('markersMonster');
-    const monsterMarkers: MonsterMarker[] = [];
-
-    // Monster marker filters by coordinated
+    // Show only markers within some set distance
     const lat = coords.length === 2 ? Number(coords[0].toFixed(2)) : null;
     const long = coords.length === 2 ? Number(coords[1].toFixed(2)) : null;
 
@@ -51,12 +53,37 @@ export const getMonsterMarkersByUserId = async (
           }
         : {};
 
-    // Monster marker filters by maximum level
+    // Show only markers with no level or level lower than user's level
     const filterLevel = [{ level: null }, { level: { $lte: maxMonsterLevel } }];
+
+    // Filter out monsters that have level requirements higher than user's level
+    const collectionMonsters = db.collection<Monster>('monsters');
+    const filterTooHighLevelRequirement: { monsterId: string }[] = [];
+    const cursorAvailableMonsters = collectionMonsters.find({
+      levelRequirements: { $gt: userLevel },
+    });
+    for await (const el of cursorAvailableMonsters) {
+      filterTooHighLevelRequirement.push({ monsterId: el.id });
+    }
+
+    // Filter out monsters that are still respawning
+    const collectionUserRespawn = db.collection<UserRespawn>('userRespawn');
+    const filterCooldown: { _id: ObjectId }[] = [];
+    const cursorUserRespawn = collectionUserRespawn.find({ userId });
+    for await (const el of cursorUserRespawn) {
+      if (el.markerType == 'monster')
+        filterCooldown.push({ _id: new ObjectId(el.markerId) });
+    }
+
+    // Apply all filters and get all visible markers
+    const collectionMonsterMarkers =
+      db.collection<MonsterMarker>('markersMonster');
+    const monsterMarkers: MonsterMarker[] = [];
 
     const cursorMonsterMarkers = collectionMonsterMarkers.find({
       ...filterCoords,
       $or: [...filterLevel],
+      $nor: [...filterCooldown, ...filterTooHighLevelRequirement],
     });
 
     for await (const el of cursorMonsterMarkers) {
@@ -66,9 +93,6 @@ export const getMonsterMarkersByUserId = async (
         level: el.level ?? determineMonsterLevel(userLevel),
       });
     }
-
-    // Filter monster markers by user's level requirement
-    const collectionMonsters = db.collection<Monster>('monsters');
 
     res.status(200).send(monsterMarkers);
   } catch (err: any) {
