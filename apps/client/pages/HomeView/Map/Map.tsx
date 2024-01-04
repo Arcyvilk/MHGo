@@ -21,7 +21,7 @@ const geoOptions = {
 const mapOptions = {
   zoom: 16,
   minZoom: 15,
-  maxZoom: 19,
+  maxZoom: 18,
   scrollWheelZoom: 'center' as Zoom,
   dragging: false,
 };
