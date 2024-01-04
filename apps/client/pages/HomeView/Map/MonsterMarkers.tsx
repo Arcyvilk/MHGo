@@ -21,7 +21,13 @@ export const MonsterMarkers = (props: MonsterMarkersProps) => (
 
 const Load = ({ coords }: MonsterMarkersProps) => {
   const navigate = useNavigate();
-  const monsterMarkers = useMonsterMapMarkers(coords);
+
+  // We make coords less precise so we don't refetch every second
+  const fixedCoords = coords
+    ? [Number(coords[0].toFixed(2)), Number(coords[1].toFixed(2))]
+    : undefined;
+
+  const monsterMarkers = useMonsterMapMarkers(fixedCoords);
 
   return (
     <>
@@ -67,15 +73,9 @@ const useMonsterMapMarkers = (coords?: number[]) => {
   const { userId } = useUser();
   const { data: monsters } = useMonstersApi();
   const { data: monsterMarkers, mutate: getMonsterMarkers } =
-    useMonsterMarkersApi(
-      userId,
-      coords
-        ? [Number(coords[0].toFixed(2)), Number(coords[1].toFixed(2))]
-        : undefined,
-    );
+    useMonsterMarkersApi(userId, coords);
 
   useEffect(() => {
-    alert(coords);
     getMonsterMarkers();
   }, []);
 
