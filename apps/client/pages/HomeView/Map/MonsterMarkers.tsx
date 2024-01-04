@@ -75,6 +75,7 @@ const useMonsterMapMarkers = (coords?: number[]) => {
     );
 
   useEffect(() => {
+    alert(coords);
     getMonsterMarkers();
   }, []);
 
