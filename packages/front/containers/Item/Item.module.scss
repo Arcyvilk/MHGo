@@ -89,6 +89,10 @@
       height: auto;
       padding: 0;
     }
+
+    &--isNotOwned {
+      opacity: 0.5;
+    }
   }
 
   &__rarity {

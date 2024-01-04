@@ -1,26 +1,43 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation } from '@tanstack/react-query';
 import { MonsterMarker, ResourceMarker } from '@mhgo/types';
 
 import { API_URL } from '../env';
 
 export const useMonsterMarkersApi = (userId?: string) => {
-  const getMonsterMarkers = async (): Promise<MonsterMarker[]> => {
-    const res = await fetch(`${API_URL}/map/monsters/user/${userId}`);
+  const getAllMonsterMarkers = async (
+    coords: number[] | undefined,
+  ): Promise<MonsterMarker[]> => {
+    const res = await fetch(`${API_URL}/map/monsters/user/${userId}`, {
+      method: 'POST',
+      body: coords ? JSON.stringify(coords) : null,
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+    });
     return res.json();
   };
 
   const {
     data = [],
-    isLoading,
-    isFetched,
+    mutate,
+    status,
+    isPending,
+    isSuccess,
     isError,
-  } = useQuery<MonsterMarker[], unknown, MonsterMarker[], string[]>({
-    queryKey: ['monster', 'markers', userId!],
-    queryFn: getMonsterMarkers,
-    enabled: Boolean(userId),
+  } = useMutation({
+    mutationKey: ['monster', 'markers', userId!],
+    mutationFn: getAllMonsterMarkers,
   });
 
-  return { data, isLoading, isFetched, isError };
+  return {
+    data,
+    mutate,
+    status,
+    isLoading: isPending,
+    isFetched: isSuccess,
+    isError,
+  };
 };
 
 export const useAllResourceMarkersApi = () => {

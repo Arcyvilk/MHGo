@@ -40,3 +40,10 @@ export type UserWealth = {
   userId: string;
   wealth: UserAmount[];
 };
+
+export type UserRespawn = {
+  userId: string;
+  markerId: string;
+  markerType: 'resource' | 'monster';
+  usedAt: Date;
+};

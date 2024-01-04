@@ -1,4 +1,4 @@
-import { Fragment, useMemo } from 'react';
+import { Fragment, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Marker } from 'react-leaflet';
 import L from 'leaflet';
@@ -12,15 +12,16 @@ import StarYellow from '@mhgo/front/assets/icons/StarYellow.svg';
 import s from './Marker.module.scss';
 import { useUser } from '../../../hooks/useUser';
 
-export const MonsterMarkers = () => (
+type MonsterMarkersProps = { coords?: number[] };
+export const MonsterMarkers = (props: MonsterMarkersProps) => (
   <QueryBoundary fallback={null}>
-    <Load />
+    <Load {...props} />
   </QueryBoundary>
 );
 
-const Load = () => {
+const Load = ({ coords }: MonsterMarkersProps) => {
   const navigate = useNavigate();
-  const monsterMarkers = useMonsterMarkers();
+  const monsterMarkers = useMonsterMarkers(coords);
 
   return (
     <>
@@ -62,10 +63,15 @@ const getMonsterMarkerIcon = (level: number | null = 0, thumbnail?: string) => {
   });
 };
 
-const useMonsterMarkers = () => {
+const useMonsterMarkers = (coords?: number[]) => {
   const { userId } = useUser();
   const { data: monsters } = useMonstersApi();
-  const { data: monsterMarkers } = useMonsterMarkersApi(userId);
+  const { data: monsterMarkers, mutate: getMonsterMarkers } =
+    useMonsterMarkersApi(userId);
+
+  useEffect(() => {
+    getMonsterMarkers(coords);
+  }, [coords]);
 
   const monsterMarkersData = useMemo(() => {
     return monsterMarkers?.map(monsterMarker => {

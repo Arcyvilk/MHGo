@@ -20,7 +20,8 @@ const geoOptions = {
 
 const mapOptions = {
   zoom: 16,
-  minZoom: 15,
+  // minZoom: 15,
+  minZoom: 5,
   maxZoom: 18,
   scrollWheelZoom: 'center' as Zoom,
   dragging: false,
@@ -84,7 +85,7 @@ const MapLayer = ({ coords }: MapLayerProps) => {
           &copy; <a href="https://www.openstreetmap.org/copyright/" target="_blank">OpenStreetMap contributors</a>'
         url="https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}.png"
       />
-      <MonsterMarkers />
+      <MonsterMarkers coords={coords} />
       <ResourceMarkers />
       <UserMarker coords={coords} />
     </>
