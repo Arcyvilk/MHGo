@@ -1,13 +1,13 @@
 {
   "expo": {
-    "name": "@mhgo/mobile",
+    "name": "mhgo",
     "slug": "mhgo",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/favicon.png",
     "userInterfaceStyle": "dark",
     "splash": {
-      "image": "./assets/cave.jpg",
+      "image": "./assets/cave.png",
       "resizeMode": "cover",
       "backgroundColor": "#000000"
     },

@@ -19,7 +19,7 @@
     "production": {
       "env": {
         "APP_ICON": "./assets/favicon.png",
-        "APP_NAME": "Master Hoarder GO!"
+        "APP_NAME": "mhgo"
         },
       "android": {
         "buildType": "apk"
