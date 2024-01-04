@@ -5,6 +5,7 @@ import { MONSTER_MISSING, MONSTER_MARKER_MISSING } from '../utils/consts';
 export const useMonsterMarker = () => {
   const params = new URLSearchParams(location.search);
   const markerId = params.get('id');
+  const level = params.get('level') ?? '0';
   const { data: monsters, isFetched: isFetchedMonster } = useMonstersApi();
   const { data: monsterMarker, isFetched: isSingleMarkerFetched } =
     useSingleMonsterMarkerApi(markerId);
@@ -24,7 +25,7 @@ export const useMonsterMarker = () => {
   const monster = {
     ...monsterData,
     ...monsterMarker,
-    level: monsterMarker.level ?? 1,
+    level: monsterMarker.level ?? Number(level) ?? 0,
   };
 
   return {
