@@ -20,8 +20,9 @@ export const getMonsterMarkersByUserId = async (
   res: Response,
 ): Promise<void> => {
   try {
+    // lat and lng are optional!
     const { userId } = req.params;
-    const coords = req.body as number[] | undefined;
+    const { lat, lng } = req.query;
 
     const { db } = mongoInstance.getDb();
 
@@ -36,19 +37,19 @@ export const getMonsterMarkersByUserId = async (
     const maxMonsterLevel = userLevel;
 
     // Show only markers within some set distance
-    const lat = coords.length === 2 ? Number(coords[0].toFixed(2)) : null;
-    const long = coords.length === 2 ? Number(coords[1].toFixed(2)) : null;
+    const fixedLat = lat ? Number(Number(lat).toFixed(2)) : null;
+    const fixedLng = lng ? Number(Number(lng).toFixed(2)) : null;
 
     const filterCoords =
-      coords.length === 2
+      fixedLat && fixedLng
         ? {
             'coords.0': {
-              $lt: lat + 0.01,
-              $gt: lat - 0.01,
+              $lt: fixedLat + 0.01,
+              $gt: fixedLat - 0.01,
             },
             'coords.1': {
-              $lt: long + 0.01,
-              $gt: long - 0.01,
+              $lt: fixedLng + 0.01,
+              $gt: fixedLng - 0.01,
             },
           }
         : {};

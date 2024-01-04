@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useMemo } from 'react';
+import { Fragment, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Marker } from 'react-leaflet';
 import L from 'leaflet';
@@ -72,12 +72,7 @@ const getMonsterMarkerIcon = (level: number | null = 0, thumbnail?: string) => {
 const useMonsterMapMarkers = (coords?: number[]) => {
   const { userId } = useUser();
   const { data: monsters } = useMonstersApi();
-  const { data: monsterMarkers, mutate: getMonsterMarkers } =
-    useMonsterMarkersApi(userId, coords);
-
-  useEffect(() => {
-    getMonsterMarkers();
-  }, []);
+  const { data: monsterMarkers } = useMonsterMarkersApi(userId, coords);
 
   const monsterMarkersData = useMemo(() => {
     return monsterMarkers?.map(monsterMarker => {

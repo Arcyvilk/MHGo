@@ -24,6 +24,7 @@ export const useItemsApi = () => {
   } = useQuery<Item[], unknown, Item[], string[]>({
     queryKey: ['items'],
     queryFn: getItems,
+    staleTime: Infinity,
   });
 
   const data = items.map(item => ({

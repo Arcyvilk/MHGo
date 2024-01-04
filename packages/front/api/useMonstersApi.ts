@@ -18,6 +18,7 @@ export const useMonstersApi = () => {
   } = useQuery<Monster[], unknown, Monster[], string[]>({
     queryKey: ['monsters', 'list'],
     queryFn: getMonsters,
+    staleTime: Infinity,
   });
 
   const data = monsters.map(monster => ({

@@ -22,6 +22,7 @@ export const useNewsApi = () => {
   } = useQuery<News[], unknown, News[], string[]>({
     queryKey: ['news'],
     queryFn: getNews,
+    staleTime: Infinity,
   });
 
   const data = news.map(post => ({

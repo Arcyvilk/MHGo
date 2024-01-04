@@ -24,36 +24,31 @@ export const useSingleMonsterMarkerApi = (markerId: string | null) => {
 };
 
 export const useMonsterMarkersApi = (userId?: string, coords?: number[]) => {
+  const lat = coords?.[0] ?? null;
+  const lng = coords?.[1] ?? null;
+
   const getAllMonsterMarkers = async (): Promise<MonsterMarker[]> => {
-    const res = await fetch(`${API_URL}/map/monsters/user/${userId}`, {
-      method: 'POST',
-      body: coords ? JSON.stringify(coords) : null,
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-    });
+    const path = `${API_URL}/map/monsters/user/${userId}?lat=${lat}&lng=${lng}`;
+    const res = await fetch(path);
     return res.json();
   };
 
   const {
     data = [],
-    mutate,
     status,
-    isPending,
-    isSuccess,
+    isLoading,
+    isFetched,
     isError,
-  } = useMutation({
-    mutationKey: ['monster', 'markers', userId!, JSON.stringify(coords)],
-    mutationFn: getAllMonsterMarkers,
+  } = useQuery({
+    queryKey: ['monster', 'markers', userId!, lat, lng],
+    queryFn: getAllMonsterMarkers,
   });
 
   return {
     data,
-    mutate,
     status,
-    isLoading: isPending,
-    isFetched: isSuccess,
+    isLoading,
+    isFetched,
     isError,
   };
 };

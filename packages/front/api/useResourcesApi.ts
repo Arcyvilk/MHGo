@@ -18,6 +18,7 @@ export const useResourcesApi = () => {
   } = useQuery<Resource[], unknown, Resource[], string[]>({
     queryKey: ['resources', 'list'],
     queryFn: getResources,
+    staleTime: Infinity,
   });
 
   const data = resources.map(resource => ({

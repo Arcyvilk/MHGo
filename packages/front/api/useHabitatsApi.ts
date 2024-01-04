@@ -21,6 +21,7 @@ export const useHabitatsApi = () => {
   } = useQuery<Habitat[], unknown, Habitat[], string[]>({
     queryKey: ['habitats'],
     queryFn: getHabitats,
+    staleTime: Infinity,
   });
 
   return { data, isLoading, isFetched, isError };
