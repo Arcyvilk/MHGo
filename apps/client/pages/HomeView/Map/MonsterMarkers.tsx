@@ -67,7 +67,12 @@ const useMonsterMapMarkers = (coords?: number[]) => {
   const { userId } = useUser();
   const { data: monsters } = useMonstersApi();
   const { data: monsterMarkers, mutate: getMonsterMarkers } =
-    useMonsterMarkersApi(userId, coords);
+    useMonsterMarkersApi(
+      userId,
+      coords
+        ? [Number(coords[0].toFixed(2)), Number(coords[1].toFixed(2))]
+        : undefined,
+    );
 
   useEffect(() => {
     getMonsterMarkers();
