@@ -13,7 +13,6 @@ export const getSingleMonsterMarker = async (
     const { db } = mongoInstance.getDb();
     const { markerId } = req.params;
 
-    console.log(markerId);
     if (!markerId) throw new Error('Monster marker ID missing!');
 
     const collectionMonsterMarkers =
