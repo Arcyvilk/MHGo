@@ -1,0 +1,41 @@
+@import '@mhgo/front/styles/index.scss';
+
+.itemStats {
+  display: flex;
+  flex-direction: column;
+  gap: $size-4;
+  font-size: $size-10;
+
+  &__stat {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.2rem;
+  }
+
+  &__name {
+    font-weight: 600;
+    min-width: 35%;
+  }
+
+  &__change {
+    display: flex;
+    flex: 1 1 100%;
+    gap: $size-8;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__value {
+    width: 30%;
+
+    &--downgrade {
+      color: $color-danger;
+      font-weight: 600;
+    }
+    &--upgrade {
+      color: $color-success;
+      font-weight: 600;
+    }
+  }
+}

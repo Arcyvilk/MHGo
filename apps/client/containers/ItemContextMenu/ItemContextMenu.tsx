@@ -3,7 +3,7 @@ import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 
 import { ItemActions, Item as TItem } from '@mhgo/types';
-import { Button, Item, SoundSE, useItemStatsApi, useSounds } from '@mhgo/front';
+import { Button, Item, SoundSE, useSounds } from '@mhgo/front';
 import {
   useItemActionsApi,
   useUpdateUserHealth,
@@ -15,6 +15,7 @@ import {
 } from '@mhgo/front';
 import { useUser } from '../../hooks/useUser';
 import { CraftConfirmation } from './Craft/CraftConfirmation';
+import { ItemStats } from './ItemStats';
 
 import s from './ItemContextMenu.module.scss';
 
@@ -117,6 +118,9 @@ export const ItemContextMenu = ({
               <span style={{ fontStyle: 'italic' }}>"{item.description}"</span>
             </div>
             <div className={s.itemContextMenu__section}>
+              <ItemStats itemId={item.id} />
+            </div>
+            <div className={s.itemContextMenu__section}>
               {!useOnly && item.craftable && (
                 <Button simple label="Craft" onClick={onItemCraft} />
               )}
@@ -139,12 +143,4 @@ export const ItemContextMenu = ({
       </Dropdown>
     </div>
   );
-};
-
-const ItemStats = ({ itemId }: { itemId: string }) => {
-  const { data: itemStats } = useItemStatsApi(itemId);
-  console.log(itemStats);
-
-  if (!itemStats) return null;
-  return <div>Stats yay</div>;
 };

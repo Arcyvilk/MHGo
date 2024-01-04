@@ -4,7 +4,18 @@ import {
   MonsterMarker,
   Resource,
   ResourceMarker,
+  Stats,
 } from '@mhgo/types';
+
+export const DEFAULT_STATS: Stats = {
+  attack: 0,
+  defense: 0,
+  health: 0,
+  element: 'null',
+  luck: 0,
+  critChance: 0,
+  critDamage: 0,
+};
 
 export const DEFAULT_MONSTER: Monster = {
   id: '',

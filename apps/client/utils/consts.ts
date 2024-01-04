@@ -1,4 +1,4 @@
-import { Monster, MonsterMarker } from '@mhgo/types';
+import { Monster, MonsterMarker, Stats } from '@mhgo/types';
 
 export { API_URL, CDN_URL } from '../env';
 
@@ -19,6 +19,7 @@ export const MONSTER_MISSING: Monster = {
   baseWealth: [],
   baseExp: 0,
   baseHP: 0,
+  levelRequirements: 0,
 };
 
 export const MONSTER_MARKER_MISSING: Omit<MonsterMarker, 'level'> & {
@@ -29,4 +30,14 @@ export const MONSTER_MARKER_MISSING: Omit<MonsterMarker, 'level'> & {
   level: 1,
   coords: [0, 0],
   respawnTime: 999,
+};
+
+export const DEFAULT_STATS: Stats = {
+  attack: 0,
+  defense: 0,
+  health: 0,
+  element: 'null',
+  luck: 0,
+  critChance: 0,
+  critDamage: 0,
 };

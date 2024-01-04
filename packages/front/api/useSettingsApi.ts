@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { API_URL } from '../env';
 
-export const useSettingsApi = <T>(key: string, defaultValue: T) => {
+export const useSettingsApi = <T>(key: string, defaultValue?: T) => {
   const getSettings = async (): Promise<Record<string, T>[]> => {
     const res = await fetch(`${API_URL}/settings`);
     return res.json();
@@ -19,7 +19,7 @@ export const useSettingsApi = <T>(key: string, defaultValue: T) => {
     },
   );
 
-  const setting = data.find(d => d.key === key)?.value ?? defaultValue;
+  const setting = data.find(d => d.key === key)?.value ?? defaultValue ?? {};
 
   return { setting, isLoading, isFetched, isError };
 };
