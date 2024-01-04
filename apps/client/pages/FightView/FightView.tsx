@@ -13,7 +13,7 @@ import {
   useSounds,
   useUserStatsApi,
 } from '@mhgo/front';
-import { useMonster } from '../../hooks/useMonster';
+import { useMonsterMarker } from '../../hooks/useMonsterMarker';
 import { useUser } from '../../hooks/useUser';
 import { ModalSuccess } from './ModalSuccess';
 import { ModalFailure } from './ModalFailure';
@@ -32,7 +32,7 @@ const Load = () => {
   const { userId } = useUser();
   const { data: userStats } = useUserStatsApi(userId);
 
-  const { monster } = useMonster();
+  const { monster } = useMonsterMarker();
   const { habitat, level, baseHP = 0, name, img } = monster;
 
   const [isModalOpen, setIsModalOpen] = useState(false);

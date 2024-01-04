@@ -1,18 +1,22 @@
 import { useEffect, useState, useCallback } from 'react';
 
-import { Item } from '@mhgo/front';
+import { CurrencyType } from '@mhgo/types';
+
 import {
+  Item,
+  Button,
+  Loader,
+  Modal,
+  QueryBoundary,
   addCdnUrl,
   useMonsterMarkerDropsApi,
   useUpdateUserExp,
   useUpdateUserWealth,
 } from '@mhgo/front';
 import { useUser } from '../../hooks/useUser';
-import { Button, Loader, Modal, QueryBoundary } from '@mhgo/front';
+import { useMonsterMarker } from '../../hooks/useMonsterMarker';
 
 import s from './ModalResult.module.scss';
-import { useMonster } from '../../hooks/useMonster';
-import { CurrencyType } from '@mhgo/types';
 
 type ModalProps = {
   isOpen: boolean;
@@ -37,7 +41,7 @@ const Load = ({ onClose }: { onClose: () => void }) => {
 
   const [isLootRedeemed, setIsLootRedeemed] = useState(false);
   const { userId } = useUser();
-  const { monster } = useMonster();
+  const { monster } = useMonsterMarker();
   const {
     data: drops,
     mutate: mutateUserDrops,

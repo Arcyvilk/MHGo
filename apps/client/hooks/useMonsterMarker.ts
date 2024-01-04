@@ -1,16 +1,14 @@
-import { useMonstersApi, useMonsterMarkersApi } from '@mhgo/front';
-import { useUser } from '../hooks/useUser';
+import { useMonstersApi, useSingleMonsterMarkerApi } from '@mhgo/front';
+
 import { MONSTER_MISSING, MONSTER_MARKER_MISSING } from '../utils/consts';
 
-export const useMonster = () => {
-  const { userId } = useUser();
-  const { data: monsters } = useMonstersApi();
-  const { data: monsterMarkers } = useMonsterMarkersApi(userId);
-
+export const useMonsterMarker = () => {
   const params = new URLSearchParams(location.search);
   const markerId = params.get('id');
+  const { data: monsters, isFetched: isFetchedMonster } = useMonstersApi();
+  const { data: monsterMarker, isFetched: isSingleMarkerFetched } =
+    useSingleMonsterMarkerApi(markerId);
 
-  const monsterMarker = monsterMarkers.find(m => m.id === markerId);
   const monsterId = monsterMarker?.monsterId;
   const monsterData = monsters.find(m => m.id === monsterId);
 
@@ -29,5 +27,9 @@ export const useMonster = () => {
     level: monsterMarker.level ?? 1,
   };
 
-  return { markerId, monster };
+  return {
+    markerId,
+    monster,
+    isFetched: isFetchedMonster && isSingleMarkerFetched,
+  };
 };

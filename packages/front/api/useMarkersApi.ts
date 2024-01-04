@@ -3,10 +3,28 @@ import { MonsterMarker, ResourceMarker } from '@mhgo/types';
 
 import { API_URL } from '../env';
 
-export const useMonsterMarkersApi = (userId?: string) => {
-  const getAllMonsterMarkers = async (
-    coords: number[] | undefined,
-  ): Promise<MonsterMarker[]> => {
+export const useSingleMonsterMarkerApi = (markerId: string | null) => {
+  const getMonsterMarker = async (): Promise<MonsterMarker> => {
+    const res = await fetch(`${API_URL}/map/markers/monsters/${markerId}`);
+    return res.json();
+  };
+
+  const { data, isLoading, isFetched, isError } = useQuery<
+    MonsterMarker,
+    unknown,
+    MonsterMarker,
+    string[]
+  >({
+    queryKey: ['markers', 'monster', markerId!],
+    queryFn: getMonsterMarker,
+    enabled: Boolean(markerId),
+  });
+
+  return { data, isLoading, isFetched, isError };
+};
+
+export const useMonsterMarkersApi = (userId?: string, coords?: number[]) => {
+  const getAllMonsterMarkers = async (): Promise<MonsterMarker[]> => {
     const res = await fetch(`${API_URL}/map/monsters/user/${userId}`, {
       method: 'POST',
       body: coords ? JSON.stringify(coords) : null,
@@ -26,7 +44,7 @@ export const useMonsterMarkersApi = (userId?: string) => {
     isSuccess,
     isError,
   } = useMutation({
-    mutationKey: ['monster', 'markers', userId!],
+    mutationKey: ['monster', 'markers', userId!, JSON.stringify(coords)],
     mutationFn: getAllMonsterMarkers,
   });
 

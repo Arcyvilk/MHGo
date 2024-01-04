@@ -1,17 +1,31 @@
 import { useNavigate } from 'react-router-dom';
 
-import { Button, Icon, Size, modifiers, useUserHealthApi } from '@mhgo/front';
-import { useMonster } from '../../hooks/useMonster';
-
-import s from './FightView.module.scss';
+import {
+  Button,
+  Icon,
+  Loader,
+  QueryBoundary,
+  Size,
+  modifiers,
+  useUserHealthApi,
+} from '@mhgo/front';
 import { HealthBarSimple } from '../../containers';
 import { useUser } from '../../hooks/useUser';
+import { useMonsterMarker } from '../../hooks/useMonsterMarker';
 
-export const PrepareView = () => {
+import s from './FightView.module.scss';
+
+export const PrepareView = () => (
+  <QueryBoundary fallback={<Loader />}>
+    <Load />
+  </QueryBoundary>
+);
+
+const Load = () => {
   const navigate = useNavigate();
   const { userId } = useUser();
   const { data: userHealth } = useUserHealthApi(userId);
-  const { markerId, monster } = useMonster();
+  const { markerId, monster, isFetched } = useMonsterMarker();
   const { habitat, level, name, img } = monster;
 
   const onFight = () => {
@@ -22,6 +36,8 @@ export const PrepareView = () => {
   };
 
   const isUserAlive = userHealth.currentHealth > 0;
+
+  if (!isFetched) return <Loader />;
 
   return (
     <div className={modifiers(s, 'fightView', habitat)}>

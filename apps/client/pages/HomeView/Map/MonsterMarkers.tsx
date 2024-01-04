@@ -21,7 +21,7 @@ export const MonsterMarkers = (props: MonsterMarkersProps) => (
 
 const Load = ({ coords }: MonsterMarkersProps) => {
   const navigate = useNavigate();
-  const monsterMarkers = useMonsterMarkers(coords);
+  const monsterMarkers = useMonsterMapMarkers(coords);
 
   return (
     <>
@@ -63,14 +63,14 @@ const getMonsterMarkerIcon = (level: number | null = 0, thumbnail?: string) => {
   });
 };
 
-const useMonsterMarkers = (coords?: number[]) => {
+const useMonsterMapMarkers = (coords?: number[]) => {
   const { userId } = useUser();
   const { data: monsters } = useMonstersApi();
   const { data: monsterMarkers, mutate: getMonsterMarkers } =
-    useMonsterMarkersApi(userId);
+    useMonsterMarkersApi(userId, coords);
 
   useEffect(() => {
-    getMonsterMarkers(coords);
+    getMonsterMarkers();
   }, [coords]);
 
   const monsterMarkersData = useMemo(() => {

@@ -10,9 +10,9 @@ import {
   useSounds,
   SoundSE,
 } from '@mhgo/front';
-import { useMonster } from '../../../../apps/client/hooks/useMonster';
-import { useUser } from '../../../../apps/client/hooks/useUser';
-import { useInterval } from '../../../../apps/client/hooks/useInterval';
+import { useMonsterMarker } from '../../hooks/useMonsterMarker';
+import { useUser } from '../../hooks/useUser';
+import { useInterval } from '../../hooks/useInterval';
 
 import s from './HealthBar.module.scss';
 
@@ -31,7 +31,7 @@ const Load = ({ isFightFinished, setIsPlayerAlive }: HealthBarUserProps) => {
   const { userId } = useUser();
   const { mutate, isSuccess: isUserHit } = useUpdateUserHealth(userId);
   const { data: userHealth } = useUserHealthApi(userId);
-  const { monster } = useMonster();
+  const { monster } = useMonsterMarker();
   const { level, baseAttackSpeed, baseDamage } = monster;
 
   const attackSpeed = 1000 / baseAttackSpeed;
