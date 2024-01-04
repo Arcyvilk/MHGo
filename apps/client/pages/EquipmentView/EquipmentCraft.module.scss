@@ -16,32 +16,8 @@
     @include item-grid-wrapper;
   }
 
-  &__itemDesc {
+  &__actions {
     display: flex;
-    flex-direction: column;
-    font-size: $size-14;
-    font-weight: 400;
-    gap: $size-16;
-  }
-
-  &__itemImg {
-    max-width: 100%;
-    object-fit: contain;
-    aspect-ratio: 1/1;
-  }
-}
-
-
-.equipmentDropdown {
-  display: flex;
-  flex-direction: column;
-  gap: $size-12;
-  max-width: 200px;
-
-  &__section {
-    display: flex;
-    flex-direction: column;
-    gap: $size-6;
-    font-weight: 400;
+    gap: $size-8;
   }
 }

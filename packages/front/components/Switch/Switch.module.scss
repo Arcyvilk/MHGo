@@ -1,0 +1,72 @@
+@import '../../styles/index.scss';
+
+.switch {
+  display: flex;
+  gap: $size-4;
+  align-items: center;
+
+  &__label {
+    margin: 0;
+    font-size: $size-12;
+  }
+
+  &__wrapper {
+    position: relative;
+    display: inline-block;
+    width: calc($size-36);
+    height: $size-18;
+    input { 
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+  }
+
+  &__slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+    border-radius: $size-18;
+
+    &::before {
+      position: absolute;
+      content: "";
+      height: $size-14;
+      width: $size-14;
+      left: 2px;
+      top: 2px;
+      background-color: white;
+      -webkit-transition: .4s;
+      transition: .4s;
+      border-radius: 50%;
+    }
+  }
+  
+  input:checked + &__slider {
+    background-color: #2196F3;
+  }
+  
+  input:focus + &__slider {
+    box-shadow: 0 0 1px #2196F3;
+  }
+  
+  input:checked + &__slider:before {
+    -webkit-transform: translateX($size-18);
+    -ms-transform: translateX($size-18);
+    transform: translateX($size-18);
+  }
+
+}
+
+
+
+
+
+
+

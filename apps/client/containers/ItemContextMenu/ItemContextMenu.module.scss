@@ -1,0 +1,31 @@
+@import '@mhgo/front/styles/index.scss';
+
+.itemContextMenu {
+  &__itemDesc {
+    display: flex;
+    flex-direction: column;
+    font-size: $size-14;
+    font-weight: 400;
+    gap: $size-16;
+  }
+
+  &__itemImg {
+    max-width: 100%;
+    object-fit: contain;
+    aspect-ratio: 1/1;
+  }
+
+  &__dropdown {
+    display: flex;
+    flex-direction: column;
+    gap: $size-12;
+    max-width: 200px;
+  }
+
+  &__section {
+    display: flex;
+    flex-direction: column;
+    gap: $size-6;
+    font-weight: 400;
+  }
+}

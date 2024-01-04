@@ -1,5 +1,5 @@
 import { useUser, useUserItems } from '../../hooks/useUser';
-import { EquipmentDropdown } from '../EquipmentView/EquipmentDropdown';
+import { ItemContextMenu } from '../../containers';
 
 import s from './ModalView.module.scss';
 
@@ -11,7 +11,7 @@ export const QuickUseModal = () => {
       <h2 className={s.modalView__quickUse__title}>Quick use menu</h2>
       <div className={s.modalView__quickUse__items}>
         {consumableItems.map(item => (
-          <EquipmentDropdown item={item} />
+          <ItemContextMenu item={item} />
         ))}
       </div>
     </div>

@@ -1,24 +1,25 @@
+import { useState } from 'react';
 import { toast } from 'react-toastify';
-import { ItemActions, Item as TItem } from '@mhgo/types';
-import { Button, SoundSE, useSounds } from '@mhgo/front';
+import { useNavigate } from 'react-router-dom';
 
-import { Dropdown, Flash, Modal } from '@mhgo/front';
+import { ItemActions, Item as TItem } from '@mhgo/types';
+import { Button, Item, SoundSE, useItemStatsApi, useSounds } from '@mhgo/front';
 import {
   useItemActionsApi,
   useUpdateUserHealth,
   useUserConsumeItemsApi,
   useUserEquipItemApi,
+  Dropdown,
+  Flash,
+  Modal,
 } from '@mhgo/front';
 import { useUser } from '../../hooks/useUser';
 import { CraftConfirmation } from './Craft/CraftConfirmation';
 
-import s from './EquipmentCraft.module.scss';
-import { useState } from 'react';
-import { Item } from '@mhgo/front';
-import { useNavigate } from 'react-router-dom';
+import s from './ItemContextMenu.module.scss';
 
 type Action = keyof ItemActions['action'] | 'craft';
-export const EquipmentDropdown = ({
+export const ItemContextMenu = ({
   item,
   useOnly = false,
   isItemOwned = true,
@@ -33,6 +34,7 @@ export const EquipmentDropdown = ({
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { data: itemAction } = useItemActionsApi(item.id);
+
   const { userId } = useUser();
   const { mutate: mutateItemEquip } = useUserEquipItemApi(userId, item.id);
   const { mutate: mutateConsumeItem } = useUserConsumeItemsApi(userId);
@@ -47,7 +49,10 @@ export const EquipmentDropdown = ({
 
   const onItemEquip = () => {
     // TODO if armor or weapon, show stats and how much they differ from current loadout
-    if (item.equippable) mutateItemEquip();
+    if (item.equippable) {
+      mutateItemEquip();
+      toast.success(`Equipped ${item.name}!`);
+    }
   };
 
   const onItemPurchase = () => {
@@ -81,37 +86,37 @@ export const EquipmentDropdown = ({
   };
 
   return (
-    <div className={s.equipmentView__itemWrapper} key={item.id}>
+    <div className={s.itemContextMenu} key={item.id}>
       <Flash type="green" isActivated={isHealedSuccessfully} />
       <Modal isOpen={isModalOpen} setIsOpen={setIsModalOpen}>
         {!useOnly && action === 'craft' && item.craftable && (
           <CraftConfirmation itemId={item.id} setIsModalOpen={setIsModalOpen} />
         )}
         {action === 'text' && (
-          <div className={s.equipmentView__itemDesc}>
+          <div className={s.itemContextMenu__itemDesc}>
             {itemAction?.text ??
               'Here should be a description of this item, but it got lost somewhere. Sorry. :c'}
             <Button label="OK " onClick={() => setIsModalOpen(false)} simple />
           </div>
         )}
         {action === 'img' && (
-          <div className={s.equipmentView__itemDesc}>
-            <img src={itemAction?.img} className={s.equipmentView__itemImg} />
+          <div className={s.itemContextMenu__itemDesc}>
+            <img src={itemAction?.img} className={s.itemContextMenu__itemImg} />
             <Button label="OK " onClick={() => setIsModalOpen(false)} simple />
           </div>
         )}
       </Modal>
       <Dropdown
         content={
-          <div className={s.equipmentDropdown}>
-            <div className={s.equipmentDropdown__section}>
+          <div className={s.itemContextMenu__dropdown}>
+            <div className={s.itemContextMenu__section}>
               {!isItemOwned && (
                 <span style={{ fontWeight: 900, color: 'red' }}>NOT OWNED</span>
               )}
               <span style={{ fontWeight: 900 }}>{item.name}</span>
               <span style={{ fontStyle: 'italic' }}>"{item.description}"</span>
             </div>
-            <div className={s.equipmentDropdown__section}>
+            <div className={s.itemContextMenu__section}>
               {!useOnly && item.craftable && (
                 <Button simple label="Craft" onClick={onItemCraft} />
               )}
@@ -134,4 +139,12 @@ export const EquipmentDropdown = ({
       </Dropdown>
     </div>
   );
+};
+
+const ItemStats = ({ itemId }: { itemId: string }) => {
+  const { data: itemStats } = useItemStatsApi(itemId);
+  console.log(itemStats);
+
+  if (!itemStats) return null;
+  return <div>Stats yay</div>;
 };
