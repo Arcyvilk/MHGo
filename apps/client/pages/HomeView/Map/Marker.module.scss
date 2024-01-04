@@ -4,7 +4,7 @@
   &__wrapper {
     display: flex;
     flex-direction: column;
-    gap: $size-4;
+    gap: 2px;
   }
   
   &__thumbnail {
@@ -24,5 +24,15 @@
 
   &__star {
     margin-left: -$size-8;
+  }
+}
+
+.userMarker {
+  &__radius {
+    z-index: 100;
+  }
+  &__thumbnail {
+    filter: drop-shadow(0 0 4px #fdc000);
+    transform: rotate(-45deg);
   }
 }

@@ -54,10 +54,10 @@ const getMonsterMarkerIcon = (level: number | null = 0, thumbnail?: string) => {
   return new L.DivIcon({
     className: s.marker__icon,
     html: `<div class="${s.marker__wrapper}">
-        <img src="${thumbnail}" class="${s.marker__thumbnail}"/>
+        <img src="${thumbnail}" class="${s.marker__thumbnail}"/>    
         <div class="${s.marker__stars}">
           ${stars}
-        </div>
+        </div>  
       </div>`,
   });
 };

@@ -1,10 +1,10 @@
 import { useEffect, useMemo } from 'react';
-import { MapContainer, TileLayer, Marker, useMap, Circle } from 'react-leaflet';
+import { MapContainer, TileLayer, useMap } from 'react-leaflet';
 import L, { Zoom } from 'leaflet';
-import { useLocalStorage, useSettingsApi } from '@mhgo/front';
+import { useLocalStorage } from '@mhgo/front';
 import { Loader, QueryBoundary } from '@mhgo/front';
 
-import { iconMarker } from './Marker';
+import { UserMarker } from './Marker';
 import { MonsterMarkers } from './MonsterMarkers';
 import { ResourceMarkers } from './ResourceMarkers';
 import { DEFAULT_COORDS } from '../../../utils/consts';
@@ -65,7 +65,6 @@ const Load = () => {
 
 type MapLayerProps = { coords: number[] };
 const MapLayer = ({ coords }: MapLayerProps) => {
-  const { setting: mapRadius } = useSettingsApi('map_radius', 0);
   const map = useMap();
 
   useEffect(() => {
@@ -83,16 +82,11 @@ const MapLayer = ({ coords }: MapLayerProps) => {
           &copy; <a href="https://www.stamen.com/" target="_blank">Stamen Design</a>
           &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a>
           &copy; <a href="https://www.openstreetmap.org/copyright/" target="_blank">OpenStreetMap contributors</a>'
-        url="https://tiles.stadiamaps.com/tiles/stamen_watercolor/{z}/{x}/{y}.jpg"
+        url="https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}.png"
       />
       <MonsterMarkers />
       <ResourceMarkers />
-      <Circle
-        center={L.latLng(coords[0], coords[1])}
-        radius={mapRadius}
-        color="#fdc000"
-      />
-      <Marker icon={iconMarker} position={L.latLng(coords[0], coords[1])} />
+      <UserMarker coords={coords} />
     </>
   );
 };
