@@ -76,7 +76,7 @@ const useMonsterMapMarkers = (coords?: number[]) => {
 
   useEffect(() => {
     getMonsterMarkers();
-  }, [coords]);
+  }, []);
 
   const monsterMarkersData = useMemo(() => {
     return monsterMarkers?.map(monsterMarker => {
