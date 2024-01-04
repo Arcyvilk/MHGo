@@ -9,11 +9,9 @@ import {
   useUserCraftItemApi,
 } from '@mhgo/front';
 import { useUser } from './useUser';
-import { useItems } from './useItems';
 
 export const useItemCraft = (itemId: string) => {
   const { userId } = useUser();
-  const { getItem } = useItems();
   const { data: materials } = useMaterialsApi();
   const { data: items } = useItemsApi();
   const { data: ingredientAmounts } = useItemCraftListApi(userId, itemId);
@@ -23,7 +21,7 @@ export const useItemCraft = (itemId: string) => {
     isError,
   } = useUserCraftItemApi(userId, itemId);
 
-  const item = getItem(itemId);
+  const item = items.find(i => i.id === itemId);
 
   const onCraft = (amount: number = 1) => {
     mutateCraftItem({ amount });

@@ -15,15 +15,19 @@ import { CraftConfirmation } from './Craft/CraftConfirmation';
 import s from './EquipmentCraft.module.scss';
 import { useState } from 'react';
 import { Item } from '@mhgo/front';
+import { useNavigate } from 'react-router-dom';
 
 type Action = keyof ItemActions['action'] | 'craft';
 export const EquipmentDropdown = ({
   item,
   useOnly = false,
+  isItemOwned = true,
 }: {
   item: TItem;
   useOnly?: boolean;
+  isItemOwned?: boolean;
 }) => {
+  const navigate = useNavigate();
   const { playSESound } = useSounds();
   const [action, setAction] = useState<Action>('craft');
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -40,10 +44,16 @@ export const EquipmentDropdown = ({
     setAction('craft');
     setIsModalOpen(true);
   };
+
   const onItemEquip = () => {
     // TODO if armor or weapon, show stats and how much they differ from current loadout
     if (item.equippable) mutateItemEquip();
   };
+
+  const onItemPurchase = () => {
+    navigate('/shop');
+  };
+
   const onItemUse = () => {
     if (!item.usable || !itemAction) {
       toast.info(`This item doesn't have any use yet!`);
@@ -95,6 +105,9 @@ export const EquipmentDropdown = ({
         content={
           <div className={s.equipmentDropdown}>
             <div className={s.equipmentDropdown__section}>
+              {!isItemOwned && (
+                <span style={{ fontWeight: 900, color: 'red' }}>NOT OWNED</span>
+              )}
               <span style={{ fontWeight: 900 }}>{item.name}</span>
               <span style={{ fontStyle: 'italic' }}>"{item.description}"</span>
             </div>
@@ -102,16 +115,22 @@ export const EquipmentDropdown = ({
               {!useOnly && item.craftable && (
                 <Button simple label="Craft" onClick={onItemCraft} />
               )}
-              {!useOnly && item.equippable && (
+              {!useOnly && item.equippable && isItemOwned && (
                 <Button simple label="Equip" onClick={onItemEquip} />
               )}
-              {item.usable && itemAction && (
+              {item.purchasable && (
+                <Button simple label="Purchase" onClick={onItemPurchase} />
+              )}
+              {item.usable && itemAction && isItemOwned && (
                 <Button simple label="Use" onClick={onItemUse} />
               )}
             </div>
           </div>
         }>
-        <Item data={{ ...item, purchasable: false }} />
+        <Item
+          data={{ ...item, purchasable: false }}
+          isNotOwned={!isItemOwned}
+        />
       </Dropdown>
     </div>
   );

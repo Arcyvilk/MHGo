@@ -15,7 +15,7 @@ export const getMaterials = async (
     // Get all materials
     const collectionMaterials = db.collection<Material>('materials');
     const materials: Material[] = [];
-    const cursorMaterials = collectionMaterials.find();
+    const cursorMaterials = collectionMaterials.find().sort({ rarity: 'desc' });
     for await (const el of cursorMaterials) {
       materials.push(el);
     }

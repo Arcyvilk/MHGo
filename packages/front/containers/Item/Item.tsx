@@ -29,7 +29,7 @@ export const Item = ({
   const { img, filter, amount, rarity, name, purchasable, price } = data;
   if (simple)
     return (
-      <div className={s.item__simple}>
+      <div className={modifiers(s, 'item__simple', { isNotOwned })}>
         <img
           src={img}
           style={{ filter }}
@@ -47,11 +47,7 @@ export const Item = ({
   return (
     <button className={modifiers(s, 'item', { isNotOwned })} onClick={onClick}>
       <div className={modifiers(s, 'item__tile', `rarity-${rarity}`)}>
-        <img
-          src={img}
-          style={{ filter }}
-          className={modifiers(s, 'tile__image', { isNotOwned })}
-        />
+        <img src={img} style={{ filter }} className={s.tile__image} />
         <div className={modifiers(s, 'tile__rarity', `rarity-${rarity}`)}>
           Rarity {rarity}
         </div>

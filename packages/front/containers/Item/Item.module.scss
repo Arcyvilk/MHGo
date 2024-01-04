@@ -11,6 +11,10 @@
   max-width: 23%;
   flex: 1;
 
+  &--isNotOwned {
+    opacity: 0.5;
+  }
+
   &__simple {
     position: relative;
     display: flex;
@@ -79,10 +83,6 @@
     flex-grow: 1;
     object-fit: contain;
     padding: $size-6;
-
-    &--isNotOwned {
-      opacity: 0.5;
-    }
 
     &--simple {
       max-width: $size-32;

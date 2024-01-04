@@ -4,7 +4,7 @@ import { ItemType } from '@mhgo/types';
 import { Loader, QueryBoundary } from '@mhgo/front';
 import { Tabs } from '@mhgo/front';
 import { EquipmentDropdown } from './EquipmentDropdown';
-import { useItems } from '../../hooks/useItems';
+import { useUserEquipment } from '../../hooks/useUserEquipment';
 
 import s from './EquipmentCraft.module.scss';
 
@@ -41,14 +41,14 @@ type EquipmentPiecesProps = {
   itemType: ItemType;
 };
 const EquipmentPieces = ({ itemType }: EquipmentPiecesProps) => {
-  const { items } = useItems();
+  const items = useUserEquipment();
 
   return (
     <div className={s.equipmentView__items}>
       {items
         .filter(item => item.type === itemType)
         .map(item => (
-          <EquipmentDropdown item={item} />
+          <EquipmentDropdown item={item} isItemOwned={item.isOwned} />
         ))}
     </div>
   );

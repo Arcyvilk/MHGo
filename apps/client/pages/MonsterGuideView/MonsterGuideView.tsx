@@ -1,6 +1,6 @@
 import { Material, Monster, Item as TItem, Drop } from '@mhgo/types';
 
-import { Item } from '@mhgo/front';
+import { Item, useItemsApi } from '@mhgo/front';
 import { CloseButton, Loader, QueryBoundary, Tooltip } from '@mhgo/front';
 import {
   useMonstersApi,
@@ -9,7 +9,6 @@ import {
 } from '@mhgo/front';
 
 import s from './MonsterGuideView.module.scss';
-import { useItems } from '../../hooks/useItems';
 
 export const MonsterGuideView = () => (
   <QueryBoundary fallback={<Loader />}>
@@ -36,7 +35,7 @@ const Load = () => {
 };
 
 const MonsterTile = ({ monster }: { monster: Monster }) => {
-  const { items } = useItems();
+  const { data: items } = useItemsApi();
   const { data: materials } = useMaterialsApi();
   const { data: drops } = useMonsterDropsApi();
 

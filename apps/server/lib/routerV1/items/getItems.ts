@@ -12,7 +12,7 @@ export const getItems = async (_req: Request, res: Response): Promise<void> => {
     // Get all items
     const collectionItems = db.collection<Item>('items');
     const items: Item[] = [];
-    const cursorItems = collectionItems.find();
+    const cursorItems = collectionItems.find().sort({ rarity: 'desc' });
 
     for await (const el of cursorItems) {
       items.push(el);
