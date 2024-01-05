@@ -67,6 +67,8 @@ export const getMonsterMarkersByUserId = async (
       filterTooHighLevelRequirement.push({ monsterId: el.id });
     }
 
+    console.log(filterTooHighLevelRequirement);
+
     // Filter out monsters that are still respawning
     const collectionUserRespawn = db.collection<UserRespawn>('userRespawn');
     const filterCooldown: { _id: ObjectId }[] = [];
@@ -76,15 +78,22 @@ export const getMonsterMarkersByUserId = async (
         filterCooldown.push({ _id: new ObjectId(el.markerId) });
     }
 
+    console.log(filterCooldown);
+
     // Apply all filters and get all visible markers
     const collectionMonsterMarkers =
       db.collection<MonsterMarker>('markersMonster');
     const monsterMarkers: MonsterMarker[] = [];
 
+    // Aggregate all filters together
+    const andFilters = { ...filterCoords };
+    const orFilters = [...filterLevel];
+    const norFilters = [...filterCooldown, ...filterTooHighLevelRequirement];
+
     const cursorMonsterMarkers = collectionMonsterMarkers.find({
-      ...filterCoords,
-      $or: [...filterLevel],
-      $nor: [...filterCooldown, ...filterTooHighLevelRequirement],
+      ...(andFilters[0] ? andFilters : {}),
+      ...(orFilters.length ? { $or: orFilters } : {}),
+      ...(norFilters.length ? { $nor: norFilters } : {}),
     });
 
     for await (const el of cursorMonsterMarkers) {
