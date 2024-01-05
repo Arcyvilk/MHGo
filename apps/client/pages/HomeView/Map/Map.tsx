@@ -7,7 +7,7 @@ import { Loader, QueryBoundary } from '@mhgo/front';
 import { UserMarker } from './Marker';
 import { MonsterMarkers } from './MonsterMarkers';
 import { ResourceMarkers } from './ResourceMarkers';
-import { DEFAULT_COORDS } from '../../../utils/consts';
+import { DEFAULT_COORDS, DEFAULT_ZOOM } from '../../../utils/consts';
 
 import 'leaflet/dist/leaflet.css';
 import s from './Map.module.scss';
@@ -35,6 +35,7 @@ export const Map = () => (
 const Load = () => {
   const geo = useMemo(() => navigator.geolocation, []);
 
+  const [zoom] = useLocalStorage('MHGO_MAP_ZOOM', DEFAULT_ZOOM);
   const [coords, setCoords] = useLocalStorage(
     'MHGO_LAST_KNOWN_LOCATION',
     DEFAULT_COORDS,
@@ -57,7 +58,8 @@ const Load = () => {
     <MapContainer
       center={L.latLng(coords[0], coords[1])}
       className={s.mapContainer}
-      {...mapOptions}>
+      {...mapOptions}
+      zoom={zoom.current}>
       <MapLayer coords={coords} />
     </MapContainer>
   );
@@ -65,11 +67,16 @@ const Load = () => {
 
 type MapLayerProps = { coords: number[] };
 const MapLayer = ({ coords }: MapLayerProps) => {
+  const [_, setZoom] = useLocalStorage('MHGO_MAP_ZOOM', DEFAULT_ZOOM);
   const map = useMap();
 
   useEffect(() => {
     map.invalidateSize();
   }, [map]);
+
+  map.on('zoom', () => {
+    setZoom({ current: map.getZoom() });
+  });
 
   useEffect(() => {
     if (map) map.flyTo(L.latLng(coords[0], coords[1]));

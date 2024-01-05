@@ -2,7 +2,9 @@ import { useNavigate } from 'react-router-dom';
 
 import {
   Button,
+  CloseButton,
   Icon,
+  InfoBar,
   Loader,
   QueryBoundary,
   Size,
@@ -22,20 +24,8 @@ export const PrepareView = () => (
 );
 
 const Load = () => {
-  const navigate = useNavigate();
-  const { userId } = useUser();
-  const { data: userHealth } = useUserHealthApi(userId);
-  const { markerId, monster, isFetched } = useMonsterMarker();
+  const { markerId, monster, isFetched, inRange } = useMonsterMarker();
   const { habitat, level, name, img } = monster;
-
-  const onFight = () => {
-    navigate(`/fight?id=${markerId}&level=${level}`);
-  };
-  const onFlee = () => {
-    navigate('/');
-  };
-
-  const isUserAlive = userHealth.currentHealth > 0;
 
   if (!isFetched) return <Loader />;
 
@@ -44,32 +34,20 @@ const Load = () => {
       <Header name={name} level={level} />
       <div className={s.fightView__wrapper}>
         <img className={s.fightView__monster} src={img} draggable={false} />
-        <div className={s.fightView__buttons}>
-          <HealthBarSimple
-            maxHP={userHealth.maxHealth}
-            currentHP={userHealth.currentHealth}
-          />
-          <Button
-            label="Fight!"
-            onClick={onFight}
-            disabled={!isUserAlive}
-            variant={Button.Variant.ACTION}
-            title={
-              isUserAlive ? null : 'You cannot initiate a fight when dead!'
-            }
-            simple
-          />
-          <Button label="Flee!" onClick={onFlee} simple />
-        </div>
+        {inRange ? (
+          <Actions markerId={markerId} level={level} />
+        ) : (
+          <>
+            <InfoBar text="You are not in range!" />
+            <CloseButton />
+          </>
+        )}
       </div>
     </div>
   );
 };
 
-type HeaderProps = {
-  name?: string;
-  level?: number;
-};
+type HeaderProps = { name?: string; level?: number };
 const Header = ({ name = '?', level = 0 }: HeaderProps) => {
   return (
     <div className={s.header}>
@@ -79,6 +57,39 @@ const Header = ({ name = '?', level = 0 }: HeaderProps) => {
         ))}
       </div>
       <h1 className={s.header__title}>{name}</h1>
+    </div>
+  );
+};
+
+type ActionsProps = { markerId: string | null; level?: number };
+const Actions = ({ markerId, level = 0 }: ActionsProps) => {
+  const navigate = useNavigate();
+  const { userId } = useUser();
+  const { data: userHealth } = useUserHealthApi(userId);
+  const isUserAlive = userHealth.currentHealth > 0;
+
+  const onFight = () => {
+    navigate(`/fight?id=${markerId}&level=${level}`);
+  };
+  const onFlee = () => {
+    navigate('/');
+  };
+
+  return (
+    <div className={s.fightView__buttons}>
+      <HealthBarSimple
+        maxHP={userHealth.maxHealth}
+        currentHP={userHealth.currentHealth}
+      />
+      <Button
+        label="Fight!"
+        onClick={onFight}
+        disabled={!isUserAlive}
+        variant={Button.Variant.ACTION}
+        title={isUserAlive ? null : 'You cannot initiate a fight when dead!'}
+        simple
+      />
+      <Button label="Flee!" onClick={onFlee} simple />
     </div>
   );
 };

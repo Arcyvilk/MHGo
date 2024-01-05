@@ -1,15 +1,15 @@
 import { useEffect, useMemo, useState } from 'react';
 import { MapContainer } from 'react-leaflet';
 import L from 'leaflet';
+import { FormControlLabel, Switch } from '@mui/material';
 import { Button, Loader, QueryBoundary, useLocalStorage } from '@mhgo/front';
+
 import { ActionBar, HeaderEdit } from '../../containers';
+import { DEFAULT_COORDS } from '../../utils/defaults';
 import { MapLayer } from './MapLayer';
 import { MarkerCreateView, MarkerEditView } from './SingleMarker';
 
 import s from './MapView.module.scss';
-import { FormControlLabel, Switch } from '@mui/material';
-
-export const DEFAULT_COORDS = [59.892131, 10.6194067];
 
 export const MapView = () => (
   <QueryBoundary fallback={<Loader />}>

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import L from 'leaflet';
 import {
   CloseButton,
   Loader,
@@ -8,12 +9,15 @@ import {
   modifiers,
   useAllResourceMarkersApi,
   useResourcesApi,
+  useSettingsApi,
+  InfoBar,
 } from '@mhgo/front';
-import { SoundSE, useSounds } from '@mhgo/front/hooks';
+import { SoundSE, useLocalStorage, useSounds } from '@mhgo/front/hooks';
 
 import { ModalForage } from './ModalForage';
 import s from './ForageView.module.scss';
 import { useNavigate } from 'react-router-dom';
+import { DEFAULT_COORDS } from '../../utils/consts';
 
 export const ForageView = () => (
   <QueryBoundary fallback={<Loader />}>
@@ -25,7 +29,7 @@ const Load = () => {
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [remainingHits, setRemainingHits] = useState(10);
-  const { resource } = useResource();
+  const { resource, inRange } = useResource();
   const { playSESound } = useSounds();
 
   const isActive = remainingHits > 0;
@@ -58,18 +62,36 @@ const Load = () => {
       )}
       <Header name={resource.name} />
       <div className={s.forageView__resourceWrapper}>
-        {isActive && <Rays />}
-        {isOnCooldown && <Nuke />}
-        <img
-          className={modifiers(s, 'forageView__resource', {
-            isActive,
-            isOnCooldown,
-          })}
-          onClick={onForage}
-          src={resource.img}
-        />
+        {inRange ? (
+          <>
+            {isActive && <Rays />}
+            {isOnCooldown && <Nuke />}
+            <img
+              className={modifiers(s, 'forageView__resource', {
+                isActive,
+                isOnCooldown,
+              })}
+              onClick={onForage}
+              src={resource.img}
+            />
+          </>
+        ) : (
+          <>
+            <img className={s.forageView__resource} src={resource.img} />
+            <InfoBar text="You are not in range!" />
+          </>
+        )}
       </div>
       <CloseButton />
+    </div>
+  );
+};
+
+type HeaderProps = { name?: string };
+const Header = ({ name = '?' }: HeaderProps) => {
+  return (
+    <div className={s.header}>
+      <h1 className={s.header__title}>{name}</h1>
     </div>
   );
 };
@@ -77,6 +99,8 @@ const Load = () => {
 const useResource = () => {
   const { data: resources } = useResourcesApi();
   const { data: resourceMarkers } = useAllResourceMarkersApi();
+  const { setting: mapRadius } = useSettingsApi('map_radius', 0);
+  const [coords] = useLocalStorage('MHGO_LAST_KNOWN_LOCATION', DEFAULT_COORDS);
 
   const params = new URLSearchParams(location.search);
   const resourceId = params.get('id');
@@ -87,14 +111,14 @@ const useResource = () => {
   );
   const resource = resources.find(r => r.id === resourceMarker?.resourceId);
 
-  return { resource, resourceMarker };
-};
+  const coordsResource = resourceMarker?.coords ?? [0, 0];
+  const coordsUser = coords ?? [0, 0];
 
-type HeaderProps = { name?: string };
-const Header = ({ name = '?' }: HeaderProps) => {
-  return (
-    <div className={s.header}>
-      <h1 className={s.header__title}>{name}</h1>
-    </div>
-  );
+  const positionResource = new L.LatLng(coordsResource[0], coordsResource[1]);
+  const positionUser = new L.LatLng(coordsUser[0], coordsUser[1]);
+
+  const distance = positionUser.distanceTo(positionResource);
+  const inRange = distance <= mapRadius;
+
+  return { resource, resourceMarker, inRange };
 };

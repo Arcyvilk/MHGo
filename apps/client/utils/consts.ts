@@ -6,6 +6,7 @@ export const APP_NAME = 'Master Hoarder GO';
 export const APP_VERSION = 'v66.6-240116-0800'; // moved to database
 
 export const DEFAULT_COORDS = [59.892131, 10.6194067];
+export const DEFAULT_ZOOM = { current: 16 };
 
 export const MONSTER_MISSING: Monster = {
   id: '-1',

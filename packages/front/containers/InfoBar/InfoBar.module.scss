@@ -1,0 +1,16 @@
+@import '@mhgo/front/styles/index.scss';
+
+.infoBar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  width: 100%;
+  height: $size-32;
+  top: calc(50vh - $size-32);
+  left: 0;
+  padding: $size-4 $size-8;
+  background-color: rgba($color-black, 0.6);
+  color: $color-white;
+  z-index: $zindex-modal;
+}

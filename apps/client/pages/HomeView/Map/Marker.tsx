@@ -15,12 +15,6 @@ export const UserMarker = ({ coords }: { coords: number[] }) => {
         <img src="${IconMarker}" class="${s.userMarker__thumbnail}"/>
       </div>`,
   });
-  // const iconMarker = new L.Icon({
-  //   iconUrl: Marker,
-  //   iconRetinaUrl: Marker,
-  //   iconSize: new L.Point(24, 20),
-  //   className: s.markerUser,
-  // });
 
   return (
     <>
