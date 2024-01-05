@@ -171,7 +171,7 @@ const useUpdateMaterial = () => {
 
   const { data: materials, isFetched: isMaterialsFetched } = useMaterialsApi();
   const { data: drops, isFetched: isDropsFetched } = useMonsterDropsApi();
-  const { data: resources, isFetched: isResourcesFetched } = useResourcesApi();
+  const { data: resources } = useResourcesApi();
 
   const material = useMemo(
     () => materials.find(i => i.id === id),

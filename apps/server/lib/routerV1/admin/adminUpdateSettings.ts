@@ -1,9 +1,8 @@
 import { Request, Response } from 'express';
 import { log } from '@mhgo/utils';
-import { Setting, Settings } from '@mhgo/types';
+import { Setting } from '@mhgo/types';
 
 import { mongoInstance } from '../../../api';
-import { ObjectId, OptionalId, WithId } from 'mongodb';
 
 export const adminUpdateSettings = async (
   req: Request,
