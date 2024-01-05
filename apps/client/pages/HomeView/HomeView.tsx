@@ -25,7 +25,7 @@ export const HomeView = () => {
   return (
     <div className={s.homeView}>
       <Map />
-      {/* <div className={s.actions}>
+      <div className={s.actions}>
         <Modal isOpen={isModalOpen} setIsOpen={setIsModalOpen}>
           <QuickUseModal />
         </Modal>
@@ -37,7 +37,7 @@ export const HomeView = () => {
           <ActionButton icon="Shop" onClick={onShopClick} />
         </div>
         <QuestButton onClick={onQuestClick} />
-      </div> */}
+      </div>
     </div>
   );
 };
