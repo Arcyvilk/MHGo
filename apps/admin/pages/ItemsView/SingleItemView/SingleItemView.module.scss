@@ -30,4 +30,17 @@
     flex-direction: row;
     gap: $size-4;
   }
+
+  &__stat {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    gap: $size-8;
+  }
+
+  &__statKey {
+    text-transform: capitalize;
+    width: 75px;
+  }
 }

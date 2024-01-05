@@ -1,28 +1,27 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { v4 as uuid } from 'uuid';
-import { FormControlLabel, Switch } from '@mui/material';
 import { CDN_URL } from '@mhgo/front/env';
 import {
   Button,
-  Icon,
-  Input,
-  Item,
-  Select,
-  modifiers,
   useAdminUpdateItemActionApi,
   useAdminUpdateItemApi,
   useAdminUpdateItemCraftlistApi,
   useItemActionsApi,
   useItemCraftsApi,
+  useItemStatsApi,
   useItemsApi,
-  useMaterialsApi,
   useMonsterDropsApi,
 } from '@mhgo/front';
 import { ActionBar, HeaderEdit } from '../../../containers';
+import { SectionBasic } from './SectionBasic';
+import { SectionCraftable } from './SectionCraftable';
+import { SectionEquippable } from './SectionEquippable';
+import { SectionPurchasable } from './SectionPurchasable';
+import { SectionUsable } from './SectionUsable';
+import { NotExist } from './NotExist';
 
 import s from './SingleItemView.module.scss';
-import { CraftList } from '@mhgo/types';
+import { DEFAULT_STATS } from '../../../utils/defaults';
 
 export const ItemEditView = () => {
   const navigate = useNavigate();
@@ -31,11 +30,13 @@ export const ItemEditView = () => {
     updatedItem,
     updatedItemAction,
     updatedItemCraft,
+    updatedItemStats,
     itemImg,
     itemDrops,
     setUpdatedItem,
     setUpdatedItemAction,
     setUpdatedItemCraft,
+    setUpdatedItemStats,
     onSave,
     isSuccess,
     isPending,
@@ -43,48 +44,7 @@ export const ItemEditView = () => {
   } = useUpdateItem();
   const status = { isSuccess, isPending, isError };
 
-  const { data: items } = useItemsApi();
-  const { data: materials } = useMaterialsApi();
-
-  const getSelect = (mat: CraftList) => {
-    if (mat.craftType === 'item')
-      return items.map(i => ({
-        id: i.id,
-        name: i.name,
-
-        disabled: Boolean(
-          // Dont allow to select item currently selected
-          i.id === mat.id ||
-            // Dont allow to select items which are already part of recipe
-            updatedItemCraft.find(entry => entry.id === i.id) ||
-            // Dont allow to select item which you are editing atm
-            i.id === item?.id,
-        ),
-      }));
-
-    if (mat.craftType === 'material')
-      return materials.map(m => ({
-        id: m.id,
-        name: m.name,
-        // Dont allow to select materials which are already part of recipe
-        disabled: Boolean(
-          m.id === mat.id || updatedItemCraft.find(entry => entry.id === m.id),
-        ),
-      }));
-    return [];
-  };
-
-  if (!item)
-    return (
-      <div className={s.singleItemView}>
-        <div className={s.singleItemView__header}>
-          <h1 className={s.singleItemView__title}>This item does not exist</h1>
-        </div>
-        <div className={s.singleItemView__footer}>
-          <Button label="Back" onClick={() => navigate(-1)} />
-        </div>
-      </div>
-    );
+  if (!item) return <NotExist />;
 
   return (
     <div className={s.singleItemView}>
@@ -109,392 +69,37 @@ export const ItemEditView = () => {
         }
       />
       <div className={s.singleItemView__content}>
+        <SectionBasic
+          item={item}
+          updatedItem={updatedItem}
+          setUpdatedItem={setUpdatedItem}
+          itemImg={itemImg}
+          itemDrops={itemDrops}
+        />
         <div className={s.singleItemView__content}>
-          <div className={s.singleItemView__section}>
-            <Input
-              name="item_name"
-              label="Item's name"
-              value={updatedItem?.name ?? ''}
-              setValue={name =>
-                updatedItem &&
-                setUpdatedItem({
-                  ...updatedItem,
-                  name,
-                })
-              }
-            />
-            <Input
-              name="item_desc"
-              label="Item's description"
-              value={updatedItem?.description ?? ''}
-              setValue={description =>
-                updatedItem &&
-                setUpdatedItem({
-                  ...updatedItem,
-                  description,
-                })
-              }
-            />
-            <Input
-              name="item_obtainedAt"
-              label="Where item can be obtained?"
-              value={updatedItem?.obtainedAt ?? ''}
-              setValue={obtainedAt =>
-                updatedItem &&
-                setUpdatedItem({
-                  ...updatedItem,
-                  obtainedAt,
-                })
-              }
-            />
-            <Input
-              name="item_rarity"
-              label="Item's rarity"
-              min={1}
-              max={5}
-              type="number"
-              value={String(updatedItem?.rarity ?? 1)}
-              setValue={rarity =>
-                updatedItem &&
-                setUpdatedItem({
-                  ...updatedItem,
-                  rarity: Number(rarity),
-                })
-              }
-            />
-          </div>
-          <div
-            className={s.singleItemView__section}
-            style={{ alignItems: 'center' }}>
-            <Input
-              name="item_img"
-              label="Path to item image"
-              value={itemImg}
-              setValue={img =>
-                updatedItem &&
-                setUpdatedItem({
-                  ...updatedItem,
-                  img,
-                })
-              }
-            />
-            <Item
-              data={{
-                ...(updatedItem ?? item),
-                purchasable: false,
-                img: `${CDN_URL}${itemImg}`,
-              }}
-            />
-          </div>
-          <div className={s.singleItemView__section}>
-            <div className={s.singleItemView__infoSection}>
-              <p
-                style={{ fontWeight: 600 }}
-                className={s.singleItemView__withInfo}>
-                Dropped by:
-              </p>
-              {itemDrops.length > 0
-                ? itemDrops.map(drop => (
-                    <Button
-                      key={`monsterlink-${drop.monsterId}`}
-                      variant={Button.Variant.GHOST}
-                      inverted
-                      simple
-                      label={`${drop.monsterId} (level ${drop.level})`}
-                      onClick={() =>
-                        navigate(`/monsters/edit?id=${drop.monsterId}`)
-                      }
-                    />
-                  ))
-                : '-'}
-            </div>
-          </div>
-        </div>
-        <div className={s.singleItemView__content}>
-          {/* 
-              PURCHASABLE ITEM SECTION 
-          */}
-          <div className={s.singleItemView__section}>
-            <FormControlLabel
-              label="Purchasable?"
-              control={
-                <Switch
-                  color="default"
-                  checked={updatedItem?.purchasable}
-                  onChange={(_, checked) =>
-                    updatedItem &&
-                    setUpdatedItem({
-                      ...updatedItem,
-                      purchasable: checked,
-                    })
-                  }
-                />
-              }
-            />
-            {updatedItem?.purchasable ? (
-              <div
-                className={modifiers(s, 'singleItemView__section', {
-                  hidden: true,
-                })}>
-                <Input
-                  label="Item price"
-                  name="item_price"
-                  type="number"
-                  min={0}
-                  value={String(updatedItem?.price ?? 0)}
-                  setValue={price =>
-                    updatedItem &&
-                    setUpdatedItem({
-                      ...updatedItem,
-                      price: Number(price),
-                    })
-                  }
-                />
-              </div>
-            ) : null}
-          </div>
-          {/* 
-              USABLE ITEM SECTION 
-            */}
-          <div className={s.singleItemView__section}>
-            <FormControlLabel
-              label="Usable?"
-              control={
-                <Switch
-                  color="default"
-                  checked={updatedItem?.usable}
-                  onChange={(_, checked) =>
-                    updatedItem &&
-                    setUpdatedItem({
-                      ...updatedItem,
-                      usable: checked,
-                    })
-                  }
-                />
-              }
-            />
-            {updatedItem?.usable ? (
-              <div
-                className={modifiers(s, 'singleItemView__section', {
-                  hidden: true,
-                })}>
-                <FormControlLabel
-                  label="Consumed on use?"
-                  control={
-                    <Switch
-                      color="default"
-                      checked={updatedItem?.consumable}
-                      onChange={(_, checked) =>
-                        updatedItem &&
-                        setUpdatedItem({
-                          ...updatedItem,
-                          consumable: checked,
-                        })
-                      }
-                    />
-                  }
-                />
-                <FormControlLabel
-                  label="Available in quick use menu?"
-                  //
-                  control={
-                    <Switch
-                      color="default"
-                      checked={updatedItem?.quickUse}
-                      onChange={(_, checked) =>
-                        updatedItem &&
-                        setUpdatedItem({
-                          ...updatedItem,
-                          quickUse: checked,
-                        })
-                      }
-                    />
-                  }
-                />
-                <Select
-                  data={['img', 'text', 'heal', 'redirect'].map(item => ({
-                    id: item,
-                    name: item,
-                  }))}
-                  name="Action"
-                  label="Action on use"
-                  defaultSelected={Object.keys(updatedItemAction)?.[0]}
-                  setValue={key =>
-                    setUpdatedItemAction({
-                      [key]:
-                        key === 'heal'
-                          ? 0
-                          : Object.values(updatedItemAction)?.[0],
-                    })
-                  }
-                />
-                <Input
-                  name="item_action"
-                  label="Action value"
-                  min={0}
-                  value={String(Object.values(updatedItemAction)?.[0] ?? '')}
-                  setValue={value =>
-                    setUpdatedItemAction({
-                      ...updatedItemAction,
-                      [Object.keys(updatedItemAction)?.[0]]: Number(value)
-                        ? Number(value)
-                        : value,
-                    })
-                  }
-                />
-              </div>
-            ) : null}
-          </div>
-          {/* 
-              EQUIPPABLE ITEM SECTION 
-          */}
-          <div className={s.singleItemView__section}>
-            <FormControlLabel
-              label="Equippable?"
-              control={
-                <Switch
-                  color="default"
-                  checked={updatedItem?.equippable}
-                  onChange={(_, checked) =>
-                    updatedItem &&
-                    setUpdatedItem({
-                      ...updatedItem,
-                      equippable: checked,
-                    })
-                  }
-                />
-              }
-            />
-            {updatedItem?.equippable ? (
-              <div
-                className={modifiers(s, 'singleItemView__section', {
-                  hidden: true,
-                })}>
-                TODO
-              </div>
-            ) : null}
-          </div>
-          {/* 
-              CRAFTABLE ITEM SECTION 
-          */}
-          <div className={s.singleItemView__section}>
-            <FormControlLabel
-              label="Craftable?"
-              control={
-                <Switch
-                  color="default"
-                  checked={updatedItem?.craftable}
-                  onChange={(_, checked) =>
-                    updatedItem &&
-                    setUpdatedItem({
-                      ...updatedItem,
-                      craftable: checked,
-                    })
-                  }
-                />
-              }
-            />
-            {updatedItem?.craftable ? (
-              <div
-                className={modifiers(s, 'singleItemView__section', {
-                  hidden: true,
-                  wide: true,
-                })}>
-                <div style={{ display: 'flex', gap: '8px' }}>
-                  <Button
-                    label="Add item"
-                    onClick={() =>
-                      setUpdatedItemCraft([
-                        ...updatedItemCraft,
-                        {
-                          // We fake this id because if we select first item from list
-                          // it will duplicate if user creates more fields at once
-                          // Having a fake ID set as date ensures their uniqueness
-                          // Hacky and ugly I know. It's 2:26AM, I deserve some leniency
-                          id: uuid(),
-                          amount: 1,
-                          craftType: 'item',
-                        },
-                      ])
-                    }
-                  />
-                  <Button
-                    label="Add material"
-                    onClick={() =>
-                      setUpdatedItemCraft([
-                        ...updatedItemCraft,
-                        {
-                          // As above
-                          id: uuid(),
-                          amount: 1,
-                          craftType: 'material',
-                        },
-                      ])
-                    }
-                  />
-                </div>
-                {updatedItemCraft?.map((mat, index) => {
-                  const matSelection = getSelect(mat);
-                  return (
-                    <div
-                      className={s.singleItemView__craftMaterial}
-                      key={`craftmat-${index}`}>
-                      <div style={{ maxWidth: '200px', minWidth: '200px' }}>
-                        <Select
-                          defaultSelected={mat.id}
-                          data={matSelection}
-                          key={`select-${index}`}
-                          name="Material"
-                          setValue={selectedMatId => {
-                            const updatedEntries = updatedItemCraft.map(
-                              entry => {
-                                if (entry.id === mat.id)
-                                  return { ...entry, id: selectedMatId };
-                                return entry;
-                              },
-                            );
-                            return setUpdatedItemCraft(updatedEntries);
-                          }}
-                        />
-                      </div>
-                      <Input
-                        name="craft_amount"
-                        type="number"
-                        value={String(mat.amount)}
-                        min={1}
-                        style={{ maxWidth: '75px' }}
-                        setValue={selectedMatAmount => {
-                          const updatedEntries = updatedItemCraft.map(entry => {
-                            if (entry.id === mat.id)
-                              return {
-                                ...entry,
-                                amount: Number(selectedMatAmount),
-                              };
-                            return entry;
-                          });
-                          return setUpdatedItemCraft(updatedEntries);
-                        }}
-                      />
-                      <Button
-                        label={<Icon icon="X" />}
-                        onClick={() =>
-                          setUpdatedItemCraft(
-                            updatedItemCraft.filter(
-                              entry => entry.id !== mat.id,
-                            ),
-                          )
-                        }
-                        style={{ padding: 0 }}
-                        simple
-                        inverted
-                        variant={Button.Variant.GHOST}
-                      />
-                    </div>
-                  );
-                })}
-              </div>
-            ) : null}
-          </div>
+          <SectionPurchasable
+            updatedItem={updatedItem}
+            setUpdatedItem={setUpdatedItem}
+          />
+          <SectionUsable
+            updatedItem={updatedItem}
+            setUpdatedItem={setUpdatedItem}
+            updatedItemAction={updatedItemAction}
+            setUpdatedItemAction={setUpdatedItemAction}
+          />
+          <SectionEquippable
+            updatedItem={updatedItem}
+            setUpdatedItem={setUpdatedItem}
+            updatedItemStats={updatedItemStats}
+            setUpdatedItemStats={setUpdatedItemStats}
+          />
+          <SectionCraftable
+            item={item}
+            updatedItem={updatedItem}
+            setUpdatedItem={setUpdatedItem}
+            updatedItemCraft={updatedItemCraft}
+            setUpdatedItemCraft={setUpdatedItemCraft}
+          />
         </div>
       </div>
     </div>
@@ -576,6 +181,22 @@ const useUpdateItem = () => {
     return monsters;
   }, [drops, isDropsFetched]);
 
+  /**
+   * ITEM STATS API
+   */
+  const { data: itemStats = DEFAULT_STATS, isFetched: isStatsFetched } =
+    useItemStatsApi(updatedItem?.id ?? null);
+  const [updatedItemStats, setUpdatedItemStats] = useState(itemStats);
+  useEffect(() => {
+    setUpdatedItemStats(itemStats);
+  }, [isStatsFetched]);
+  // const {
+  //   mutate: mutateItemStats,
+  //   isSuccess: isUpdateStatsSuccess,
+  //   isError: isUpdateStatsError,
+  //   isPending: isUpdateStatsPending,
+  // } = useAdminUpdateItemStatsApi();
+
   const itemImg = useMemo(
     () => updatedItem?.img.replace(CDN_URL, '') ?? '',
     [items],
@@ -596,10 +217,12 @@ const useUpdateItem = () => {
     updatedItem,
     updatedItemAction,
     updatedItemCraft,
+    updatedItemStats,
     itemDrops,
     setUpdatedItem,
     setUpdatedItemAction,
     setUpdatedItemCraft,
+    setUpdatedItemStats,
     onSave,
     isSuccess:
       isUpdateActionSuccess && isUpdateItemSuccess && isUpdateCraftSuccess,

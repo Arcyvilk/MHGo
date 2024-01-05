@@ -18,7 +18,7 @@ export const useSettingsApi = <T>(key: string, defaultValue?: T) => {
     queryFn: getSettings,
   });
 
-  const setting = data.find(d => d.key === key)?.value ?? defaultValue ?? {};
+  const setting = data.find(d => d.key === key)?.value ?? defaultValue;
 
   return { setting, isLoading, isFetched, isError };
 };
@@ -38,8 +38,6 @@ export const useAllSettingsApi = () => {
     queryKey: ['settings', 'all'],
     queryFn: getSettings,
   });
-
-  console.log(data);
 
   return { data, isLoading, isFetched, isError };
 };
