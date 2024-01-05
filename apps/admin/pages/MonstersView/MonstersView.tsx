@@ -83,7 +83,11 @@ const Load = () => {
 const MonsterCell = ({ monster }: { monster: Monster }) => {
   return (
     <div className={s.monstersView__itemDetail}>
-      <img src={monster.thumbnail} className={s.monstersView__itemIcon} />{' '}
+      <img
+        src={monster.thumbnail}
+        className={s.monstersView__itemIcon}
+        draggable={false}
+      />{' '}
       {monster.name}
     </div>
   );

@@ -73,11 +73,16 @@ const Load = () => {
               })}
               onClick={onForage}
               src={resource.img}
+              draggable={false}
             />
           </>
         ) : (
           <>
-            <img className={s.forageView__resource} src={resource.img} />
+            <img
+              className={s.forageView__resource}
+              src={resource.img}
+              draggable={false}
+            />
             <InfoBar text="You are not in range!" />
           </>
         )}

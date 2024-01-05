@@ -32,17 +32,22 @@ const Load = () => {
   return (
     <div className={modifiers(s, 'fightView', habitat)}>
       <Header name={name} level={level} />
-      <div className={s.fightView__wrapper}>
-        <img className={s.fightView__monster} src={img} draggable={false} />
-        {inRange ? (
+      {inRange ? (
+        <div className={s.fightView__wrapper}>
+          <img className={s.fightView__monster} src={img} draggable={false} />
           <Actions markerId={markerId} level={level} />
-        ) : (
           <>
             <InfoBar text="You are not in range!" />
             <CloseButton />
           </>
-        )}
-      </div>
+        </div>
+      ) : (
+        <>
+          <img className={s.fightView__monster} src={img} draggable={false} />
+          <InfoBar text="You are not in range!" />
+          <CloseButton />
+        </>
+      )}
     </div>
   );
 };
