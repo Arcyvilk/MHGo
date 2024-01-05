@@ -48,7 +48,7 @@ export const DEFAULT_MATERIAL: Material = {
   name: '',
   description: '',
   rarity: 1,
-  img: '/materials/XXX.jpg',
+  img: '/materials/XXX.svg',
   filter: '',
 };
 
@@ -57,7 +57,7 @@ export const DEFAULT_RESOURCE: Resource = {
   name: '',
   description: '',
   img: '/resources/XXX.jpg',
-  thumbnail: '/resources/thumbnail-XXX.jpg',
+  thumbnail: '/resources/thumbnail-XXX.svg',
   drops: [],
 };
 
