@@ -1,6 +1,13 @@
 import { useNavigate } from 'react-router-dom';
 import { Monster } from '@mhgo/types';
-import { Button, Icon, Size, useMonstersApi } from '@mhgo/front';
+import {
+  Button,
+  Icon,
+  Loader,
+  QueryBoundary,
+  Size,
+  useMonstersApi,
+} from '@mhgo/front';
 import { ActionBar, Table } from '../../containers';
 
 import s from './MonstersView.module.scss';
@@ -18,7 +25,13 @@ const tableHeaders = [
   'Actions',
 ];
 
-export const MonstersView = () => {
+export const MonstersView = () => (
+  <QueryBoundary fallback={<Loader />}>
+    <Load />
+  </QueryBoundary>
+);
+
+const Load = () => {
   const navigate = useNavigate();
   const { data: monsters } = useMonstersApi();
 

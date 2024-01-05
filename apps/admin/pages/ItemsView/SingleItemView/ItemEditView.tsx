@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { v4 as uuid } from 'uuid';
 import { FormControlLabel, Switch } from '@mui/material';
 import { CDN_URL } from '@mhgo/front/env';
 import {
@@ -410,7 +411,7 @@ export const ItemEditView = () => {
                           // it will duplicate if user creates more fields at once
                           // Having a fake ID set as date ensures their uniqueness
                           // Hacky and ugly I know. It's 2:26AM, I deserve some leniency
-                          id: new Date().valueOf().toString(),
+                          id: uuid(),
                           amount: 1,
                           craftType: 'item',
                         },
@@ -424,7 +425,7 @@ export const ItemEditView = () => {
                         ...updatedItemCraft,
                         {
                           // As above
-                          id: new Date().valueOf().toString(),
+                          id: uuid(),
                           amount: 1,
                           craftType: 'material',
                         },

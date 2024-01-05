@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { v4 as uuid } from 'uuid';
 
 import { SoundSE, useSounds } from '../../../hooks';
 import { CDN_URL } from '../../../env';
@@ -11,5 +12,11 @@ export const Nuke = () => {
     playSESound(SoundSE.NUKE);
   }, []);
 
-  return <img className={s.nuke} src={`${CDN_URL}/misc/explosion.gif`} />;
+  return (
+    <img
+      key={uuid()}
+      className={s.nuke}
+      src={`${CDN_URL}/misc/explosion.gif`}
+    />
+  );
 };

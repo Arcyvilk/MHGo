@@ -1,4 +1,5 @@
 import { useEffect, useMemo } from 'react';
+import { v4 as uuid } from 'uuid';
 import {
   Button,
   Icon,
@@ -99,7 +100,7 @@ const Load = ({ updatedDrops, setUpdatedDrops }: MonsterDropsProps) => {
                         // it will duplicate if user creates more fields at once
                         // Having a fake ID set as date ensures their uniqueness
                         // Hacky and ugly I know. It's 2:26AM, I deserve some leniency
-                        id: new Date().valueOf().toString(),
+                        id: uuid(),
                         amount: 1,
                         type: 'item',
                         chance: 100,
@@ -122,7 +123,7 @@ const Load = ({ updatedDrops, setUpdatedDrops }: MonsterDropsProps) => {
                         // it will duplicate if user creates more fields at once
                         // Having a fake ID set as date ensures their uniqueness
                         // Hacky and ugly I know. It's 2:26AM, I deserve some leniency
-                        id: new Date().valueOf().toString(),
+                        id: uuid(),
                         amount: 1,
                         type: 'material',
                         chance: 100,

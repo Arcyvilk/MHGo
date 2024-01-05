@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { v4 as uuid } from 'uuid';
 import { FormControlLabel, Switch } from '@mui/material';
 import { MonsterMarker, ResourceMarker } from '@mhgo/types';
 import {
@@ -102,7 +103,7 @@ export const MarkerEditView = ({
               // If this is not present, the select will never update
               // upon switching the selected monster markers
               // Ugly hack but works lol
-              key={new Date().valueOf().toString()}
+              key={uuid()}
               name="resource_marker"
               label="Resource on marker"
               data={resources.map(r => ({ id: r.id, name: r.name }))}
@@ -122,7 +123,7 @@ export const MarkerEditView = ({
               // If this is not present, the select will never update
               // upon switching the selected monster markers
               // Ugly hack but works lol
-              key={new Date().valueOf().toString()}
+              key={uuid()}
               name="monster_marker"
               label="Monster on marker"
               data={monsters.map(m => ({ id: m.id, name: m.name }))}
