@@ -42,16 +42,16 @@ const Load = () => {
   );
 
   useEffect(() => {
-    geo.watchPosition(
-      (position: GeolocationPosition) => {
-        const { latitude, longitude } = position.coords;
-        setCoords([latitude, longitude]);
-      },
-      error => {
-        console.error(`ERROR(${error.code}): ${error.message}`);
-      },
-      geoOptions,
-    );
+    // geo.watchPosition(
+    //   (position: GeolocationPosition) => {
+    //     const { latitude, longitude } = position.coords;
+    //     setCoords([latitude, longitude]);
+    //   },
+    //   error => {
+    //     console.error(`ERROR(${error.code}): ${error.message}`);
+    //   },
+    //   geoOptions,
+    // );
   }, []);
 
   return (
