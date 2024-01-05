@@ -36,10 +36,6 @@ const Load = () => {
         <div className={s.fightView__wrapper}>
           <img className={s.fightView__monster} src={img} draggable={false} />
           <Actions markerId={markerId} level={level} />
-          <>
-            <InfoBar text="You are not in range!" />
-            <CloseButton />
-          </>
         </div>
       ) : (
         <>
