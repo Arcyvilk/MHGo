@@ -10,7 +10,13 @@ import { DEFAULT_STATS } from '../../../utils/consts';
 import s from './ItemStats.module.scss';
 import { Stats } from '@mhgo/types';
 
-export const ItemStats = ({ itemId }: { itemId: string }) => {
+export const ItemStats = ({
+  itemId,
+  compare = false,
+}: {
+  itemId: string;
+  compare?: boolean;
+}) => {
   const { userId } = useUser();
   const { data: items } = useItemsApi();
   const { data: itemStats } = useItemStatsApi(itemId);
@@ -39,22 +45,29 @@ export const ItemStats = ({ itemId }: { itemId: string }) => {
 
   return (
     <div className={s.itemStats}>
-      {statsToCompare.map(stat => (
-        <div className={s.itemStats__stat}>
-          <span className={s.itemStats__name}>{stat.key}:</span>
-          <div className={s.itemStats__change}>
-            <span className={s.itemStats__value}>{stat.prev}</span>
-            <span className={s.itemStats__value}>➡️</span>
-            <span
-              className={modifiers(s, 'itemStats__value', {
-                downgrade: stat.prev > stat.next,
-                upgrade: stat.prev < stat.next,
-              })}>
-              {stat.next}
-            </span>
-          </div>
-        </div>
-      ))}
+      {compare
+        ? statsToCompare.map(stat => (
+            <div className={s.itemStats__stat}>
+              <span className={s.itemStats__name}>{stat.key}:</span>
+              <div className={s.itemStats__change}>
+                <span className={s.itemStats__value}>{stat.prev}</span>
+                <span className={s.itemStats__value}>➡️</span>
+                <span
+                  className={modifiers(s, 'itemStats__value', {
+                    downgrade: stat.prev > stat.next,
+                    upgrade: stat.prev < stat.next,
+                  })}>
+                  {stat.next}
+                </span>
+              </div>
+            </div>
+          ))
+        : statsToCompare.map(stat => (
+            <div className={s.itemStats__stat}>
+              <span className={s.itemStats__name}>{stat.key}:</span>
+              <div className={s.itemStats__change}>{stat.next}</div>
+            </div>
+          ))}
     </div>
   );
 };

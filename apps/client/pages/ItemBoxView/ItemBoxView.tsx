@@ -8,6 +8,7 @@ import { useUserItems, useUserMaterials } from '../../hooks/useUser';
 import s from './ItemBoxView.module.scss';
 
 import { USER_ID } from '../../_mock/settings';
+import { ItemContextMenu, ItemContextMenuSimple } from '../../containers';
 
 export const ItemBoxView = () => {
   const [activeTab, setActiveTab] = useState(TABS.MATERIALS);
@@ -45,7 +46,7 @@ const UserItems = ({ userId }: UserItemBoxProps) => {
           const data = { ...userItem, purchasable: false, price: 0 };
           return (
             <div className={s.itemBoxView__containerWrapper} key={userItem.id}>
-              <Item data={data} />
+              <ItemContextMenuSimple item={data} />
             </div>
           );
         })}
@@ -59,12 +60,14 @@ const UserMaterials = ({ userId }: UserItemBoxProps) => {
   return (
     <div className={s.itemBoxView__container}>
       {userMaterials
-        .filter(userItem => userItem.amount)
-        .map(userItem => {
-          const data = { ...userItem, purchasable: false, price: 0 };
+        .filter(userMaterial => userMaterial.amount)
+        .map(userMaterial => {
+          const data = { ...userMaterial, purchasable: false, price: 0 };
           return (
-            <div className={s.itemBoxView__containerWrapper} key={userItem.id}>
-              <Item data={data} />
+            <div
+              className={s.itemBoxView__containerWrapper}
+              key={userMaterial.id}>
+              <ItemContextMenuSimple material={data} />
             </div>
           );
         })}

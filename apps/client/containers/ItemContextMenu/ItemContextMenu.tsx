@@ -118,7 +118,7 @@ export const ItemContextMenu = ({
               <span style={{ fontStyle: 'italic' }}>"{item.description}"</span>
             </div>
             <div className={s.itemContextMenu__section}>
-              <ItemStats itemId={item.id} />
+              <ItemStats itemId={item.id} compare />
             </div>
             <div className={s.itemContextMenu__section}>
               {!useOnly && item.craftable && (
