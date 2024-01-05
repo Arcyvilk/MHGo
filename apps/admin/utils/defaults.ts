@@ -7,7 +7,7 @@ import {
   Stats,
 } from '@mhgo/types';
 
-export const DEFAULT_COORDS = [59.892131, 10.6194067];
+export const DEFAULT_COORDS = [0, 0];
 
 export const DEFAULT_STATS: Stats = {
   attack: 0,

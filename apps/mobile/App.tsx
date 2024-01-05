@@ -1,9 +1,8 @@
 import * as React from 'react';
 import { WebView } from 'react-native-webview';
 import { setStatusBarHidden } from 'expo-status-bar';
-import { PermissionsAndroid, StyleSheet } from 'react-native';
-
 import * as NavigationBar from 'expo-navigation-bar';
+import { PermissionsAndroid, StyleSheet } from 'react-native';
 
 const App = () => {
   NavigationBar.setVisibilityAsync('hidden');
