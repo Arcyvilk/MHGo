@@ -160,9 +160,9 @@ import {
   getMonsterMarkersByUserId,
 } from './markers';
 
-routerV1.get('/map/markers/monsters/:markerId', getSingleMonsterMarker);
 routerV1.get('/map/markers/monsters/list', getAllMonsterMarkers);
 routerV1.get('/map/markers/resources/list', getAllResourceMarkers);
+routerV1.get('/map/markers/monsters/:markerId', getSingleMonsterMarker);
 routerV1.get('/map/monsters/user/:userId', getMonsterMarkersByUserId);
 
 /*****************************
