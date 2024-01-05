@@ -26,7 +26,7 @@ export const useAdminCreateMonsterMarkerApi = () => {
   const queryClient = useQueryClient();
 
   const adminCreateMonsterMarker = async (
-    variables: Omit<MonsterMarker, 'id' | 'respawnTime'>,
+    variables: Omit<MonsterMarker, 'id'>,
   ): Promise<void> => {
     const response = await fetch(`${API_URL}/admin/marker/monster/create`, {
       method: 'POST',
@@ -58,7 +58,7 @@ export const useAdminUpdateMonsterMarkerApi = () => {
   const queryClient = useQueryClient();
 
   const adminUpdateMonsterMarker = async (
-    variables: Omit<MonsterMarker, 'respawnTime'>,
+    variables: MonsterMarker,
   ): Promise<void> => {
     const { id, ...monsterProperties } = variables;
     const response = await fetch(
@@ -122,7 +122,7 @@ export const useAdminCreateResourceMarkerApi = () => {
   const queryClient = useQueryClient();
 
   const adminCreateMonsterMarker = async (
-    variables: Omit<ResourceMarker, 'id' | 'respawnTime'>,
+    variables: Omit<ResourceMarker, 'id'>,
   ): Promise<void> => {
     const response = await fetch(`${API_URL}/admin/marker/resource/create`, {
       method: 'POST',
@@ -152,7 +152,7 @@ export const useAdminUpdateResourceMarkerApi = () => {
   const queryClient = useQueryClient();
 
   const adminUpdateResourceMarker = async (
-    variables: Omit<ResourceMarker, 'respawnTime'>,
+    variables: ResourceMarker,
   ): Promise<void> => {
     const { id, ...resourceProperties } = variables;
     const response = await fetch(

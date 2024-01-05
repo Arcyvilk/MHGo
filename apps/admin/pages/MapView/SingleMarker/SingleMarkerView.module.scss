@@ -21,6 +21,12 @@
     @include page-section-admin;
   }
 
+  &__infoIcon {
+    display: flex;
+    align-items: center;
+    gap: $size-4;
+  }
+
   &__switch {
     display: flex;
     align-items: flex-start;

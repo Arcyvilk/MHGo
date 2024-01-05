@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { v4 as uuid } from 'uuid';
 import { FormControlLabel, Switch } from '@mui/material';
-import { MonsterMarker, ResourceMarker } from '@mhgo/types';
+import { MapMarker, MonsterMarker, ResourceMarker } from '@mhgo/types';
 import {
   Button,
   Input,
@@ -16,7 +16,7 @@ import {
   useMonstersApi,
   useResourcesApi,
 } from '@mhgo/front';
-import { ActionBar } from '../../../containers';
+import { ActionBar, IconInfo } from '../../../containers';
 
 import s from './SingleMarkerView.module.scss';
 import { Status } from '../../../utils/types';
@@ -51,6 +51,8 @@ export const MarkerEditView = ({
     monsters,
     monsterMarker,
     setMonsterMarker,
+    mapMarker,
+    setMapMarker,
     resources,
     resourceMarker,
     setResourceMarker,
@@ -77,25 +79,69 @@ export const MarkerEditView = ({
           <Input
             name="marker_lat"
             label="Latitude"
-            value={String(monsterMarker?.coords[0])}
+            value={String(mapMarker?.coords[0])}
             setValue={newLat =>
-              setMonsterMarker({
-                ...monsterMarker,
-                coords: [Number(newLat), monsterMarker.coords[1]],
+              mapMarker &&
+              setMapMarker({
+                ...mapMarker,
+                coords: [Number(newLat), mapMarker.coords[1]],
               })
             }
           />
           <Input
             name="marker_lng"
             label="Longitude"
-            value={String(monsterMarker?.coords[1])}
+            value={String(mapMarker?.coords[1])}
             setValue={newLong =>
-              setMonsterMarker({
-                ...monsterMarker,
-                coords: [monsterMarker.coords[0], Number(newLong)],
+              mapMarker &&
+              setMapMarker({
+                ...mapMarker,
+                coords: [mapMarker.coords[0], Number(newLong)],
               })
             }
           />
+          <div className={s.markerView__section}>
+            <FormControlLabel
+              label="Custom respawn time"
+              control={
+                <Switch
+                  color="default"
+                  checked={Boolean(mapMarker?.respawnTime)}
+                  onChange={(_, checked) =>
+                    mapMarker &&
+                    setMapMarker({
+                      ...mapMarker,
+                      respawnTime: checked ? 300 : 0,
+                    })
+                  }
+                />
+              }
+            />
+            {mapMarker?.respawnTime ? (
+              <div
+                className={modifiers(s, 'markerView__section', {
+                  hidden: true,
+                })}>
+                <Input
+                  name="respawn_time"
+                  label={
+                    <div className={s.markerView__infoIcon}>
+                      <IconInfo tooltip="If not set, will use the default respawn time for this type of marker which you can change in Settings page." />
+                      Respawn time
+                    </div>
+                  }
+                  value={String(mapMarker?.respawnTime)}
+                  setValue={respawnTime =>
+                    mapMarker &&
+                    setMapMarker({
+                      ...mapMarker,
+                      respawnTime: Number(respawnTime),
+                    })
+                  }
+                />
+              </div>
+            ) : null}
+          </div>
         </div>
         {markerType === MarkerType.RESOURCE && (
           <div className={s.markerView__section}>
@@ -197,8 +243,9 @@ export const MarkerEditView = ({
   );
 };
 
-type MonsterMarkerFixed = Omit<MonsterMarker, 'id' | 'respawnTime'>;
-type ResourceMarkerFixed = Omit<ResourceMarker, 'id' | 'respawnTime'>;
+type MapMarkerFixed = Omit<MapMarker, 'id'>;
+type MonsterMarkerFixed = Omit<MonsterMarker, 'id'>;
+type ResourceMarkerFixed = Omit<ResourceMarker, 'id'>;
 
 // selectedMarker is in fact ObjectId from MongoDB
 const useUpdateMonsterMarker = (
@@ -235,6 +282,7 @@ const useUpdateMonsterMarker = (
       m => String(m._id) === selectedMarker,
     ) ?? DEFAULT_RESOURCE_MARKER,
   );
+  const [mapMarker, setMapMarker] = useState<MapMarkerFixed>();
 
   useEffect(() => {
     const marker = monsterMarkers.find(
@@ -244,20 +292,10 @@ const useUpdateMonsterMarker = (
     if (marker) {
       setMonsterMarker(marker);
       setMarkerType(MarkerType.MONSTER);
+      setMapMarker({ coords: marker.coords, respawnTime: marker.respawnTime });
+      setSelectedCoords(marker.coords);
     }
   }, [selectedMarker, isMonstersFetched]);
-
-  useEffect(() => {
-    if (!monsterMarker) return;
-    const coordsChanged =
-      JSON.stringify(monsterMarker.coords) !== JSON.stringify(selectedCoords);
-    if (!coordsChanged) return;
-
-    setMonsterMarker({
-      ...monsterMarker,
-      coords: selectedCoords,
-    });
-  }, [selectedCoords]);
 
   useEffect(() => {
     const marker = resourceMarkers.find(
@@ -267,21 +305,38 @@ const useUpdateMonsterMarker = (
     if (marker) {
       setResourceMarker(marker);
       setMarkerType(MarkerType.RESOURCE);
+      setMapMarker({ coords: marker.coords, respawnTime: marker.respawnTime });
       setSelectedCoords(marker.coords);
     }
-  }, [selectedMarker, isMonstersFetched]);
+  }, [selectedMarker, isResourcesFetched]);
+
+  useEffect(() => {
+    if (!mapMarker) return;
+    const coordsChanged =
+      JSON.stringify(mapMarker?.coords) !== JSON.stringify(selectedCoords);
+    if (!coordsChanged) return;
+
+    setMapMarker({
+      ...mapMarker,
+      coords: selectedCoords,
+    });
+  }, [selectedCoords]);
 
   const onSave = () => {
-    if (markerType === MarkerType.MONSTER && monsterMarker) {
+    if (markerType === MarkerType.MONSTER && monsterMarker && mapMarker) {
       mutateUpdateMonsterMarker({
         ...monsterMarker,
+        ...mapMarker,
+        respawnTime: mapMarker.respawnTime ?? undefined,
         id: String(selectedMarker),
       });
       setSelectedMarker(null);
     }
-    if (markerType === MarkerType.RESOURCE && resourceMarker) {
+    if (markerType === MarkerType.RESOURCE && resourceMarker && mapMarker) {
       mutateUpdateResourceMarker({
         ...resourceMarker,
+        ...mapMarker,
+        respawnTime: mapMarker.respawnTime ?? undefined,
         id: String(selectedMarker),
       });
       setSelectedMarker(null);
@@ -304,6 +359,8 @@ const useUpdateMonsterMarker = (
     setMonsterMarker,
     resources,
     resourceMarker,
+    mapMarker,
+    setMapMarker,
     setResourceMarker,
     onSave,
     onDelete,

@@ -1,7 +1,7 @@
 export type MapMarker = {
   id: string;
   coords: number[];
-  respawnTime: number; // in seconds?
+  respawnTime?: number; // in seconds?
 };
 
 export type MonsterMarker = MapMarker & {
