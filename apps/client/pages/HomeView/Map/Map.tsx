@@ -36,11 +36,11 @@ const Load = () => {
   const geo = useMemo(() => navigator.geolocation, []);
 
   const [zoom] = useLocalStorage('MHGO_MAP_ZOOM', DEFAULT_ZOOM);
-  const [coords, setCoords] = useLocalStorage(
-    'MHGO_LAST_KNOWN_LOCATION',
-    DEFAULT_COORDS,
-  );
-
+  // const [coords, setCoords] = useLocalStorage(
+  //   'MHGO_LAST_KNOWN_LOCATION',
+  //   DEFAULT_COORDS,
+  // );
+  const coords = DEFAULT_COORDS;
   useEffect(() => {
     // geo.watchPosition(
     //   (position: GeolocationPosition) => {
