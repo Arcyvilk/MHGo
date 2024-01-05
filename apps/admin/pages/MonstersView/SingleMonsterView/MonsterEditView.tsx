@@ -380,24 +380,12 @@ const useUpdateMonster = (
       mutateMonsterDrops({ monsterId: monster!.id, drops: updatedDrops });
   };
 
-  const onSelectionPropertyChange = (
-    newKey: string, // TODO this will be used for habitat
-    newValue?: string | number,
-  ) => {
-    if (!updatedMonster) return;
-    setUpdatedMonster({
-      ...updatedMonster,
-      [newKey]: Number(newValue),
-    });
-  };
-
   return {
     monster,
     monsterImg,
     monsterThumbnail,
     updatedMonster,
     setUpdatedMonster,
-    onSelectionPropertyChange,
     onSave,
   };
 };

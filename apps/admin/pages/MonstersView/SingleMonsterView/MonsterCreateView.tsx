@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { CDN_URL } from '@mhgo/front/env';
-import { HabitatType, Monster } from '@mhgo/types';
+import { BaseWealth, HabitatType, Monster } from '@mhgo/types';
 import { Button, Input, Select, useAdminCreateMonsterApi } from '@mhgo/front';
 import { ActionBar, HeaderEdit, IconInfo } from '../../../containers';
 import { DEFAULT_MONSTER } from '../../../utils/defaults';
@@ -15,9 +15,7 @@ export const MonsterCreateView = () => {
     monster,
     monsterImg,
     monsterThumbnail,
-    onTextPropertyChange,
-    onNumberPropertyChange,
-    onSelectionPropertyChange,
+    setMonster,
     onCreate,
     isSuccess,
     isPending,
@@ -53,13 +51,23 @@ export const MonsterCreateView = () => {
               name="monster_name"
               label="Monster's name"
               value={monster?.name ?? ''}
-              setValue={newName => onTextPropertyChange(newName, 'name')}
+              setValue={name =>
+                setMonster({
+                  ...monster,
+                  name,
+                })
+              }
             />
             <Input
               name="monster_desc"
               label="Monster's description"
               value={monster?.description ?? ''}
-              setValue={newDesc => onTextPropertyChange(newDesc, 'description')}
+              setValue={description =>
+                setMonster({
+                  ...monster,
+                  description,
+                })
+              }
             />
             <Input
               name="monster_req"
@@ -67,8 +75,11 @@ export const MonsterCreateView = () => {
               type="number"
               min={0}
               value={String(monster?.levelRequirements ?? 0)}
-              setValue={newRequirement =>
-                onNumberPropertyChange(newRequirement, 'levelRequirements')
+              setValue={levelRequirements =>
+                setMonster({
+                  ...monster,
+                  levelRequirements: Number(levelRequirements),
+                })
               }
             />
             <Select
@@ -81,8 +92,11 @@ export const MonsterCreateView = () => {
               name="monster_habitat"
               label="Monster's habitat"
               defaultSelected={monster?.habitat}
-              setValue={newHabitat =>
-                onSelectionPropertyChange(newHabitat as HabitatType)
+              setValue={habitat =>
+                setMonster({
+                  ...monster,
+                  habitat,
+                })
               }
             />
           </div>
@@ -93,7 +107,12 @@ export const MonsterCreateView = () => {
               name="monster_img"
               label="Path to monster image"
               value={monsterImg}
-              setValue={newPath => onTextPropertyChange(newPath, 'img')}
+              setValue={img =>
+                setMonster({
+                  ...monster,
+                  img,
+                })
+              }
             />
             <img
               src={`${CDN_URL}${monsterImg}`}
@@ -107,7 +126,12 @@ export const MonsterCreateView = () => {
               name="monster_thumbnail"
               label="Path to monster thumbnail"
               value={monsterThumbnail}
-              setValue={newPath => onTextPropertyChange(newPath, 'thumbnail')}
+              setValue={thumbnail =>
+                setMonster({
+                  ...monster,
+                  thumbnail,
+                })
+              }
             />
             <img
               src={`${CDN_URL}${monsterThumbnail}`}
@@ -128,7 +152,12 @@ export const MonsterCreateView = () => {
               type="number"
               min={0}
               value={String(monster?.baseHP ?? 0)}
-              setValue={newPrice => onNumberPropertyChange(newPrice, 'baseHP')}
+              setValue={baseHP =>
+                setMonster({
+                  ...monster,
+                  baseHP: Number(baseHP),
+                })
+              }
             />
             <Input
               label={
@@ -141,8 +170,11 @@ export const MonsterCreateView = () => {
               type="number"
               min={0}
               value={String(monster?.baseDamage ?? 0)}
-              setValue={newPrice =>
-                onNumberPropertyChange(newPrice, 'baseDamage')
+              setValue={baseDamage =>
+                setMonster({
+                  ...monster,
+                  baseDamage: Number(baseDamage),
+                })
               }
             />
             <Input
@@ -156,8 +188,11 @@ export const MonsterCreateView = () => {
               type="number"
               min={0}
               value={String(monster?.baseAttackSpeed ?? 0)}
-              setValue={newPrice =>
-                onNumberPropertyChange(newPrice, 'baseAttackSpeed')
+              setValue={baseAttackSpeed =>
+                setMonster({
+                  ...monster,
+                  baseAttackSpeed: Number(baseAttackSpeed),
+                })
               }
             />
             <div className={s.singleMonsterView__infoSection}>
@@ -185,11 +220,14 @@ export const MonsterCreateView = () => {
               type="number"
               min={0}
               value={String(monster?.baseExp ?? 0)}
-              setValue={newPrice => onNumberPropertyChange(newPrice, 'baseExp')}
+              setValue={baseExp =>
+                setMonster({
+                  ...monster,
+                  baseExp: Number(baseExp),
+                })
+              }
             />
-            {/* TODO monster currency drops */}
             <Input
-              disabled
               label={
                 <span className={s.singleMonsterView__withInfo}>
                   <IconInfo tooltip="Base value is multiplied by monster level" />
@@ -203,10 +241,24 @@ export const MonsterCreateView = () => {
                 monster?.baseWealth.find(wealth => wealth.type === 'base')
                   ?.amount ?? 0,
               )}
-              setValue={newPrice => onNumberPropertyChange(newPrice, 'baseExp')}
+              setValue={baseCurr => {
+                if (!monster?.baseWealth) return;
+                const newWealth: BaseWealth = {
+                  type: 'base',
+                  amount: Number(baseCurr),
+                };
+                setMonster({
+                  ...monster,
+                  baseWealth: [
+                    ...monster.baseWealth.filter(
+                      wealth => wealth.type !== 'base',
+                    ),
+                    newWealth,
+                  ],
+                });
+              }}
             />
             <Input
-              disabled
               label={
                 <span className={s.singleMonsterView__withInfo}>
                   <IconInfo tooltip="Base value is multiplied by monster level" />
@@ -220,7 +272,22 @@ export const MonsterCreateView = () => {
                 monster?.baseWealth.find(wealth => wealth.type === 'premium')
                   ?.amount ?? 0,
               )}
-              setValue={newPrice => onNumberPropertyChange(newPrice, 'baseExp')}
+              setValue={baseCurr => {
+                if (!monster?.baseWealth) return;
+                const newWealth: BaseWealth = {
+                  type: 'premium',
+                  amount: Number(baseCurr),
+                };
+                setMonster({
+                  ...monster,
+                  baseWealth: [
+                    ...monster.baseWealth.filter(
+                      wealth => wealth.type !== 'premium',
+                    ),
+                    newWealth,
+                  ],
+                });
+              }}
             />
           </div>
         </div>
@@ -259,53 +326,11 @@ const useUpdateMonster = () => {
     }
   };
 
-  const onTextPropertyChange = (
-    newValue: string,
-    property: keyof Pick<Monster, 'name' | 'description' | 'img' | 'thumbnail'>,
-  ) => {
-    if (!monster) return;
-    setMonster({
-      ...monster,
-      [property]: newValue,
-    });
-  };
-
-  const onNumberPropertyChange = (
-    newValue: string,
-    property: keyof Pick<
-      Monster,
-      | 'baseAttackSpeed'
-      | 'baseDamage'
-      | 'baseExp'
-      | 'baseHP'
-      | 'levelRequirements'
-    >,
-  ) => {
-    if (!monster) return;
-    setMonster({
-      ...monster,
-      [property]: Number(newValue),
-    });
-  };
-
-  const onSelectionPropertyChange = (
-    newKey: string, // TODO this will be used for habitat
-    newValue?: string | number,
-  ) => {
-    if (!monster) return;
-    setMonster({
-      ...monster,
-      [newKey]: Number(newValue),
-    });
-  };
-
   return {
     monster,
+    setMonster,
     monsterImg,
     monsterThumbnail,
-    onTextPropertyChange,
-    onNumberPropertyChange,
-    onSelectionPropertyChange,
     onCreate,
     isSuccess,
     isPending,
