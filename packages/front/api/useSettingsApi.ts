@@ -1,8 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
 import { API_URL } from '../env';
+import { Settings } from '@mhgo/types';
 
 export const useSettingsApi = <T>(key: string, defaultValue?: T) => {
-  const getSettings = async (): Promise<Record<string, T>[]> => {
+  const getSettings = async (): Promise<Settings<T>> => {
     const res = await fetch(`${API_URL}/settings`);
     return res.json();
   };
@@ -12,20 +13,18 @@ export const useSettingsApi = <T>(key: string, defaultValue?: T) => {
     isLoading,
     isFetched,
     isError,
-  } = useQuery<Record<string, any>[], unknown, Record<string, any>[], string[]>(
-    {
-      queryKey: ['settings'],
-      queryFn: getSettings,
-    },
-  );
+  } = useQuery<Settings<T>, unknown, Settings<T>, string[]>({
+    queryKey: ['settings'],
+    queryFn: getSettings,
+  });
 
   const setting = data.find(d => d.key === key)?.value ?? defaultValue ?? {};
 
   return { setting, isLoading, isFetched, isError };
 };
 
-export const useAllSettingsApi = <T>() => {
-  const getSettings = async (): Promise<Record<string, T>[]> => {
+export const useAllSettingsApi = () => {
+  const getSettings = async (): Promise<Settings<unknown>> => {
     const res = await fetch(`${API_URL}/settings`);
     return res.json();
   };
@@ -35,12 +34,12 @@ export const useAllSettingsApi = <T>() => {
     isLoading,
     isFetched,
     isError,
-  } = useQuery<Record<string, any>[], unknown, Record<string, any>[], string[]>(
-    {
-      queryKey: ['settings', 'all'],
-      queryFn: getSettings,
-    },
-  );
+  } = useQuery<Settings<unknown>, unknown, Settings<unknown>, string[]>({
+    queryKey: ['settings', 'all'],
+    queryFn: getSettings,
+  });
+
+  console.log(data);
 
   return { data, isLoading, isFetched, isError };
 };

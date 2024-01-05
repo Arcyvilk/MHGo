@@ -29,3 +29,6 @@ export {
   adminUpdateResourceMarker,
   adminDeleteResourceMarker,
 } from './adminUpdateMarker';
+
+// OTHER
+export { adminUpdateSettings } from './adminUpdateSettings';

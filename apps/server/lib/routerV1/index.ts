@@ -28,6 +28,7 @@ import {
   adminCreateResource,
   adminUpdateResource,
   adminUpdateMonsterDrops,
+  adminUpdateSettings,
 } from './admin';
 
 routerV1.get('/admin/users/list', adminGetAllUsers);
@@ -57,6 +58,8 @@ routerV1.put(
   '/admin/monsters/monster/:monsterId/drops',
   adminUpdateMonsterDrops,
 );
+
+routerV1.put('/admin/settings/update', adminUpdateSettings);
 
 /*****************************
  *         RESOURCES         *
