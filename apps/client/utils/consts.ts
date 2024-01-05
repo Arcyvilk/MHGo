@@ -3,7 +3,7 @@ import { Monster, MonsterMarker, Stats } from '@mhgo/types';
 export { API_URL, CDN_URL } from '../env';
 
 export const APP_NAME = 'Master Hoarder GO';
-export const APP_VERSION = 'v66.6-240116-0800'; // moved to database
+export const APP_VERSION = 'v0.42.67-beta'; // moved to database
 
 export const DEFAULT_COORDS = [0, 0];
 export const DEFAULT_ZOOM = { current: 16 };
