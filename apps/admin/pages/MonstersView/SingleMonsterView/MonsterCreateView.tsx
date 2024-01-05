@@ -1,27 +1,27 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { CDN_URL } from '@mhgo/front/env';
-import { BaseWealth, HabitatType, Monster } from '@mhgo/types';
+import { BaseWealth, HabitatType, Monster, MonsterDrop } from '@mhgo/types';
 import { Button, Input, Select, useAdminCreateMonsterApi } from '@mhgo/front';
 import { ActionBar, HeaderEdit, IconInfo } from '../../../containers';
 import { DEFAULT_MONSTER } from '../../../utils/defaults';
 
 import s from './SingleMonsterView.module.scss';
+import { MonsterDrops } from './MonsterDrops';
+import { Status } from '../../../utils/types';
 
 export const MonsterCreateView = () => {
   const navigate = useNavigate();
-  const {
-    monster,
-    monsterImg,
-    monsterThumbnail,
-    setMonster,
-    onCreate,
-    isSuccess,
-    isPending,
-    isError,
-  } = useUpdateMonster();
-  const status = { isSuccess, isPending, isError };
+  const [updatedDrops, setUpdatedDrops] = useState<MonsterDrop['drops']>([]);
+  const [status, setStatus] = useState({
+    isSuccess: false,
+    isError: false,
+    isPending: false,
+  });
+
+  const { monster, monsterImg, monsterThumbnail, setMonster, onCreate } =
+    useUpdateMonster(updatedDrops, setStatus);
 
   return (
     <div className={s.singleMonsterView}>
@@ -291,15 +291,23 @@ export const MonsterCreateView = () => {
             />
           </div>
         </div>
+        <div className={s.singleMonsterView__content}>
+          <MonsterDrops
+            updatedDrops={updatedDrops}
+            setUpdatedDrops={setUpdatedDrops}
+          />
+        </div>
       </div>
     </div>
   );
 };
 
-const useUpdateMonster = () => {
+const useUpdateMonster = (
+  updatedDrops: MonsterDrop['drops'],
+  setStatus: (status: Status) => void,
+) => {
   const [monster, setMonster] = useState<Monster>(DEFAULT_MONSTER);
-
-  const { mutate, isSuccess, isError, isPending } = useAdminCreateMonsterApi();
+  const { mutate } = useStatus(setStatus);
 
   const monsterImg = useMemo(
     () => monster?.img.replace(CDN_URL, '') ?? '',
@@ -321,7 +329,7 @@ const useUpdateMonster = () => {
           thumbnail: monsterThumbnail,
           levelRequirements: monster.levelRequirements ?? null,
         },
-        drops: { monsterId, drops: [] },
+        drops: { monsterId, drops: updatedDrops },
       });
     }
   };
@@ -332,8 +340,19 @@ const useUpdateMonster = () => {
     monsterImg,
     monsterThumbnail,
     onCreate,
-    isSuccess,
-    isPending,
-    isError,
   };
+};
+
+const useStatus = (setStatus: (status: Status) => void) => {
+  const { mutate, isSuccess, isError, isPending } = useAdminCreateMonsterApi();
+
+  useEffect(() => {
+    setStatus({
+      isSuccess,
+      isError,
+      isPending,
+    });
+  }, [isSuccess, isError, isPending]);
+
+  return { mutate };
 };
