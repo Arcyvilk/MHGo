@@ -19,7 +19,12 @@ export const useAdminCreateResourceApi = () => {
 
     if (response.status !== 201)
       throw new Error('Could not create a resource!');
-    queryClient.invalidateQueries({ queryKey: ['resources'] });
+
+    queryClient.invalidateQueries({
+      queryKey: ['drops', 'resource'],
+      exact: false,
+    });
+    queryClient.invalidateQueries({ queryKey: ['resources'], exact: false });
   };
 
   const { mutate, status, isPending, isSuccess, isError } = useMutation({
@@ -50,7 +55,12 @@ export const useAdminUpdateResourceApi = () => {
 
     if (response.status !== 200 && response.status !== 201)
       throw new Error('Did not work!');
-    queryClient.invalidateQueries({ queryKey: ['resources'] });
+
+    queryClient.invalidateQueries({
+      queryKey: ['drops', 'resource'],
+      exact: false,
+    });
+    queryClient.invalidateQueries({ queryKey: ['resources'], exact: false });
   };
 
   const { mutate, status, isPending, isSuccess, isError } = useMutation({

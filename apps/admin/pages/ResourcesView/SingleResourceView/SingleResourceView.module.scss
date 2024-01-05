@@ -43,3 +43,23 @@
     min-height: $size-48;
   }
 }
+
+.resourceDrops {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  gap: $size-32;
+
+  &__perLevel {
+    flex: 1 1 250px;
+    display: flex;
+    flex-direction: column;
+    gap: $size-8;
+  }
+
+  &__craftMaterial {
+    display: flex;
+    flex-direction: row;
+    gap: $size-4;
+  }
+}

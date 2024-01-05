@@ -8,26 +8,24 @@ import { ActionBar, HeaderEdit } from '../../../containers';
 import { DEFAULT_RESOURCE } from '../../../utils/defaults';
 
 import s from './SingleResourceView.module.scss';
+import { ResourceDrops } from '.';
+import { Status } from '../../../utils/types';
+import useEnhancedEffect from '@mui/material/utils/useEnhancedEffect';
 
 export const ResourceCreateView = () => {
   const navigate = useNavigate();
-  const {
-    resource,
-    resourceImg,
-    resourceThumbnail,
-    onCreate,
-    setResource,
-    isSuccess,
-    isPending,
-    isError,
-  } = useUpdateResource();
+  const [updatedDrops, setUpdatedDrops] = useState<Resource['drops']>([]);
+  const [status, setStatus] = useState({
+    isSuccess: false,
+    isError: false,
+    isPending: false,
+  });
+  const { resource, resourceImg, resourceThumbnail, onCreate, setResource } =
+    useUpdateResource(updatedDrops, setStatus);
 
   return (
     <div className={s.singleResourceView}>
-      <HeaderEdit
-        status={{ isSuccess, isPending, isError }}
-        title="Create resource"
-      />
+      <HeaderEdit status={status} title="Create resource" />
       <ActionBar
         buttons={
           <>
@@ -92,16 +90,26 @@ export const ResourceCreateView = () => {
               src={`${CDN_URL}${resourceThumbnail}`}
             />
           </div>
+          <div className={s.singleMonsterView__content}>
+            <div className={s.singleResourceView__section}>
+              <ResourceDrops
+                updatedDrops={updatedDrops}
+                setUpdatedDrops={setUpdatedDrops}
+              />
+            </div>
+          </div>
         </div>
       </div>
     </div>
   );
 };
 
-const useUpdateResource = () => {
+const useUpdateResource = (
+  drops: Resource['drops'],
+  setStatus: (status: Status) => void,
+) => {
   const [resource, setResource] = useState<Resource>(DEFAULT_RESOURCE);
-
-  const { mutate, isSuccess, isError, isPending } = useAdminCreateResourceApi();
+  const { mutateResource } = useStatus(setStatus);
 
   const resourceImg = useMemo(
     () => resource?.img.replace(CDN_URL, '') ?? '',
@@ -114,21 +122,34 @@ const useUpdateResource = () => {
 
   const onCreate = () => {
     if (resource)
-      mutate({
+      mutateResource({
         ...resource,
         img: resourceImg,
         thumbnail: resourceThumbnail,
+        drops,
       });
   };
 
   return {
     resource,
+    setResource,
     resourceImg,
     resourceThumbnail,
     onCreate,
-    setResource,
-    isSuccess,
-    isPending,
-    isError,
   };
+};
+
+const useStatus = (setStatus: (status: Status) => void) => {
+  const {
+    mutate: mutateResource,
+    isSuccess,
+    isError,
+    isPending,
+  } = useAdminCreateResourceApi();
+
+  useEnhancedEffect(() => {
+    setStatus({ isSuccess, isError, isPending });
+  }, [isSuccess, isError, isPending]);
+
+  return { mutateResource };
 };

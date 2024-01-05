@@ -11,19 +11,25 @@ import {
 import { ActionBar, HeaderEdit } from '../../../containers';
 
 import s from './SingleResourceView.module.scss';
+import { ResourceDrops } from '.';
+import { Resource } from '@mhgo/types';
+import { Status } from '../../../utils/types';
 
 export const ResourceEditView = () => {
   const navigate = useNavigate();
+  const [updatedDrops, setUpdatedDrops] = useState<Resource['drops']>([]);
+  const [status, setStatus] = useState({
+    isSuccess: false,
+    isError: false,
+    isPending: false,
+  });
   const {
     updatedResource,
     setUpdatedResource,
     resourceImg,
     resourceThumbnail,
     onSave,
-    isSuccess,
-    isPending,
-    isError,
-  } = useUpdateResource();
+  } = useUpdateResource(updatedDrops, setStatus);
 
   if (!updatedResource)
     return (
@@ -41,10 +47,7 @@ export const ResourceEditView = () => {
 
   return (
     <div className={s.singleResourceView}>
-      <HeaderEdit
-        status={{ isSuccess, isPending, isError }}
-        title="Edit resource"
-      />
+      <HeaderEdit status={status} title="Edit resource" />
       <ActionBar
         title={`Resource ID: ${updatedResource?.id}`}
         buttons={
@@ -120,26 +123,12 @@ export const ResourceEditView = () => {
               src={`${CDN_URL}${resourceThumbnail}`}
             />
           </div>
-          <div className={s.singleResourceView__section}>
-            <div className={s.singleResourceView__infoSection}>
-              <p
-                style={{ fontWeight: 600 }}
-                className={s.singleResourceView__withInfo}>
-                Drops:
-              </p>
-              {updatedResource.drops.length > 0
-                ? updatedResource.drops.map(drop => (
-                    <Button
-                      variant={Button.Variant.GHOST}
-                      simple
-                      inverted
-                      label={drop.materialId}
-                      onClick={() =>
-                        navigate(`/materials/edit?id=${drop.materialId}`)
-                      }
-                    />
-                  ))
-                : '-'}
+          <div className={s.singleMonsterView__content}>
+            <div className={s.singleResourceView__section}>
+              <ResourceDrops
+                updatedDrops={updatedDrops}
+                setUpdatedDrops={setUpdatedDrops}
+              />
             </div>
           </div>
         </div>
@@ -148,7 +137,10 @@ export const ResourceEditView = () => {
   );
 };
 
-const useUpdateResource = () => {
+const useUpdateResource = (
+  updatedDrops: Resource['drops'],
+  setStatus: (status: Status) => void,
+) => {
   const params = new URLSearchParams(location.search);
   const id = params.get('id');
 
@@ -164,7 +156,7 @@ const useUpdateResource = () => {
     setUpdatedResource(resource);
   }, [isResourcesFetched]);
 
-  const { mutate, isSuccess, isError, isPending } = useAdminUpdateResourceApi();
+  const { mutateResource } = useStatus(setStatus);
 
   const resourceImg = useMemo(
     () => updatedResource?.img.replace(CDN_URL, '') ?? '',
@@ -177,10 +169,11 @@ const useUpdateResource = () => {
 
   const onSave = () => {
     if (updatedResource)
-      mutate({
+      mutateResource({
         ...updatedResource,
         img: resourceImg,
         thumbnail: resourceThumbnail,
+        drops: updatedDrops,
       });
   };
 
@@ -190,8 +183,24 @@ const useUpdateResource = () => {
     resourceImg,
     resourceThumbnail,
     onSave,
-    isSuccess,
-    isPending,
-    isError,
   };
+};
+
+const useStatus = (setStatus: (status: Status) => void) => {
+  const {
+    mutate: mutateResource,
+    isSuccess: isSuccessMonster,
+    isError: isErrorMonster,
+    isPending: isPendingMonster,
+  } = useAdminUpdateResourceApi();
+
+  useEffect(() => {
+    setStatus({
+      isSuccess: isSuccessMonster,
+      isError: isErrorMonster,
+      isPending: isPendingMonster,
+    });
+  }, [isSuccessMonster, isErrorMonster, isPendingMonster]);
+
+  return { mutateResource };
 };
