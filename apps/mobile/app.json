@@ -1,11 +1,12 @@
 {
   "expo": {
-    "name": "mhgo",
+    "name": "Master Hoarder GO!",
     "slug": "mhgo",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/favicon.png",
     "userInterfaceStyle": "dark",
+    "plugins": ["expo-location", "expo-navigation-bar"],
     "splash": {
       "image": "./assets/cave.png",
       "resizeMode": "cover",

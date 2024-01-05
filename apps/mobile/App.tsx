@@ -4,19 +4,19 @@ import { PermissionsAndroid, StyleSheet } from 'react-native';
 
 import * as NavigationBar from 'expo-navigation-bar';
 
-PermissionsAndroid.request(
-  PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-  {
-    title: 'Location Access Permission',
-    message:
-      'To be able to play Master Hoarder GO!, we need your permission to access your location. We will use it only for gameplay purposes.',
-    buttonPositive: 'Okay!',
-    buttonNegative: 'Not okay!',
-  },
-);
-
 const App = () => {
   NavigationBar.setVisibilityAsync('hidden');
+
+  PermissionsAndroid.request(
+    PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+    {
+      title: 'Location Access Permission',
+      message:
+        'To be able to play Master Hoarder GO!, we need your permission to access your location. We will use it only for gameplay purposes.',
+      buttonPositive: 'Okay!',
+      buttonNegative: 'Not okay!',
+    },
+  );
 
   return (
     <WebView
