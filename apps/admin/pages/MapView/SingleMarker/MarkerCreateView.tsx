@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { FormControlLabel, Switch } from '@mui/material';
-import { MonsterMarker, ResourceMarker } from '@mhgo/types';
+import { MapMarker, MonsterMarker, ResourceMarker } from '@mhgo/types';
 import {
   Button,
   Input,
@@ -11,7 +11,7 @@ import {
   useMonstersApi,
   useResourcesApi,
 } from '@mhgo/front';
-import { ActionBar } from '../../../containers';
+import { ActionBar, IconInfo } from '../../../containers';
 import { Status } from '../../../utils/types';
 
 import s from './SingleMarkerView.module.scss';
@@ -40,17 +40,14 @@ export const MarkerCreateView = ({
     setMarkerType,
     monsterMarker,
     setMonsterMarker,
+    mapMarker,
+    setMapMarker,
     resourceMarker,
     setResourceMarker,
-    updateCoords,
-    updatedCoords,
     monsters,
     resources,
     onCreate,
   } = useUpdateMarker(selectedCoords, setStatus, onCancel);
-
-  const lat = updatedCoords[0];
-  const lng = updatedCoords[1];
 
   return (
     <div className={s.markerView__content}>
@@ -65,15 +62,69 @@ export const MarkerCreateView = ({
           <Input
             name="marker_lat"
             label="Latitude"
-            value={String(lat)}
-            setValue={newLat => updateCoords('lat', Number(newLat))}
+            value={String(mapMarker?.coords[0])}
+            setValue={newLat =>
+              mapMarker &&
+              setMapMarker({
+                ...mapMarker,
+                coords: [Number(newLat), mapMarker.coords[1]],
+              })
+            }
           />
           <Input
             name="marker_lng"
             label="Longitude"
-            value={String(lng)}
-            setValue={newLng => updateCoords('lng', Number(newLng))}
+            value={String(mapMarker?.coords[1])}
+            setValue={newLong =>
+              mapMarker &&
+              setMapMarker({
+                ...mapMarker,
+                coords: [mapMarker.coords[0], Number(newLong)],
+              })
+            }
           />
+          <div className={s.markerView__section}>
+            <FormControlLabel
+              label="Custom respawn time"
+              control={
+                <Switch
+                  color="default"
+                  checked={Boolean(mapMarker?.respawnTime)}
+                  onChange={(_, checked) =>
+                    mapMarker &&
+                    setMapMarker({
+                      ...mapMarker,
+                      respawnTime: checked ? 300 : 0,
+                    })
+                  }
+                />
+              }
+            />
+            {mapMarker?.respawnTime ? (
+              <div
+                className={modifiers(s, 'markerView__section', {
+                  hidden: true,
+                })}>
+                <Input
+                  name="respawn_time"
+                  label={
+                    <div className={s.markerView__infoIcon}>
+                      <IconInfo tooltip="If not set, will use the default respawn time for this type of marker which you can change in Settings page." />
+                      Respawn time
+                    </div>
+                  }
+                  value={String(mapMarker?.respawnTime)}
+                  setValue={respawnTime =>
+                    mapMarker &&
+                    setMapMarker({
+                      ...mapMarker,
+                      respawnTime: Number(respawnTime),
+                    })
+                  }
+                />
+              </div>
+            ) : null}
+          </div>
         </div>
         <div className={s.markerView__section}>
           <div className={s.markerView__switch}>
@@ -91,8 +142,8 @@ export const MarkerCreateView = ({
           </div>
 
           {/* 
-          MARKER TYPE - MONSTER
-        */}
+            MARKER TYPE - MONSTER
+          */}
           {markerType === MarkerType.MONSTER && (
             <div
               className={modifiers(s, 'markerView__section', { hidden: true })}>
@@ -178,11 +229,9 @@ export const MarkerCreateView = ({
   );
 };
 
-type MonsterMarkerFixed = Omit<MonsterMarker, 'id' | 'respawnTime' | 'coords'>;
-type ResourceMarkerFixed = Omit<
-  ResourceMarker,
-  'id' | 'respawnTime' | 'coords'
->;
+type MapMarkerFixed = Omit<MapMarker, 'id'>;
+type MonsterMarkerFixed = Omit<MonsterMarker, 'id'>;
+type ResourceMarkerFixed = Omit<ResourceMarker, 'id'>;
 
 const useUpdateMarker = (
   selectedCoords: number[],
@@ -196,35 +245,36 @@ const useUpdateMarker = (
   const [resourceMarker, setResourceMarker] = useState<ResourceMarkerFixed>(
     DEFAULT_RESOURCE_MARKER,
   );
+  const [mapMarker, setMapMarker] = useState<MapMarkerFixed>();
+
   const { mutateMarkerMonster, mutateResourceMarker } = useStatus(setStatus);
 
   const { data: monsters } = useMonstersApi();
   const { data: resources } = useResourcesApi();
 
-  const [updatedCoords, setUpdatedCoords] = useState(selectedCoords);
-
   useEffect(() => {
     const coordsChanged =
-      JSON.stringify(updatedCoords) !== JSON.stringify(selectedCoords);
-    if (coordsChanged) setUpdatedCoords(selectedCoords);
+      JSON.stringify(mapMarker?.coords) !== JSON.stringify(selectedCoords);
+    if (coordsChanged) setMapMarker({ ...mapMarker, coords: selectedCoords });
   }, [selectedCoords]);
 
   const onCreate = () => {
-    if (markerType === MarkerType.MONSTER) {
-      mutateMarkerMonster({ ...monsterMarker, coords: updatedCoords });
+    if (markerType === MarkerType.MONSTER && monsterMarker && mapMarker) {
+      mutateMarkerMonster({
+        ...monsterMarker,
+        ...mapMarker,
+        respawnTime: mapMarker.respawnTime ?? undefined,
+      });
       onCancel();
     }
-    if (markerType === MarkerType.RESOURCE) {
-      mutateResourceMarker({ ...resourceMarker, coords: updatedCoords });
+    if (markerType === MarkerType.RESOURCE && resourceMarker && mapMarker) {
+      mutateResourceMarker({
+        ...resourceMarker,
+        ...mapMarker,
+        respawnTime: mapMarker.respawnTime ?? undefined,
+      });
       onCancel();
     }
-  };
-
-  const updateCoords = (type: 'lat' | 'lng', value: number) => {
-    setUpdatedCoords([
-      type === 'lat' ? value : updatedCoords[0],
-      type === 'lng' ? value : updatedCoords[1],
-    ]);
   };
 
   return {
@@ -234,9 +284,8 @@ const useUpdateMarker = (
     setMonsterMarker,
     resourceMarker,
     setResourceMarker,
-    updateCoords,
-    updatedCoords,
-    setUpdatedCoords,
+    mapMarker,
+    setMapMarker,
     monsters,
     resources,
     onCreate,
