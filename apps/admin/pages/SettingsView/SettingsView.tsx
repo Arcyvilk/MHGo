@@ -128,12 +128,3 @@ const useStatus = (setStatus: (status: Status) => void) => {
 
   return { mutateSetting };
 };
-
-const useAdminUpdateSetting = () => {
-  return {
-    mutate: (update: any) => console.log(update),
-    isSuccess: false,
-    isError: false,
-    isPending: false,
-  };
-};

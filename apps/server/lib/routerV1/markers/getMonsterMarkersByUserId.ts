@@ -67,8 +67,6 @@ export const getMonsterMarkersByUserId = async (
       filterTooHighLevelRequirement.push({ monsterId: el.id });
     }
 
-    console.log(filterTooHighLevelRequirement);
-
     // Filter out monsters that are still respawning
     const collectionUserRespawn = db.collection<UserRespawn>('userRespawn');
     const filterCooldown: { _id: ObjectId }[] = [];
@@ -77,8 +75,6 @@ export const getMonsterMarkersByUserId = async (
       if (el.markerType == 'monster')
         filterCooldown.push({ _id: new ObjectId(el.markerId) });
     }
-
-    console.log(filterCooldown);
 
     // Apply all filters and get all visible markers
     const collectionMonsterMarkers =

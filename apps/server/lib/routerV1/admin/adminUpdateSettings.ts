@@ -12,8 +12,6 @@ export const adminUpdateSettings = async (
     const { db } = mongoInstance.getDb();
     const settings = req.body as Setting<unknown>[];
 
-    console.log(settings);
-
     const collection = db.collection<Setting<unknown>>('settings');
 
     settings.forEach(

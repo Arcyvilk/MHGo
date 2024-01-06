@@ -163,9 +163,6 @@ const useUpdateItem = (setStatus: (status: Status) => void) => {
   const { mutateItem, mutateItemStats, mutateItemCraft, mutateItemAction } =
     useStatus(setStatus);
 
-  useEffect(() => {
-    console.log(updatedItemStats);
-  }, [updatedItemStats]);
   // OTHER
   const itemImg = useMemo(
     () => updatedItem?.img.replace(CDN_URL, '') ?? '',
