@@ -36,6 +36,10 @@
       margin-bottom: $size-12;
       font-size: $size-18;
     }
+    &__subtitle {
+      font-size: $size-14;
+      font-weight: 400;
+    }
     &__items {
       @include item-grid;
     }

@@ -15,7 +15,7 @@ export const getUserLoadout = async (
 
     const userLoadout = await collection.findOne({ userId });
 
-    res.status(200).send(userLoadout.loadout);
+    res.status(200).send(userLoadout?.loadout ?? []);
   } catch (err: any) {
     log.WARN(err);
     res.status(500).send({ error: err.message ?? 'Internal server error' });

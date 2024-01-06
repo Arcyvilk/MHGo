@@ -29,7 +29,7 @@ export const getUserHealth = async (
     // Get requested user's loadout
     const collectionUserLoadouts = db.collection<UserLoadout>('userLoadout');
     const userLoadout = await collectionUserLoadouts.findOne({ userId });
-    const loadoutIds = userLoadout.loadout.map(slot => slot.itemId);
+    const loadoutIds = (userLoadout?.loadout ?? []).map(slot => slot.itemId);
 
     // Get stats of items from user's loadout
     const collectionItemStats = db.collection<ItemStat>('itemStats');

@@ -23,7 +23,7 @@ export const getItemCraftingList = async (
     }
 
     const craftList =
-      (await getItemsCraftList([itemId])).find(c => c.itemId === itemId)
+      (await getItemsCraftList([itemId]))?.find(c => c.itemId === itemId)
         ?.craftList ?? [];
 
     // Get how many needed materials user has
@@ -44,8 +44,8 @@ export const getItemCraftingList = async (
     for await (const el of materialMatsCursor) {
       materialMats.push({
         id: el.id,
-        amount: materialCraftList.find(m => m.id === el.id)?.amount ?? 0,
-        userAmount: userMaterials.find(m => m.id === el.id)?.amount ?? 0,
+        amount: materialCraftList?.find(m => m.id === el.id)?.amount ?? 0,
+        userAmount: userMaterials?.find(m => m.id === el.id)?.amount ?? 0,
       });
     }
 
@@ -65,8 +65,8 @@ export const getItemCraftingList = async (
     for await (const el of itemMatsCursor) {
       itemMats.push({
         id: el.id,
-        amount: itemCraftList.find(i => i.id === el.id)?.amount,
-        userAmount: userItems.find(i => i.id === el.id)?.amount ?? 0,
+        amount: itemCraftList?.find(i => i.id === el.id)?.amount,
+        userAmount: userItems?.find(i => i.id === el.id)?.amount ?? 0,
       });
     }
 

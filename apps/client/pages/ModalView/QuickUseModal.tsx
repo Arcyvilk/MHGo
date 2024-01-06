@@ -5,15 +5,22 @@ import s from './ModalView.module.scss';
 
 export const QuickUseModal = () => {
   const { consumableItems } = useConsumableItems();
+  const hasQuickUseItems = consumableItems?.length > 0;
 
   return (
     <div className={s.modalView__quickUse}>
       <h2 className={s.modalView__quickUse__title}>Quick use menu</h2>
-      <div className={s.modalView__quickUse__items}>
-        {consumableItems.map(item => (
-          <ItemContextMenu item={item} />
-        ))}
-      </div>
+      {hasQuickUseItems ? (
+        <div className={s.modalView__quickUse__items}>
+          {consumableItems.map(item => (
+            <ItemContextMenu item={item} />
+          ))}
+        </div>
+      ) : (
+        <div className={s.modalView__quickUse__subtitle}>
+          You don't have any quick use items!
+        </div>
+      )}
     </div>
   );
 };
