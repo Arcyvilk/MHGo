@@ -40,9 +40,6 @@ export const getMonsterMarkersByUserId = async (
     const fixedLat = lat ? Number(Number(lat).toFixed(2)) : null;
     const fixedLng = lng ? Number(Number(lng).toFixed(2)) : null;
 
-    console.log(lat, fixedLat);
-    console.log(lng, fixedLng);
-
     const filterCoords =
       fixedLat && fixedLng
         ? {
