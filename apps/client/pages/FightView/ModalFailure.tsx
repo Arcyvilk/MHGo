@@ -9,7 +9,7 @@ type ModalProps = {
 };
 export const ModalFailure = ({ isOpen, setIsOpen, onClose }: ModalProps) => {
   return (
-    <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
+    <Modal isOpen={isOpen} setIsOpen={setIsOpen} onClose={() => {}}>
       <div className={s.result}>
         <h1 className={s.result__title}>Failure!</h1>
         <div className={s.result__content}>

@@ -25,7 +25,7 @@ type ModalProps = {
   onClose: () => void;
 };
 export const ModalSuccess = ({ isOpen, setIsOpen, onClose }: ModalProps) => (
-  <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
+  <Modal isOpen={isOpen} setIsOpen={setIsOpen} onClose={() => {}}>
     <div className={s.result}>
       <h1 className={s.result__title}>Success!</h1>
       <QueryBoundary fallback={<Loader />}>

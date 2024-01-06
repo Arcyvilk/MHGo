@@ -261,6 +261,7 @@ export const useUserCraftItemApi = (userId: string, itemId: string) => {
     queryClient.invalidateQueries({ queryKey: ['user', userId, 'items'] });
     queryClient.invalidateQueries({ queryKey: ['user', userId, 'materials'] });
     queryClient.invalidateQueries({ queryKey: ['items', itemId, 'craftList'] });
+    queryClient.invalidateQueries({ queryKey: ['items'], exact: false });
   };
 
   const { mutate, isPending, isSuccess, isError } = useMutation({

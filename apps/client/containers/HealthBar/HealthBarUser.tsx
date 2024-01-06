@@ -48,7 +48,6 @@ const Load = ({ isFightFinished, setIsPlayerAlive }: HealthBarUserProps) => {
 
   useEffect(() => {
     if (userHealth?.currentHealth <= 0) {
-      playSESound(SoundSE.DEATH);
       setIsPlayerAlive(false);
     }
   }, [userHealth.currentHealth]);
