@@ -34,6 +34,7 @@ const toastOptions: ToastContainerProps = {
   closeOnClick: true,
   theme: 'dark',
   autoClose: 2500,
+  limit: 3,
   style: { fontSize: '16px', fontWeight: 400 },
 };
 
