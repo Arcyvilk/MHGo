@@ -71,7 +71,10 @@ export const getResourceDropsForUser = async (
     const collectionUserMaterials =
       db.collection<UserMaterials>('userMaterials');
     const userMaterials = await collectionUserMaterials.findOne({ userId });
-    const materialsToUpdate = putUserMaterials(userMaterials.materials, drops);
+    const materialsToUpdate = putUserMaterials(
+      userMaterials?.materials ?? [],
+      drops,
+    );
 
     const responseMaterialsUpdate = await collectionUserMaterials.updateOne(
       { userId },

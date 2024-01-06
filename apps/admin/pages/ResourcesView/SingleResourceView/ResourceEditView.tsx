@@ -36,7 +36,7 @@ export const ResourceEditView = () => {
       <div className={s.singleResourceView}>
         <div className={s.singleResourceView__header}>
           <h1 className={s.singleResourceView__title}>
-            This resource does not exist
+            This resource does not exist!
           </h1>
         </div>
         <div className={s.singleResourceView__footer}>

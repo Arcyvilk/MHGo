@@ -23,6 +23,7 @@ export const adminUpdateMonsterMarker = async (
     const response = await collection.updateOne(
       { _id: new ObjectId(markerId) },
       { $set: updatedFields },
+      { upsert: true },
     );
 
     if (!response.acknowledged) {
@@ -79,6 +80,7 @@ export const adminUpdateResourceMarker = async (
     const response = await collection.updateOne(
       { _id: new ObjectId(markerId) },
       { $set: updatedFields },
+      { upsert: true },
     );
 
     if (!response.acknowledged) {

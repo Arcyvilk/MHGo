@@ -32,13 +32,11 @@ export const UsersView = () => {
   };
 
   const onUserCreate = () => {
-    toast.info('Not implemented yet!');
-    // navigate('/users/create')
+    navigate('/users/create');
   };
 
   const onUserEdit = (user: User) => {
-    toast.info('Not implemented yet!');
-    // navigate(`/users/edit?id=${user.id}`);
+    navigate(`/users/edit?id=${user.id}`);
   };
 
   const tableRows = users.map(user => [
@@ -66,8 +64,7 @@ export const UsersView = () => {
     <Button
       label={<Icon icon="Edit" size={Size.MICRO} />}
       onClick={() => {
-        // onUserEdit(user)
-        toast.info('Not implemented yet!');
+        onUserEdit(user);
       }}
       style={{ width: '40px' }}
     />,

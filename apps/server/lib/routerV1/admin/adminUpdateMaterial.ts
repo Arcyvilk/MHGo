@@ -26,6 +26,7 @@ export const adminUpdateMaterial = async (
           img: img.replace(process.env.CDN_URL, ''),
         },
       },
+      { upsert: true },
     );
 
     if (!response.acknowledged) {

@@ -8,7 +8,7 @@ export const NotExist = () => {
   return (
     <div className={s.singleItemView}>
       <div className={s.singleItemView__header}>
-        <h1 className={s.singleItemView__title}>This item does not exist</h1>
+        <h1 className={s.singleItemView__title}>This item does not exist!</h1>
       </div>
       <div className={s.singleItemView__footer}>
         <Button label="Back" onClick={() => navigate(-1)} />

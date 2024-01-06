@@ -19,7 +19,7 @@ export const updateUserWealth = async (
       userId,
     });
 
-    const updatedWealth = userWealth.wealth.map(currency => ({
+    const updatedWealth = (userWealth?.wealth ?? []).map(currency => ({
       ...currency,
       amount: currency.amount + (currencies[currency.id] ?? 0),
     }));
@@ -27,6 +27,7 @@ export const updateUserWealth = async (
     const response = await collectionUserWealth.updateOne(
       { userId },
       { $set: { wealth: updatedWealth } },
+      { upsert: true },
     );
 
     if (!response.acknowledged) {

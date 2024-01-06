@@ -27,6 +27,7 @@ export const adminUpdateMonster = async (
           thumbnail: thumbnail.replace(process.env.CDN_URL, ''),
         },
       },
+      { upsert: true },
     );
 
     if (!response.acknowledged) {

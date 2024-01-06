@@ -18,6 +18,7 @@ export const adminUpdateMonsterDrops = async (
     const response = await collection.updateOne(
       { monsterId },
       { $set: { drops } },
+      { upsert: true },
     );
 
     if (!response.acknowledged) {

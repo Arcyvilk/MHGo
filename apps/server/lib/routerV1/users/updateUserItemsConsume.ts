@@ -54,6 +54,7 @@ export const updateUserItemsConsume = async (
     const response = await collectionUserItems.updateOne(
       { userId },
       { $set: { items: updatedUserItems } },
+      { upsert: true },
     );
 
     if (!response.acknowledged) {

@@ -22,7 +22,7 @@ export const updateUserItemCraft = async (
     // Check if item is craftable
     const collectionItems = db.collection<Item>('items');
     const item = await collectionItems.findOne({ id: itemId });
-    if (!item) throw new Error('Requested item does not exist');
+    if (!item) throw new Error('Requested item does not exist!');
     if (!item.craftable) throw new Error('Requested item is not craftable');
 
     // Get item crafting list
@@ -132,10 +132,12 @@ export const updateUserItemCraft = async (
     const responseItems = await collectionUserItems.updateOne(
       { userId },
       { $set: { items: updatedUserItems } },
+      { upsert: true },
     );
     const responseMaterials = await collectionUserMaterials.updateOne(
       { userId },
       { $set: { materials: updatedUserMaterials } },
+      { upsert: true },
     );
 
     if (!responseMaterials.acknowledged)

@@ -1,0 +1,35 @@
+@import '@mhgo/front/styles/index.scss';
+
+.singleUserView {
+  @include page-wrapper-admin;
+
+  &__content {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+    padding: $size-8;
+    gap: $size-32;
+    span {
+      font-family: $font-open-sans;
+      font-size: $size-12;
+      font-weight: 600;
+    }
+  }
+
+  &__withInfo {
+    display: flex;
+    align-items: center;
+    gap: $size-4;
+  }
+
+  &__section {
+    @include page-section-admin;
+  }
+
+  &__infoSection {
+    p {
+      margin: 0;
+    }
+  }
+}

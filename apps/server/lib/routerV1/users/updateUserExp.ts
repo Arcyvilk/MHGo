@@ -22,6 +22,7 @@ export const updateUserExp = async (
     const response = await collectionUsers.updateOne(
       { id: userId },
       { $set: { exp: user.exp + expChange } },
+      { upsert: true },
     );
 
     if (!response.acknowledged) {

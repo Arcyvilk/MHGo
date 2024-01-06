@@ -1,6 +1,7 @@
 // USERS
 export { adminGetAllUsers } from './adminGetAllUsers';
 export { adminUpdateUser } from './adminUpdateUser';
+export { adminResetUser } from './adminResetUser';
 
 // CREATION
 export { adminCreateItem } from './adminCreateItem';

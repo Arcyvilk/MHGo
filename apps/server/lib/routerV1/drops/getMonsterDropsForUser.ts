@@ -89,7 +89,7 @@ export const getMonsterDropsForUser = async (
       db.collection<UserMaterials>('userMaterials');
     const userMaterials = await collectionUserMaterials.findOne({ userId });
     const materialsToUpdate = putUserMaterials(
-      userMaterials.materials,
+      userMaterials?.materials ?? [],
       uniqueMaterialDrops,
     );
 
@@ -110,7 +110,7 @@ export const getMonsterDropsForUser = async (
     // Give user's their new items
     const collectionUserItems = db.collection<UserItems>('userItems');
     const userItems = await collectionUserItems.findOne({ userId });
-    const itemsToUpdate = putUserItems(userItems.items, uniqueItemDrops);
+    const itemsToUpdate = putUserItems(userItems?.items ?? [], uniqueItemDrops);
 
     const responseItemsUpdate = await collectionUserItems.updateOne(
       { userId },

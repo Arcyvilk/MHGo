@@ -17,6 +17,8 @@ import {
   MonsterCreateView,
   ResourceCreateView,
   ResourceEditView,
+  UserCreateView,
+  UserEditView,
 } from '../pages';
 
 export type Entry = {
@@ -157,5 +159,21 @@ export const entries: Entry[] = [
     icon: 'Star',
     mainRoute: false,
     component: <ResourceEditView />,
+  },
+  {
+    id: 'user_create',
+    title: 'Create user',
+    link: '/users/create',
+    icon: 'Friends',
+    mainRoute: false,
+    component: <UserCreateView />,
+  },
+  {
+    id: 'user_edit',
+    title: 'Edit user',
+    link: '/users/edit',
+    icon: 'Friends',
+    mainRoute: false,
+    component: <UserEditView />,
   },
 ];

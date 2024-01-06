@@ -36,7 +36,7 @@ export const MaterialEditView = () => {
       <div className={s.singleMaterialView}>
         <div className={s.singleMaterialView__header}>
           <h1 className={s.singleMaterialView__title}>
-            This material does not exist
+            This material does not exist!
           </h1>
         </div>
         <div className={s.singleMaterialView__footer}>
