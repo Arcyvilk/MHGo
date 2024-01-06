@@ -29,8 +29,8 @@ export const updateUserExp = async (
       )?.value ?? 100;
     const oldExp = user.exp;
     const newExp = user.exp + expChange;
-    const oldLevel = 1 + Math.floor(oldExp / (oldExp % expPerLevel));
-    const newLevel = 1 + Math.floor(newExp / (newExp % expPerLevel));
+    const oldLevel = 1 + Math.floor(oldExp / expPerLevel);
+    const newLevel = 1 + Math.floor(newExp / expPerLevel);
 
     // TODO Give user rewards for when he levels up!
 
