@@ -40,6 +40,9 @@ export const getMonsterMarkersByUserId = async (
     const fixedLat = lat ? Number(Number(lat).toFixed(2)) : null;
     const fixedLng = lng ? Number(Number(lng).toFixed(2)) : null;
 
+    console.log(lat, fixedLat);
+    console.log(lng, fixedLng);
+
     const filterCoords =
       fixedLat && fixedLng
         ? {
@@ -82,12 +85,11 @@ export const getMonsterMarkersByUserId = async (
     const monsterMarkers: MonsterMarker[] = [];
 
     // Aggregate all filters together
-    const andFilters = { ...filterCoords };
     const orFilters = [...filterLevel];
     const norFilters = [...filterCooldown, ...filterTooHighLevelRequirement];
 
     const cursorMonsterMarkers = collectionMonsterMarkers.find({
-      ...(andFilters[0] ? andFilters : {}),
+      ...filterCoords,
       ...(orFilters.length ? { $or: orFilters } : {}),
       ...(norFilters.length ? { $nor: norFilters } : {}),
     });
