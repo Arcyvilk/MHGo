@@ -4,6 +4,8 @@ import { Setting } from '@mhgo/types';
 
 import { mongoInstance } from '../../../api';
 
+// TODO When user updates respawn_time_resource or respawn_time_monster,
+// it also updates the TTL indexes for the respective markers
 export const adminUpdateSettings = async (
   req: Request,
   res: Response,
