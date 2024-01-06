@@ -8,8 +8,7 @@ import { Map } from './Map';
 
 import s from './HomeView.module.scss';
 
-const TEMP_SRC =
-  'https://cdn.masochist.me/badges/1003590_6423923a819d3d1917bfa22b.png';
+const TEMP_SRC = 'https://cdn.arcyvilk.com/mhgo/misc/question.svg';
 
 export const HomeView = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);

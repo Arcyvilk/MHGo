@@ -14,7 +14,7 @@ export const ErrorFallback = (props: Props) => {
     <div className={s.errorFallback} {...rest}>
       <img
         className={s.errorFallback_img}
-        src="https://cdn.masochist.me/files/ash_fail.png"
+        src="https://cdn.arcyvilk.com/mhgo/misc/question.svg"
       />
       <div className={s.errorFallback_text}>{error}</div>
     </div>
