@@ -5,16 +5,16 @@ import { Input, Select, modifiers } from '@mhgo/front';
 import s from './SingleItemView.module.scss';
 
 type UsableProps = {
-  updatedItem?: TItem;
-  setUpdatedItem: (updatedItem: TItem) => void;
-  updatedItemAction: ItemAction;
-  setUpdatedItemAction: (updatedItemCraft: ItemAction) => void;
+  item?: TItem;
+  setItem: (item: TItem) => void;
+  itemAction: ItemAction;
+  setItemAction: (itemCraft: ItemAction) => void;
 };
 export const SectionUsable = ({
-  updatedItem,
-  setUpdatedItem,
-  updatedItemAction,
-  setUpdatedItemAction,
+  item,
+  setItem,
+  itemAction,
+  setItemAction,
 }: UsableProps) => {
   return (
     <div className={s.singleItemView__section}>
@@ -23,18 +23,18 @@ export const SectionUsable = ({
         control={
           <Switch
             color="default"
-            checked={updatedItem?.usable}
+            checked={item?.usable}
             onChange={(_, checked) =>
-              updatedItem &&
-              setUpdatedItem({
-                ...updatedItem,
+              item &&
+              setItem({
+                ...item,
                 usable: checked,
               })
             }
           />
         }
       />
-      {updatedItem?.usable ? (
+      {item?.usable ? (
         <div
           className={modifiers(s, 'singleItemView__section', {
             hidden: true,
@@ -44,11 +44,11 @@ export const SectionUsable = ({
             control={
               <Switch
                 color="default"
-                checked={updatedItem?.consumable}
+                checked={item?.consumable}
                 onChange={(_, checked) =>
-                  updatedItem &&
-                  setUpdatedItem({
-                    ...updatedItem,
+                  item &&
+                  setItem({
+                    ...item,
                     consumable: checked,
                   })
                 }
@@ -61,11 +61,11 @@ export const SectionUsable = ({
             control={
               <Switch
                 color="default"
-                checked={updatedItem?.quickUse}
+                checked={item?.quickUse}
                 onChange={(_, checked) =>
-                  updatedItem &&
-                  setUpdatedItem({
-                    ...updatedItem,
+                  item &&
+                  setItem({
+                    ...item,
                     quickUse: checked,
                   })
                 }
@@ -79,11 +79,10 @@ export const SectionUsable = ({
             }))}
             name="Action"
             label="Action on use"
-            defaultSelected={Object.keys(updatedItemAction)?.[0]}
+            defaultSelected={Object.keys(itemAction)?.[0]}
             setValue={key =>
-              setUpdatedItemAction({
-                [key]:
-                  key === 'heal' ? 0 : Object.values(updatedItemAction)?.[0],
+              setItemAction({
+                [key]: key === 'heal' ? 0 : Object.values(itemAction)?.[0],
               })
             }
           />
@@ -91,11 +90,11 @@ export const SectionUsable = ({
             name="item_action"
             label="Action value"
             min={0}
-            value={String(Object.values(updatedItemAction)?.[0] ?? '')}
+            value={String(Object.values(itemAction)?.[0] ?? '')}
             setValue={value =>
-              setUpdatedItemAction({
-                ...updatedItemAction,
-                [Object.keys(updatedItemAction)?.[0]]: Number(value)
+              setItemAction({
+                ...itemAction,
+                [Object.keys(itemAction)?.[0]]: Number(value)
                   ? Number(value)
                   : value,
               })

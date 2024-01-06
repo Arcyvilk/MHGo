@@ -3,6 +3,7 @@ export { adminGetAllUsers } from './adminGetAllUsers';
 export { adminUpdateUser } from './adminUpdateUser';
 
 // CREATION
+export { adminCreateItem } from './adminCreateItem';
 export { adminCreateMaterial } from './adminCreateMaterial';
 export { adminCreateMonster } from './adminCreateMonster';
 export { adminCreateResource } from './adminCreateResource';

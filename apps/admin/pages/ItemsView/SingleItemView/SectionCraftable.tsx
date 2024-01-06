@@ -14,18 +14,18 @@ import { CraftList, Item as TItem } from '@mhgo/types';
 import s from './SingleItemView.module.scss';
 
 type CraftableProps = {
-  item: TItem;
-  updatedItem?: TItem;
-  setUpdatedItem: (updatedItem: TItem) => void;
-  updatedItemCraft: CraftList[];
-  setUpdatedItemCraft: (updatedItemCraft: CraftList[]) => void;
+  item?: TItem;
+  setItem: (item: TItem) => void;
+  itemCraft: CraftList[];
+  setItemCraft: (itemCraft: CraftList[]) => void;
+  itemId?: string;
 };
 export const SectionCraftable = ({
   item,
-  updatedItem,
-  setUpdatedItem,
-  updatedItemCraft,
-  setUpdatedItemCraft,
+  setItem,
+  itemCraft,
+  setItemCraft,
+  itemId,
 }: CraftableProps) => {
   const { data: items } = useItemsApi();
   const { data: materials } = useMaterialsApi();
@@ -40,9 +40,9 @@ export const SectionCraftable = ({
           // Dont allow to select item currently selected
           i.id === mat.id ||
             // Dont allow to select items which are already part of recipe
-            updatedItemCraft.find(entry => entry.id === i.id) ||
+            itemCraft.find(entry => entry.id === i.id) ||
             // Dont allow to select item which you are editing atm
-            i.id === item?.id,
+            i.id === itemId,
         ),
       }));
 
@@ -52,7 +52,7 @@ export const SectionCraftable = ({
         name: m.name,
         // Dont allow to select materials which are already part of recipe
         disabled: Boolean(
-          m.id === mat.id || updatedItemCraft.find(entry => entry.id === m.id),
+          m.id === mat.id || itemCraft.find(entry => entry.id === m.id),
         ),
       }));
     return [];
@@ -65,29 +65,29 @@ export const SectionCraftable = ({
         control={
           <Switch
             color="default"
-            checked={updatedItem?.craftable}
+            checked={item?.craftable}
             onChange={(_, checked) =>
-              updatedItem &&
-              setUpdatedItem({
-                ...updatedItem,
+              item &&
+              setItem({
+                ...item,
                 craftable: checked,
               })
             }
           />
         }
       />
-      {updatedItem?.craftable ? (
+      {item?.craftable ? (
         <div
           className={modifiers(s, 'singleItemView__section', {
             hidden: true,
-            wide: true,
+            wide: false,
           })}>
           <div style={{ display: 'flex', gap: '8px' }}>
             <Button
               label="Add item"
               onClick={() =>
-                setUpdatedItemCraft([
-                  ...updatedItemCraft,
+                setItemCraft([
+                  ...itemCraft,
                   {
                     // We fake this id because if we select first item from list
                     // it will duplicate if user creates more fields at once
@@ -103,8 +103,8 @@ export const SectionCraftable = ({
             <Button
               label="Add material"
               onClick={() =>
-                setUpdatedItemCraft([
-                  ...updatedItemCraft,
+                setItemCraft([
+                  ...itemCraft,
                   {
                     // As above
                     id: uuid(),
@@ -115,7 +115,7 @@ export const SectionCraftable = ({
               }
             />
           </div>
-          {updatedItemCraft?.map((mat, index) => {
+          {itemCraft?.map((mat, index) => {
             const matSelection = getSelect(mat);
             return (
               <div
@@ -128,12 +128,12 @@ export const SectionCraftable = ({
                     key={`select-${index}`}
                     name="Material"
                     setValue={selectedMatId => {
-                      const updatedEntries = updatedItemCraft.map(entry => {
+                      const updatedEntries = itemCraft.map(entry => {
                         if (entry.id === mat.id)
                           return { ...entry, id: selectedMatId };
                         return entry;
                       });
-                      return setUpdatedItemCraft(updatedEntries);
+                      return setItemCraft(updatedEntries);
                     }}
                   />
                 </div>
@@ -144,7 +144,7 @@ export const SectionCraftable = ({
                   min={1}
                   style={{ maxWidth: '75px' }}
                   setValue={selectedMatAmount => {
-                    const updatedEntries = updatedItemCraft.map(entry => {
+                    const updatedEntries = itemCraft.map(entry => {
                       if (entry.id === mat.id)
                         return {
                           ...entry,
@@ -152,15 +152,13 @@ export const SectionCraftable = ({
                         };
                       return entry;
                     });
-                    return setUpdatedItemCraft(updatedEntries);
+                    return setItemCraft(updatedEntries);
                   }}
                 />
                 <Button
                   label={<Icon icon="X" />}
                   onClick={() =>
-                    setUpdatedItemCraft(
-                      updatedItemCraft.filter(entry => entry.id !== mat.id),
-                    )
+                    setItemCraft(itemCraft.filter(entry => entry.id !== mat.id))
                   }
                   style={{ padding: 0 }}
                   simple

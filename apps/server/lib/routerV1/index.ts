@@ -12,6 +12,7 @@ export const routerV1 = express.Router();
 import {
   adminGetAllUsers,
   adminUpdateUser,
+  adminCreateItem,
   adminCreateMaterial,
   adminCreateMonster,
   adminUpdateItem,
@@ -35,6 +36,7 @@ import {
 routerV1.get('/admin/users/list', adminGetAllUsers);
 routerV1.put('/admin/users/user/:userId', adminUpdateUser);
 
+routerV1.post('/admin/items/create', adminCreateItem);
 routerV1.post('/admin/materials/create', adminCreateMaterial);
 routerV1.post('/admin/monsters/create', adminCreateMonster);
 routerV1.post('/admin/resources/create', adminCreateResource);

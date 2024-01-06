@@ -12,10 +12,9 @@ import {
   useItemStatsApi,
   useItemsApi,
   useMonsterDropsApi,
-  useSettingsApi,
 } from '@mhgo/front';
 import { ActionBar, HeaderEdit } from '../../../containers';
-import { DEFAULT_ITEM_TYPES, DEFAULT_STATS } from '../../../utils/defaults';
+import { DEFAULT_STATS } from '../../../utils/defaults';
 import { Status } from '../../../utils/types';
 import { SectionBasic } from './SectionBasic';
 import { SectionCraftable } from './SectionCraftable';
@@ -74,36 +73,32 @@ export const ItemEditView = () => {
       />
       <div className={s.singleItemView__content}>
         <SectionBasic
-          item={item}
-          updatedItem={updatedItem}
-          setUpdatedItem={setUpdatedItem}
+          item={updatedItem!}
+          setItem={setUpdatedItem}
           itemImg={itemImg}
           itemDrops={itemDrops}
         />
         <div className={s.singleItemView__content}>
           <SectionEquippable
-            updatedItem={updatedItem}
-            setUpdatedItem={setUpdatedItem}
-            updatedItemStats={updatedItemStats}
-            setUpdatedItemStats={setUpdatedItemStats}
+            item={updatedItem!}
+            setItem={setUpdatedItem}
+            itemStats={updatedItemStats}
+            setItemStats={setUpdatedItemStats}
           />
           <SectionCraftable
-            item={item}
-            updatedItem={updatedItem}
-            setUpdatedItem={setUpdatedItem}
-            updatedItemCraft={updatedItemCraft}
-            setUpdatedItemCraft={setUpdatedItemCraft}
+            item={updatedItem}
+            setItem={setUpdatedItem}
+            itemCraft={updatedItemCraft}
+            setItemCraft={setUpdatedItemCraft}
+            itemId={item?.id}
           />
           <SectionUsable
-            updatedItem={updatedItem}
-            setUpdatedItem={setUpdatedItem}
-            updatedItemAction={updatedItemAction}
-            setUpdatedItemAction={setUpdatedItemAction}
+            item={updatedItem}
+            setItem={setUpdatedItem}
+            itemAction={updatedItemAction}
+            setItemAction={setUpdatedItemAction}
           />
-          <SectionPurchasable
-            updatedItem={updatedItem}
-            setUpdatedItem={setUpdatedItem}
-          />
+          <SectionPurchasable item={updatedItem} setItem={setUpdatedItem} />
         </div>
       </div>
     </div>

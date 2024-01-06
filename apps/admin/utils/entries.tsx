@@ -9,6 +9,7 @@ import {
   SettingsView,
   UsersView,
   //
+  ItemCreateView,
   ItemEditView,
   MaterialCreateView,
   MaterialEditView,
@@ -93,6 +94,14 @@ export const entries: Entry[] = [
     component: <UsersView />,
   },
   // SUBROUTES
+  {
+    id: 'item_create',
+    title: 'Create item',
+    link: '/items/create',
+    icon: 'Armory',
+    mainRoute: false,
+    component: <ItemCreateView />,
+  },
   {
     id: 'item_edit',
     title: 'Edit item',

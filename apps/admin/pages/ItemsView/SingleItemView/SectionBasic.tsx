@@ -9,15 +9,13 @@ import s from './SingleItemView.module.scss';
 
 type BasicProps = {
   item: TItem;
-  updatedItem?: TItem;
-  setUpdatedItem: (updatedItem: TItem) => void;
+  setItem: (item: TItem) => void;
   itemImg: string;
-  itemDrops: { monsterId: string; level: number }[];
+  itemDrops?: { monsterId: string; level: number }[];
 };
 export const SectionBasic = ({
   item,
-  updatedItem,
-  setUpdatedItem,
+  setItem,
   itemImg,
   itemDrops,
 }: BasicProps) => {
@@ -33,11 +31,11 @@ export const SectionBasic = ({
         <Input
           name="item_name"
           label="Item's name"
-          value={updatedItem?.name ?? ''}
+          value={item?.name ?? ''}
           setValue={name =>
-            updatedItem &&
-            setUpdatedItem({
-              ...updatedItem,
+            item &&
+            setItem({
+              ...item,
               name,
             })
           }
@@ -45,11 +43,11 @@ export const SectionBasic = ({
         <Input
           name="item_desc"
           label="Item's description"
-          value={updatedItem?.description ?? ''}
+          value={item?.description ?? ''}
           setValue={description =>
-            updatedItem &&
-            setUpdatedItem({
-              ...updatedItem,
+            item &&
+            setItem({
+              ...item,
               description,
             })
           }
@@ -57,13 +55,13 @@ export const SectionBasic = ({
         <Select
           label="Item's type"
           name="item_type"
-          defaultSelected={updatedItem?.type}
+          defaultSelected={item?.type}
           data={itemTypes!.map(type => ({ id: type, name: type }))}
           key={uuid()}
           setValue={type =>
-            updatedItem &&
-            setUpdatedItem({
-              ...updatedItem,
+            item &&
+            setItem({
+              ...item,
               type: type as ItemType,
             })
           }
@@ -74,11 +72,11 @@ export const SectionBasic = ({
           min={1}
           max={5}
           type="number"
-          value={String(updatedItem?.rarity ?? 1)}
+          value={String(item?.rarity ?? 1)}
           setValue={rarity =>
-            updatedItem &&
-            setUpdatedItem({
-              ...updatedItem,
+            item &&
+            setItem({
+              ...item,
               rarity: Number(rarity),
             })
           }
@@ -86,11 +84,11 @@ export const SectionBasic = ({
         <Input
           name="item_obtainedAt"
           label="Where item can be obtained?"
-          value={updatedItem?.obtainedAt ?? ''}
+          value={item?.obtainedAt ?? ''}
           setValue={obtainedAt =>
-            updatedItem &&
-            setUpdatedItem({
-              ...updatedItem,
+            item &&
+            setItem({
+              ...item,
               obtainedAt,
             })
           }
@@ -104,42 +102,48 @@ export const SectionBasic = ({
           label="Path to item image"
           value={itemImg}
           setValue={img =>
-            updatedItem &&
-            setUpdatedItem({
-              ...updatedItem,
+            item &&
+            setItem({
+              ...item,
               img,
             })
           }
         />
-        <Item
-          data={{
-            ...(updatedItem ?? item),
-            purchasable: false,
-            img: `${CDN_URL}${itemImg}`,
-          }}
-        />
+        {item && (
+          <Item
+            data={{
+              ...item,
+              purchasable: false,
+              img: `${CDN_URL}${itemImg}`,
+            }}
+          />
+        )}
       </div>
-      <div className={s.singleItemView__section}>
-        <div className={s.singleItemView__infoSection}>
-          <p style={{ fontWeight: 600 }} className={s.singleItemView__withInfo}>
-            Dropped by:
-          </p>
-          {itemDrops.length > 0
-            ? itemDrops.map(drop => (
-                <Button
-                  key={`monsterlink-${drop.monsterId}`}
-                  variant={Button.Variant.GHOST}
-                  inverted
-                  simple
-                  label={`${drop.monsterId} (level ${drop.level})`}
-                  onClick={() =>
-                    navigate(`/monsters/edit?id=${drop.monsterId}`)
-                  }
-                />
-              ))
-            : '-'}
+      {itemDrops ? (
+        <div className={s.singleItemView__section}>
+          <div className={s.singleItemView__infoSection}>
+            <p
+              style={{ fontWeight: 600 }}
+              className={s.singleItemView__withInfo}>
+              Dropped by:
+            </p>
+            {itemDrops.length > 0
+              ? itemDrops.map(drop => (
+                  <Button
+                    key={`monsterlink-${drop.monsterId}`}
+                    variant={Button.Variant.GHOST}
+                    inverted
+                    simple
+                    label={`${drop.monsterId} (level ${drop.level})`}
+                    onClick={() =>
+                      navigate(`/monsters/edit?id=${drop.monsterId}`)
+                    }
+                  />
+                ))
+              : '-'}
+          </div>
         </div>
-      </div>
+      ) : null}
     </div>
   );
 };

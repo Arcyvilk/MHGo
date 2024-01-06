@@ -10,17 +10,26 @@ export const adminCreateMonster = async (
 ): Promise<void> => {
   try {
     const { db } = mongoInstance.getDb();
-
-    const collectionMonsters = db.collection<Monster>('monsters');
     const collectionMonsterDrops = db.collection<MonsterDrop>('drops');
     const { monster, drops } = req.body as {
       monster: Monster;
       drops: MonsterDrop;
     };
 
+    // Check if the item with this ID already exists
+    const newId = monster.name.toLowerCase().replace(/ /g, '_');
+    const collectionMonsters = db.collection<Monster>('monsters');
+    const monsterWithSameId = await collectionMonsters.findOne({ id: newId });
+    if (monsterWithSameId) {
+      throw new Error(
+        'A monster with this ID already exists! Please change the monster name to generate new monster ID.',
+      );
+    }
+
     // Create monster
     const responseMonsters = await collectionMonsters.insertOne({
       ...monster,
+      id: newId,
       img: monster.img.replace(process.env.CDN_URL, ''),
     });
     if (!responseMonsters.acknowledged) {

@@ -1,4 +1,6 @@
+import { v4 as uuid } from 'uuid';
 import {
+  Item as TItem,
   ItemSlot,
   ItemType,
   Material,
@@ -15,14 +17,14 @@ export const DEFAULT_STATS: Stats = {
   attack: 0,
   defense: 0,
   health: 0,
-  element: 'null',
+  element: 'none',
   luck: 0,
   critChance: 0,
   critDamage: 0,
 };
 
 export const DEFAULT_MONSTER: Monster = {
-  id: '',
+  id: uuid(),
   img: '/monsters/XXX.jpg',
   thumbnail: '/monsters/thumbnail-XXX.jpg',
   habitat: 'swamp',
@@ -45,8 +47,27 @@ export const DEFAULT_MONSTER: Monster = {
   ],
 };
 
+export const DEFAULT_ITEM: TItem = {
+  id: uuid(),
+  type: 'other',
+  slot: null,
+  img: '/items/XXX.svg',
+  name: '',
+  description: '',
+  rarity: 1,
+  price: 0,
+  purchasable: false,
+  craftable: false,
+  craftList: [],
+  equippable: false,
+  usable: false,
+  obtainedAt: '',
+  consumable: false,
+  quickUse: false,
+};
+
 export const DEFAULT_MATERIAL: Material = {
-  id: '',
+  id: uuid(),
   name: '',
   description: '',
   rarity: 1,
@@ -55,7 +76,7 @@ export const DEFAULT_MATERIAL: Material = {
 };
 
 export const DEFAULT_RESOURCE: Resource = {
-  id: '',
+  id: uuid(),
   name: '',
   description: '',
   img: '/resources/XXX.jpg',

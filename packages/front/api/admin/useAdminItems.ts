@@ -3,6 +3,38 @@ import { CraftList, Item, ItemAction, Stats } from '@mhgo/types';
 
 import { API_URL } from '../../env';
 
+type ItemCreate = {
+  item: Item;
+  itemAction: ItemAction;
+  itemCraft: CraftList[];
+  itemStats: Stats;
+};
+export const useAdminCreateItemApi = () => {
+  const queryClient = useQueryClient();
+
+  const adminCreateItem = async (variables: ItemCreate): Promise<void> => {
+    const response = await fetch(`${API_URL}/admin/items/create`, {
+      method: 'post',
+      body: JSON.stringify(variables),
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (response.status !== 201)
+      throw new Error((await response.json()).error ?? 'Did not work!');
+    queryClient.invalidateQueries({ queryKey: ['items'], exact: false });
+  };
+
+  const { mutate, status, isPending, isSuccess, isError, error } = useMutation({
+    mutationKey: ['admin', 'item', 'create'],
+    mutationFn: adminCreateItem,
+  });
+
+  return { mutate, error, status, isPending, isSuccess, isError };
+};
+
 export const useAdminUpdateItemApi = () => {
   const queryClient = useQueryClient();
 

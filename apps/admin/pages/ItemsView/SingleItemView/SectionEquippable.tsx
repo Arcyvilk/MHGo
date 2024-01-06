@@ -1,23 +1,22 @@
-import { useState } from 'react';
 import { v4 as uuid } from 'uuid';
 import { FormControlLabel, Switch } from '@mui/material';
-import { Item, ItemSlot, Stats, Item as TItem } from '@mhgo/types';
+import { ItemSlot, Stats, Item as TItem } from '@mhgo/types';
 import { Input, Select, modifiers, useSettingsApi } from '@mhgo/front';
 
 import { DEFAULT_SLOTS, DEFAULT_STATS } from '../../../utils/defaults';
 import s from './SingleItemView.module.scss';
 
 type EquippableProps = {
-  updatedItem?: TItem;
-  setUpdatedItem: (updatedItem: TItem) => void;
-  updatedItemStats: Stats;
-  setUpdatedItemStats: (updatedItemStats: Stats) => void;
+  item?: TItem;
+  setItem: (Item: TItem) => void;
+  itemStats: Stats;
+  setItemStats: (itemStats: Stats) => void;
 };
 export const SectionEquippable = ({
-  updatedItem,
-  setUpdatedItem,
-  updatedItemStats,
-  setUpdatedItemStats,
+  item,
+  setItem,
+  itemStats,
+  setItemStats,
 }: EquippableProps) => {
   const { setting: baseStats } = useSettingsApi('base_stats', DEFAULT_STATS);
   const { setting: equipmentSlots } = useSettingsApi(
@@ -39,18 +38,18 @@ export const SectionEquippable = ({
         control={
           <Switch
             color="default"
-            checked={updatedItem?.equippable}
+            checked={item?.equippable}
             onChange={(_, checked) =>
-              updatedItem &&
-              setUpdatedItem({
-                ...updatedItem,
+              item &&
+              setItem({
+                ...item,
                 equippable: checked,
               })
             }
           />
         }
       />
-      {updatedItem?.equippable ? (
+      {item?.equippable ? (
         <div
           className={modifiers(s, 'singleItemView__section', {
             hidden: true,
@@ -60,17 +59,16 @@ export const SectionEquippable = ({
             "weapon" type.
           </div>
           <Select
-            defaultSelected={updatedItem?.slot as ItemSlot}
+            defaultSelected={item?.slot as ItemSlot}
             data={slotOptions}
             key={uuid()}
             name="Equipment slot"
             setValue={slot =>
-              updatedItem &&
-              setUpdatedItem({ ...updatedItem, slot: slot as ItemSlot })
+              item && setItem({ ...item, slot: slot as ItemSlot })
             }
           />
           {stats.map(stat => {
-            const oldStat = updatedItemStats[stat as keyof Stats];
+            const oldStat = itemStats[stat as keyof Stats];
             return (
               <div className={s.singleItemView__stat}>
                 <span className={s.singleItemView__statKey}>{stat}</span>
@@ -84,10 +82,10 @@ export const SectionEquippable = ({
                   disabled={stat === 'element'}
                   setValue={newStat => {
                     const updatedEntries = {
-                      ...updatedItemStats,
+                      ...itemStats,
                       [stat]: stat === 'element' ? stat : Number(newStat),
                     };
-                    return setUpdatedItemStats(updatedEntries);
+                    return setItemStats(updatedEntries);
                   }}
                 />
               </div>

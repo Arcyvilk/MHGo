@@ -5,13 +5,10 @@ import { Input, modifiers } from '@mhgo/front';
 import s from './SingleItemView.module.scss';
 
 type PurchasableProps = {
-  updatedItem?: TItem;
-  setUpdatedItem: (updatedItem: TItem) => void;
+  item?: TItem;
+  setItem: (item: TItem) => void;
 };
-export const SectionPurchasable = ({
-  updatedItem,
-  setUpdatedItem,
-}: PurchasableProps) => {
+export const SectionPurchasable = ({ item, setItem }: PurchasableProps) => {
   return (
     <div className={s.singleItemView__section}>
       <FormControlLabel
@@ -19,18 +16,18 @@ export const SectionPurchasable = ({
         control={
           <Switch
             color="default"
-            checked={updatedItem?.purchasable}
+            checked={item?.purchasable}
             onChange={(_, checked) =>
-              updatedItem &&
-              setUpdatedItem({
-                ...updatedItem,
+              item &&
+              setItem({
+                ...item,
                 purchasable: checked,
               })
             }
           />
         }
       />
-      {updatedItem?.purchasable ? (
+      {item?.purchasable ? (
         <div
           className={modifiers(s, 'singleItemView__section', {
             hidden: true,
@@ -40,11 +37,11 @@ export const SectionPurchasable = ({
             name="item_price"
             type="number"
             min={0}
-            value={String(updatedItem?.price ?? 0)}
+            value={String(item?.price ?? 0)}
             setValue={price =>
-              updatedItem &&
-              setUpdatedItem({
-                ...updatedItem,
+              item &&
+              setItem({
+                ...item,
                 price: Number(price),
               })
             }
