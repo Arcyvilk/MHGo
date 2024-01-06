@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { log } from '@mhgo/utils';
-import { Item, ItemToUse, UserItems } from '@mhgo/types';
+import { Item, ItemToUse, UserAmount, UserItems } from '@mhgo/types';
 
 import { mongoInstance } from '../../../api';
 
@@ -36,20 +36,22 @@ export const updateUserItemsConsume = async (
       })
     )?.items;
 
-    const updatedUserItems = userItems.map(userItem => {
-      const itemUsed = itemsUsed.find(i => i.itemId === userItem.id);
-      if (itemUsed) {
-        const newAmount = userItem.amount - itemUsed.amountUsed;
-        if (newAmount < 0) {
-          throw new Error('Insufficient amount of items to consume!');
+    const updatedUserItems = userItems
+      .map(userItem => {
+        const itemUsed = itemsUsed.find(i => i.itemId === userItem.id);
+        if (itemUsed) {
+          const newAmount = userItem.amount - itemUsed.amountUsed;
+          if (newAmount > 0)
+            return {
+              ...userItem,
+              amount: newAmount >= 0 ? newAmount : 0,
+            };
+          // Remove item from list if amount is 0 or less (it shouldn't be less though)
+          if (newAmount <= 0) return null;
         }
-        return {
-          ...userItem,
-          amount: newAmount >= 0 ? newAmount : 0,
-        };
-      }
-      return userItem;
-    });
+        return userItem;
+      })
+      .filter(Boolean) as UserAmount[];
 
     const response = await collectionUserItems.updateOne(
       { userId },

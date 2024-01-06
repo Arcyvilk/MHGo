@@ -38,8 +38,7 @@ export const useMonsterMarkerDropsApi = (userId: string) => {
       },
     });
 
-    queryClient.invalidateQueries({ queryKey: ['user', userId, 'materials'] });
-    queryClient.invalidateQueries({ queryKey: ['user', userId, 'items'] });
+    queryClient.invalidateQueries({ queryKey: ['user', userId], exact: false });
     queryClient.invalidateQueries({ queryKey: ['items'], exact: false });
     queryClient.invalidateQueries({
       queryKey: ['monster', 'markers'],
