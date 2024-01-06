@@ -6,7 +6,9 @@ import {
   Item,
   ItemAction,
   ItemCraftList,
+  ItemStat,
   Material,
+  Stats,
 } from '@mhgo/types';
 
 import { mongoInstance } from '../../../api';
@@ -121,6 +123,34 @@ export const adminUpdateItemCrafts = async (
 
     if (!response.acknowledged) {
       res.status(400).send({ error: 'Could not update this item craft list.' });
+    } else {
+      res.status(200).send(response);
+    }
+  } catch (err: any) {
+    log.WARN(err);
+    res.status(500).send({ error: err.message ?? 'Internal server error' });
+  }
+};
+
+export const adminUpdateItemStats = async (
+  req: Request,
+  res: Response,
+): Promise<void> => {
+  try {
+    const { db } = mongoInstance.getDb();
+    const { itemId } = req.params;
+
+    const collection = db.collection<ItemStat>('itemStats');
+    const stats = req.body as Stats;
+
+    const response = await collection.updateOne(
+      { itemId },
+      { $set: { stats } },
+      { upsert: true },
+    );
+
+    if (!response.acknowledged) {
+      res.status(400).send({ error: 'Could not update this item stats.' });
     } else {
       res.status(200).send(response);
     }

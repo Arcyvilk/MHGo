@@ -17,6 +17,7 @@ import {
   adminUpdateItem,
   adminUpdateItemAction,
   adminUpdateItemCrafts,
+  adminUpdateItemStats,
   adminUpdateMaterial,
   adminUpdateMonster,
   adminCreateMonsterMarker,
@@ -41,6 +42,7 @@ routerV1.post('/admin/resources/create', adminCreateResource);
 routerV1.put('/admin/items/item/:itemId', adminUpdateItem);
 routerV1.put('/admin/items/item/:itemId/action', adminUpdateItemAction);
 routerV1.put('/admin/items/item/:itemId/crafts', adminUpdateItemCrafts);
+routerV1.put('/admin/items/item/:itemId/stats', adminUpdateItemStats);
 
 routerV1.put('/admin/materials/material/:materialId', adminUpdateMaterial);
 routerV1.put('/admin/monsters/monster/:monsterId', adminUpdateMonster);

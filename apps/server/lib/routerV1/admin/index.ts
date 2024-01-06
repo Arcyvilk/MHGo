@@ -12,6 +12,7 @@ export {
   adminUpdateItem,
   adminUpdateItemAction,
   adminUpdateItemCrafts,
+  adminUpdateItemStats,
 } from './adminUpdateItem';
 export { adminUpdateMaterial } from './adminUpdateMaterial';
 export { adminUpdateMonster } from './adminUpdateMonster';

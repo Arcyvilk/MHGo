@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { CraftList, Item, ItemAction } from '@mhgo/types';
+import { CraftList, Item, ItemAction, Stats } from '@mhgo/types';
 
 import { API_URL } from '../../env';
 
@@ -91,6 +91,38 @@ export const useAdminUpdateItemCraftlistApi = () => {
   const { mutate, status, isPending, isSuccess, isError } = useMutation({
     mutationKey: ['admin', 'item', 'craftlist', 'update'],
     mutationFn: adminUpdateItemAction,
+  });
+
+  return { mutate, status, isPending, isSuccess, isError };
+};
+
+export const useAdminUpdateItemStatsApi = () => {
+  const queryClient = useQueryClient();
+
+  const adminUpdateItemStats = async (variables: {
+    itemId: string;
+    stats: Stats;
+  }): Promise<void> => {
+    const { itemId, stats } = variables;
+    const response = await fetch(
+      `${API_URL}/admin/items/item/${itemId}/stats`,
+      {
+        method: 'PUT',
+        body: JSON.stringify(stats),
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+      },
+    );
+
+    if (response.status !== 200) throw new Error('Did not work!');
+    queryClient.invalidateQueries({ queryKey: ['items'], exact: false });
+  };
+
+  const { mutate, status, isPending, isSuccess, isError } = useMutation({
+    mutationKey: ['admin', 'item', 'stats', 'update'],
+    mutationFn: adminUpdateItemStats,
   });
 
   return { mutate, status, isPending, isSuccess, isError };
