@@ -18,7 +18,7 @@ export const useAdminCreateResourceApi = () => {
     });
 
     if (response.status !== 201)
-      throw new Error('Could not create a resource!');
+      throw new Error((await response.json()).error ?? 'Did not work!'); 
 
     queryClient.invalidateQueries({
       queryKey: ['drops', 'resource'],
@@ -27,12 +27,12 @@ export const useAdminCreateResourceApi = () => {
     queryClient.invalidateQueries({ queryKey: ['resources'], exact: false });
   };
 
-  const { mutate, status, isPending, isSuccess, isError } = useMutation({
+  const { mutate, error, status, isPending, isSuccess, isError } = useMutation({
     mutationKey: ['admin', 'resource', 'create'],
     mutationFn: adminCreateResource,
   });
 
-  return { mutate, status, isPending, isSuccess, isError };
+  return { mutate, error, status, isPending, isSuccess, isError };
 };
 
 // Update resource
@@ -54,7 +54,7 @@ export const useAdminUpdateResourceApi = () => {
     );
 
     if (response.status !== 200 && response.status !== 201)
-      throw new Error('Did not work!');
+      throw new Error((await response.json()).error ?? 'Did not work!'); 
 
     queryClient.invalidateQueries({
       queryKey: ['drops', 'resource'],
@@ -63,10 +63,10 @@ export const useAdminUpdateResourceApi = () => {
     queryClient.invalidateQueries({ queryKey: ['resources'], exact: false });
   };
 
-  const { mutate, status, isPending, isSuccess, isError } = useMutation({
+  const { mutate, error, status, isPending, isSuccess, isError } = useMutation({
     mutationKey: ['admin', 'resources', 'update'],
     mutationFn: adminUpdateResource,
   });
 
-  return { mutate, status, isPending, isSuccess, isError };
+  return { mutate, error, status, isPending, isSuccess, isError };
 };

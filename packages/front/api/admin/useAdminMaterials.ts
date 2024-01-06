@@ -18,16 +18,16 @@ export const useAdminCreateMaterialApi = () => {
     });
 
     if (response.status !== 201)
-      throw new Error('Could not create a material!');
+      throw new Error((await response.json()).error ?? 'Did not work!'); 
     queryClient.invalidateQueries({ queryKey: ['materials'] });
   };
 
-  const { mutate, status, isPending, isSuccess, isError } = useMutation({
+  const { mutate, error, status, isPending, isSuccess, isError } = useMutation({
     mutationKey: ['admin', 'material', 'create'],
     mutationFn: adminCreateMaterial,
   });
 
-  return { mutate, status, isPending, isSuccess, isError };
+  return { mutate, error, status, isPending, isSuccess, isError };
 };
 
 // Update material
@@ -49,14 +49,14 @@ export const useAdminUpdateMaterialApi = () => {
     );
 
     if (response.status !== 200 && response.status !== 201)
-      throw new Error('Did not work!');
+      throw new Error((await response.json()).error ?? 'Did not work!'); 
     queryClient.invalidateQueries({ queryKey: ['materials'] });
   };
 
-  const { mutate, status, isPending, isSuccess, isError } = useMutation({
+  const { mutate, error, status, isPending, isSuccess, isError } = useMutation({
     mutationKey: ['admin', 'materials', 'update'],
     mutationFn: adminUpdateMaterial,
   });
 
-  return { mutate, status, isPending, isSuccess, isError };
+  return { mutate, error, status, isPending, isSuccess, isError };
 };

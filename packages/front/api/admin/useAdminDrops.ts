@@ -21,14 +21,14 @@ export const useAdminUpdateMonsterDropsApi = () => {
     );
 
     if (response.status !== 200 && response.status !== 201)
-      throw new Error('Could not update monster drops!');
+      throw new Error((await response.json()).error ?? 'Did not work!'); 
     queryClient.invalidateQueries({ queryKey: ['drops', 'monster'] });
   };
 
-  const { mutate, status, isPending, isSuccess, isError } = useMutation({
+  const { mutate, error, status, isPending, isSuccess, isError } = useMutation({
     mutationKey: ['admin', 'monster', 'drops', 'update'],
     mutationFn: adminUpdateMonster,
   });
 
-  return { mutate, status, isPending, isSuccess, isError };
+  return { mutate, error, status, isPending, isSuccess, isError };
 };

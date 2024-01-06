@@ -27,7 +27,7 @@ export const useAdminCreateItemApi = () => {
     queryClient.invalidateQueries({ queryKey: ['items'], exact: false });
   };
 
-  const { mutate, status, isPending, isSuccess, isError, error } = useMutation({
+  const { mutate, error, status, isPending, isSuccess, isError } = useMutation({
     mutationKey: ['admin', 'item', 'create'],
     mutationFn: adminCreateItem,
   });
@@ -53,16 +53,16 @@ export const useAdminUpdateItemApi = () => {
     );
 
     if (response.status !== 200 && response.status !== 201)
-      throw new Error('Did not work!');
+      throw new Error((await response.json()).error ?? 'Did not work!');
     queryClient.invalidateQueries({ queryKey: ['items'], exact: false });
   };
 
-  const { mutate, status, isPending, isSuccess, isError } = useMutation({
+  const { mutate, error, status, isPending, isSuccess, isError } = useMutation({
     mutationKey: ['admin', 'item', 'update'],
     mutationFn: adminUpdateItem,
   });
 
-  return { mutate, status, isPending, isSuccess, isError };
+  return { mutate, error, status, isPending, isSuccess, isError };
 };
 
 export const useAdminUpdateItemActionApi = () => {
@@ -84,16 +84,17 @@ export const useAdminUpdateItemActionApi = () => {
       },
     );
 
-    if (response.status !== 200) throw new Error('Did not work!');
+    if (response.status !== 200)
+      throw new Error((await response.json()).error ?? 'Did not work!');
     queryClient.invalidateQueries({ queryKey: ['items'], exact: false });
   };
 
-  const { mutate, status, isPending, isSuccess, isError } = useMutation({
+  const { mutate, error, status, isPending, isSuccess, isError } = useMutation({
     mutationKey: ['admin', 'item', 'action', 'update'],
     mutationFn: adminUpdateItemAction,
   });
 
-  return { mutate, status, isPending, isSuccess, isError };
+  return { mutate, error, status, isPending, isSuccess, isError };
 };
 
 export const useAdminUpdateItemCraftlistApi = () => {
@@ -116,16 +117,17 @@ export const useAdminUpdateItemCraftlistApi = () => {
       },
     );
 
-    if (response.status !== 200) throw new Error('Did not work!');
+    if (response.status !== 200)
+      throw new Error((await response.json()).error ?? 'Did not work!');
     queryClient.invalidateQueries({ queryKey: ['items'], exact: false });
   };
 
-  const { mutate, status, isPending, isSuccess, isError } = useMutation({
+  const { mutate, error, status, isPending, isSuccess, isError } = useMutation({
     mutationKey: ['admin', 'item', 'craftlist', 'update'],
     mutationFn: adminUpdateItemAction,
   });
 
-  return { mutate, status, isPending, isSuccess, isError };
+  return { mutate, error, status, isPending, isSuccess, isError };
 };
 
 export const useAdminUpdateItemStatsApi = () => {
@@ -148,14 +150,15 @@ export const useAdminUpdateItemStatsApi = () => {
       },
     );
 
-    if (response.status !== 200) throw new Error('Did not work!');
+    if (response.status !== 200)
+      throw new Error((await response.json()).error ?? 'Did not work!');
     queryClient.invalidateQueries({ queryKey: ['items'], exact: false });
   };
 
-  const { mutate, status, isPending, isSuccess, isError } = useMutation({
+  const { mutate, error, status, isPending, isSuccess, isError } = useMutation({
     mutationKey: ['admin', 'item', 'stats', 'update'],
     mutationFn: adminUpdateItemStats,
   });
 
-  return { mutate, status, isPending, isSuccess, isError };
+  return { mutate, error, status, isPending, isSuccess, isError };
 };

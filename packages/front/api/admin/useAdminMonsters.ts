@@ -24,12 +24,12 @@ export const useAdminCreateMonsterApi = () => {
     queryClient.invalidateQueries({ queryKey: ['monsters'] });
   };
 
-  const { mutate, status, isPending, isSuccess, isError } = useMutation({
+  const { mutate, error, status, isPending, isSuccess, isError } = useMutation({
     mutationKey: ['admin', 'monster', 'create'],
     mutationFn: adminCreateMonster,
   });
 
-  return { mutate, status, isPending, isSuccess, isError };
+  return { mutate, error, status, isPending, isSuccess, isError };
 };
 
 // Update monster
@@ -51,14 +51,14 @@ export const useAdminUpdateMonsterApi = () => {
     );
 
     if (response.status !== 200 && response.status !== 201)
-      throw new Error('Could not update the monster!');
+      throw new Error((await response.json()).error ?? 'Did not work!');
     queryClient.invalidateQueries({ queryKey: ['monsters'] });
   };
 
-  const { mutate, status, isPending, isSuccess, isError } = useMutation({
+  const { mutate, error, status, isPending, isSuccess, isError } = useMutation({
     mutationKey: ['admin', 'monster', 'update'],
     mutationFn: adminUpdateMonster,
   });
 
-  return { mutate, status, isPending, isSuccess, isError };
+  return { mutate, error, status, isPending, isSuccess, isError };
 };

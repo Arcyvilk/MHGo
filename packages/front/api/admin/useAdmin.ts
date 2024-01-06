@@ -18,15 +18,15 @@ export const useAdminUpdateSettingsApi = () => {
       },
     });
     if (response.status !== 200 && response.status !== 201)
-      throw new Error('Did not work!');
+      throw new Error((await response.json()).error ?? 'Did not work!'); 
     queryClient.invalidateQueries({ queryKey: ['settings'] });
     queryClient.invalidateQueries({ queryKey: ['settings', 'all'] });
   };
 
-  const { mutate, status, isPending, isSuccess, isError } = useMutation({
+  const { mutate, error, status, isPending, isSuccess, isError } = useMutation({
     mutationKey: ['admin', 'settings', 'update'],
     mutationFn: adminUpdateItem,
   });
 
-  return { mutate, status, isPending, isSuccess, isError };
+  return { mutate, error, status, isPending, isSuccess, isError };
 };

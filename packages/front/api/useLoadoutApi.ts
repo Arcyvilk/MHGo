@@ -32,10 +32,10 @@ export const useUserEquipItemApi = (userId: string, itemId: string) => {
     queryClient.invalidateQueries({ queryKey: ['user', userId, 'stats'] });
   };
 
-  const { mutate, status, isPending, isSuccess, isError } = useMutation({
+  const { mutate, error, status, isPending, isSuccess, isError } = useMutation({
     mutationKey: ['user', userId, 'equip', itemId],
     mutationFn: getEquipItem,
   });
 
-  return { mutate, status, isPending, isSuccess, isError };
+  return { mutate, error, status, isPending, isSuccess, isError };
 };

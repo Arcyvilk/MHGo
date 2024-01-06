@@ -143,12 +143,12 @@ export const useUpdateUserHealth = (userId: string) => {
     });
   };
 
-  const { mutate, status, isPending, isSuccess, isError } = useMutation({
+  const { mutate, error, status, isPending, isSuccess, isError } = useMutation({
     mutationKey: ['user', userId, 'health', 'update'],
     mutationFn: updateUserHealth,
   });
 
-  return { mutate, status, isPending, isSuccess, isError };
+  return { mutate, error, status, isPending, isSuccess, isError };
 };
 
 export const useUpdateUserExp = (userId: string) => {
@@ -170,12 +170,12 @@ export const useUpdateUserExp = (userId: string) => {
     });
   };
 
-  const { mutate, status, isPending, isSuccess, isError } = useMutation({
+  const { mutate, error, status, isPending, isSuccess, isError } = useMutation({
     mutationKey: ['user', userId, 'exp', 'update'],
     mutationFn: updateUserExp,
   });
 
-  return { mutate, status, isPending, isSuccess, isError };
+  return { mutate, error, status, isPending, isSuccess, isError };
 };
 
 export const useUpdateUserWealth = (userId: string) => {
@@ -197,12 +197,12 @@ export const useUpdateUserWealth = (userId: string) => {
     });
   };
 
-  const { mutate, status, isPending, isSuccess, isError } = useMutation({
+  const { mutate, error, status, isPending, isSuccess, isError } = useMutation({
     mutationKey: ['user', userId, 'wealth', 'update'],
     mutationFn: updateUserWealth,
   });
 
-  return { mutate, status, isPending, isSuccess, isError };
+  return { mutate, error, status, isPending, isSuccess, isError };
 };
 
 export const useUserConsumeItemsApi = (userId: string) => {
