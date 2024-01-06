@@ -6,3 +6,4 @@ export { getMonsterMarkerDrops } from './getMonsterMarkerDrops';
 
 // RESOURCE MARKERS
 export { getAllResourceMarkers } from './getAllResourceMarkers';
+export { getResourceMarkersByUserId } from './getResourceMarkersByUserId';

@@ -92,7 +92,7 @@ const MapLayer = ({ coords }: MapLayerProps) => {
         url="https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}.png"
       />
       <MonsterMarkers coords={coords} />
-      <ResourceMarkers />
+      <ResourceMarkers coords={coords} />
       <UserMarker coords={coords} />
     </>
   );

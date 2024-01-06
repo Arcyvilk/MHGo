@@ -183,7 +183,6 @@ export const useUpdateUserExpApi = (userId: string) => {
       mutationKey: ['user', userId, 'exp', 'update'],
       mutationFn: updateUserExp,
       onSuccess: data => {
-        console.log(data);
         if (data.newLevel > data.oldLevel)
           queryClient.invalidateQueries({
             queryKey: ['monster', 'markers'],

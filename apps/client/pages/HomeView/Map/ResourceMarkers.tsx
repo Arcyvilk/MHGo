@@ -4,21 +4,29 @@ import { Marker } from 'react-leaflet';
 import L from 'leaflet';
 import {
   QueryBoundary,
-  useAllResourceMarkersApi,
+  useResourceMarkersApi,
   useResourcesApi,
 } from '@mhgo/front';
 
+import { useUser } from '../../../hooks/useUser';
 import s from './Marker.module.scss';
 
-export const ResourceMarkers = () => (
+type ResourceMarkerProps = { coords?: number[] };
+export const ResourceMarkers = (props: ResourceMarkerProps) => (
   <QueryBoundary fallback={null}>
-    <Load />
+    <Load {...props} />
   </QueryBoundary>
 );
 
-const Load = () => {
+const Load = ({ coords }: ResourceMarkerProps) => {
   const navigate = useNavigate();
-  const resourceMarkers = useResourceMarkers();
+
+  // We make coords less precise so we don't refetch every second
+  const fixedCoords = coords
+    ? [Number(coords[0].toFixed(2)), Number(coords[1].toFixed(2))]
+    : undefined;
+
+  const resourceMarkers = useResourceMarkers(fixedCoords);
 
   return (
     <>
@@ -53,9 +61,10 @@ const getResourceMarkerIcon = (thumbnail?: string) => {
   });
 };
 
-const useResourceMarkers = () => {
-  const { data: resourceMarkers } = useAllResourceMarkersApi();
+const useResourceMarkers = (coords?: number[]) => {
+  const { userId } = useUser();
   const { data: resources } = useResourcesApi();
+  const { data: resourceMarkers } = useResourceMarkersApi(userId, coords);
 
   const resourcesMarkersData = useMemo(() => {
     return resourceMarkers?.map(resourceMarker => {
