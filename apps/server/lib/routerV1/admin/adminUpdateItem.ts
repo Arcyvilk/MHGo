@@ -142,10 +142,15 @@ export const adminUpdateItemStats = async (
 
     const collection = db.collection<ItemStat>('itemStats');
     const stats = req.body as Stats;
+    const fixedStats = {
+      ...stats,
+      // TODO implement elements
+      element: 'none',
+    };
 
     const response = await collection.updateOne(
       { itemId },
-      { $set: { stats } },
+      { $set: { stats: fixedStats } },
       { upsert: true },
     );
 

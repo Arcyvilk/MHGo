@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { v4 as uuid } from 'uuid';
 import { FormControlLabel, Switch } from '@mui/material';
-import { ItemSlot, Stats, Item as TItem } from '@mhgo/types';
+import { Item, ItemSlot, Stats, Item as TItem } from '@mhgo/types';
 import { Input, Select, modifiers, useSettingsApi } from '@mhgo/front';
 
 import { DEFAULT_SLOTS, DEFAULT_STATS } from '../../../utils/defaults';
@@ -19,9 +19,6 @@ export const SectionEquippable = ({
   updatedItemStats,
   setUpdatedItemStats,
 }: EquippableProps) => {
-  const [selectedSlot, setSelectedSlot] = useState(
-    updatedItem?.slot as ItemSlot,
-  );
   const { setting: baseStats } = useSettingsApi('base_stats', DEFAULT_STATS);
   const { setting: equipmentSlots } = useSettingsApi(
     'equipment_slots',
@@ -58,12 +55,19 @@ export const SectionEquippable = ({
           className={modifiers(s, 'singleItemView__section', {
             hidden: true,
           })}>
+          <div style={{ fontWeight: 600 }}>
+            For the item to appear as equippable, it must have "armor" or
+            "weapon" type.
+          </div>
           <Select
-            defaultSelected={selectedSlot}
+            defaultSelected={updatedItem?.slot as ItemSlot}
             data={slotOptions}
             key={uuid()}
             name="Equipment slot"
-            setValue={slot => setSelectedSlot(slot as ItemSlot)}
+            setValue={slot =>
+              updatedItem &&
+              setUpdatedItem({ ...updatedItem, slot: slot as ItemSlot })
+            }
           />
           {stats.map(stat => {
             const oldStat = updatedItemStats[stat as keyof Stats];

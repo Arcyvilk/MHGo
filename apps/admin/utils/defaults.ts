@@ -1,5 +1,6 @@
 import {
   ItemSlot,
+  ItemType,
   Material,
   Monster,
   MonsterMarker,
@@ -76,6 +77,13 @@ export const DEFAULT_RESOURCE_MARKER: Omit<
   resourceId: '',
   coords: [],
 };
+
+export const DEFAULT_ITEM_TYPES: ItemType[] = [
+  'quest',
+  'weapon',
+  'armor',
+  'other',
+];
 
 export const DEFAULT_SLOTS: ItemSlot[] = [
   'weapon',

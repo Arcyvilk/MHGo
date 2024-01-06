@@ -12,8 +12,11 @@ import {
   useItemStatsApi,
   useItemsApi,
   useMonsterDropsApi,
+  useSettingsApi,
 } from '@mhgo/front';
 import { ActionBar, HeaderEdit } from '../../../containers';
+import { DEFAULT_ITEM_TYPES, DEFAULT_STATS } from '../../../utils/defaults';
+import { Status } from '../../../utils/types';
 import { SectionBasic } from './SectionBasic';
 import { SectionCraftable } from './SectionCraftable';
 import { SectionEquippable } from './SectionEquippable';
@@ -22,8 +25,6 @@ import { SectionUsable } from './SectionUsable';
 import { NotExist } from './NotExist';
 
 import s from './SingleItemView.module.scss';
-import { DEFAULT_STATS } from '../../../utils/defaults';
-import { Status } from '../../../utils/types';
 
 export const ItemEditView = () => {
   const navigate = useNavigate();
@@ -80,16 +81,6 @@ export const ItemEditView = () => {
           itemDrops={itemDrops}
         />
         <div className={s.singleItemView__content}>
-          <SectionPurchasable
-            updatedItem={updatedItem}
-            setUpdatedItem={setUpdatedItem}
-          />
-          <SectionUsable
-            updatedItem={updatedItem}
-            setUpdatedItem={setUpdatedItem}
-            updatedItemAction={updatedItemAction}
-            setUpdatedItemAction={setUpdatedItemAction}
-          />
           <SectionEquippable
             updatedItem={updatedItem}
             setUpdatedItem={setUpdatedItem}
@@ -103,6 +94,16 @@ export const ItemEditView = () => {
             updatedItemCraft={updatedItemCraft}
             setUpdatedItemCraft={setUpdatedItemCraft}
           />
+          <SectionUsable
+            updatedItem={updatedItem}
+            setUpdatedItem={setUpdatedItem}
+            updatedItemAction={updatedItemAction}
+            setUpdatedItemAction={setUpdatedItemAction}
+          />
+          <SectionPurchasable
+            updatedItem={updatedItem}
+            setUpdatedItem={setUpdatedItem}
+          />
         </div>
       </div>
     </div>
@@ -115,6 +116,7 @@ const useUpdateItem = (setStatus: (status: Status) => void) => {
 
   // ITEM API
   const { data: items, isFetched: isItemFetched } = useItemsApi();
+
   const item = useMemo(
     () => items.find(i => i.id === id),
     [items, isItemFetched],

@@ -41,7 +41,7 @@ export const ItemStats = ({
       next: itemStats[key as keyof Stats] ?? 0,
     }))
     // Dont show stats irrelevant for the item
-    .filter(stat => stat.prev !== 0 && stat.next !== 0);
+    .filter(stat => !(stat.prev === 0 && stat.next === 0));
 
   return (
     <div className={s.itemStats}>

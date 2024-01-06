@@ -1,7 +1,9 @@
 import { useNavigate } from 'react-router-dom';
-import { Item as TItem } from '@mhgo/types';
+import { v4 as uuid } from 'uuid';
+import { ItemType, Item as TItem } from '@mhgo/types';
 import { CDN_URL } from '@mhgo/front/env';
-import { Button, Input, Item } from '@mhgo/front';
+import { Button, Input, Item, Select, useSettingsApi } from '@mhgo/front';
+import { DEFAULT_ITEM_TYPES } from '../../../utils/defaults';
 
 import s from './SingleItemView.module.scss';
 
@@ -20,6 +22,11 @@ export const SectionBasic = ({
   itemDrops,
 }: BasicProps) => {
   const navigate = useNavigate();
+  const { setting: itemTypes } = useSettingsApi(
+    'item_types',
+    DEFAULT_ITEM_TYPES,
+  );
+
   return (
     <div className={s.singleItemView__content}>
       <div className={s.singleItemView__section}>
@@ -47,15 +54,17 @@ export const SectionBasic = ({
             })
           }
         />
-        <Input
-          name="item_obtainedAt"
-          label="Where item can be obtained?"
-          value={updatedItem?.obtainedAt ?? ''}
-          setValue={obtainedAt =>
+        <Select
+          label="Item's type"
+          name="item_type"
+          defaultSelected={updatedItem?.type}
+          data={itemTypes!.map(type => ({ id: type, name: type }))}
+          key={uuid()}
+          setValue={type =>
             updatedItem &&
             setUpdatedItem({
               ...updatedItem,
-              obtainedAt,
+              type: type as ItemType,
             })
           }
         />
@@ -71,6 +80,18 @@ export const SectionBasic = ({
             setUpdatedItem({
               ...updatedItem,
               rarity: Number(rarity),
+            })
+          }
+        />
+        <Input
+          name="item_obtainedAt"
+          label="Where item can be obtained?"
+          value={updatedItem?.obtainedAt ?? ''}
+          setValue={obtainedAt =>
+            updatedItem &&
+            setUpdatedItem({
+              ...updatedItem,
+              obtainedAt,
             })
           }
         />
