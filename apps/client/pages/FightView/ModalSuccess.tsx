@@ -1,7 +1,6 @@
 import { useEffect, useState, useCallback } from 'react';
 
 import { CurrencyType } from '@mhgo/types';
-
 import {
   Item,
   Button,
@@ -12,6 +11,8 @@ import {
   useMonsterMarkerDropsApi,
   useUpdateUserWealthApi,
 } from '@mhgo/front';
+
+import { ModalLevelUp } from './ModalLevelUp';
 import { useUser } from '../../hooks/useUser';
 import { useUserLevelUp } from '../../hooks/useUserLevelUp';
 import { useMonsterMarker } from '../../hooks/useMonsterMarker';
@@ -39,6 +40,7 @@ const Load = ({ onClose }: { onClose: () => void }) => {
   const markerId = params.get('id') ?? '';
   const level = params.get('level') ?? '0';
 
+  const [isModalLevelUpOpen, setIsModalLevelUpOpen] = useState(false);
   const [isLootRedeemed, setIsLootRedeemed] = useState(false);
   const { userId } = useUser();
   const { monster } = useMonsterMarker();
@@ -47,7 +49,7 @@ const Load = ({ onClose }: { onClose: () => void }) => {
     mutate: mutateUserDrops,
     isSuccess,
   } = useMonsterMarkerDropsApi(userId);
-  const { mutate: mutateUserExp } = useUserLevelUp(userId);
+  const { mutate: mutateUserExp, didLevelUp, levels } = useUserLevelUp(userId);
   const { mutate: mutateUserWealth } = useUpdateUserWealthApi(userId);
 
   const expChange = Number(level) * monster.baseExp;
@@ -71,6 +73,10 @@ const Load = ({ onClose }: { onClose: () => void }) => {
     redeemLoot();
   }, []);
 
+  useEffect(() => {
+    if (didLevelUp) setIsModalLevelUpOpen(true);
+  }, [didLevelUp]);
+
   const listOfDrops = drops.map(drop => {
     const data = {
       ...drop,
@@ -83,6 +89,13 @@ const Load = ({ onClose }: { onClose: () => void }) => {
 
   return (
     <div className={s.modalSuccess}>
+      {didLevelUp && (
+        <ModalLevelUp
+          levels={levels}
+          isOpen={isModalLevelUpOpen}
+          setIsOpen={setIsModalLevelUpOpen}
+        />
+      )}
       <div className={s.result__misc}>
         <div>
           <span style={{ fontWeight: 900 }}>EXP:</span> +{expChange}

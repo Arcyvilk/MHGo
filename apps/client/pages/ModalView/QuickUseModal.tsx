@@ -5,7 +5,9 @@ import s from './ModalView.module.scss';
 
 export const QuickUseModal = () => {
   const { consumableItems } = useConsumableItems();
-  const hasQuickUseItems = consumableItems?.length > 0;
+  const hasQuickUseItems =
+    consumableItems?.length > 0 &&
+    !consumableItems.some(item => item.amount === 0);
 
   return (
     <div className={s.modalView__quickUse}>

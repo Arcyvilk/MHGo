@@ -151,7 +151,7 @@ export const useUpdateUserHealthApi = (userId: string) => {
   return { mutate, error, status, isPending, isSuccess, isError };
 };
 
-type LevelUpdate = {
+export type LevelUpdate = {
   oldExp: number;
   newExp: number;
   oldLevel: number;

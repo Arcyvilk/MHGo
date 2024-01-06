@@ -32,6 +32,8 @@ export const updateUserExp = async (
     const oldLevel = 1 + Math.floor(oldExp / (oldExp % expPerLevel));
     const newLevel = 1 + Math.floor(newExp / (newExp % expPerLevel));
 
+    // TODO Give user rewards for when he levels up!
+
     const response = await collectionUsers.updateOne(
       { id: userId },
       { $set: { exp: newExp } },

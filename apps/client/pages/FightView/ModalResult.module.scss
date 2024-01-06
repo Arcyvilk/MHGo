@@ -6,6 +6,7 @@
   align-items: center;
   justify-content: center;
   gap: $size-16;
+  z-index: $zindex-modal;
 
   &__title {
     @include page-title;
@@ -36,6 +37,13 @@
     font-size: $size-12;
     font-weight: 400;
     gap: $size-4;
+  }
+
+  &__update {
+    display: flex;
+    gap: $size-8;
+    font-size: $size-18;
+    font-weight: 900;
   }
 }
 
