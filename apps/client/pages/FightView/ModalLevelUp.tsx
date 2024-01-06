@@ -33,16 +33,15 @@ export const ModalLevelUp = ({ levels, isOpen, setIsOpen }: ModalProps) => {
           <span className={s.result__level}>→</span>
           <span className={s.result__level}>{levels?.newLevel ?? '-'}</span>
         </div>
-        <div className={s.result__content}>Your rewards:</div>
         {rewards?.length > 0 ? (
           <>
+            <div className={s.result__content}>Your rewards:</div>
+
             {rewards.map(reward => (
               <Item data={{ ...reward, purchasable: false, price: 0 }} />
             ))}
           </>
-        ) : (
-          <div className={s.result__desc}>None :c</div>
-        )}
+        ) : null}
         <Button label="Yay!" onClick={() => setIsOpen(false)} simple />
       </div>
     </Modal>
