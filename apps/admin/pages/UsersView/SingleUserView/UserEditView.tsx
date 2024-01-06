@@ -24,9 +24,10 @@ export const UserEditView = () => {
     useUpdateResource(setStatus);
 
   const onResetClick = () => {
-    const shouldReset = prompt(
+    const shouldReset = confirm(
       'Do you REALLY want to reset this user? It will delete all of their items, materials and quest progress, as well as zero their experience!',
     );
+    if (shouldReset) onReset();
   };
 
   if (!updatedUser)

@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { log } from '@mhgo/utils';
-import { User } from '@mhgo/types';
+import { Setting, User } from '@mhgo/types';
 
 import { mongoInstance } from '../../../api';
 
@@ -19,16 +19,29 @@ export const updateUserExp = async (
       id: userId,
     });
 
+    // Calculate new experience and new level
+    const collectionSettings = db.collection<Setting<number>>('settings');
+    const expPerLevel =
+      (
+        await collectionSettings.findOne({
+          key: 'exp_per_level',
+        })
+      )?.value ?? 100;
+    const oldExp = user.exp;
+    const newExp = user.exp + expChange;
+    const oldLevel = 1 + Math.floor(oldExp / (oldExp % expPerLevel));
+    const newLevel = 1 + Math.floor(newExp / (newExp % expPerLevel));
+
     const response = await collectionUsers.updateOne(
       { id: userId },
-      { $set: { exp: user.exp + expChange } },
+      { $set: { exp: newExp } },
       { upsert: true },
     );
 
     if (!response.acknowledged) {
       res.status(400).send({ error: 'Could not update users experience.' });
     } else {
-      res.sendStatus(200);
+      res.status(200).send({ oldExp, newExp, oldLevel, newLevel });
     }
   } catch (err: any) {
     log.WARN(err);

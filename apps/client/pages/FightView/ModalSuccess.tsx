@@ -10,10 +10,10 @@ import {
   QueryBoundary,
   addCdnUrl,
   useMonsterMarkerDropsApi,
-  useUpdateUserExp,
-  useUpdateUserWealth,
+  useUpdateUserWealthApi,
 } from '@mhgo/front';
 import { useUser } from '../../hooks/useUser';
+import { useUserLevelUp } from '../../hooks/useUserLevelUp';
 import { useMonsterMarker } from '../../hooks/useMonsterMarker';
 
 import s from './ModalResult.module.scss';
@@ -47,8 +47,8 @@ const Load = ({ onClose }: { onClose: () => void }) => {
     mutate: mutateUserDrops,
     isSuccess,
   } = useMonsterMarkerDropsApi(userId);
-  const { mutate: mutateUserExp } = useUpdateUserExp(userId);
-  const { mutate: mutateUserWealth } = useUpdateUserWealth(userId);
+  const { mutate: mutateUserExp } = useUserLevelUp(userId);
+  const { mutate: mutateUserWealth } = useUpdateUserWealthApi(userId);
 
   const expChange = Number(level) * monster.baseExp;
   const wealthChange: { [key in CurrencyType]?: number } = {};

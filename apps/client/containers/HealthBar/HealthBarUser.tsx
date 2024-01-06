@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 
 import {
-  useUpdateUserHealth,
+  useUpdateUserHealthApi,
   useUserHealthApi,
   Flash,
   Loader,
@@ -29,7 +29,7 @@ export const HealthBarUser = (props: HealthBarUserProps) => (
 const Load = ({ isFightFinished, setIsPlayerAlive }: HealthBarUserProps) => {
   const { playSESound } = useSounds();
   const { userId } = useUser();
-  const { mutate, isSuccess: isUserHit } = useUpdateUserHealth(userId);
+  const { mutate, isSuccess: isUserHit } = useUpdateUserHealthApi(userId);
   const { data: userHealth } = useUserHealthApi(userId);
   const { monster } = useMonsterMarker();
   const { level, baseAttackSpeed, baseDamage } = monster;

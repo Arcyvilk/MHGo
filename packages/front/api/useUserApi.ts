@@ -124,7 +124,7 @@ export const useUserHealthApi = (userId: string) => {
   return { data, isLoading, isFetched, isError };
 };
 
-export const useUpdateUserHealth = (userId: string) => {
+export const useUpdateUserHealthApi = (userId: string) => {
   const queryClient = useQueryClient();
 
   const updateUserHealth = async (variables: {
@@ -151,13 +151,19 @@ export const useUpdateUserHealth = (userId: string) => {
   return { mutate, error, status, isPending, isSuccess, isError };
 };
 
-export const useUpdateUserExp = (userId: string) => {
+type LevelUpdate = {
+  oldExp: number;
+  newExp: number;
+  oldLevel: number;
+  newLevel: number;
+};
+export const useUpdateUserExpApi = (userId: string) => {
   const queryClient = useQueryClient();
 
   const updateUserExp = async (variables: {
     expChange: number;
-  }): Promise<void> => {
-    await fetch(`${API_URL}/users/user/${userId}/exp`, {
+  }): Promise<LevelUpdate> => {
+    const res = await fetch(`${API_URL}/users/user/${userId}/exp`, {
       method: 'PUT',
       body: JSON.stringify(variables),
       headers: {
@@ -165,20 +171,31 @@ export const useUpdateUserExp = (userId: string) => {
         'Content-Type': 'application/json',
       },
     });
+
     queryClient.invalidateQueries({
       queryKey: ['user', userId],
     });
+    return res.json();
   };
 
-  const { mutate, error, status, isPending, isSuccess, isError } = useMutation({
-    mutationKey: ['user', userId, 'exp', 'update'],
-    mutationFn: updateUserExp,
-  });
+  const { mutate, data, error, status, isPending, isSuccess, isError } =
+    useMutation({
+      mutationKey: ['user', userId, 'exp', 'update'],
+      mutationFn: updateUserExp,
+      onSuccess: data => {
+        console.log(data);
+        if (data.newLevel > data.oldLevel)
+          queryClient.invalidateQueries({
+            queryKey: ['monster', 'markers'],
+            exact: false,
+          });
+      },
+    });
 
-  return { mutate, error, status, isPending, isSuccess, isError };
+  return { mutate, data, error, status, isPending, isSuccess, isError };
 };
 
-export const useUpdateUserWealth = (userId: string) => {
+export const useUpdateUserWealthApi = (userId: string) => {
   const queryClient = useQueryClient();
 
   const updateUserWealth = async (variables: {

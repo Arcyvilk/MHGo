@@ -12,7 +12,10 @@ import { USER_ID, USER_NAME, LOADOUT_SLOTS } from '../_mock/settings';
 
 export const useUser = () => {
   const { data: user } = useUserApi(USER_ID);
-  const { setting: expPerLevel } = useSettingsApi<number>('exp_per_level', 0);
+  const { setting: expPerLevel = 1 } = useSettingsApi<number>(
+    'exp_per_level',
+    0,
+  );
 
   const { name, exp, id } = user ?? { name: USER_NAME, exp: 0, id: USER_ID };
 

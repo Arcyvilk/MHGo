@@ -6,7 +6,7 @@ import { ItemActions, Item as TItem } from '@mhgo/types';
 import { Button, Item, SoundSE, useSounds } from '@mhgo/front';
 import {
   useItemActionsApi,
-  useUpdateUserHealth,
+  useUpdateUserHealthApi,
   useUserConsumeItemsApi,
   useUserEquipItemApi,
   Dropdown,
@@ -40,7 +40,7 @@ export const ItemContextMenu = ({
   const { mutate: mutateItemEquip } = useUserEquipItemApi(userId, item.id);
   const { mutate: mutateConsumeItem } = useUserConsumeItemsApi(userId);
   const { mutate: mutateUserHealth, isSuccess: isHealedSuccessfully } =
-    useUpdateUserHealth(userId);
+    useUpdateUserHealthApi(userId);
 
   const onItemCraft = () => {
     if (!item.craftable) return;
