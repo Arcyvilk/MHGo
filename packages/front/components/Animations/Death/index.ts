@@ -1,0 +1,1 @@
+export { Death } from './Death';

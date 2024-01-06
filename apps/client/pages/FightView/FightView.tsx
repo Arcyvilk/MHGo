@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { HealthBarMonster, HealthBarUser } from '../../containers';
 import {
   CloseButton,
+  Death,
   Loader,
   Nuke,
   QueryBoundary,
@@ -48,7 +49,6 @@ const Load = () => {
       playSESound(SoundSE.SLAP);
       setMonsterHP(newHP);
     } else {
-      playSESound(SoundSE.NUKE);
       setMonsterHP(0);
       setIsMonsterAlive(false);
     }
@@ -60,11 +60,7 @@ const Load = () => {
   };
 
   useEffect(() => {
-    if (!isPlayerAlive) {
-      setIsModalOpen(true);
-      return;
-    }
-    if (!isMonsterAlive) {
+    if (!isPlayerAlive || !isMonsterAlive) {
       setTimeout(() => {
         setIsModalOpen(true);
       }, 2000);
@@ -81,6 +77,7 @@ const Load = () => {
       )}
       <Header name={name} maxHP={level * baseHP} currentHP={monsterHP} />
       {!isMonsterAlive && <Nuke />}
+      {!isPlayerAlive && <Death />}
       <div className={s.fightView__wrapper}>
         {isMonsterAlive && <Rays />}
         <img
