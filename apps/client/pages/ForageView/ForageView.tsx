@@ -17,7 +17,7 @@ import { SoundSE, useLocalStorage, useSounds } from '@mhgo/front/hooks';
 import { ModalForage } from './ModalForage';
 import s from './ForageView.module.scss';
 import { useNavigate } from 'react-router-dom';
-import { DEFAULT_COORDS } from '../../utils/consts';
+import { DEFAULT_COORDS, DEFAULT_MAP_RADIUS } from '../../utils/consts';
 
 export const ForageView = () => (
   <QueryBoundary fallback={<Loader />}>
@@ -104,7 +104,10 @@ const Header = ({ name = '?' }: HeaderProps) => {
 const useResource = () => {
   const { data: resources } = useResourcesApi();
   const { data: resourceMarkers } = useAllResourceMarkersApi();
-  const { setting: mapRadius } = useSettingsApi('map_radius', 0);
+  const { setting: mapRadius } = useSettingsApi(
+    'map_radius',
+    DEFAULT_MAP_RADIUS,
+  );
   const [coords] = useLocalStorage('MHGO_LAST_KNOWN_LOCATION', DEFAULT_COORDS);
 
   const params = new URLSearchParams(location.search);
@@ -123,7 +126,7 @@ const useResource = () => {
   const positionUser = new L.LatLng(coordsUser[0], coordsUser[1]);
 
   const distance = positionUser.distanceTo(positionResource);
-  const inRange = distance <= mapRadius;
+  const inRange = distance <= mapRadius!;
 
   return { resource, resourceMarker, inRange };
 };

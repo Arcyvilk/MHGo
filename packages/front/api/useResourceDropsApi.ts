@@ -38,6 +38,11 @@ export const useResourceMarkerDropsApi = (userId: string) => {
     });
 
     queryClient.invalidateQueries({ queryKey: ['user', userId, 'materials'] });
+    // This refreshes the markers on the map when they go on cooldown
+    queryClient.invalidateQueries({
+      queryKey: ['resource', 'markers'],
+      exact: false,
+    });
     return res.json();
   };
 

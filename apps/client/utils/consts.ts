@@ -7,6 +7,7 @@ export const APP_VERSION = 'v0.42.67-beta'; // moved to database
 
 export const DEFAULT_COORDS = [0, 0];
 export const DEFAULT_ZOOM = { current: 16 };
+export const DEFAULT_MAP_RADIUS = 0;
 
 export const MONSTER_MISSING: Monster = {
   id: '-1',

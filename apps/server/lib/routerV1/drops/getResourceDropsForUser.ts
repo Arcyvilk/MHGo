@@ -10,11 +10,14 @@ import {
   ResourceMarker,
   Resource,
   ResourceDrop,
+  UserRespawn,
+  Setting,
 } from '@mhgo/types';
 
 import { mongoInstance } from '../../../api';
 import { getUniqueMaterialDrops } from '../../helpers/getUniqueDrops';
 import { addFilterToMaterials } from '../../helpers/addFilterToMaterials';
+import { DEFAULT_RESPAWN_TIME } from '../../helpers/defaults';
 
 type ReqBody = { markerId: string; monsterLevel: number };
 type ReqParams = { userId: string };
@@ -89,6 +92,33 @@ export const getResourceDropsForUser = async (
     if (!responseMaterialsUpdate.acknowledged) {
       res.status(400).send({ error: "Could not update user's materials." });
     }
+
+    // Put marker on cooldown
+    const collectionSettings = db.collection<Setting<number>>('settings');
+    const resourceRespawnTime =
+      (await collectionSettings.findOne({ key: 'respawn_time_resource' }))
+        ?.value ?? DEFAULT_RESPAWN_TIME;
+    const collectionUserRespawn = db.collection<UserRespawn>('userRespawn');
+    await collectionUserRespawn.insertOne({
+      userId,
+      markerId,
+      markerType: 'resource',
+      usedAt: new Date(),
+    });
+
+    try {
+      await collectionUserRespawn.dropIndex('respawn_time_resource', {});
+    } catch (_e) {
+      // If this failed, it meant the index didnt exist
+    }
+    await collectionUserRespawn.createIndex(
+      { usedAt: 1 },
+      {
+        name: 'respawn_time_resource',
+        partialFilterExpression: { markerType: 'resource' },
+        expireAfterSeconds: resourceRespawnTime,
+      },
+    );
 
     // Fin!
     res.status(200).send(drops);
