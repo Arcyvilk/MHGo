@@ -164,9 +164,7 @@ const useAchievements = (
 ) => {
   const updateAchievement = () => {
     if (monsterId === 'babcianiath') {
-      const dupa = { achievementId: AchievementId.HABEMUS_PAPAM, progress: 1 };
-      console.log(dupa);
-      mutate(dupa);
+      mutate({ achievementId: AchievementId.HABEMUS_PAPAM, progress: 1 });
     }
   };
   return { updateAchievement };
