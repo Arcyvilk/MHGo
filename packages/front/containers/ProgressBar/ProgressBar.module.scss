@@ -1,0 +1,42 @@
+@import '@mhgo/front/styles/index.scss';
+
+.progressBar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 150px;
+  height: $size-16;
+  box-sizing: border-box;
+  border-radius: $size-16;
+  overflow: hidden;
+  border: 2px solid $color-black;
+
+  &__text {
+    position: absolute;
+    color: $color-white;
+    text-align: center;
+    font-size: $size-14;
+    line-height: $size-16;
+    z-index: $zindex-barText;
+    &--isSimple {
+      font-size: $size-12;
+    }
+  }
+
+  &__bg {
+    width: 100%;
+    height: 100%;
+    border-radius: $size-6;
+    background-color: $color-black;
+  }
+
+  &__fg {
+    position: absolute;
+    left: 0;
+    height: 100%;
+    border-radius: $size-16;
+    box-sizing: border-box;
+    background-color: rgba($color-health-user, 0.6);
+  }
+}

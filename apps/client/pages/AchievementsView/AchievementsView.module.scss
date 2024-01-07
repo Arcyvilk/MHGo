@@ -10,19 +10,12 @@
     gap: $size-16;
   }
 
-  &__image  {
-    max-width: 90%;
-    object-fit: contain;
-  }
-
-  &__title {
-    font-size: $size-18;
-  }
-
-  &__desc {
-    font-size: $size-14;
-    color: rgba($color-primary-text, 0.9);
-    font-weight: 400;
+  &__actions {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0 $size-16;
+    gap: $size-16;
   }
 }
 
@@ -41,7 +34,6 @@
     filter: grayscale(0%);
   }
   
-
   &__img {
     max-width: $size-64;
     min-width: $size-64;
@@ -63,6 +55,11 @@
   &__description {
     font-size: $size-14;
     font-weight: 400;
+  }
+
+  &__date {
+    font-size: $size-12;
+    font-weight: 600;
   }
 }
 

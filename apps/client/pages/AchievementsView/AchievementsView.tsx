@@ -1,5 +1,7 @@
 import {
   CloseButton,
+  ProgressBar,
+  Switch,
   modifiers,
   useAchievementsApi,
   useUserAchievementsApi,
@@ -8,9 +10,12 @@ import { Achievement, UserAchievement } from '@mhgo/types';
 
 import s from './AchievementsView.module.scss';
 import { useUser } from '../../hooks/useUser';
+import { useState } from 'react';
 
 export const AchievementsView = () => {
   const achievements = useAchievementsWithUnlock();
+  const [showUnlocked, setShowUnlocked] = useState(true);
+  const [showLocked, setShowLocked] = useState(true);
 
   return (
     <div className={s.achievementsView}>
@@ -18,9 +23,30 @@ export const AchievementsView = () => {
         <div className={s.header__title}>Achievements</div>
       </div>
       <div className={s.achievementsView__wrapper}>
-        {achievements.map(achievement => (
-          <AchievementTile achievement={achievement} />
-        ))}
+        <div className={s.achievementsView__actions}>
+          <Switch
+            label="Show unlocked"
+            checked={showUnlocked}
+            setChecked={setShowUnlocked}
+          />
+          <Switch
+            label="Show locked"
+            checked={showLocked}
+            setChecked={setShowLocked}
+          />
+        </div>
+        {achievements
+          .filter(achievement => {
+            const isUnlocked =
+              achievement.unlockDate &&
+              achievement.progress === achievement.maxProgress;
+            if (showUnlocked && isUnlocked) return true;
+            if (showLocked && !isUnlocked) return true;
+            return false;
+          })
+          .map(achievement => (
+            <AchievementTile achievement={achievement} />
+          ))}
       </div>
       <CloseButton />
     </div>
@@ -31,7 +57,9 @@ type AchievementTileProps = {
   achievement: Achievement & Omit<UserAchievement, 'achievementId'>;
 };
 const AchievementTile = ({ achievement }: AchievementTileProps) => {
-  // console.log(achievement);
+  const isUnlocked =
+    achievement.unlockDate && achievement.progress === achievement.maxProgress;
+
   return (
     <div
       className={modifiers(s, 'achievement', {
@@ -43,7 +71,20 @@ const AchievementTile = ({ achievement }: AchievementTileProps) => {
         <div className={s.achievement__description}>
           {achievement.description}
         </div>
-        <progress />
+        {isUnlocked ? (
+          <div className={s.achievement__date}>
+            <span>✔️</span>{' '}
+            <span style={{ fontStyle: 'italic' }}>
+              {new Date(achievement!.unlockDate!).toLocaleDateString()},{' '}
+              {new Date(achievement!.unlockDate!).toLocaleTimeString()}
+            </span>
+          </div>
+        ) : (
+          <ProgressBar
+            max={achievement.maxProgress}
+            current={achievement.progress}
+          />
+        )}
       </div>
     </div>
   );
@@ -53,9 +94,6 @@ const useAchievementsWithUnlock = () => {
   const { userId } = useUser();
   const { data: achievements } = useAchievementsApi();
   const { data: userAchievements } = useUserAchievementsApi(userId);
-
-  console.log(achievements);
-  console.log(userAchievements);
 
   const achievementsWithUnlock = achievements.map(achievement => {
     const userProgress: UserAchievement = userAchievements.find(
