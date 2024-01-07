@@ -31,7 +31,7 @@ export const useAdminUpdateUserApi = () => {
     user,
   }: {
     userId: string;
-    user: User;
+    user: Partial<User>;
   }): Promise<void> => {
     const response = await fetch(`${API_URL}/admin/users/user/${userId}`, {
       method: 'PUT',

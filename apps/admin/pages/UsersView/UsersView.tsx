@@ -1,12 +1,17 @@
 import { useNavigate } from 'react-router-dom';
-import { Button, Icon, Size, useAdminAllUsersApi } from '@mhgo/front';
-import { ActionBar, Table } from '../../containers';
+import {
+  Button,
+  Icon,
+  Size,
+  useAdminAllUsersApi,
+  useAdminUpdateUserApi,
+} from '@mhgo/front';
+import { ActionBar, HeaderEdit, Table } from '../../containers';
 
 import s from './UsersView.module.scss';
 import { User } from '@mhgo/types';
 import { Switch } from '@mui/material';
 import { CDN_URL } from '@mhgo/front/env';
-import { toast } from 'react-toastify';
 
 const tableHeaders = [
   'Name',
@@ -21,14 +26,10 @@ const tableHeaders = [
 export const UsersView = () => {
   const navigate = useNavigate();
   const { data: users } = useAdminAllUsersApi();
+  const { mutate, isSuccess, isError, isPending } = useAdminUpdateUserApi();
 
   const onSwitch = (checked: boolean, user: User, property: keyof User) => {
-    const updatedUser = {
-      ...user,
-      [property]: checked,
-    };
-    toast.info('Not implemented yet!');
-    // mutate(updatedUser);
+    mutate({ userId: user.id, user: { [property]: checked } });
   };
 
   const onUserCreate = () => {
@@ -72,9 +73,7 @@ export const UsersView = () => {
 
   return (
     <div className={s.usersView}>
-      <div className={s.usersView__header}>
-        <h1 className={s.usersView__title}>USERS</h1>
-      </div>
+      <HeaderEdit status={{ isPending, isError, isSuccess }} title="USERS" />
       <ActionBar
         buttons={<Button label="Create new user" onClick={onUserCreate} />}
       />
