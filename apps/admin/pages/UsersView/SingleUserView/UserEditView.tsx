@@ -4,10 +4,13 @@ import { useNavigate } from 'react-router-dom';
 import {
   Button,
   Input,
+  Switch,
   useAdminAllUsersApi,
   useAdminResetUserApi,
   useAdminUpdateUserApi,
+  useAdminUserGodmodeApi,
 } from '@mhgo/front';
+import { UserResetType } from '@mhgo/types';
 import { Status } from '../../../utils/types';
 import { ActionBar, HeaderEdit } from '../../../containers';
 
@@ -20,32 +23,37 @@ export const UserEditView = () => {
     isError: false,
     isPending: false,
   });
-  const { updatedUser, setUpdatedUser, onSave, onReset } =
-    useUpdateResource(setStatus);
+  const {
+    updatedUser,
+    setUpdatedUser,
+    toReset,
+    setToReset,
+    onGodmodeEnable,
+    onSave,
+    onReset,
+  } = useUpdateUser(setStatus);
 
   const onResetClick = () => {
     const shouldReset = confirm(
-      'Do you REALLY want to reset this user? It will delete all of their items, materials and quest progress, as well as zero their experience!',
+      'Do you REALLY want to reset this user? THIS CANNOT BE UNDONE.',
     );
     if (shouldReset) onReset();
   };
 
   if (!updatedUser)
     return (
-      <div className={s.singleResourceView}>
-        <div className={s.singleResourceView__header}>
-          <h1 className={s.singleResourceView__title}>
-            This user does not exist!
-          </h1>
+      <div className={s.singleUserView}>
+        <div className={s.singleUserView__header}>
+          <h1 className={s.singleUserView__title}>This user does not exist!</h1>
         </div>
-        <div className={s.singleResourceView__footer}>
+        <div className={s.singleUserView__footer}>
           <Button label="Back" onClick={() => navigate(-1)} />
         </div>
       </div>
     );
 
   return (
-    <div className={s.singleResourceView}>
+    <div className={s.singleUserView}>
       <HeaderEdit status={status} title="Edit user" />
       <ActionBar
         title={`User ID: ${updatedUser?.id}`}
@@ -59,11 +67,6 @@ export const UserEditView = () => {
               variant={Button.Variant.GHOST}
             />
             <Button
-              label="Reset"
-              onClick={onResetClick}
-              variant={Button.Variant.DANGER}
-            />
-            <Button
               label="Save"
               onClick={onSave}
               variant={Button.Variant.ACTION}
@@ -71,8 +74,8 @@ export const UserEditView = () => {
           </>
         }
       />
-      <div className={s.singleResourceView__content}>
-        <div className={s.singleResourceView__section}>
+      <div className={s.singleUserView__content}>
+        <div className={s.singleUserView__section}>
           <Input
             name="user_name"
             label="User's name"
@@ -81,13 +84,41 @@ export const UserEditView = () => {
               updatedUser && setUpdatedUser({ ...updatedUser, name })
             }
           />
+          <Button
+            label="Enable godmode"
+            onClick={onGodmodeEnable}
+            variant={Button.Variant.DANGER}
+          />
+        </div>
+        <div className={s.singleUserView__section}>
+          <div className={s.singleUserView__grid}>
+            {Object.keys(toReset).map(key => (
+              <Switch
+                key={`reset-${key}`}
+                label={key.toUpperCase()}
+                checked={toReset[key as keyof UserResetType] ?? false}
+                setChecked={checked =>
+                  toReset &&
+                  setToReset({
+                    ...toReset,
+                    [key]: checked,
+                  })
+                }
+              />
+            ))}
+          </div>
+          <Button
+            label="Reset"
+            onClick={onResetClick}
+            variant={Button.Variant.DANGER}
+          />
         </div>
       </div>
     </div>
   );
 };
 
-const useUpdateResource = (setStatus: (status: Status) => void) => {
+const useUpdateUser = (setStatus: (status: Status) => void) => {
   const params = new URLSearchParams(location.search);
   const id = params.get('id');
 
@@ -98,12 +129,20 @@ const useUpdateResource = (setStatus: (status: Status) => void) => {
     [users, isUsersFetched],
   );
   const [updatedUser, setUpdatedUser] = useState(user);
+  const [toReset, setToReset] = useState<UserResetType>({
+    basic: false,
+    cooldowns: false,
+    items: false,
+    materials: false,
+    wealth: false,
+  });
 
   useEffect(() => {
     setUpdatedUser(user);
   }, [isUsersFetched]);
 
-  const { mutateUpdateUser, mutateResetUser } = useStatus(setStatus);
+  const { mutateUpdateUser, mutateResetUser, mutateGodmode } =
+    useStatus(setStatus);
 
   const onSave = () => {
     if (updatedUser)
@@ -111,14 +150,21 @@ const useUpdateResource = (setStatus: (status: Status) => void) => {
   };
 
   const onReset = () => {
-    if (user?.id) mutateResetUser(user.id);
+    if (user?.id) mutateResetUser({ userId: user.id, toReset });
+  };
+
+  const onGodmodeEnable = () => {
+    if (user?.id) mutateGodmode(user.id);
   };
 
   return {
     updatedUser,
     setUpdatedUser,
+    toReset,
+    setToReset,
     onSave,
     onReset,
+    onGodmodeEnable,
   };
 };
 
@@ -153,5 +199,20 @@ const useStatus = (setStatus: (status: Status) => void) => {
     });
   }, [isSuccessReset, isErrorReset, isPendingReset]);
 
-  return { mutateUpdateUser, mutateResetUser };
+  const {
+    mutate: mutateGodmode,
+    isSuccess: isSuccessGodmode,
+    isError: isErrorGodmode,
+    isPending: isPendingGodmode,
+  } = useAdminUserGodmodeApi();
+
+  useEffect(() => {
+    setStatus({
+      isSuccess: isSuccessGodmode,
+      isError: isErrorGodmode,
+      isPending: isPendingGodmode,
+    });
+  }, [isSuccessGodmode, isErrorGodmode, isPendingGodmode]);
+
+  return { mutateUpdateUser, mutateResetUser, mutateGodmode };
 };

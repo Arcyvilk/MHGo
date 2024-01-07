@@ -1,5 +1,5 @@
 import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query';
-import { User } from '@mhgo/types';
+import { User, UserResetType } from '@mhgo/types';
 
 import { API_URL } from '../../env';
 
@@ -61,11 +61,16 @@ export const useAdminUpdateUserApi = () => {
 export const useAdminResetUserApi = () => {
   const queryClient = useQueryClient();
 
-  const adminUpdateResource = async (userId: string): Promise<void> => {
+  const adminUpdateResource = async (variables: {
+    userId: string;
+    toReset: UserResetType;
+  }): Promise<void> => {
+    const { userId, toReset } = variables;
     const response = await fetch(
       `${API_URL}/admin/users/user/${userId}/reset`,
       {
-        method: 'DELETE',
+        method: 'PUT',
+        body: JSON.stringify(toReset),
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
@@ -82,6 +87,35 @@ export const useAdminResetUserApi = () => {
 
   const { mutate, error, status, isPending, isSuccess, isError } = useMutation({
     mutationKey: ['admin', 'users', 'reset'],
+    mutationFn: adminUpdateResource,
+  });
+
+  return { mutate, error, status, isPending, isSuccess, isError };
+};
+
+export const useAdminUserGodmodeApi = () => {
+  const queryClient = useQueryClient();
+
+  const adminUpdateResource = async (userId: string): Promise<void> => {
+    const response = await fetch(
+      `${API_URL}/admin/users/user/${userId}/godmode`,
+      {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+      },
+    );
+
+    if (response.status !== 200)
+      throw new Error((await response.json()).error ?? 'Did not work!');
+
+    queryClient.invalidateQueries({ queryKey: ['user'], exact: false });
+  };
+
+  const { mutate, error, status, isPending, isSuccess, isError } = useMutation({
+    mutationKey: ['admin', 'users', 'godmode'],
     mutationFn: adminUpdateResource,
   });
 

@@ -32,4 +32,13 @@
       margin: 0;
     }
   }
+
+  &__grid {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: $size-16;
+    align-items: center;
+    justify-content: center;
+  }
 }
