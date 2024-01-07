@@ -33,6 +33,13 @@
   background-color: rgba($color-header-bg, 0.4);
   padding: $size-8 $size-12;
   gap: $size-16;
+  opacity: 0.5;
+  filter: grayscale(70%);
+
+  &--unlocked {
+    opacity: 1;
+    filter: grayscale(0%);
+  }
   
 
   &__img {

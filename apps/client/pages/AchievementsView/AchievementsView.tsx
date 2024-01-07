@@ -1,10 +1,11 @@
-import { CloseButton, useAchievementsApi } from '@mhgo/front';
-import { Achievement } from '@mhgo/types';
+import { CloseButton, modifiers, useAchievementsApi } from '@mhgo/front';
+import { Achievement, UserAchievement } from '@mhgo/types';
 
 import s from './AchievementsView.module.scss';
+import { useUser } from '../../hooks/useUser';
 
 export const AchievementsView = () => {
-  const { data: achievements } = useAchievementsApi();
+  const achievements = useAchievementsWithUnlock();
 
   return (
     <div className={s.achievementsView}>
@@ -21,10 +22,15 @@ export const AchievementsView = () => {
   );
 };
 
-type AchievementTileProps = { achievement: Achievement };
+type AchievementTileProps = {
+  achievement: Achievement & Omit<UserAchievement, 'achievementId'>;
+};
 const AchievementTile = ({ achievement }: AchievementTileProps) => {
   return (
-    <div className={s.achievement}>
+    <div
+      className={modifiers(s, 'achievement', {
+        unlocked: achievement.unlockDate,
+      })}>
       <img className={s.achievement__img} src={achievement.img} />
       <div className={s.achievement__details}>
         <h2 className={s.achievement__name}>{achievement.name}</h2>
@@ -35,4 +41,35 @@ const AchievementTile = ({ achievement }: AchievementTileProps) => {
       </div>
     </div>
   );
+};
+
+const useAchievementsWithUnlock = () => {
+  const { userId } = useUser();
+  const { data: achievements } = useAchievementsApi();
+  const { data: userAchievements } = useUserAchievementsApi(userId);
+
+  const achievementsWithUnlock = achievements.map(achievement => {
+    const userProgress: UserAchievement = userAchievements.find(
+      ua => ua.achievementId === achievement.id,
+    ) ?? { achievementId: achievement.id, progress: 0, unlockDate: null };
+    return {
+      ...achievement,
+      progress: userProgress.progress,
+      unlockDate: userProgress.unlockDate,
+    };
+  });
+
+  return achievementsWithUnlock;
+};
+
+// TODO this is a mock
+const useUserAchievementsApi = (_userId: string) => {
+  const data: UserAchievement[] = [
+    {
+      achievementId: 'cursedNumber',
+      progress: 2137,
+      unlockDate: new Date(),
+    },
+  ];
+  return { data };
 };
