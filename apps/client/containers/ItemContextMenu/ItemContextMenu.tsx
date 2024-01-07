@@ -49,7 +49,6 @@ export const ItemContextMenu = ({
   };
 
   const onItemEquip = () => {
-    // TODO if armor or weapon, show stats and how much they differ from current loadout
     if (item.equippable) {
       mutateItemEquip();
       toast.success(`Equipped ${item.name}!`);
