@@ -130,13 +130,14 @@ routerV1.put('/drops/resource/user/:userId', getResourceDropsForUser);
 
 import {
   getUser,
-  getUserEquipItem,
+  getUserAchievements,
   getUserItems,
   getUserLoadout,
   getUserMaterials,
   getUserWealth,
   getUserStats,
   getUserHealth,
+  getUserEquipItem,
   updateUserExp,
   updateUserHealth,
   updateUserWealth,
@@ -145,6 +146,7 @@ import {
 } from './users';
 
 routerV1.get('/users/user/:userId', getUser);
+routerV1.get('/users/user/:userId/achievements/list', getUserAchievements);
 routerV1.get('/users/user/:userId/items/list', getUserItems);
 routerV1.get('/users/user/:userId/loadout/list', getUserLoadout);
 routerV1.get('/users/user/:userId/materials/list', getUserMaterials);

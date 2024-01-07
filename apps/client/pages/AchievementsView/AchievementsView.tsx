@@ -1,4 +1,9 @@
-import { CloseButton, modifiers, useAchievementsApi } from '@mhgo/front';
+import {
+  CloseButton,
+  modifiers,
+  useAchievementsApi,
+  useUserAchievementsApi,
+} from '@mhgo/front';
 import { Achievement, UserAchievement } from '@mhgo/types';
 
 import s from './AchievementsView.module.scss';
@@ -26,6 +31,7 @@ type AchievementTileProps = {
   achievement: Achievement & Omit<UserAchievement, 'achievementId'>;
 };
 const AchievementTile = ({ achievement }: AchievementTileProps) => {
+  // console.log(achievement);
   return (
     <div
       className={modifiers(s, 'achievement', {
@@ -48,6 +54,9 @@ const useAchievementsWithUnlock = () => {
   const { data: achievements } = useAchievementsApi();
   const { data: userAchievements } = useUserAchievementsApi(userId);
 
+  console.log(achievements);
+  console.log(userAchievements);
+
   const achievementsWithUnlock = achievements.map(achievement => {
     const userProgress: UserAchievement = userAchievements.find(
       ua => ua.achievementId === achievement.id,
@@ -60,16 +69,4 @@ const useAchievementsWithUnlock = () => {
   });
 
   return achievementsWithUnlock;
-};
-
-// TODO this is a mock
-const useUserAchievementsApi = (_userId: string) => {
-  const data: UserAchievement[] = [
-    {
-      achievementId: 'cursedNumber',
-      progress: 2137,
-      unlockDate: new Date(),
-    },
-  ];
-  return { data };
 };

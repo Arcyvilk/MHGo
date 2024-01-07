@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { log } from '@mhgo/utils';
 import {
   User,
+  UserAchievement,
   UserItems,
   UserLoadout,
   UserMaterials,
@@ -76,6 +77,13 @@ export const adminResetUser = async (
     if (toReset.cooldowns) {
       const collectionRespawn = db.collection<UserRespawn>('userRespawn');
       await collectionRespawn.deleteMany({ userId });
+    }
+
+    // Reset user's respawn points
+    if (toReset.achievements) {
+      const collectionAchievements =
+        db.collection<UserAchievement>('userAchievements');
+      await collectionAchievements.deleteMany({ userId });
     }
 
     // Fin!

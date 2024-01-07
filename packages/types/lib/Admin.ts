@@ -1,4 +1,5 @@
 export type UserResetType = {
+  achievements?: boolean;
   basic?: boolean;
   items?: boolean;
   loadout?: boolean;

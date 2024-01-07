@@ -1,5 +1,12 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { CurrencyType, ItemToUse, Stats, User, UserAmount } from '@mhgo/types';
+import {
+  CurrencyType,
+  ItemToUse,
+  Stats,
+  User,
+  UserAchievement,
+  UserAmount,
+} from '@mhgo/types';
 
 import { API_URL } from '../env';
 
@@ -57,6 +64,28 @@ export const useUserMaterialsApi = (userId: string) => {
   } = useQuery<UserAmount[], unknown, UserAmount[], string[]>({
     queryKey: ['user', userId, 'materials'],
     queryFn: getUserMaterials,
+    enabled: Boolean(userId),
+  });
+
+  return { data, isLoading, isFetched, isError };
+};
+
+export const useUserAchievementsApi = (userId: string) => {
+  const getUserAchievements = async (): Promise<UserAchievement[]> => {
+    const res = await fetch(
+      `${API_URL}/users/user/${userId}/achievements/list`,
+    );
+    return res.json();
+  };
+
+  const {
+    data = [],
+    isLoading,
+    isFetched,
+    isError,
+  } = useQuery<UserAchievement[], unknown, UserAchievement[], string[]>({
+    queryKey: ['user', userId, 'achievements'],
+    queryFn: getUserAchievements,
     enabled: Boolean(userId),
   });
 

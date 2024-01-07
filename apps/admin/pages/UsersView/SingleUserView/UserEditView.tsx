@@ -132,9 +132,11 @@ const useUpdateUser = (setStatus: (status: Status) => void) => {
   );
   const [updatedUser, setUpdatedUser] = useState(user);
   const [toReset, setToReset] = useState<UserResetType>({
+    achievements: false,
     basic: false,
     cooldowns: false,
     items: false,
+    loadout: false,
     materials: false,
     wealth: false,
   });
