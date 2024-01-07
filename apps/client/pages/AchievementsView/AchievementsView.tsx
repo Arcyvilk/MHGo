@@ -1,4 +1,5 @@
-import { CloseButton } from '@mhgo/front';
+import { CloseButton, useAchievementsApi } from '@mhgo/front';
+import { Achievement } from '@mhgo/types';
 
 import s from './AchievementsView.module.scss';
 
@@ -20,11 +21,6 @@ export const AchievementsView = () => {
   );
 };
 
-type Achievement = {
-  img: string;
-  name: string;
-  description: string;
-};
 type AchievementTileProps = { achievement: Achievement };
 const AchievementTile = ({ achievement }: AchievementTileProps) => {
   return (
@@ -39,25 +35,4 @@ const AchievementTile = ({ achievement }: AchievementTileProps) => {
       </div>
     </div>
   );
-};
-
-const useAchievementsApi = () => {
-  const data: Achievement[] = [
-    {
-      img: 'https://cdn.arcyvilk.com/mhgo/misc/question.svg',
-      name: 'Achievement name',
-      description: 'Achievement description',
-    },
-    {
-      img: 'https://cdn.arcyvilk.com/mhgo/misc/question.svg',
-      name: 'Achievement name',
-      description: 'Achievement description',
-    },
-    {
-      img: 'https://cdn.arcyvilk.com/mhgo/misc/question.svg',
-      name: 'Achievement name',
-      description: 'Achievement description',
-    },
-  ];
-  return { data };
 };

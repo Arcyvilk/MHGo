@@ -33,10 +33,12 @@
   background-color: rgba($color-header-bg, 0.4);
   padding: $size-8 $size-12;
   gap: $size-16;
+  
 
   &__img {
-    width: $size-64;
-    height: $size-64;
+    max-width: $size-64;
+    min-width: $size-64;
+    filter: drop-shadow(0 0 2px $color-black);
     aspect-ratio: 1/1;
   }
 

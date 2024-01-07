@@ -14,18 +14,23 @@ export type User = {
   wounds: number; // How much HP user lacks
 };
 
-// TODO temp user progress type
-export type UserProgress = {
-  chapter: string;
-  quest: string;
+export type UserAchievement = {
+  achievementId: string;
+  progress: number;
+  unlockDate: Date | null;
 };
+
+export type UserAchievements = {
+  userId: string;
+  achievements: UserAchievement[];
+};
+
+export type UserAmount = { id: string; amount: number };
 
 export type UserBan = {
   isBanned: boolean;
   endDate: Date;
 };
-
-export type UserAmount = { id: string; amount: number };
 
 export type UserItems = {
   userId: string;
@@ -37,9 +42,10 @@ export type UserMaterials = {
   materials: UserAmount[];
 };
 
-export type UserWealth = {
-  userId: string;
-  wealth: UserAmount[];
+// TODO temp user progress type
+export type UserProgress = {
+  chapter: string;
+  quest: string;
 };
 
 export type UserRespawn = {
@@ -47,4 +53,9 @@ export type UserRespawn = {
   markerId: string;
   markerType: 'resource' | 'monster';
   usedAt: Date;
+};
+
+export type UserWealth = {
+  userId: string;
+  wealth: UserAmount[];
 };

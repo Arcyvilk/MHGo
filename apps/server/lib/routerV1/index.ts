@@ -194,6 +194,14 @@ import { getHabitats } from './habitats';
 
 routerV1.get('/habitats/list', getHabitats);
 
+/********************************
+ *         ACHIEVEMENTS         *
+ ********************************/
+
+import { getAchievements } from './achievements';
+
+routerV1.get('/achievements/list', getAchievements);
+
 /************************
  *         NEWS         *
  ************************/

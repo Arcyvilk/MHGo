@@ -48,7 +48,7 @@ export const Buttons = () => {
       return;
     }
 
-    toast.info('Not implemented yet :(');
+    toast.info('Coming soon!');
   };
 
   return (

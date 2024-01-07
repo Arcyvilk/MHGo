@@ -1,5 +1,6 @@
 export * from './admin';
 
+export * from './useAchievementsApi';
 export * from './useHabitatsApi';
 export * from './useItemsApi';
 export * from './useLoadoutApi';
