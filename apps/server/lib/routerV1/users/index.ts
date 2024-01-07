@@ -12,6 +12,7 @@ export { getUserEquipItem } from './getUserEquipItem';
 export { updateUserExp } from './updateUserExp';
 export { updateUserHealth } from './updateUserHealth';
 export { updateUserWealth } from './updateUserWealth';
+export { updateUserAchievement } from './updateUserAchievement';
 
 export { updateUserItemsConsume } from './updateUserItemsConsume';
 export { updateUserItemCraft } from './updateUserItemCraft';

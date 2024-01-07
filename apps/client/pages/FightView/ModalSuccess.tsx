@@ -1,6 +1,6 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useMemo } from 'react';
 
-import { CurrencyType } from '@mhgo/types';
+import { CurrencyType, UserAchievement } from '@mhgo/types';
 import {
   Item,
   Button,
@@ -13,11 +13,17 @@ import {
 } from '@mhgo/front';
 
 import { ModalLevelUp } from './ModalLevelUp';
+import { ModalAchievementUnlocked } from './ModalAchievementUnlocked';
 import { useUser } from '../../hooks/useUser';
 import { useUserLevelUp } from '../../hooks/useUserLevelUp';
+import {
+  AchievementId,
+  useUpdateUserAchievement,
+} from '../../hooks/useUpdateUserAchievement';
 import { useMonsterMarker } from '../../hooks/useMonsterMarker';
 
 import s from './ModalResult.module.scss';
+import { UseMutateFunction } from '@tanstack/react-query';
 
 type ModalProps = {
   isOpen: boolean;
@@ -40,6 +46,8 @@ const Load = ({ onClose }: { onClose: () => void }) => {
   const markerId = params.get('id') ?? '';
   const level = params.get('level') ?? '0';
 
+  const [isModalAchievementUnlockedOpen, setIsModalAchievementUnlockedOpen] =
+    useState(false);
   const [isModalLevelUpOpen, setIsModalLevelUpOpen] = useState(false);
   const [isLootRedeemed, setIsLootRedeemed] = useState(false);
   const { userId } = useUser();
@@ -51,6 +59,18 @@ const Load = ({ onClose }: { onClose: () => void }) => {
   } = useMonsterMarkerDropsApi(userId);
   const { mutate: mutateUserExp, didLevelUp, levels } = useUserLevelUp(userId);
   const { mutate: mutateUserWealth } = useUpdateUserWealthApi(userId);
+
+  const {
+    mutate,
+    getIsAchievementUnlocked,
+    isSuccess: isAchievementUpdateSuccess,
+  } = useUpdateUserAchievement();
+  const { updateAchievement } = useAchievements(mutate, monster.id);
+
+  const isAchievementUnlocked = useMemo(
+    () => getIsAchievementUnlocked(AchievementId.HABEMUS_PAPAM),
+    [isAchievementUpdateSuccess],
+  );
 
   const expChange = Number(level) * monster.baseExp;
   const wealthChange: { [key in CurrencyType]?: number } = {};
@@ -71,11 +91,16 @@ const Load = ({ onClose }: { onClose: () => void }) => {
 
   useEffect(() => {
     redeemLoot();
+    updateAchievement();
   }, []);
 
   useEffect(() => {
     if (didLevelUp) setIsModalLevelUpOpen(true);
   }, [didLevelUp]);
+
+  useEffect(() => {
+    if (isAchievementUnlocked) setIsModalAchievementUnlockedOpen(true);
+  }, [isAchievementUnlocked]);
 
   const listOfDrops = drops.map(drop => {
     const data = {
@@ -94,6 +119,12 @@ const Load = ({ onClose }: { onClose: () => void }) => {
           levels={levels}
           isOpen={isModalLevelUpOpen}
           setIsOpen={setIsModalLevelUpOpen}
+        />
+      )}
+      {isModalAchievementUnlockedOpen && (
+        <ModalAchievementUnlocked
+          isOpen={isModalAchievementUnlockedOpen}
+          setIsOpen={setIsModalAchievementUnlockedOpen}
         />
       )}
       <div className={s.result__misc}>
@@ -121,4 +152,22 @@ const Load = ({ onClose }: { onClose: () => void }) => {
       <Button label="Claim" onClick={onClose} simple />
     </div>
   );
+};
+
+const useAchievements = (
+  mutate: UseMutateFunction<
+    UserAchievement,
+    Error,
+    Pick<UserAchievement, 'achievementId' | 'progress'>
+  >,
+  monsterId: string,
+) => {
+  const updateAchievement = () => {
+    if (monsterId === 'babcianiath') {
+      const dupa = { achievementId: AchievementId.HABEMUS_PAPAM, progress: 1 };
+      console.log(dupa);
+      mutate(dupa);
+    }
+  };
+  return { updateAchievement };
 };

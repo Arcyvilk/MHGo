@@ -300,3 +300,33 @@ export const useUserCraftItemApi = (userId: string, itemId: string) => {
 
   return { mutate, isPending, isSuccess, isError };
 };
+
+export const useUserUpdateAchievementApi = (userId: string) => {
+  const queryClient = useQueryClient();
+
+  const updateUserAchievement = async (
+    variables: Pick<UserAchievement, 'achievementId' | 'progress'>,
+  ): Promise<UserAchievement> => {
+    const res = await fetch(`${API_URL}/users/user/${userId}/achievement`, {
+      method: 'PUT',
+      body: JSON.stringify(variables),
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+    });
+    queryClient.invalidateQueries({
+      queryKey: ['user', userId, 'achievements'],
+    });
+
+    return res.json();
+  };
+
+  const { mutate, data, error, status, isPending, isSuccess, isError } =
+    useMutation({
+      mutationKey: ['user', userId, 'achievement', 'update'],
+      mutationFn: updateUserAchievement,
+    });
+
+  return { mutate, data, error, status, isPending, isSuccess, isError };
+};
