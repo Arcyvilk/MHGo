@@ -3,6 +3,7 @@ import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import { ToastContainer, ToastContainerProps } from 'react-toastify';
 
 import {
+  AchievementsView,
   EquipmentView,
   ForageView,
   HomeView,
@@ -68,6 +69,7 @@ export const App = () => {
             <Route path="/guide" element={<MonsterGuideView />} />
             <Route path="/equipment" element={<EquipmentView />} />
             <Route path="/items" element={<ItemBoxView />} />
+            <Route path="/achievements" element={<AchievementsView />} />
             <Route path="/paintball" element={<PaintballView />} />
             <Route path="/settings" element={<SettingsView />} />
             <Route path="/shop" element={<ShopView />} />
