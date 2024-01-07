@@ -5,6 +5,7 @@ import {
   Button,
   Input,
   Switch,
+  modifiers,
   useAdminAllUsersApi,
   useAdminResetUserApi,
   useAdminUpdateUserApi,
@@ -87,10 +88,11 @@ export const UserEditView = () => {
           <Button
             label="Enable godmode"
             onClick={onGodmodeEnable}
-            variant={Button.Variant.DANGER}
+            variant={Button.Variant.ACTION}
           />
         </div>
-        <div className={s.singleUserView__section}>
+        <div
+          className={modifiers(s, 'singleUserView__section', { hidden: true })}>
           <div className={s.singleUserView__grid}>
             {Object.keys(toReset).map(key => (
               <Switch

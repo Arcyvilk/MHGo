@@ -13,7 +13,7 @@ import {
   adminGetAllUsers,
   adminUpdateUser,
   adminResetUser,
-  adminUserGiveOPItems,
+  adminUserEnableGodmode,
   adminCreateItem,
   adminCreateMaterial,
   adminCreateMonster,
@@ -38,7 +38,7 @@ import {
 routerV1.get('/admin/users/list', adminGetAllUsers);
 routerV1.put('/admin/users/user/:userId', adminUpdateUser);
 routerV1.put('/admin/users/user/:userId/reset', adminResetUser);
-routerV1.post('/admin/users/user/:userId/godmode', adminUserGiveOPItems);
+routerV1.post('/admin/users/user/:userId/godmode', adminUserEnableGodmode);
 
 routerV1.post('/admin/items/create', adminCreateItem);
 routerV1.post('/admin/materials/create', adminCreateMaterial);

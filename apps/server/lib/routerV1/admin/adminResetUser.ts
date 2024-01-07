@@ -86,7 +86,7 @@ export const adminResetUser = async (
   }
 };
 
-export const adminUserGiveOPItems = async (
+export const adminUserEnableGodmode = async (
   req: Request,
   res: Response,
 ): Promise<void> => {
@@ -110,9 +110,14 @@ export const adminUserGiveOPItems = async (
               id: 'soatt',
               amount: 1,
             },
+            {
+              id: 'potion',
+              amount: 999,
+            },
           ],
         },
       },
+      { upsert: true },
     );
 
     if (!response.acknowledged) {

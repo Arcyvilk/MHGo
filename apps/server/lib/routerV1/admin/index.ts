@@ -1,7 +1,7 @@
 // USERS
 export { adminGetAllUsers } from './adminGetAllUsers';
 export { adminUpdateUser } from './adminUpdateUser';
-export { adminResetUser, adminUserGiveOPItems } from './adminResetUser';
+export { adminResetUser, adminUserEnableGodmode } from './adminResetUser';
 
 // CREATION
 export { adminCreateItem } from './adminCreateItem';

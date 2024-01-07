@@ -3,6 +3,7 @@ import { log } from '@mhgo/utils';
 import { User } from '@mhgo/types';
 
 import { mongoInstance } from '../../../api';
+import { WithId } from 'mongodb';
 
 export const adminUpdateUser = async (
   req: Request,
@@ -13,7 +14,9 @@ export const adminUpdateUser = async (
     const { userId } = req.params;
 
     const collection = db.collection<User>('users');
-    const updatedFields = req.body as Partial<User>;
+    const { _id, id, ban, ...updatedFields } = req.body as Partial<
+      WithId<User>
+    >;
 
     const response = await collection.updateOne(
       { id: userId },
