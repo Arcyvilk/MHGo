@@ -2,6 +2,7 @@ import {
   CloseButton,
   ProgressBar,
   Switch,
+  addCdnUrl,
   modifiers,
   useAchievementsApi,
   useUserAchievementsApi,
@@ -16,6 +17,11 @@ export const AchievementsView = () => {
   const achievements = useAchievementsWithUnlock();
   const [showUnlocked, setShowUnlocked] = useState(true);
   const [showLocked, setShowLocked] = useState(true);
+
+  const sortedAchievements = [
+    ...achievements.filter(a => !a.hidden),
+    ...achievements.filter(a => a.hidden),
+  ];
 
   return (
     <div className={s.achievementsView}>
@@ -35,7 +41,7 @@ export const AchievementsView = () => {
             setChecked={setShowLocked}
           />
         </div>
-        {achievements
+        {sortedAchievements
           .filter(achievement => {
             const isUnlocked =
               achievement.unlockDate &&
@@ -59,6 +65,23 @@ type AchievementTileProps = {
 const AchievementTile = ({ achievement }: AchievementTileProps) => {
   const isUnlocked =
     achievement.unlockDate && achievement.progress === achievement.maxProgress;
+  const isHidden = !isUnlocked && achievement.hidden;
+
+  if (isHidden)
+    return (
+      <div
+        className={modifiers(s, 'achievement', {
+          unlocked: achievement.unlockDate,
+        })}>
+        <img
+          className={s.achievement__img}
+          src={addCdnUrl('/misc/question.svg')}
+        />
+        <div className={s.achievement__details}>
+          <h2 className={s.achievement__name}>Achievement hidden</h2>
+        </div>
+      </div>
+    );
 
   return (
     <div

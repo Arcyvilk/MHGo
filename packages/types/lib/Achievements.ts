@@ -4,4 +4,5 @@ export type Achievement = {
   name: string;
   description: string;
   maxProgress: number;
+  hidden: boolean;
 };
