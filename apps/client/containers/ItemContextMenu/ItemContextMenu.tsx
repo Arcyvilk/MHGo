@@ -1,9 +1,15 @@
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 
 import { ItemActions, Item as TItem } from '@mhgo/types';
-import { Button, Item, SoundSE, useSounds } from '@mhgo/front';
+import {
+  Button,
+  Item,
+  SoundSE,
+  useSounds,
+  useUserHealthApi,
+} from '@mhgo/front';
 import {
   useItemActionsApi,
   useUpdateUserHealthApi,
@@ -18,6 +24,11 @@ import { CraftConfirmation } from './Craft/CraftConfirmation';
 import { ItemStats } from './ItemStats';
 
 import s from './ItemContextMenu.module.scss';
+import {
+  AchievementId,
+  useUpdateUserAchievement,
+} from '../../hooks/useUpdateUserAchievement';
+import { ModalAchievementUnlocked } from '../../pages/FightView/ModalAchievementUnlocked';
 
 type Action = keyof ItemActions['action'] | 'craft';
 export const ItemContextMenu = ({
@@ -41,6 +52,12 @@ export const ItemContextMenu = ({
   const { mutate: mutateConsumeItem } = useUserConsumeItemsApi(userId);
   const { mutate: mutateUserHealth, isSuccess: isHealedSuccessfully } =
     useUpdateUserHealthApi(userId);
+
+  const {
+    isModalAchievementUnlockedOpen,
+    setIsModalAchievementUnlockedOpen,
+    achievementId,
+  } = useItemActionAchievements(item as TItem, isHealedSuccessfully);
 
   const onItemCraft = () => {
     if (!item.craftable) return;
@@ -88,6 +105,11 @@ export const ItemContextMenu = ({
   return (
     <div className={s.itemContextMenu} key={item.id}>
       <Flash type="green" isActivated={isHealedSuccessfully} />
+      <ModalAchievementUnlocked
+        achievementId={achievementId}
+        isOpen={isModalAchievementUnlockedOpen}
+        setIsOpen={setIsModalAchievementUnlockedOpen}
+      />
       <Modal isOpen={isModalOpen} setIsOpen={setIsModalOpen}>
         {!useOnly && action === 'craft' && item.craftable && (
           <CraftConfirmation itemId={item.id} setIsModalOpen={setIsModalOpen} />
@@ -142,4 +164,56 @@ export const ItemContextMenu = ({
       </Dropdown>
     </div>
   );
+};
+
+const useItemActionAchievements = (
+  item: TItem,
+  isUsedSuccessfully: boolean,
+) => {
+  const { userId } = useUser();
+  const [achievementId, setAchievementId] = useState<string | null>();
+  const [isModalAchievementUnlockedOpen, setIsModalAchievementUnlockedOpen] =
+    useState(false);
+  const { data: userHealth } = useUserHealthApi(userId);
+
+  const isUserFullHP = useMemo(() => {
+    return userHealth.currentHealth === userHealth.maxHealth;
+  }, [userHealth]);
+
+  const {
+    mutate,
+    getIsAchievementUnlocked,
+    isSuccess: isAchievementUpdateSuccess,
+  } = useUpdateUserAchievement();
+
+  const isAchievementUnlocked = useMemo(() => {
+    if (!isAchievementUpdateSuccess) return;
+    const { unlockedNewAchievement } = getIsAchievementUnlocked(
+      AchievementId.TGTG,
+    );
+    return unlockedNewAchievement;
+  }, [isAchievementUpdateSuccess]);
+
+  // Call for the achievement when deer burger is successfully eaten
+  useEffect(() => {
+    if (isUsedSuccessfully) {
+      if (item.id === 'deer_burger' && isUserFullHP) {
+        setAchievementId(AchievementId.TGTG);
+        mutate({ achievementId: AchievementId.TGTG, progress: 1 });
+      }
+    }
+  }, [isUsedSuccessfully]);
+
+  // Open achievement modal when achievement is successfully unlocked
+  useEffect(() => {
+    if (isAchievementUnlocked) {
+      setIsModalAchievementUnlockedOpen(true);
+    }
+  }, [isAchievementUnlocked]);
+
+  return {
+    achievementId,
+    isModalAchievementUnlockedOpen,
+    setIsModalAchievementUnlockedOpen,
+  };
 };
