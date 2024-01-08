@@ -104,11 +104,12 @@ export const adminUserEnableGodmode = async (
 
     if (!userId) throw new Error('No user ID provided!');
 
+    // Give items
     const collectionUserItems = db.collection<UserItems>('userItems');
     const userItems =
       (await collectionUserItems.findOne({ userId }))?.items ?? [];
 
-    const response = await collectionUserItems.updateOne(
+    const responseUseritems = await collectionUserItems.updateOne(
       { userId },
       {
         $set: {
@@ -122,17 +123,57 @@ export const adminUserEnableGodmode = async (
               id: 'potion',
               amount: 999,
             },
+            {
+              id: 'grimoire_page_craftable',
+              amount: 999,
+            },
+            {
+              id: 'grimoire_page_purchasable',
+              amount: 999,
+            },
+            {
+              id: 'grimoire_page_bossdrop',
+              amount: 999,
+            },
           ],
         },
       },
       { upsert: true },
     );
 
-    if (!response.acknowledged) {
-      res.status(400).send({ error: 'Could not give user OP items :C' });
-    } else {
-      res.status(200).send(response);
-    }
+    if (!responseUseritems.acknowledged)
+      throw new Error('Could not give user godmode :C');
+
+    // Give money
+    const collectionUserWealth = db.collection<UserWealth>('userWealth');
+    const userWealth =
+      (await collectionUserWealth.findOne({ userId }))?.wealth ?? [];
+
+    const responseUserWealth = await collectionUserWealth.updateOne(
+      { userId },
+      {
+        $set: {
+          wealth: [
+            ...userWealth,
+            {
+              id: 'base',
+              amount: 999999,
+            },
+            {
+              id: 'premium',
+              amount: 999999,
+            },
+          ],
+        },
+      },
+      { upsert: true },
+    );
+
+    if (!responseUserWealth.acknowledged)
+      throw new Error('Could not give user godmode :C');
+
+    // Fin
+    res.sendStatus(200);
   } catch (err: any) {
     log.WARN(err);
     res.status(500).send({ error: err.message ?? 'Internal server error' });
