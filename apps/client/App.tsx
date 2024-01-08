@@ -40,7 +40,7 @@ const toastOptions: ToastContainerProps = {
 };
 
 export const App = () => {
-  const { playBgSound } = useSounds();
+  const { changeMusic, changeMusicVolume, volume } = useSounds();
 
   useEffect(() => {
     const isInsideInstalledApp =
@@ -50,8 +50,13 @@ export const App = () => {
       // Size window after open the app
       window.resizeTo(400, 800);
     }
-    playBgSound(SoundBG.BEWITCHING, true);
+    changeMusic(SoundBG.BEWITCHING);
   }, []);
+
+  useEffect(() => {
+    // TODO this won't work because it's in a diff hook as audio settings
+    changeMusicVolume();
+  }, [volume.bgm, volume.master]);
 
   return (
     <QueryClientProvider client={queryClient}>

@@ -3,7 +3,7 @@ import { toast } from 'react-toastify';
 
 import {
   Volume,
-  useVolume,
+  useSounds,
   addCdnUrl,
   Button,
   CloseButton,
@@ -21,7 +21,7 @@ const DEFAULT = {
 
 export const SettingsView = () => {
   const [installPrompt, setInstallPrompt] = useState<any>(null);
-  const { volume, setVolume } = useVolume();
+  const { volume, setVolume } = useSounds();
   const { onLogOut, onDeleteAccount } = useLogin();
 
   useEffect(() => {
