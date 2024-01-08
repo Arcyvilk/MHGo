@@ -9,6 +9,19 @@ export const CreditsView = () => {
         <div className={s.header__title}>Credits</div>
       </div>
       <div className={s.creditsView__wrapper}>
+        {/* IMAGES */}
+        <h2 className={s.creditsView__title}>Images</h2>
+        <ul className={s.creditsView__list}>
+          {images.map(i => (
+            <li>
+              <a href={i.link} target="_blank">
+                {i.author} - {i.title}
+              </a>{' '}
+              - {i.usage}
+            </li>
+          ))}
+        </ul>
+
         {/* MUSIC */}
         <h2 className={s.creditsView__title}>Music</h2>
         <ul className={s.creditsView__list}>
@@ -17,7 +30,7 @@ export const CreditsView = () => {
               <a href={m.link} target="_blank">
                 {m.author} - {m.title}
               </a>{' '}
-              - used as {m.usage}
+              - {m.usage}
             </li>
           ))}
         </ul>
@@ -30,20 +43,7 @@ export const CreditsView = () => {
               <a href={s.link} target="_blank">
                 {s.author} - {s.title}
               </a>{' '}
-              - used as {s.usage}
-            </li>
-          ))}
-        </ul>
-
-        {/* IMAGES */}
-        <h2 className={s.creditsView__title}>Images</h2>
-        <ul className={s.creditsView__list}>
-          {images.map(i => (
-            <li>
-              <a href={i.link} target="_blank">
-                {i.author} - {i.title}
-              </a>{' '}
-              - used as {i.usage}
+              - {s.usage}
             </li>
           ))}
         </ul>
@@ -73,66 +73,77 @@ const images: Credit[] = [
 const sounds: Credit[] = [
   {
     usage: 'nuke sound',
-    title: '',
-    author: '',
-    link: '',
-    license: 'TODO',
+    title: 'Explosion 003',
+    author: 'cydon',
+    link: 'https://freesound.org/people/cydon/sounds/268555/',
+    license: 'CC BY-NC 4.0 Deed',
   },
   {
     usage: 'resource farm sound',
-    title: '',
-    author: '',
-    link: '',
-    license: 'TODO',
+    title: 'snd fragment retrieve',
+    author: 'rocker12523',
+    link: 'https://freesound.org/people/rocker12523/sounds/678497/',
+    license: 'CC0 1.0 Deed',
   },
   {
+    usage: 'monster hit sound',
+    title: 'Whip',
+    author: 'UNIVERSFIELD',
+    link: 'https://pixabay.com/sound-effects/whip-123738/',
+    license: 'https://pixabay.com/service/license-summary/',
+  },
+  {
+    // Not used
     usage: 'slapping sound 1',
-    title: '',
-    author: '',
-    link: '',
-    license: 'TODO',
+    title: 'belt',
+    author: 'nuncaconoci',
+    link: 'https://freesound.org/people/nuncaconoci/sounds/534553/',
+    license: 'CC0 1.0 Deed',
   },
   {
+    // Not used
     usage: 'slapping sound 2',
-    title: '',
-    author: '',
-    link: '',
-    license: 'TODO',
+    title: 'Punch',
+    author: 'ethanchase7744',
+    link: 'https://freesound.org/people/ethanchase7744/sounds/448982/',
+    license: 'CC0 1.0 Deed',
   },
   {
     usage: 'pain grunt',
-    title: '',
-    author: '',
-    link: '',
-    license: 'TODO',
+    title: 'Ouch',
+    author: 'ajanhallinta',
+    link: 'https://freesound.org/people/ajanhallinta/sounds/649543/',
+    license: 'CC0 1.0 Deed',
   },
   {
     usage: 'death grunt',
-    title: '',
-    author: '',
-    link: '',
-    license: 'TODO',
+    title: 'Man dies',
+    author: 'starkvind',
+    link: 'https://freesound.org/people/starkvind/sounds/559975/',
+    license: 'CC0 1.0 Deed',
   },
   {
+    // Not used
     usage: 'slapping sound 3',
-    title: '',
-    author: '',
-    link: '',
-    license: 'TODO',
+    title: 'Whipslap-P',
+    author: 'Seidhepriest',
+    link: 'https://freesound.org/people/Seidhepriest/sounds/192077/',
+    license: 'CC BY-NC 4.0 Deed',
   },
   {
+    // Not used
     usage: 'slapping sound 4',
-    title: '',
-    author: '',
-    link: '',
-    license: 'TODO',
+    title: 'Impact LeatherBelt 001',
+    author: 'DWOBoyle',
+    link: 'https://freesound.org/people/DWOBoyle/sounds/144266/',
+    license: 'CC BY 4.0 Deed',
   },
   {
     usage: 'item use sound',
-    title: '',
-    author: '',
-    link: '',
-    license: 'TODO',
+    title: 'bubble',
+    author: 'JavierSerrat',
+    link: 'https://freesound.org/people/JavierSerrat/sounds/485065/',
+    license: 'CC BY 4.0 Deed',
   },
   {
     usage: 'click sound',
@@ -146,9 +157,10 @@ const sounds: Credit[] = [
     title: 'Mechanical Switch',
     author: 'Jagadamba',
     link: 'https://freesound.org/people/Jagadamba/sounds/254286/',
-    license: 'Attribution NonCommercial 4.0',
+    license: 'CC BY-NC 4.0 Deed',
   },
 ];
+
 const music: Credit[] = [
   {
     usage: 'background music',

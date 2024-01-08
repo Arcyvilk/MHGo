@@ -28,6 +28,7 @@ export enum SoundSE {
   SLAP = 'SLAP',
   SNAP = 'SNAP',
   WHIP = 'WHIP',
+  WHIP2 = 'WHIP2',
 }
 
 export const useSounds = (
@@ -87,5 +88,6 @@ const soundSrc: Record<SoundSE, Howl> = {
   [SoundSE.PUNCH]: new Howl({ src: [`${CDN_URL}/sounds/punch.wav`] }),
   [SoundSE.SLAP]: new Howl({ src: [`${CDN_URL}/sounds/slap.wav`] }),
   [SoundSE.SNAP]: new Howl({ src: [`${CDN_URL}/sounds/snap.mp3`] }),
-  [SoundSE.WHIP]: new Howl({ src: [`${CDN_URL}/sounds/whip.wav`] }),
+  [SoundSE.WHIP]: new Howl({ src: [`${CDN_URL}/sounds/action_punch.mp3`] }),
+  [SoundSE.WHIP2]: new Howl({ src: [`${CDN_URL}/sounds/whip.wav`] }),
 };
