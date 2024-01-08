@@ -15,7 +15,7 @@ export const QuickUseModal = () => {
       {hasQuickUseItems ? (
         <div className={s.modalView__quickUse__items}>
           {consumableItems.map(item => (
-            <ItemContextMenu item={item} />
+            <ItemContextMenu item={item} useOnly />
           ))}
         </div>
       ) : (

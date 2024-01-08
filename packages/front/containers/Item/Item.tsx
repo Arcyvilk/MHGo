@@ -1,6 +1,5 @@
-import { CurrencyInfo, Icon, SoundSE, useSounds } from '@mhgo/front';
+import { CurrencyInfo, SoundSE, useSounds } from '@mhgo/front';
 import { modifiers } from '@mhgo/front';
-import { Size } from '@mhgo/front';
 
 import s from './Item.module.scss';
 import { UserAmount } from '@mhgo/types';

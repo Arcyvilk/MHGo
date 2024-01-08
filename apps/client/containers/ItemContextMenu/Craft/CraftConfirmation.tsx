@@ -7,9 +7,9 @@ import {
   AchievementId,
   useUpdateUserAchievement,
 } from '../../../hooks/useUpdateUserAchievement';
+import { ModalAchievementUnlocked } from '../../../pages/FightView/ModalAchievementUnlocked';
 
 import s from './CraftConfirmation.module.scss';
-import { ModalAchievementUnlocked } from '../../../pages/FightView/ModalAchievementUnlocked';
 
 type CraftConfirmationProps = {
   itemId: string;
