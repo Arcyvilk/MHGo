@@ -85,6 +85,24 @@ export const UserEditView = () => {
               updatedUser && setUpdatedUser({ ...updatedUser, name })
             }
           />
+          <Input
+            name="user_exp"
+            label="User's experience"
+            value={String(updatedUser?.exp ?? 0)}
+            setValue={exp =>
+              updatedUser &&
+              setUpdatedUser({ ...updatedUser, exp: Number(exp) })
+            }
+          />
+          <Input
+            name="user_wounds"
+            label="User's wounds"
+            value={String(updatedUser?.wounds ?? 0)}
+            setValue={wounds =>
+              updatedUser &&
+              setUpdatedUser({ ...updatedUser, wounds: Number(wounds) })
+            }
+          />
           <Button
             label="Enable godmode"
             onClick={onGodmodeEnable}
