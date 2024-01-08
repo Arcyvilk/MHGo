@@ -20,17 +20,17 @@ import {
   Modal,
 } from '@mhgo/front';
 import { useUser } from '../../hooks/useUser';
+import {
+  AchievementId,
+  useUpdateUserAchievement,
+} from '../../hooks/useUpdateUserAchievement';
+import { ModalAchievement } from '../../containers';
+import { useAppContext } from '../../utils/context';
 import { CraftConfirmation } from './Craft/CraftConfirmation';
 import { PurchaseConfirmation } from './Purchase/PurchaseConfirmation';
 import { ItemStats } from './ItemStats';
 
 import s from './ItemContextMenu.module.scss';
-import {
-  AchievementId,
-  useUpdateUserAchievement,
-} from '../../hooks/useUpdateUserAchievement';
-import { ModalAchievementUnlocked } from '../../pages/FightView/ModalAchievementUnlocked';
-import { useAppContext } from '../../utils/context';
 
 type Action = keyof ItemActions['action'] | 'craft' | 'purchase';
 export const ItemContextMenu = ({
@@ -58,11 +58,8 @@ export const ItemContextMenu = ({
   const { mutate: mutateUserHealth, isSuccess: isHealedSuccessfully } =
     useUpdateUserHealthApi(userId);
 
-  const {
-    isModalAchievementUnlockedOpen,
-    setIsModalAchievementUnlockedOpen,
-    achievementId,
-  } = useItemActionAchievements(item as TItem, isHealedSuccessfully);
+  const { isModalAchievementOpen, setIsModalAchievementOpen, achievementId } =
+    useItemActionAchievements(item as TItem, isHealedSuccessfully);
 
   const onItemCraft = () => {
     if (!item.craftable) return;
@@ -115,10 +112,10 @@ export const ItemContextMenu = ({
   return (
     <div className={s.itemContextMenu} key={item.id}>
       <Flash type="green" isActivated={isHealedSuccessfully} />
-      <ModalAchievementUnlocked
+      <ModalAchievement
         achievementId={achievementId}
-        isOpen={isModalAchievementUnlockedOpen}
-        setIsOpen={setIsModalAchievementUnlockedOpen}
+        isOpen={isModalAchievementOpen}
+        setIsOpen={setIsModalAchievementOpen}
       />
       <Modal isOpen={isModalOpen} setIsOpen={setIsModalOpen}>
         {!useOnly && action === 'craft' && item.craftable && (
@@ -188,8 +185,7 @@ const useItemActionAchievements = (
 ) => {
   const { userId } = useUser();
   const [achievementId, setAchievementId] = useState<string | null>();
-  const [isModalAchievementUnlockedOpen, setIsModalAchievementUnlockedOpen] =
-    useState(false);
+  const [isModalAchievementOpen, setIsModalAchievementOpen] = useState(false);
   const { data: userHealth } = useUserHealthApi(userId);
 
   const isUserFullHP = useMemo(() => {
@@ -223,13 +219,13 @@ const useItemActionAchievements = (
   // Open achievement modal when achievement is successfully unlocked
   useEffect(() => {
     if (isAchievementUnlocked) {
-      setIsModalAchievementUnlockedOpen(true);
+      setIsModalAchievementOpen(true);
     }
   }, [isAchievementUnlocked]);
 
   return {
     achievementId,
-    isModalAchievementUnlockedOpen,
-    setIsModalAchievementUnlockedOpen,
+    isModalAchievementOpen,
+    setIsModalAchievementOpen,
   };
 };

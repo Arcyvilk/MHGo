@@ -1,0 +1,32 @@
+@import '@mhgo/front/styles/index.scss';
+
+.modalAchievement {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: $size-16;
+  z-index: $zindex-modal;
+
+  &__title {
+    @include page-title;
+  }
+  &__content {
+    font-size: $size-14;
+    font-weight: 400;
+  }
+
+  &__achievement {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: $size-8;
+    font-size: $size-12;
+    font-weight: 600;
+    
+    &__image {
+      cursor: pointer;
+    }
+  }
+}

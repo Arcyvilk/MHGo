@@ -7,7 +7,7 @@ import {
   AchievementId,
   useUpdateUserAchievement,
 } from '../../../hooks/useUpdateUserAchievement';
-import { ModalAchievementUnlocked } from '../../../pages/FightView/ModalAchievementUnlocked';
+import { ModalAchievement } from '../../../containers';
 
 import s from './CraftConfirmation.module.scss';
 
@@ -27,11 +27,8 @@ export const CraftConfirmation = ({
     getItemIngredients,
     isSuccess: isCraftedSuccessfully,
   } = useItemCraft(itemId);
-  const {
-    isModalAchievementUnlockedOpen,
-    setIsModalAchievementUnlockedOpen,
-    achievementId,
-  } = useCraftingAchievements(item as TItem, isCraftedSuccessfully);
+  const { isModalAchievementOpen, setIsModalAchievementOpen, achievementId } =
+    useCraftingAchievements(item as TItem, isCraftedSuccessfully);
 
   const ingredients = getItemIngredients();
 
@@ -49,10 +46,10 @@ export const CraftConfirmation = ({
 
   return (
     <div className={s.craftConfirmation}>
-      <ModalAchievementUnlocked
+      <ModalAchievement
         achievementId={achievementId}
-        isOpen={isModalAchievementUnlockedOpen}
-        setIsOpen={setIsModalAchievementUnlockedOpen}
+        isOpen={isModalAchievementOpen}
+        setIsOpen={setIsModalAchievementOpen}
       />
       <h2 className={s.craftConfirmation__prompt}>
         Crafting {item?.name ?? 'item'}...
@@ -124,8 +121,7 @@ const useCraftingAchievements = (
   isCraftedSuccessfully: boolean,
 ) => {
   const [achievementId, setAchievementId] = useState<string | null>();
-  const [isModalAchievementUnlockedOpen, setIsModalAchievementUnlockedOpen] =
-    useState(false);
+  const [isModalAchievementOpen, setIsModalAchievementOpen] = useState(false);
 
   const {
     mutate,
@@ -154,13 +150,13 @@ const useCraftingAchievements = (
   // Open achievement modal when achievement is successfully unlocked
   useEffect(() => {
     if (isAchievementUnlocked) {
-      setIsModalAchievementUnlockedOpen(true);
+      setIsModalAchievementOpen(true);
     }
   }, [isAchievementUnlocked]);
 
   return {
     achievementId,
-    isModalAchievementUnlockedOpen,
-    setIsModalAchievementUnlockedOpen,
+    isModalAchievementOpen,
+    setIsModalAchievementOpen,
   };
 };

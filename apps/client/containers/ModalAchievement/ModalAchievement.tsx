@@ -1,6 +1,6 @@
 import { Button, Modal, Rays, useAchievementsApi } from '@mhgo/front';
 
-import s from './ModalResult.module.scss';
+import s from './ModalAchievement.module.scss';
 import { useNavigate } from 'react-router-dom';
 
 type ModalProps = {
@@ -8,7 +8,7 @@ type ModalProps = {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
 };
-export const ModalAchievementUnlocked = ({
+export const ModalAchievement = ({
   achievementId,
   isOpen,
   setIsOpen,
@@ -26,12 +26,12 @@ export const ModalAchievementUnlocked = ({
   return (
     <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
       <Rays />
-      <div className={s.result}>
-        <h1 className={s.result__title}>ACHIEVEMENT UNLOCKED!</h1>
-        <div className={s.result__content}>
-          <div className={s.result__achievement}>
+      <div className={s.modalAchievement}>
+        <h1 className={s.modalAchievement__title}>ACHIEVEMENT UNLOCKED!</h1>
+        <div className={s.modalAchievement__content}>
+          <div className={s.modalAchievement__achievement}>
             <img
-              className={s.result__achievement__image}
+              className={s.modalAchievement__achievement__image}
               src={achievement.img}
               onClick={onAchievementClick}
             />

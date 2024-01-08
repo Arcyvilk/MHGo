@@ -13,7 +13,7 @@ import {
 } from '@mhgo/front';
 
 import { ModalLevelUp } from './ModalLevelUp';
-import { ModalAchievementUnlocked } from './ModalAchievementUnlocked';
+import { ModalAchievement } from '../../containers';
 import { useUser } from '../../hooks/useUser';
 import { useUserLevelUp } from '../../hooks/useUserLevelUp';
 import {
@@ -60,8 +60,8 @@ const Load = ({ onClose }: { onClose: () => void }) => {
   const {
     achievementId,
     updateAchievement,
-    isModalAchievementUnlockedOpen,
-    setIsModalAchievementUnlockedOpen,
+    isModalAchievementOpen,
+    setIsModalAchievementOpen,
   } = useKillingAchievements(monster?.id);
 
   const expChange = Number(level) * monster.baseExp;
@@ -108,11 +108,11 @@ const Load = ({ onClose }: { onClose: () => void }) => {
           setIsOpen={setIsModalLevelUpOpen}
         />
       )}
-      {isModalAchievementUnlockedOpen && (
-        <ModalAchievementUnlocked
+      {isModalAchievementOpen && (
+        <ModalAchievement
           achievementId={achievementId}
-          isOpen={isModalAchievementUnlockedOpen}
-          setIsOpen={setIsModalAchievementUnlockedOpen}
+          isOpen={isModalAchievementOpen}
+          setIsOpen={setIsModalAchievementOpen}
         />
       )}
       <div className={s.result__misc}>
@@ -144,8 +144,7 @@ const Load = ({ onClose }: { onClose: () => void }) => {
 
 const useKillingAchievements = (monsterId: string) => {
   const [achievementId, setAchievementId] = useState<string | null>();
-  const [isModalAchievementUnlockedOpen, setIsModalAchievementUnlockedOpen] =
-    useState(false);
+  const [isModalAchievementOpen, setIsModalAchievementOpen] = useState(false);
   const {
     mutate,
     getIsAchievementUnlocked,
@@ -167,13 +166,13 @@ const useKillingAchievements = (monsterId: string) => {
   };
 
   useEffect(() => {
-    if (isAchievementUnlocked) setIsModalAchievementUnlockedOpen(true);
+    if (isAchievementUnlocked) setIsModalAchievementOpen(true);
   }, [isAchievementUnlocked]);
 
   return {
     achievementId,
     updateAchievement,
-    isModalAchievementUnlockedOpen,
-    setIsModalAchievementUnlockedOpen,
+    isModalAchievementOpen,
+    setIsModalAchievementOpen,
   };
 };
