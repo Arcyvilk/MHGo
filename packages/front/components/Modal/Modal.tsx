@@ -6,8 +6,15 @@ type ModalProps = {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
   onClose?: () => void;
+  isHighModal?: boolean;
 };
-export const Modal = ({ children, isOpen, setIsOpen, onClose }: ModalProps) => {
+export const Modal = ({
+  children,
+  isHighModal = false,
+  isOpen,
+  setIsOpen,
+  onClose,
+}: ModalProps) => {
   const onModalClose = () => {
     if (onClose) onClose();
     else setIsOpen(false);
@@ -19,7 +26,9 @@ export const Modal = ({ children, isOpen, setIsOpen, onClose }: ModalProps) => {
   };
 
   return (
-    <div className={modifiers(s, 'modal', { isOpen })} onClick={onModalClose}>
+    <div
+      className={modifiers(s, 'modal', { isOpen, isHighModal })}
+      onClick={onModalClose}>
       <div className={s.modal__content} onClick={onPreventBubbling}>
         {children}
       </div>

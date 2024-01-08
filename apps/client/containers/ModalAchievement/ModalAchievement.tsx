@@ -24,7 +24,7 @@ export const ModalAchievement = ({
   if (!achievement) return null;
 
   return (
-    <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
+    <Modal isOpen={isOpen} setIsOpen={setIsOpen} isHighModal>
       <Rays />
       <div className={s.modalAchievement}>
         <h1 className={s.modalAchievement__title}>ACHIEVEMENT UNLOCKED!</h1>

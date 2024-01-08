@@ -332,7 +332,9 @@ export const useUserUpdateAchievementApi = (userId: string) => {
   const queryClient = useQueryClient();
 
   const updateUserAchievement = async (
-    variables: Pick<UserAchievement, 'achievementId' | 'progress'>,
+    variables: Pick<UserAchievement, 'achievementId' | 'progress'> & {
+      newValue?: number;
+    },
   ): Promise<UserAchievement> => {
     const res = await fetch(`${API_URL}/users/user/${userId}/achievement`, {
       method: 'PUT',

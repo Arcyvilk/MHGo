@@ -11,10 +11,10 @@ export const updateUserAchievement = async (
   try {
     const { db } = mongoInstance.getDb();
     const { userId } = req.params;
-    const { achievementId, progress } = req.body as Pick<
+    const { achievementId, progress, newValue } = req.body as Pick<
       UserAchievement,
       'achievementId' | 'progress'
-    >;
+    > & { newValue?: number };
 
     // Get achievement in question
     const collectionAchievements = db.collection<Achievement>('achievements');
@@ -33,22 +33,21 @@ export const updateUserAchievement = async (
       a => a.achievementId === achievementId,
     ) ?? { achievementId, progress: 0 };
 
-    const newProgress = progress + updatedAchievement.progress;
-
-    const unlockedAchievement: UserAchievement = {
-      ...updatedAchievement,
-      progress: newProgress,
-      unlockDate:
-        achievement.maxProgress <= newProgress + updatedAchievement.progress
-          ? new Date()
-          : null,
-    };
-
-    if (unlockedAchievement.progress > achievement.maxProgress) {
+    if (updatedAchievement.progress >= achievement.maxProgress) {
       // Silently fail - it's not a bug if achievement progress would be above the limit,
       // we just don't want to update it to become so
       return;
     }
+
+    const newProgress = newValue
+      ? newValue
+      : progress + updatedAchievement.progress;
+
+    const unlockedAchievement: UserAchievement = {
+      ...updatedAchievement,
+      progress: Math.min(newProgress, achievement.maxProgress),
+      unlockDate: achievement.maxProgress <= newProgress ? new Date() : null,
+    };
 
     const response = await collectionUserAchievements.updateOne(
       { userId },
