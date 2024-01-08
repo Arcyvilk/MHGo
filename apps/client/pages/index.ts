@@ -1,4 +1,5 @@
 export * from './AchievementsView';
+export * from './CreditsView';
 export * from './EquipmentView';
 export * from './ForageView';
 export * from './HomeView';

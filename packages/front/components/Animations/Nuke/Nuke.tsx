@@ -8,10 +8,10 @@ import s from './Nuke.module.scss';
 export const Nuke = () => {
   // This is a hack to restart a non-looped gif on page rerender.
   const [src, setSrc] = useState(`${CDN_URL}/misc/dummy.gif`);
-  const { playSESound } = useSounds();
+  const { playSound } = useSounds(undefined);
 
   useEffect(() => {
-    playSESound(SoundSE.NUKE);
+    playSound(SoundSE.NUKE);
     setTimeout(() => {
       setSrc(`${CDN_URL}/misc/explosion.gif`);
     }, 0);

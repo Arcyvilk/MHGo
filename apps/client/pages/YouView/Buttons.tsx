@@ -29,6 +29,7 @@ const BUTTONS: {
     modal: <AppearanceModal />,
   },
   { icon: 'Gear', label: 'Settings', link: '/settings' },
+  { icon: 'Medal', label: 'Credits', link: '/credits' },
 ];
 
 export const Buttons = () => {

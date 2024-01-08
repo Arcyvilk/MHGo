@@ -4,11 +4,13 @@ import { Marker } from 'react-leaflet';
 import L from 'leaflet';
 import {
   QueryBoundary,
+  SoundSE,
   useResourceMarkersApi,
   useResourcesApi,
+  useSounds,
 } from '@mhgo/front';
-
 import { useUser } from '../../../hooks/useUser';
+
 import s from './Marker.module.scss';
 
 type ResourceMarkerProps = { coords?: number[] };
@@ -20,6 +22,7 @@ export const ResourceMarkers = (props: ResourceMarkerProps) => (
 
 const Load = ({ coords }: ResourceMarkerProps) => {
   const navigate = useNavigate();
+  const { playSound } = useSounds(undefined);
 
   // We make coords less precise so we don't refetch every second
   const fixedCoords = coords
@@ -33,6 +36,7 @@ const Load = ({ coords }: ResourceMarkerProps) => {
       {resourceMarkers.map(r => {
         const position = L.latLng(r.coords[0], r.coords[1]);
         const onClick = () => {
+          playSound(SoundSE.SNAP);
           // @ts-expect-error _id in fact exists
           navigate(`/forage?id=${String(r._id)}`);
         };

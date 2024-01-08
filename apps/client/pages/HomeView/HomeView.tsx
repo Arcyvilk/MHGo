@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { Icon, IconType, Modal } from '@mhgo/front';
+import { Icon, IconType, Modal, SoundSE, useSounds } from '@mhgo/front';
 import { Size } from '@mhgo/front';
 import { QuickUseModal } from '../ModalView';
 import { Map } from './Map';
@@ -46,16 +46,30 @@ type ActionButtonProps = {
   onClick: () => void;
 };
 const ActionButton = ({ icon, onClick }: ActionButtonProps) => {
+  const { playSound } = useSounds(undefined);
+
+  const onButtonClick = () => {
+    playSound(SoundSE.SNAP);
+    onClick();
+  };
+
   return (
-    <button className={s.actionButton} onClick={onClick}>
+    <button className={s.actionButton} onClick={onButtonClick}>
       <Icon icon={icon} size={Size.TINY} />
     </button>
   );
 };
 
 const QuestButton = ({ onClick }: { onClick: () => void }) => {
+  const { playSound } = useSounds(undefined);
+
+  const onButtonClick = () => {
+    playSound(SoundSE.SNAP);
+    onClick();
+  };
+
   return (
-    <button className={s.button} onClick={onClick}>
+    <button className={s.button} onClick={onButtonClick}>
       <img className={s.button__image} src={TEMP_SRC} />
       <div className={s.button__desc}>
         <h2 className={s.button__title}>A Royal Audience with Rathian</h2>

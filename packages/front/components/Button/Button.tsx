@@ -1,5 +1,5 @@
 import { CSSProperties } from 'react';
-import { modifiers } from '@mhgo/front';
+import { SoundSE, modifiers, useSounds } from '@mhgo/front';
 import { Tooltip } from '..';
 
 import s from './Button.module.scss';
@@ -30,6 +30,13 @@ export const Button = ({
   style = {},
   onClick,
 }: Props) => {
+  const { playSound } = useSounds(undefined);
+
+  const onButtonClick = () => {
+    playSound(SoundSE.SNAP);
+    onClick();
+  };
+
   const btn = (
     <button
       className={modifiers(s, 'button', variant, {
@@ -37,7 +44,7 @@ export const Button = ({
         inverted,
         disabled,
       })}
-      onClick={onClick}
+      onClick={onButtonClick}
       disabled={disabled}
       style={{ width: '100%', ...style }}>
       <div className={s.button__label}>{label}</div>

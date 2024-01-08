@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useBeforeUnload } from 'react-router-dom';
 
 import { HealthBarMonster, HealthBarUser } from '../../containers';
 import {
@@ -9,6 +9,7 @@ import {
   Nuke,
   QueryBoundary,
   Rays,
+  SoundBG,
   SoundSE,
   modifiers,
   useSounds,
@@ -20,6 +21,7 @@ import { ModalSuccess } from './ModalSuccess';
 import { ModalFailure } from './ModalFailure';
 
 import s from './FightView.module.scss';
+import { useAppContext } from '../../utils/context';
 
 export const FightView = () => (
   <QueryBoundary fallback={<Loader />}>
@@ -28,7 +30,8 @@ export const FightView = () => (
 );
 
 const Load = () => {
-  const { playSESound } = useSounds();
+  const { setMusic } = useAppContext();
+  const { changeMusic, playSound } = useSounds(setMusic);
   const navigate = useNavigate();
   const { userId } = useUser();
   const { data: userStats } = useUserStatsApi(userId);
@@ -41,12 +44,19 @@ const Load = () => {
   const [isPlayerAlive, setIsPlayerAlive] = useState<boolean>(true);
   const [monsterHP, setMonsterHP] = useState<number>(level * baseHP);
 
+  useEffect(() => {
+    changeMusic(SoundBG.EDGE_OF_THE_GALAXY);
+    return () => {
+      changeMusic(SoundBG.SNOW_AND_CHILDREN);
+    };
+  }, []);
+
   const onMonsterHit = () => {
     if (!isMonsterAlive || !isPlayerAlive) return;
     const newHP = monsterHP - (userStats?.attack ?? 1);
 
     if (newHP > 0) {
-      playSESound(SoundSE.SLAP);
+      playSound(SoundSE.SLAP);
       setMonsterHP(newHP);
     } else {
       setMonsterHP(0);

@@ -11,6 +11,7 @@ import {
 } from '@mhgo/front';
 import { STATUS, useLogin } from '../../hooks/useLogin';
 import { APP_NAME, APP_VERSION } from '../../utils/consts';
+import { useAppContext } from '../../utils/context';
 
 import s from './SettingsView.module.scss';
 
@@ -20,8 +21,10 @@ const DEFAULT = {
 };
 
 export const SettingsView = () => {
+  const { setMusic, setMusicVolume } = useAppContext();
+  const { volume, setVolume, changeMusicVolume } = useSounds(setMusic);
   const [installPrompt, setInstallPrompt] = useState<any>(null);
-  const { volume, setVolume } = useSounds();
+
   const { onLogOut, onDeleteAccount } = useLogin();
 
   useEffect(() => {
@@ -30,6 +33,11 @@ export const SettingsView = () => {
       setInstallPrompt(event);
     });
   }, []);
+
+  useEffect(() => {
+    const newMusicVolume = changeMusicVolume();
+    setMusicVolume(newMusicVolume);
+  }, [volume]);
 
   const onLogOutClick = async () => {
     const logOutStatus = await onLogOut();

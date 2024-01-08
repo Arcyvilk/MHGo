@@ -1,9 +1,13 @@
+import { useEffect } from 'react';
+import ReactHowler from 'react-howler';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import { ToastContainer, ToastContainerProps } from 'react-toastify';
+import { SoundBG, useSounds } from '@mhgo/front';
 
 import {
   AchievementsView,
+  CreditsView,
   EquipmentView,
   ForageView,
   HomeView,
@@ -14,13 +18,12 @@ import {
   ShopView,
   YouView,
 } from './pages';
-
-import s from './App.module.scss';
-import { useEffect } from 'react';
 import { PaintballView } from './pages/PaintballView';
 import { FightView, PrepareView } from './pages/FightView';
 import { MonsterGuideView } from './pages/MonsterGuideView';
-import { SoundBG, useSounds } from '@mhgo/front';
+import { useAppContext } from './utils/context';
+
+import s from './App.module.scss';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -40,7 +43,8 @@ const toastOptions: ToastContainerProps = {
 };
 
 export const App = () => {
-  const { changeMusic, changeMusicVolume, volume } = useSounds();
+  const { music, setMusic, musicVolume } = useAppContext();
+  const { changeMusic } = useSounds(setMusic);
 
   useEffect(() => {
     const isInsideInstalledApp =
@@ -50,17 +54,16 @@ export const App = () => {
       // Size window after open the app
       window.resizeTo(400, 800);
     }
-    changeMusic(SoundBG.BEWITCHING);
   }, []);
 
   useEffect(() => {
-    // TODO this won't work because it's in a diff hook as audio settings
-    changeMusicVolume();
-  }, [volume.bgm, volume.master]);
+    changeMusic(SoundBG.SNOW_AND_CHILDREN);
+  }, []);
 
   return (
     <QueryClientProvider client={queryClient}>
       <div className={s.app}>
+        {music && <ReactHowler src={music} playing loop volume={musicVolume} />}
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<HomeView />} />
@@ -80,6 +83,7 @@ export const App = () => {
             <Route path="/shop" element={<ShopView />} />
             <Route path="/quest" element={<QuestView />} />
             <Route path="/you" element={<YouView />} />
+            <Route path="/credits" element={<CreditsView />} />
             <Route path="/404" element={<NotImplementedView />} />
           </Routes>
         </BrowserRouter>

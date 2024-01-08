@@ -1,4 +1,3 @@
-import { useMemo, useRef } from 'react';
 import { Howl } from 'howler';
 
 import { useLocalStorage } from './useLocalStorage';
@@ -11,86 +10,80 @@ export const DEFAULT_VOLUME = {
   se: 50,
 };
 export enum SoundBG {
-  BEWITCHING,
+  BEWITCHING = 'BEWITCHING',
+  EDGE_OF_THE_GALAXY = 'EDGE_OF_THE_GALAXY',
+  SNOW_AND_CHILDREN = 'SNOW_AND_CHILDREN',
+  HORROR_CREEPY = 'HORROR_CREEPY',
 }
 export enum SoundSE {
-  NUKE,
-  CRYSTAL,
-  BELT,
-  PUNCH,
-  OUCH,
-  DEATH,
-  WHIP,
-  SLAP,
-  BUBBLE,
+  BELT = 'BELT',
+  BUBBLE = 'BUBBLE',
+  CLICK = 'CLICK',
+  CRYSTAL = 'CRYSTAL',
+  DEATH = 'DEATH',
+  NUKE = 'NUKE',
+  OUCH = 'OUCH',
+  PUNCH = 'PUNCH',
+  SLAP = 'SLAP',
+  SNAP = 'SNAP',
+  WHIP = 'WHIP',
 }
 
-type AppSounds = {
-  bgm: Record<SoundBG, Howl>;
-  se: Record<SoundSE, Howl>;
-};
-export const useSounds = () => {
+export const useSounds = (
+  setMusic: ((music: string | undefined) => void) | undefined,
+) => {
   const [volume, setVolume] = useLocalStorage<Record<Volume, number>>(
     'MHGO_VOLUME',
     DEFAULT_VOLUME,
   );
-  const bgMusic = useRef<Howl>();
 
-  const sounds: AppSounds = useMemo(
-    () => ({
-      bgm: {
-        [SoundBG.BEWITCHING]: new Howl({
-          src: [`${CDN_URL}/sounds/bewitching.mp3`],
-        }),
-      },
-      se: {
-        [SoundSE.NUKE]: new Howl({
-          src: [`${CDN_URL}/sounds/nuke.mp3`],
-          html5: true,
-        }),
-        [SoundSE.CRYSTAL]: new Howl({ src: [`${CDN_URL}/sounds/crystal.wav`] }),
-        [SoundSE.BELT]: new Howl({ src: [`${CDN_URL}/sounds/belt.wav`] }),
-        [SoundSE.PUNCH]: new Howl({ src: [`${CDN_URL}/sounds/punch.wav`] }),
-        [SoundSE.OUCH]: new Howl({ src: [`${CDN_URL}/sounds/ouch.wav`] }),
-        [SoundSE.DEATH]: new Howl({ src: [`${CDN_URL}/sounds/death.wav`] }),
-        [SoundSE.WHIP]: new Howl({ src: [`${CDN_URL}/sounds/whip.wav`] }),
-        [SoundSE.SLAP]: new Howl({ src: [`${CDN_URL}/sounds/slap.wav`] }),
-        [SoundSE.BUBBLE]: new Howl({ src: [`${CDN_URL}/sounds/bubble.wav`] }),
-      },
-    }),
-    [],
-  );
-
-  const changeMusic = (sound: SoundBG) => {
-    if (bgMusic.current) {
-      bgMusic.current.pause();
-    }
-    bgMusic.current = sounds.bgm[sound];
-    bgMusic.current.volume((volume.bgm / 100) * (volume.master / 100));
-    bgMusic.current.loop(true);
-    bgMusic.current.play();
+  const changeMusic = (musicPath: SoundBG) => {
+    if (!setMusic) return;
+    changeMusicVolume();
+    const newMusic = musicSrc[musicPath];
+    setMusic(newMusic);
   };
 
   const changeMusicVolume = () => {
-    if (!bgMusic.current) return;
-    bgMusic.current.pause();
-    const newVolume = (volume.bgm / 100) * (volume.master / 100);
-    bgMusic.current.volume(newVolume);
-    bgMusic.current.play();
+    const musicVolume = (volume.bgm / 100) * (volume.master / 100);
+    return musicVolume;
   };
 
-  const playSESound = (sound: SoundSE, loop: boolean = false) => {
-    const audio = sounds.se[sound];
+  const playSound = (sound: SoundSE, loop: boolean = false) => {
+    const audio = soundSrc[sound];
     audio.volume((volume.se / 100) * (volume.master / 100));
     audio.loop(loop);
     audio.play();
   };
 
   return {
-    playSESound,
+    playSound,
     changeMusic,
     changeMusicVolume,
     volume,
     setVolume,
   };
+};
+
+/**
+ * ALL THE SOUNDS!
+ */
+const musicSrc: Record<SoundBG, string> = {
+  [SoundBG.BEWITCHING]: `${CDN_URL}/sounds/bewitching.mp3`,
+  [SoundBG.EDGE_OF_THE_GALAXY]: `${CDN_URL}/sounds/edge_of_the_galaxy.mp3`,
+  [SoundBG.SNOW_AND_CHILDREN]: `${CDN_URL}/sounds/snow_and_children.mp3`,
+  [SoundBG.HORROR_CREEPY]: `${CDN_URL}/sounds/horror_creepy.mp3`,
+};
+const soundSrc: Record<SoundSE, Howl> = {
+  [SoundSE.BELT]: new Howl({ src: [`${CDN_URL}/sounds/belt.wav`] }),
+  [SoundSE.BUBBLE]: new Howl({ src: [`${CDN_URL}/sounds/bubble.wav`] }),
+  [SoundSE.CLICK]: new Howl({ src: [`${CDN_URL}/sounds/click.mp3`] }),
+  [SoundSE.CRYSTAL]: new Howl({ src: [`${CDN_URL}/sounds/crystal.wav`] }),
+  [SoundSE.DEATH]: new Howl({ src: [`${CDN_URL}/sounds/death.wav`] }),
+  [SoundSE.NUKE]: new Howl({ src: [`${CDN_URL}/sounds/nuke.mp3`] }),
+  [SoundSE.OUCH]: new Howl({ src: [`${CDN_URL}/sounds/ouch.wav`] }),
+  [SoundSE.PUNCH]: new Howl({ src: [`${CDN_URL}/sounds/punch.wav`] }),
+  [SoundSE.SLAP]: new Howl({ src: [`${CDN_URL}/sounds/slap.wav`] }),
+  [SoundSE.SNAP]: new Howl({ src: [`${CDN_URL}/sounds/snap.mp3`] }),
+  [SoundSE.WHIP]: new Howl({ src: [`${CDN_URL}/sounds/whip.wav`] }),
 };

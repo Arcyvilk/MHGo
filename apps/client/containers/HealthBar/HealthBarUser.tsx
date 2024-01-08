@@ -9,12 +9,14 @@ import {
   modifiers,
   useSounds,
   SoundSE,
+  SoundBG,
 } from '@mhgo/front';
 import { useMonsterMarker } from '../../hooks/useMonsterMarker';
 import { useUser } from '../../hooks/useUser';
 import { useInterval } from '../../hooks/useInterval';
 
 import s from './HealthBar.module.scss';
+import { useAppContext } from '../../utils/context';
 
 type HealthBarUserProps = {
   isFightFinished: boolean;
@@ -27,7 +29,8 @@ export const HealthBarUser = (props: HealthBarUserProps) => (
 );
 
 const Load = ({ isFightFinished, setIsPlayerAlive }: HealthBarUserProps) => {
-  const { playSESound } = useSounds();
+  const { setMusic } = useAppContext();
+  const { playSound, changeMusic } = useSounds(setMusic);
   const { userId } = useUser();
   const { mutate, isSuccess: isUserHit } = useUpdateUserHealthApi(userId);
   const { data: userHealth } = useUserHealthApi(userId);
@@ -38,7 +41,7 @@ const Load = ({ isFightFinished, setIsPlayerAlive }: HealthBarUserProps) => {
 
   useInterval(
     () => {
-      playSESound(SoundSE.OUCH);
+      playSound(SoundSE.OUCH);
       mutate({
         healthChange: baseDamage * level * -1,
       });
@@ -49,6 +52,7 @@ const Load = ({ isFightFinished, setIsPlayerAlive }: HealthBarUserProps) => {
   useEffect(() => {
     if (userHealth?.currentHealth <= 0) {
       setIsPlayerAlive(false);
+      changeMusic(SoundBG.HORROR_CREEPY);
     }
   }, [userHealth.currentHealth]);
 

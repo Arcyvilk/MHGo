@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import L from 'leaflet';
 import {
   CloseButton,
@@ -14,10 +15,10 @@ import {
 } from '@mhgo/front';
 import { SoundSE, useLocalStorage, useSounds } from '@mhgo/front/hooks';
 
+import { DEFAULT_COORDS, DEFAULT_MAP_RADIUS } from '../../utils/consts';
+import { useAppContext } from '../../utils/context';
 import { ModalForage } from './ModalForage';
 import s from './ForageView.module.scss';
-import { useNavigate } from 'react-router-dom';
-import { DEFAULT_COORDS, DEFAULT_MAP_RADIUS } from '../../utils/consts';
 
 export const ForageView = () => (
   <QueryBoundary fallback={<Loader />}>
@@ -27,17 +28,18 @@ export const ForageView = () => (
 
 const Load = () => {
   const navigate = useNavigate();
+  const { setMusic } = useAppContext();
+  const { playSound } = useSounds(setMusic);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [remainingHits, setRemainingHits] = useState(10);
   const { resource, inRange } = useResource();
-  const { playSESound } = useSounds();
 
   const isActive = remainingHits > 0;
   const isOnCooldown = remainingHits <= 0;
 
   const onForage = () => {
     if (remainingHits > 0) {
-      playSESound(SoundSE.CRYSTAL);
+      playSound(SoundSE.CRYSTAL);
       setRemainingHits(remainingHits - 1);
     }
   };

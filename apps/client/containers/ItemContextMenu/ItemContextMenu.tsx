@@ -29,6 +29,7 @@ import {
   useUpdateUserAchievement,
 } from '../../hooks/useUpdateUserAchievement';
 import { ModalAchievementUnlocked } from '../../pages/FightView/ModalAchievementUnlocked';
+import { useAppContext } from '../../utils/context';
 
 type Action = keyof ItemActions['action'] | 'craft';
 export const ItemContextMenu = ({
@@ -41,7 +42,8 @@ export const ItemContextMenu = ({
   isItemOwned?: boolean;
 }) => {
   const navigate = useNavigate();
-  const { playSESound } = useSounds();
+  const { setMusic } = useAppContext();
+  const { playSound } = useSounds(setMusic);
   const [action, setAction] = useState<Action>('craft');
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -93,7 +95,7 @@ export const ItemContextMenu = ({
       window.open(itemAction.redirect);
     }
     if (itemAction.heal) {
-      playSESound(SoundSE.BUBBLE);
+      playSound(SoundSE.BUBBLE);
       mutateUserHealth({ healthChange: itemAction.heal });
       toast.success(`Healed for ${itemAction.heal}!`);
     }

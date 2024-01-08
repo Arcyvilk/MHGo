@@ -1,4 +1,4 @@
-import { modifiers } from '@mhgo/front';
+import { SoundSE, modifiers, useSounds } from '@mhgo/front';
 import s from './Tabs.module.scss';
 
 type TabsProps<T> = {
@@ -11,7 +11,10 @@ export const Tabs = <T extends Record<string, string>>({
   activeTab,
   setActiveTab,
 }: TabsProps<T>) => {
+  const { playSound } = useSounds(undefined);
+
   const onTabClick = (tabValue: string) => {
+    playSound(SoundSE.SNAP);
     setActiveTab(tabValue);
   };
 

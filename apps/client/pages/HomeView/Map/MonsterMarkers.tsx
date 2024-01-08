@@ -4,13 +4,15 @@ import { Marker } from 'react-leaflet';
 import L from 'leaflet';
 import {
   QueryBoundary,
+  SoundSE,
   useMonsterMarkersApi,
   useMonstersApi,
+  useSounds,
 } from '@mhgo/front';
 import StarYellow from '@mhgo/front/assets/icons/StarYellow.svg';
+import { useUser } from '../../../hooks/useUser';
 
 import s from './Marker.module.scss';
-import { useUser } from '../../../hooks/useUser';
 
 type MonsterMarkersProps = { coords?: number[] };
 export const MonsterMarkers = (props: MonsterMarkersProps) => (
@@ -21,6 +23,7 @@ export const MonsterMarkers = (props: MonsterMarkersProps) => (
 
 const Load = ({ coords }: MonsterMarkersProps) => {
   const navigate = useNavigate();
+  const { playSound } = useSounds(undefined);
 
   // We make coords less precise so we don't refetch every second
   const fixedCoords = coords
@@ -34,6 +37,7 @@ const Load = ({ coords }: MonsterMarkersProps) => {
       {monsterMarkers.map(m => {
         const position = L.latLng(m.coords[0], m.coords[1]);
         const onClick = () => {
+          playSound(SoundSE.SNAP);
           navigate(`/prepare?id=${m.id}&level=${m.level}`);
         };
 

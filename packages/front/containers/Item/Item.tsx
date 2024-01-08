@@ -1,4 +1,4 @@
-import { Icon } from '@mhgo/front';
+import { Icon, SoundSE, useSounds } from '@mhgo/front';
 import { modifiers } from '@mhgo/front';
 import { Size } from '@mhgo/front';
 
@@ -27,6 +27,13 @@ export const Item = ({
   isNotOwned = false,
 }: ItemProps) => {
   const { img, filter, amount, rarity, name, purchasable, price } = data;
+  const { playSound } = useSounds(undefined);
+
+  const onButtonClick = () => {
+    playSound(SoundSE.SNAP);
+    if (onClick) onClick();
+  };
+
   if (simple)
     return (
       <div className={modifiers(s, 'item__simple', { isNotOwned })}>
@@ -45,7 +52,9 @@ export const Item = ({
       </div>
     );
   return (
-    <button className={modifiers(s, 'item', { isNotOwned })} onClick={onClick}>
+    <button
+      className={modifiers(s, 'item', { isNotOwned })}
+      onClick={onButtonClick}>
       <div className={modifiers(s, 'item__tile', `rarity-${rarity}`)}>
         <img src={img} style={{ filter }} className={s.tile__image} />
         <div className={modifiers(s, 'tile__rarity', `rarity-${rarity}`)}>
