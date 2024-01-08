@@ -19,10 +19,16 @@
     text-align: center;
   }
 
-  &__materials {
+  &__list {
     display: flex;
     flex-wrap: wrap;
     gap: $size-12 $size-8;
+  }
+
+  &__price {
+    display: flex;
+    align-items: center;
+    gap: $size-4;
   }
 
   &__buttons {
