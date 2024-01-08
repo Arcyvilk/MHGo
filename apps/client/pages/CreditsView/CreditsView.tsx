@@ -21,6 +21,14 @@ export const CreditsView = () => {
             </li>
           ))}
         </ul>
+        <div className={s.creditsView__description}>
+          All images not listed here are either drawn by me, or generated with
+          the{' '}
+          <a href="https://dreamstudio.ai/" target="_blank">
+            Stable Diffusion AI
+          </a>{' '}
+          and under the Creative ML OpenRAIL-M license.
+        </div>
 
         {/* MUSIC */}
         <h2 className={s.creditsView__title}>Music</h2>
@@ -93,6 +101,42 @@ const sounds: Credit[] = [
     license: 'https://pixabay.com/service/license-summary/',
   },
   {
+    usage: 'pain grunt',
+    title: 'Ouch',
+    author: 'ajanhallinta',
+    link: 'https://freesound.org/people/ajanhallinta/sounds/649543/',
+    license: 'CC0 1.0 Deed',
+  },
+  {
+    usage: 'death grunt',
+    title: 'Man dies',
+    author: 'starkvind',
+    link: 'https://freesound.org/people/starkvind/sounds/559975/',
+    license: 'CC0 1.0 Deed',
+  },
+  {
+    usage: 'item use sound',
+    title: 'bubble',
+    author: 'JavierSerrat',
+    link: 'https://freesound.org/people/JavierSerrat/sounds/485065/',
+    license: 'CC BY 4.0 Deed',
+  },
+  {
+    usage: 'click sound',
+    title: 'Snap Click 01',
+    author: 'ironcross32',
+    link: 'https://freesound.org/people/ironcross32/sounds/582898/',
+    license: 'CC0 1.0 DEED',
+  },
+  {
+    // Not used
+    usage: 'alternative click sound',
+    title: 'Mechanical Switch',
+    author: 'Jagadamba',
+    link: 'https://freesound.org/people/Jagadamba/sounds/254286/',
+    license: 'CC BY-NC 4.0 Deed',
+  },
+  {
     // Not used
     usage: 'slapping sound 1',
     title: 'belt',
@@ -106,20 +150,6 @@ const sounds: Credit[] = [
     title: 'Punch',
     author: 'ethanchase7744',
     link: 'https://freesound.org/people/ethanchase7744/sounds/448982/',
-    license: 'CC0 1.0 Deed',
-  },
-  {
-    usage: 'pain grunt',
-    title: 'Ouch',
-    author: 'ajanhallinta',
-    link: 'https://freesound.org/people/ajanhallinta/sounds/649543/',
-    license: 'CC0 1.0 Deed',
-  },
-  {
-    usage: 'death grunt',
-    title: 'Man dies',
-    author: 'starkvind',
-    link: 'https://freesound.org/people/starkvind/sounds/559975/',
     license: 'CC0 1.0 Deed',
   },
   {
@@ -137,27 +167,6 @@ const sounds: Credit[] = [
     author: 'DWOBoyle',
     link: 'https://freesound.org/people/DWOBoyle/sounds/144266/',
     license: 'CC BY 4.0 Deed',
-  },
-  {
-    usage: 'item use sound',
-    title: 'bubble',
-    author: 'JavierSerrat',
-    link: 'https://freesound.org/people/JavierSerrat/sounds/485065/',
-    license: 'CC BY 4.0 Deed',
-  },
-  {
-    usage: 'click sound',
-    title: 'Snap Click 01',
-    author: 'ironcross32',
-    link: 'https://freesound.org/people/ironcross32/sounds/582898/',
-    license: 'CC0 1.0 DEED',
-  },
-  {
-    usage: 'alternative click sound',
-    title: 'Mechanical Switch',
-    author: 'Jagadamba',
-    link: 'https://freesound.org/people/Jagadamba/sounds/254286/',
-    license: 'CC BY-NC 4.0 Deed',
   },
 ];
 
