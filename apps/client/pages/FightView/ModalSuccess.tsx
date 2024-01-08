@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback, useMemo } from 'react';
 
-import { CurrencyType, UserAchievement } from '@mhgo/types';
+import { CurrencyType } from '@mhgo/types';
 import {
   Item,
   Button,
@@ -23,7 +23,6 @@ import {
 import { useMonsterMarker } from '../../hooks/useMonsterMarker';
 
 import s from './ModalResult.module.scss';
-import { UseMutateFunction } from '@tanstack/react-query';
 
 type ModalProps = {
   isOpen: boolean;
@@ -46,8 +45,6 @@ const Load = ({ onClose }: { onClose: () => void }) => {
   const markerId = params.get('id') ?? '';
   const level = params.get('level') ?? '0';
 
-  const [isModalAchievementUnlockedOpen, setIsModalAchievementUnlockedOpen] =
-    useState(false);
   const [isModalLevelUpOpen, setIsModalLevelUpOpen] = useState(false);
   const [isLootRedeemed, setIsLootRedeemed] = useState(false);
   const { userId } = useUser();
@@ -61,16 +58,11 @@ const Load = ({ onClose }: { onClose: () => void }) => {
   const { mutate: mutateUserWealth } = useUpdateUserWealthApi(userId);
 
   const {
-    mutate,
-    getIsAchievementUnlocked,
-    isSuccess: isAchievementUpdateSuccess,
-  } = useUpdateUserAchievement();
-  const { updateAchievement } = useAchievements(mutate, monster.id);
-
-  const isAchievementUnlocked = useMemo(
-    () => getIsAchievementUnlocked(AchievementId.HABEMUS_PAPAM),
-    [isAchievementUpdateSuccess],
-  );
+    achievementId,
+    updateAchievement,
+    isModalAchievementUnlockedOpen,
+    setIsModalAchievementUnlockedOpen,
+  } = useKillingAchievements(monster?.id);
 
   const expChange = Number(level) * monster.baseExp;
   const wealthChange: { [key in CurrencyType]?: number } = {};
@@ -98,10 +90,6 @@ const Load = ({ onClose }: { onClose: () => void }) => {
     if (didLevelUp) setIsModalLevelUpOpen(true);
   }, [didLevelUp]);
 
-  useEffect(() => {
-    if (isAchievementUnlocked) setIsModalAchievementUnlockedOpen(true);
-  }, [isAchievementUnlocked]);
-
   const listOfDrops = drops.map(drop => {
     const data = {
       ...drop,
@@ -123,6 +111,7 @@ const Load = ({ onClose }: { onClose: () => void }) => {
       )}
       {isModalAchievementUnlockedOpen && (
         <ModalAchievementUnlocked
+          achievementId={achievementId}
           isOpen={isModalAchievementUnlockedOpen}
           setIsOpen={setIsModalAchievementUnlockedOpen}
         />
@@ -154,18 +143,38 @@ const Load = ({ onClose }: { onClose: () => void }) => {
   );
 };
 
-const useAchievements = (
-  mutate: UseMutateFunction<
-    UserAchievement,
-    Error,
-    Pick<UserAchievement, 'achievementId' | 'progress'>
-  >,
-  monsterId: string,
-) => {
+const useKillingAchievements = (monsterId: string) => {
+  const [achievementId, setAchievementId] = useState<string | null>();
+  const [isModalAchievementUnlockedOpen, setIsModalAchievementUnlockedOpen] =
+    useState(false);
+  const {
+    mutate,
+    getIsAchievementUnlocked,
+    isSuccess: isAchievementUpdateSuccess,
+  } = useUpdateUserAchievement();
+
+  const isAchievementUnlocked = useMemo(() => {
+    const { unlockedNewAchievement } = getIsAchievementUnlocked(
+      AchievementId.HABEMUS_PAPAM,
+    );
+    return unlockedNewAchievement;
+  }, [isAchievementUpdateSuccess]);
+
   const updateAchievement = () => {
     if (monsterId === 'babcianiath') {
+      setAchievementId(AchievementId.HABEMUS_PAPAM);
       mutate({ achievementId: AchievementId.HABEMUS_PAPAM, progress: 1 });
     }
   };
-  return { updateAchievement };
+
+  useEffect(() => {
+    if (isAchievementUnlocked) setIsModalAchievementUnlockedOpen(true);
+  }, [isAchievementUnlocked]);
+
+  return {
+    achievementId,
+    updateAchievement,
+    isModalAchievementUnlockedOpen,
+    setIsModalAchievementUnlockedOpen,
+  };
 };

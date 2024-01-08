@@ -1,10 +1,15 @@
-import { Material } from '@mhgo/types';
+import { useEffect, useMemo, useState } from 'react';
 
-import { Button, Tooltip } from '@mhgo/front';
-import { Item } from '@mhgo/front';
+import { Material, Item as TItem } from '@mhgo/types';
+import { Button, Item, Tooltip } from '@mhgo/front';
 import { useItemCraft } from '../../../hooks/useItemCraft';
+import {
+  AchievementId,
+  useUpdateUserAchievement,
+} from '../../../hooks/useUpdateUserAchievement';
 
 import s from './CraftConfirmation.module.scss';
+import { ModalAchievementUnlocked } from '../../../pages/FightView/ModalAchievementUnlocked';
 
 type CraftConfirmationProps = {
   itemId: string;
@@ -15,8 +20,19 @@ export const CraftConfirmation = ({
   itemId,
   setIsModalOpen,
 }: CraftConfirmationProps) => {
-  const { item, ingredientAmounts, onCraft, getItemIngredients } =
-    useItemCraft(itemId);
+  const {
+    item,
+    ingredientAmounts,
+    onCraft,
+    getItemIngredients,
+    isSuccess: isCraftedSuccessfully,
+  } = useItemCraft(itemId);
+  const {
+    isModalAchievementUnlockedOpen,
+    setIsModalAchievementUnlockedOpen,
+    achievementId,
+  } = useCraftingAchievements(item as TItem, isCraftedSuccessfully);
+
   const ingredients = getItemIngredients();
 
   const canBeCrafted = ingredientAmounts.reduce((sum, curr) => {
@@ -25,7 +41,6 @@ export const CraftConfirmation = ({
   }, true);
 
   const onYes = () => {
-    setIsModalOpen(false);
     onCraft();
   };
   const onNo = () => {
@@ -34,6 +49,11 @@ export const CraftConfirmation = ({
 
   return (
     <div className={s.craftConfirmation}>
+      <ModalAchievementUnlocked
+        achievementId={achievementId}
+        isOpen={isModalAchievementUnlockedOpen}
+        setIsOpen={setIsModalAchievementUnlockedOpen}
+      />
       <h2 className={s.craftConfirmation__prompt}>
         Crafting {item?.name ?? 'item'}...
       </h2>
@@ -97,4 +117,50 @@ export const CraftConfirmation = ({
       </div>
     </div>
   );
+};
+
+const useCraftingAchievements = (
+  item: TItem,
+  isCraftedSuccessfully: boolean,
+) => {
+  const [achievementId, setAchievementId] = useState<string | null>();
+  const [isModalAchievementUnlockedOpen, setIsModalAchievementUnlockedOpen] =
+    useState(false);
+
+  const {
+    mutate,
+    getIsAchievementUnlocked,
+    isSuccess: isAchievementUpdateSuccess,
+  } = useUpdateUserAchievement();
+
+  const isAchievementUnlocked = useMemo(() => {
+    if (!isAchievementUpdateSuccess) return;
+    const { unlockedNewAchievement } = getIsAchievementUnlocked(
+      AchievementId.DARK_ARTS,
+    );
+    return unlockedNewAchievement;
+  }, [isAchievementUpdateSuccess]);
+
+  // Call for the achievement when item is successfully crafted
+  useEffect(() => {
+    if (isCraftedSuccessfully) {
+      if (item.id === 'grimoire') {
+        setAchievementId(AchievementId.DARK_ARTS);
+        mutate({ achievementId: AchievementId.DARK_ARTS, progress: 1 });
+      }
+    }
+  }, [isCraftedSuccessfully]);
+
+  // Open achievement modal when achievement is successfully unlocked
+  useEffect(() => {
+    if (isAchievementUnlocked) {
+      setIsModalAchievementUnlockedOpen(true);
+    }
+  }, [isAchievementUnlocked]);
+
+  return {
+    achievementId,
+    isModalAchievementUnlockedOpen,
+    setIsModalAchievementUnlockedOpen,
+  };
 };

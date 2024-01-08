@@ -12,15 +12,14 @@
 
 
 .center {
-    position: absolute;
-    background: $color-white;
-    top: calc(100vh /2 - 75px);
-    left: calc(100vw /2 - 75px);
-    width: 150px;
-    height: 150px;
-    border-radius: 150px;
+  position: absolute;
+  background-image: radial-gradient(closest-side, #fff, #ffffffaa, transparent);
+  top: calc(100vh / 2 - 200px);
+  left: calc(100vw / 2 - 200px);
+  width: 400px;
+  height: 400px;
+  border-radius: 400px;
 	opacity: 0.9;
-	box-shadow: 0 0 60px 50px $color-white;
 }
 	
 .rays {

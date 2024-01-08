@@ -12,6 +12,7 @@ import { useUser } from './useUser';
 
 export const useItemCraft = (itemId: string) => {
   const { userId } = useUser();
+
   const { data: materials } = useMaterialsApi();
   const { data: items } = useItemsApi();
   const { data: ingredientAmounts } = useItemCraftListApi(userId, itemId);
@@ -55,5 +56,5 @@ export const useItemCraft = (itemId: string) => {
     return [...materialMats, ...itemMats] as Material[];
   };
 
-  return { item, ingredientAmounts, onCraft, getItemIngredients };
+  return { item, ingredientAmounts, onCraft, getItemIngredients, isSuccess };
 };
