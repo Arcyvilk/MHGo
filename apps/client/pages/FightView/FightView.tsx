@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useNavigate, useBeforeUnload } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import { HealthBarMonster, HealthBarUser } from '../../containers';
 import {

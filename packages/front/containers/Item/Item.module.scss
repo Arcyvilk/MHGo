@@ -73,6 +73,14 @@
     font-size: $size-12;
     color: rgba($color-rarity-3, 0.9);
     margin-top: auto;
+
+    &--base {
+      color: $color-currency-base;
+    }
+
+    &--premium {
+      color: $color-currency-premium;
+    }
   }
 }
 

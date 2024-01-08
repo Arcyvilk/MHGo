@@ -12,8 +12,9 @@ export const DEFAULT_VOLUME = {
 export enum SoundBG {
   BEWITCHING = 'BEWITCHING',
   EDGE_OF_THE_GALAXY = 'EDGE_OF_THE_GALAXY',
-  SNOW_AND_CHILDREN = 'SNOW_AND_CHILDREN',
   HORROR_CREEPY = 'HORROR_CREEPY',
+  LOCAL_FORECAST = 'LOCAL_FORECAST',
+  SNOW_AND_CHILDREN = 'SNOW_AND_CHILDREN',
 }
 export enum SoundSE {
   BELT = 'BELT',
@@ -71,8 +72,9 @@ export const useSounds = (
 const musicSrc: Record<SoundBG, string> = {
   [SoundBG.BEWITCHING]: `${CDN_URL}/sounds/bewitching.mp3`,
   [SoundBG.EDGE_OF_THE_GALAXY]: `${CDN_URL}/sounds/edge_of_the_galaxy.mp3`,
-  [SoundBG.SNOW_AND_CHILDREN]: `${CDN_URL}/sounds/snow_and_children.mp3`,
   [SoundBG.HORROR_CREEPY]: `${CDN_URL}/sounds/horror_creepy.mp3`,
+  [SoundBG.LOCAL_FORECAST]: `${CDN_URL}/sounds/elevator.mp3`,
+  [SoundBG.SNOW_AND_CHILDREN]: `${CDN_URL}/sounds/snow_and_children.mp3`,
 };
 const soundSrc: Record<SoundSE, Howl> = {
   [SoundSE.BELT]: new Howl({ src: [`${CDN_URL}/sounds/belt.wav`] }),

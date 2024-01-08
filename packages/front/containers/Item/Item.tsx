@@ -1,8 +1,9 @@
-import { Icon, SoundSE, useSounds } from '@mhgo/front';
+import { CurrencyInfo, Icon, SoundSE, useSounds } from '@mhgo/front';
 import { modifiers } from '@mhgo/front';
 import { Size } from '@mhgo/front';
 
 import s from './Item.module.scss';
+import { UserAmount } from '@mhgo/types';
 
 type ItemProps = {
   data: {
@@ -11,8 +12,8 @@ type ItemProps = {
     name: string;
     description: string;
     rarity: number;
-    price: number;
     purchasable: boolean;
+    price?: UserAmount[];
     amount?: number;
     filter?: string;
   };
@@ -26,7 +27,7 @@ export const Item = ({
   simple,
   isNotOwned = false,
 }: ItemProps) => {
-  const { img, filter, amount, rarity, name, purchasable, price } = data;
+  const { img, filter, amount, rarity, name, purchasable, price = [] } = data;
   const { playSound } = useSounds(undefined);
 
   const onButtonClick = () => {
@@ -67,11 +68,12 @@ export const Item = ({
         ) : null}
       </div>
       <div className={s.item__name}>{name}</div>
-      {purchasable && (
-        <div className={s.item__price}>
-          <Icon icon="Paw" size={Size.MICRO} /> {price}
-        </div>
-      )}
+      {purchasable &&
+        price?.map(p => (
+          <div className={modifiers(s, 'item__price', p.id)}>
+            <CurrencyInfo price={p} small />
+          </div>
+        ))}
     </button>
   );
 };

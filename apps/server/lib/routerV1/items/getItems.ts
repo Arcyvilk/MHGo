@@ -3,7 +3,10 @@ import { log } from '@mhgo/utils';
 import { Item } from '@mhgo/types';
 
 import { mongoInstance } from '../../../api';
-import { getItemsCraftList } from '../../helpers/getItemsCraftList';
+import {
+  getItemsCraftList,
+  getItemsPrices,
+} from '../../helpers/getItemDetails';
 
 export const getItems = async (_req: Request, res: Response): Promise<void> => {
   try {
@@ -20,12 +23,16 @@ export const getItems = async (_req: Request, res: Response): Promise<void> => {
 
     const itemIds = items.map(item => item.id);
     const craftLists = await getItemsCraftList(itemIds);
+    const prices = await getItemsPrices(itemIds);
 
     const itemsWithCraft = items.map(item => {
-      const hehe = craftLists.find(c => c.itemId === item.id)?.craftList ?? [];
+      const craftList =
+        craftLists.find(c => c.itemId === item.id)?.craftList ?? [];
+      const price = prices.find(p => p.itemId === item.id)?.price ?? [];
       return {
         ...item,
-        craftList: hehe,
+        craftList,
+        price,
       };
     });
 

@@ -29,7 +29,7 @@ export const ItemContextMenuSimple = ({
             </div>
           </div>
         }>
-        <Item data={{ ...entry, purchasable: false, price: 0 }} />
+        <Item data={{ ...entry, purchasable: false }} />
       </Dropdown>
     </div>
   );

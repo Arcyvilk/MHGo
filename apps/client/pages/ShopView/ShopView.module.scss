@@ -15,6 +15,9 @@
 
   &__itemWrapper {
     @include item-grid-wrapper;
+    & > * {
+      height: 100%;
+    }
   }
 }
 
@@ -31,12 +34,4 @@
   align-items: center;
   justify-content: space-between;
   gap: $size-16;
-}
-
-.currency {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-size: $size-14;
-  gap: $size-4;
 }

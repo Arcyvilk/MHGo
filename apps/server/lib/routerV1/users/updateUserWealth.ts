@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { log } from '@mhgo/utils';
-import { CurrencyType, UserWealth } from '@mhgo/types';
+import { Currency, CurrencyType, Setting, UserWealth } from '@mhgo/types';
 
 import { mongoInstance } from '../../../api';
 
@@ -11,18 +11,34 @@ export const updateUserWealth = async (
   try {
     const { db } = mongoInstance.getDb();
     const { userId } = req.params;
-    const currencies: { [key in CurrencyType]?: number } = req.body;
+    const newWealth: { [key in CurrencyType]?: number } = req.body;
+
+    // Get base wealth
+    const collectionSettings = db.collection<Setting<Currency[]>>('settings');
+    const currencies = (
+      await collectionSettings.findOne({ key: 'currency_types' })
+    )?.value;
+    if (!currencies)
+      throw new Error("Couldn't get currency types from the database!");
 
     // Get wealth of every user
     const collectionUserWealth = db.collection<UserWealth>('userWealth');
-    const userWealth = await collectionUserWealth.findOne({
-      userId,
-    });
+    const userWealth = (
+      await collectionUserWealth.findOne({
+        userId,
+      })
+    )?.wealth;
 
-    const updatedWealth = (userWealth?.wealth ?? []).map(currency => ({
-      ...currency,
-      amount: currency.amount + (currencies[currency.id] ?? 0),
-    }));
+    const updatedWealth = currencies.map(currency => {
+      const newUserAmount = newWealth[currency.id] ?? 0;
+      const oldUserAmount =
+        userWealth.find(u => u.id === currency.id)?.amount ?? 0;
+
+      return {
+        id: currency.id,
+        amount: oldUserAmount + newUserAmount,
+      };
+    });
 
     const response = await collectionUserWealth.updateOne(
       { userId },

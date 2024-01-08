@@ -88,7 +88,7 @@ export const CraftConfirmation = ({
               }
               key={index}>
               <Item
-                data={{ ...mat, price: 0, purchasable: false }}
+                data={{ ...mat, purchasable: false }}
                 simple
                 isNotOwned={isNotOwned}
               />

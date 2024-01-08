@@ -110,7 +110,6 @@ export const MaterialEditView = () => {
               data={{
                 ...(updatedMaterial ?? material),
                 purchasable: false,
-                price: 0,
                 img: `${CDN_URL}${materialImg}`,
               }}
             />

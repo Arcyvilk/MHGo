@@ -32,7 +32,11 @@ export const SectionPurchasable = ({ item, setItem }: PurchasableProps) => {
           className={modifiers(s, 'singleItemView__section', {
             hidden: true,
           })}>
-          <Input
+          {/* 
+            TODO
+            Support multiple currencies!
+           */}
+          {/* <Input
             label="Item price"
             name="item_price"
             type="number"
@@ -42,10 +46,10 @@ export const SectionPurchasable = ({ item, setItem }: PurchasableProps) => {
               item &&
               setItem({
                 ...item,
-                price: Number(price),
+                // price: Number(price),
               })
             }
-          />
+          /> */}
         </div>
       ) : null}
     </div>

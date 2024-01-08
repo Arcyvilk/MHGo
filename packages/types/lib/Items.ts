@@ -1,3 +1,6 @@
+import { UserAmount } from './User';
+import { Currency } from './Wealth';
+
 export type ItemType = 'quest' | 'weapon' | 'armor' | 'other';
 
 export type ItemSlot = 'weapon' | 'helmet' | 'chest' | 'arm' | 'waist' | 'leg';
@@ -12,10 +15,10 @@ export type Item = {
   name: string;
   description: string;
   rarity: number;
-  price: number;
+  price?: UserAmount[]; // NOT in DB, merged with Item later
   purchasable: boolean;
   craftable: boolean; // Can the item be crafted
-  craftList?: CraftList[];
+  craftList?: CraftList[]; // NOT in DB, merged with Item later
   equippable: boolean; // Can the item be equipped (if owned)
   usable: boolean; // Can the item be used (if owned)
   obtainedAt: string; // Short description of where this can be gotten from
@@ -28,16 +31,22 @@ export type ItemActions = {
   action: ItemAction;
 };
 
-export type ItemCraftList = {
-  itemId: string;
-  craftList: CraftList[];
-};
-
 export type ItemAction = {
   text?: string;
   img?: string;
   redirect?: string;
   heal?: number;
+};
+
+export type ItemCraftList = {
+  itemId: string;
+  craftList: CraftList[];
+};
+
+export type CraftList = {
+  id: string;
+  craftType: CraftType;
+  amount: number;
 };
 
 export type ItemCraftingList = {
@@ -51,8 +60,7 @@ export type ItemToUse = {
   amountUsed: number;
 };
 
-export type CraftList = {
-  id: string;
-  craftType: CraftType;
-  amount: number;
+export type ItemPrice = {
+  itemId: string;
+  price: UserAmount[];
 };

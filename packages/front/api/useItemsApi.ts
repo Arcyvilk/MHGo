@@ -5,6 +5,7 @@ import {
   ItemAction,
   ItemCraftingList,
   Stats,
+  UserAmount,
 } from '@mhgo/types';
 
 import { API_URL } from '../env';
@@ -69,6 +70,26 @@ export const useItemCraftsApi = (itemId: string | null) => {
   >({
     queryKey: ['items', itemId!, 'crafts'],
     queryFn: getItemCraft,
+    enabled: Boolean(itemId),
+  });
+
+  return { data, isLoading, isFetched, isError };
+};
+
+export const useItemPriceApi = (itemId: string | null) => {
+  const getItemPrice = async (): Promise<UserAmount[]> => {
+    const res = await fetch(`${API_URL}/items/item/${itemId}/price`);
+    return res.json();
+  };
+
+  const { data, isLoading, isFetched, isError } = useQuery<
+    UserAmount[],
+    unknown,
+    UserAmount[],
+    string[]
+  >({
+    queryKey: ['items', itemId!, 'price'],
+    queryFn: getItemPrice,
     enabled: Boolean(itemId),
   });
 

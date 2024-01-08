@@ -66,7 +66,7 @@ const MonsterTile = ({ monster }: { monster: Monster }) => {
             Drops:{' '}
             <div className={s.monster__drops}>
               {uniqueMonsterDrops.map(drop => {
-                const data = { ...drop, purchasable: false, price: 0 };
+                const data = { ...drop, purchasable: false };
                 return (
                   <Tooltip content={drop.name}>
                     <Item data={data} simple key={drop.id} />

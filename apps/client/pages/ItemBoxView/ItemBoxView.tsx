@@ -1,16 +1,14 @@
 import { useState } from 'react';
 
-import { TABS, Tabs } from './Tabs';
-import { Item } from '@mhgo/front';
 import { CloseButton, Loader, QueryBoundary } from '@mhgo/front';
-import { useUserItems, useUserMaterials } from '../../hooks/useUser';
+import { ItemContextMenuSimple } from '../../containers';
+import { useUser, useUserItems, useUserMaterials } from '../../hooks/useUser';
+import { TABS, Tabs } from './Tabs';
 
 import s from './ItemBoxView.module.scss';
 
-import { USER_ID } from '../../_mock/settings';
-import { ItemContextMenu, ItemContextMenuSimple } from '../../containers';
-
 export const ItemBoxView = () => {
+  const { userId } = useUser();
   const [activeTab, setActiveTab] = useState(TABS.MATERIALS);
 
   return (
@@ -20,12 +18,12 @@ export const ItemBoxView = () => {
         <Tabs activeTab={activeTab} setActiveTab={setActiveTab} />
         {activeTab === TABS.ITEMS && (
           <QueryBoundary fallback={<Loader />}>
-            <UserItems userId={USER_ID} />
+            <UserItems userId={userId} />
           </QueryBoundary>
         )}
         {activeTab === TABS.MATERIALS && (
           <QueryBoundary fallback={<Loader />}>
-            <UserMaterials userId={USER_ID} />
+            <UserMaterials userId={userId} />
           </QueryBoundary>
         )}
       </div>
@@ -43,7 +41,7 @@ const UserItems = ({ userId }: UserItemBoxProps) => {
       {userItems
         .filter(userItem => userItem.amount)
         .map(userItem => {
-          const data = { ...userItem, purchasable: false, price: 0 };
+          const data = { ...userItem, purchasable: false };
           return (
             <div className={s.itemBoxView__containerWrapper} key={userItem.id}>
               <ItemContextMenuSimple item={data} />
@@ -62,7 +60,7 @@ const UserMaterials = ({ userId }: UserItemBoxProps) => {
       {userMaterials
         .filter(userMaterial => userMaterial.amount)
         .map(userMaterial => {
-          const data = { ...userMaterial, purchasable: false, price: 0 };
+          const data = { ...userMaterial, purchasable: false };
           return (
             <div
               className={s.itemBoxView__containerWrapper}

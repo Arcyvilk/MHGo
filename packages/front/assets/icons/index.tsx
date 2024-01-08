@@ -5,6 +5,7 @@ import Armory from './Armory.svg?react';
 import Back from './Back.svg?react';
 import Burst from './Burst.svg?react';
 import Coin from './Coin.svg?react';
+import Coins from './Coins.svg?react';
 import Edit from './Edit.svg?react';
 import Face from './Face.svg?react';
 import Fire from './Fire.svg?react';
@@ -26,6 +27,7 @@ import Potion from './Potion.svg?react';
 import Pulse from './Pulse.svg?react';
 import QR from './QR.svg?react';
 import Quest from './Quest.svg?react';
+import Question from './Question.svg?react';
 import Shield from './Shield.svg?react';
 import Shop from './Shop.svg?react';
 import Spin from './Spin.svg?react';
@@ -40,6 +42,7 @@ const icons = {
   Back,
   Burst,
   Coin,
+  Coins,
   Edit,
   Face,
   Fire,
@@ -61,6 +64,7 @@ const icons = {
   Pulse,
   QR,
   Quest,
+  Question,
   Shop,
   Shield,
   Spin,

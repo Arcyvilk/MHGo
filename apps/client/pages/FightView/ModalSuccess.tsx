@@ -95,7 +95,6 @@ const Load = ({ onClose }: { onClose: () => void }) => {
       ...drop,
       img: addCdnUrl(drop.img),
       purchasable: false,
-      price: 0,
     };
     return <Item data={data} key={drop.id} />;
   });

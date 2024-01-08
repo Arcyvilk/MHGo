@@ -38,7 +38,7 @@ export const ModalLevelUp = ({ levels, isOpen, setIsOpen }: ModalProps) => {
             <div className={s.result__content}>Your rewards:</div>
 
             {rewards.map(reward => (
-              <Item data={{ ...reward, purchasable: false, price: 0 }} />
+              <Item data={{ ...reward, purchasable: false }} />
             ))}
           </>
         ) : null}

@@ -55,7 +55,7 @@ export const DEFAULT_ITEM: TItem = {
   name: '',
   description: '',
   rarity: 1,
-  price: 0,
+  price: [],
   purchasable: false,
   craftable: false,
   craftList: [],

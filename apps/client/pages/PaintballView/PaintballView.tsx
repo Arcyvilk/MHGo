@@ -3,13 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import { addCdnUrl, Button, CloseButton, Icon } from '@mhgo/front';
 import { Size } from '@mhgo/front';
 import { usePaintballs } from '../../hooks/usePaintballs';
+import { useUser } from '../../hooks/useUser';
 
 import s from './PaintballView.module.scss';
 
-import { USER_ID } from '../../_mock/settings';
-
 export const PaintballView = () => {
-  const userId = USER_ID;
+  const { userId } = useUser();
   const paintballs = usePaintballs(userId);
 
   return (

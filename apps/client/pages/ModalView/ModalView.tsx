@@ -1,9 +1,7 @@
 import { Icon } from '@mhgo/front';
 import { useNewsApi } from '@mhgo/front';
-
+import { useUser } from '../../hooks/useUser';
 import s from './ModalView.module.scss';
-
-import { USER_NAME } from '../../_mock/settings';
 
 export const PartyModal = () => {
   return (
@@ -14,6 +12,7 @@ export const PartyModal = () => {
 };
 
 export const NewsModal = () => {
+  const { userName } = useUser();
   const { data: news } = useNewsApi();
 
   return (
@@ -27,7 +26,7 @@ export const NewsModal = () => {
           </div>
           <img className={s.post__img} src={post.img} />
           <div className={s.post__content}>
-            {post.content.replace('%', USER_NAME)}
+            {post.content.replace('%', userName)}
           </div>
         </div>
       ))}

@@ -1,53 +1,36 @@
 import { toast } from 'react-toastify';
-
-import { CloseButton, Icon, Loader, QueryBoundary } from '@mhgo/front';
-import { Size } from '@mhgo/front';
-import { Item } from '@mhgo/front';
-import { useItemsApi, useUserWealthApi } from '@mhgo/front';
+import {
+  CloseButton,
+  IconType,
+  Loader,
+  QueryBoundary,
+  Item,
+  useItemsApi,
+  useUserWealthApi,
+  useSettingsApi,
+  CurrencyInfo,
+  useSounds,
+  SoundBG,
+} from '@mhgo/front';
+import { Currency, CurrencyType, UserAmount } from '@mhgo/types';
 import { useUser } from '../../hooks/useUser';
 
 import s from './ShopView.module.scss';
-
-import { currencies } from '../../_mock/wealth';
+import { useAppContext } from '../../utils/context';
+import { useEffect } from 'react';
+import { ItemContextMenu } from '../../containers';
 
 export const ShopView = () => {
   return (
     <div className={s.shopView}>
-      <Header />
+      <div className={s.header}>
+        <h1 className={s.header__title}>Shop</h1>
+        <Wealth />
+      </div>
       <QueryBoundary fallback={<Loader />}>
         <Shop />
       </QueryBoundary>
       <CloseButton />
-    </div>
-  );
-};
-
-const Header = () => {
-  return (
-    <div className={s.header}>
-      <h1 className={s.header__title}>Shop</h1>
-      <Wealth />
-    </div>
-  );
-};
-
-const Shop = () => {
-  const { data: items } = useItemsApi();
-  const purchasableItems = items.filter(item => item.purchasable);
-
-  const onItemClick = () => {
-    toast.error('You are too poor for this!');
-  };
-
-  return (
-    <div className={s.shopView__wrapper}>
-      <div className={s.shopView__items}>
-        {purchasableItems.map(item => (
-          <div className={s.shopView__itemWrapper}>
-            <Item data={item} onClick={onItemClick} key={item.id} />
-          </div>
-        ))}
-      </div>
     </div>
   );
 };
@@ -58,32 +41,56 @@ const Wealth = () => {
   return (
     <div className={s.wealth}>
       {wealth.map(currency => (
-        <CurrencyInfo currency={currency} />
+        <CurrencyInfo price={currency} />
       ))}
     </div>
   );
 };
 
-// TODO make type for currency
-const CurrencyInfo = ({ currency }: { currency: any }) => {
+const Shop = () => {
+  const { setMusic } = useAppContext();
+  const { changeMusic } = useSounds(setMusic);
+
+  const { data: items } = useItemsApi();
+  const purchasableItems = items.filter(item => item.purchasable);
+
+  useEffect(() => {
+    changeMusic(SoundBG.LOCAL_FORECAST);
+    return () => {
+      changeMusic(SoundBG.SNOW_AND_CHILDREN);
+    };
+  }, []);
+
   return (
-    <div className={s.currency}>
-      <Icon icon={currency.icon} size={Size.TINY} />
-      <span>{currency.amount ?? 0}</span>
+    <div className={s.shopView__wrapper}>
+      <div className={s.shopView__items}>
+        {purchasableItems.map(item => (
+          <div key={item.id} className={s.shopView__itemWrapper}>
+            <ItemContextMenu item={item} purchaseOnly />
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
-
 const useWealth = () => {
   const { userId } = useUser();
   const { data: userWealth } = useUserWealthApi(userId);
+  const { setting: currencies } = useSettingsApi('currency_types', [
+    { id: 'base' as CurrencyType, icon: 'Question' as IconType },
+    { id: 'premium' as CurrencyType, icon: 'Question' as IconType },
+  ]);
 
-  const mappedWealth = currencies.map(currency => {
-    const userData = userWealth.find(w => w.id === currency.id);
-    return {
+  const mappedWealth = currencies!.map((currency: Currency) => {
+    const userData: UserAmount = userWealth.find(w => w.id === currency.id) ?? {
+      id: currency.id,
+      amount: 0,
+    };
+    const wealth = {
       ...userData,
       ...currency,
     };
+    return wealth;
   });
   return mappedWealth;
 };

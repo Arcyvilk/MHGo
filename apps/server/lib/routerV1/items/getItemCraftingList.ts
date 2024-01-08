@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { log } from '@mhgo/utils';
 import { Item, Material, UserItems, UserMaterials } from '@mhgo/types';
 
-import { getItemsCraftList } from '../../helpers/getItemsCraftList';
+import { getItemsCraftList } from '../../helpers/getItemDetails';
 import { mongoInstance } from '../../../api';
 
 export const getItemCraftingList = async (

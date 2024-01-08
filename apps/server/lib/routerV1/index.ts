@@ -93,6 +93,7 @@ import {
   getItems,
   getItemActions,
   getItemCrafts,
+  getItemPrice,
   getItemStats,
   getItemCraftingList,
 } from './items';
@@ -100,6 +101,7 @@ import {
 routerV1.get('/items/list', getItems);
 routerV1.get('/items/item/:itemId/actions', getItemActions);
 routerV1.get('/items/item/:itemId/crafts', getItemCrafts);
+routerV1.get('/items/item/:itemId/price', getItemPrice);
 routerV1.get('/items/item/:itemId/stats', getItemStats);
 routerV1.get('/users/user/:userId/craft/:itemId', getItemCraftingList);
 

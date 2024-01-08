@@ -1,0 +1,13 @@
+@import '@mhgo/front/styles/index.scss';
+
+.currency {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: $size-14;
+  gap: $size-4;
+
+  &--small {
+    font-size: $size-10;
+  }
+}

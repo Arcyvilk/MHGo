@@ -1,3 +1,4 @@
+export * from './CurrencyInfo';
 export * from './InfoBar';
 export * from './Item';
 export * from './ProgressBar';

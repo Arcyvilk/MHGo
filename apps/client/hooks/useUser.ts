@@ -7,8 +7,10 @@ import {
   useUserLoadoutApi,
   useUserMaterialsApi,
 } from '@mhgo/front';
+import { ItemSlot } from '@mhgo/types';
 
-import { USER_ID, USER_NAME, LOADOUT_SLOTS } from '../_mock/settings';
+export const USER_NAME = 'SzatanSzatanSzatan';
+export const USER_ID = 'TESTER';
 
 export const useUser = () => {
   const { data: user } = useUserApi(USER_ID);
@@ -59,8 +61,10 @@ export const useUserMaterials = (userId: string) => {
 export const useUserLoadout = (userId: string) => {
   const { data: items } = useItemsApi();
   const { data: loadout } = useUserLoadoutApi(userId);
+  const { setting: loadoutSlots } =
+    useSettingsApi<ItemSlot[]>('equipment_slots');
 
-  const slots = LOADOUT_SLOTS.map(slot => {
+  const slots = loadoutSlots?.map(slot => {
     const userSlot = loadout.find(l => l.slot === slot);
     return {
       slot,
@@ -69,7 +73,7 @@ export const useUserLoadout = (userId: string) => {
   });
 
   const loadoutItems =
-    slots.map(slot => items.find(i => i.id === slot.itemId)) ?? [];
+    slots?.map(slot => items.find(i => i.id === slot.itemId)) ?? [];
 
   return loadoutItems;
 };

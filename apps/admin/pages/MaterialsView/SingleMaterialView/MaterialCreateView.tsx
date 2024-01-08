@@ -94,7 +94,6 @@ export const MaterialCreateView = () => {
               data={{
                 ...(material ?? material),
                 purchasable: false,
-                price: 0,
                 img: `${CDN_URL}${materialImg}`,
               }}
             />

@@ -35,10 +35,12 @@ type Action = keyof ItemActions['action'] | 'craft';
 export const ItemContextMenu = ({
   item,
   useOnly = false,
+  purchaseOnly = false,
   isItemOwned = true,
 }: {
   item: TItem;
   useOnly?: boolean;
+  purchaseOnly?: boolean;
   isItemOwned?: boolean;
 }) => {
   const navigate = useNavigate();
@@ -75,7 +77,9 @@ export const ItemContextMenu = ({
   };
 
   const onItemPurchase = () => {
-    navigate('/shop');
+    const shopPath = '/shop';
+    if (location.pathname !== shopPath) navigate('/shop');
+    else toast.info('You are too poor for this!');
   };
 
   const onItemUse = () => {
@@ -144,23 +148,23 @@ export const ItemContextMenu = ({
               <ItemStats itemId={item.id} compare />
             </div>
             <div className={s.itemContextMenu__section}>
-              {!useOnly && item.craftable && (
+              {!useOnly && !purchaseOnly && item.craftable && (
                 <Button simple label="Craft" onClick={onItemCraft} />
               )}
-              {!useOnly && item.equippable && isItemOwned && (
+              {!useOnly && !purchaseOnly && item.equippable && isItemOwned && (
                 <Button simple label="Equip" onClick={onItemEquip} />
               )}
               {item.purchasable && (
                 <Button simple label="Purchase" onClick={onItemPurchase} />
               )}
-              {item.usable && itemAction && isItemOwned && (
+              {item.usable && !purchaseOnly && itemAction && isItemOwned && (
                 <Button simple label="Use" onClick={onItemUse} />
               )}
             </div>
           </div>
         }>
         <Item
-          data={{ ...item, purchasable: false }}
+          data={{ ...item, purchasable: purchaseOnly }}
           isNotOwned={!isItemOwned}
         />
       </Dropdown>
