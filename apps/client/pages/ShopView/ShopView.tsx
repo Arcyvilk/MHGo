@@ -1,10 +1,8 @@
-import { toast } from 'react-toastify';
 import {
   CloseButton,
   IconType,
   Loader,
   QueryBoundary,
-  Item,
   useItemsApi,
   useUserWealthApi,
   useSettingsApi,

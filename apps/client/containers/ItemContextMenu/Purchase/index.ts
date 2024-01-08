@@ -1,0 +1,1 @@
+export { PurchaseConfirmation } from './PurchaseConfirmation';

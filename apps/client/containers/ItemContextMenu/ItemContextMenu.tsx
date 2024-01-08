@@ -21,6 +21,7 @@ import {
 } from '@mhgo/front';
 import { useUser } from '../../hooks/useUser';
 import { CraftConfirmation } from './Craft/CraftConfirmation';
+import { PurchaseConfirmation } from './Purchase/PurchaseConfirmation';
 import { ItemStats } from './ItemStats';
 
 import s from './ItemContextMenu.module.scss';
@@ -31,7 +32,7 @@ import {
 import { ModalAchievementUnlocked } from '../../pages/FightView/ModalAchievementUnlocked';
 import { useAppContext } from '../../utils/context';
 
-type Action = keyof ItemActions['action'] | 'craft';
+type Action = keyof ItemActions['action'] | 'craft' | 'purchase';
 export const ItemContextMenu = ({
   item,
   useOnly = false,
@@ -79,7 +80,10 @@ export const ItemContextMenu = ({
   const onItemPurchase = () => {
     const shopPath = '/shop';
     if (location.pathname !== shopPath) navigate('/shop');
-    else toast.info('You are too poor for this!');
+    else {
+      setAction('purchase');
+      setIsModalOpen(true);
+    }
   };
 
   const onItemUse = () => {
@@ -119,6 +123,12 @@ export const ItemContextMenu = ({
       <Modal isOpen={isModalOpen} setIsOpen={setIsModalOpen}>
         {!useOnly && action === 'craft' && item.craftable && (
           <CraftConfirmation itemId={item.id} setIsModalOpen={setIsModalOpen} />
+        )}
+        {purchaseOnly && action === 'purchase' && item.purchasable && (
+          <PurchaseConfirmation
+            itemId={item.id}
+            setIsModalOpen={setIsModalOpen}
+          />
         )}
         {action === 'text' && (
           <div className={s.itemContextMenu__itemDesc}>

@@ -301,6 +301,33 @@ export const useUserCraftItemApi = (userId: string, itemId: string) => {
   return { mutate, isPending, isSuccess, isError };
 };
 
+export const useUserPurchaseItemApi = (userId: string, itemId: string) => {
+  const queryClient = useQueryClient();
+
+  const purchaseItems = async (variables: {
+    amount: number;
+  }): Promise<void> => {
+    await fetch(`${API_URL}/users/user/${userId}/purchase/${itemId}`, {
+      method: 'PUT',
+      body: JSON.stringify(variables),
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+    });
+    queryClient.invalidateQueries({ queryKey: ['user', userId, 'items'] });
+    queryClient.invalidateQueries({ queryKey: ['user', userId, 'wealth'] });
+    queryClient.invalidateQueries({ queryKey: ['items'], exact: false });
+  };
+
+  const { mutate, isPending, isSuccess, isError } = useMutation({
+    mutationKey: ['user', userId, 'purchase', itemId],
+    mutationFn: purchaseItems,
+  });
+
+  return { mutate, isPending, isSuccess, isError };
+};
+
 export const useUserUpdateAchievementApi = (userId: string) => {
   const queryClient = useQueryClient();
 

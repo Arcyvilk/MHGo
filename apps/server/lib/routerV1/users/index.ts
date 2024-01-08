@@ -16,3 +16,4 @@ export { updateUserAchievement } from './updateUserAchievement';
 
 export { updateUserItemsConsume } from './updateUserItemsConsume';
 export { updateUserItemCraft } from './updateUserItemCraft';
+export { updateUserItemPurchase } from './updateUserItemPurchase';

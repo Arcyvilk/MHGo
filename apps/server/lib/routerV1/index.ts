@@ -146,6 +146,7 @@ import {
   updateUserAchievement,
   updateUserItemCraft,
   updateUserItemsConsume,
+  updateUserItemPurchase,
 } from './users';
 
 routerV1.get('/users/user/:userId', getUser);
@@ -165,6 +166,7 @@ routerV1.put('/users/user/:userId/wealth', updateUserWealth);
 routerV1.put('/users/user/:userId/exp', updateUserExp);
 routerV1.put('/users/user/:userId/consume', updateUserItemsConsume);
 routerV1.put('/users/user/:userId/craft/:itemId', updateUserItemCraft);
+routerV1.put('/users/user/:userId/purchase/:itemId', updateUserItemPurchase);
 
 /****************************
  *         MAP         *
