@@ -1,6 +1,6 @@
 import { Material, Monster, Item as TItem, Drop } from '@mhgo/types';
 
-import { Item, useItemsApi } from '@mhgo/front';
+import { Item, modifiers, useItemsApi } from '@mhgo/front';
 import { CloseButton, Loader, QueryBoundary, Tooltip } from '@mhgo/front';
 import {
   useMonstersApi,
@@ -9,6 +9,7 @@ import {
 } from '@mhgo/front';
 
 import s from './MonsterGuideView.module.scss';
+import { useUser } from '../../hooks/useUser';
 
 export const MonsterGuideView = () => (
   <QueryBoundary fallback={<Loader />}>
@@ -18,6 +19,10 @@ export const MonsterGuideView = () => (
 
 const Load = () => {
   const { data: monsters } = useMonstersApi();
+  const sortedMonsters = monsters.sort((a, b) => {
+    if ((a.levelRequirements ?? 0) > (b.levelRequirements ?? 0)) return 1;
+    return -1;
+  });
 
   return (
     <div className={s.monsterGuideView}>
@@ -25,7 +30,7 @@ const Load = () => {
         <div className={s.header__title}>Monster Guide</div>
       </div>
       <div className={s.monsterGuideView__monsters}>
-        {monsters.map(monster => (
+        {sortedMonsters.map(monster => (
           <MonsterTile monster={monster} key={monster.id} />
         ))}
       </div>
@@ -35,9 +40,12 @@ const Load = () => {
 };
 
 const MonsterTile = ({ monster }: { monster: Monster }) => {
+  const { userLevel } = useUser();
   const { data: items } = useItemsApi();
   const { data: materials } = useMaterialsApi();
   const { data: drops } = useMonsterDropsApi();
+
+  const isMonsterLocked = userLevel < (monster.levelRequirements ?? 0);
 
   const allMonsterDrops = (
     drops.find(drop => drop.monsterId === monster.id)?.drops ?? []
@@ -50,6 +58,20 @@ const MonsterTile = ({ monster }: { monster: Monster }) => {
     ...getUniqueMaterialDrops(allMonsterDrops, materials),
   ];
 
+  if (isMonsterLocked)
+    return (
+      <div className={s.monster}>
+        <img
+          className={modifiers(s, 'monster__thumbnail', { locked: true })}
+          src={monster.thumbnail}
+        />
+        <div className={s.monster__details}>
+          <h2 className={s.monster__name}>
+            Unlocks at level {monster.levelRequirements}
+          </h2>
+        </div>
+      </div>
+    );
   return (
     <div className={s.monster}>
       <img className={s.monster__thumbnail} src={monster.thumbnail} />

@@ -39,6 +39,11 @@
     image-rendering: pixelated;
     image-rendering: -moz-crisp-edges;
     image-rendering: crisp-edges;
+
+    &--locked {
+      opacity: 0.3;
+      filter: contrast(0) brightness(0);
+    }
   }
 
   &__name {
