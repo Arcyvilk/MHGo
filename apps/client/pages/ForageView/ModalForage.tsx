@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useMemo } from 'react';
 
 import { Item } from '@mhgo/front';
 import { addCdnUrl, useResourceMarkerDropsApi } from '@mhgo/front';
@@ -6,6 +6,12 @@ import { useUser } from '../../hooks/useUser';
 import { Button, Loader, Modal, QueryBoundary } from '@mhgo/front';
 
 import s from './ModalForage.module.scss';
+import { ModalAchievement } from '../../containers';
+import {
+  AchievementId,
+  useUpdateUserAchievement,
+} from '../../hooks/useUpdateUserAchievement';
+import { Material } from '@mhgo/types';
 
 type ModalProps = {
   isOpen: boolean;
@@ -31,6 +37,13 @@ const Load = ({ onClose }: { onClose: () => void }) => {
   const { userId } = useUser();
   const { data: drops, mutate, isSuccess } = useResourceMarkerDropsApi(userId);
 
+  const {
+    achievementId,
+    updateAchievement,
+    isModalAchievementOpen,
+    setIsModalAchievementOpen,
+  } = useForagingAchievements();
+
   const redeemLoot = useCallback(() => {
     if (isLootRedeemed) return;
     setIsLootRedeemed(true);
@@ -40,6 +53,10 @@ const Load = ({ onClose }: { onClose: () => void }) => {
   useEffect(() => {
     redeemLoot();
   }, []);
+
+  useEffect(() => {
+    if (isSuccess) updateAchievement(drops);
+  }, [isSuccess]);
 
   const listOfDrops = drops.map(drop => {
     const data = {
@@ -52,6 +69,13 @@ const Load = ({ onClose }: { onClose: () => void }) => {
 
   return (
     <div className={s.modalSuccess}>
+      {isModalAchievementOpen && (
+        <ModalAchievement
+          achievementId={achievementId}
+          isOpen={isModalAchievementOpen}
+          setIsOpen={setIsModalAchievementOpen}
+        />
+      )}
       <p className={s.result__desc}>You foraged the following items:</p>
       <div className={s.result__drops}>
         {isSuccess ? (
@@ -67,4 +91,39 @@ const Load = ({ onClose }: { onClose: () => void }) => {
       <Button label="Claim" onClick={onClose} simple />
     </div>
   );
+};
+
+const useForagingAchievements = () => {
+  const [achievementId, setAchievementId] = useState<string | null>();
+  const [isModalAchievementOpen, setIsModalAchievementOpen] = useState(false);
+  const {
+    mutate,
+    getIsAchievementUnlocked,
+    isSuccess: isAchievementUpdateSuccess,
+  } = useUpdateUserAchievement();
+
+  const isAchievementUnlocked = useMemo(() => {
+    const { unlockedNewAchievement } = getIsAchievementUnlocked(
+      AchievementId.EASTER_EGG,
+    );
+    return unlockedNewAchievement;
+  }, [isAchievementUpdateSuccess]);
+
+  const updateAchievement = (drops: Material[]) => {
+    if (drops.some(drop => drop.id === 'easter_egg')) {
+      setAchievementId(AchievementId.EASTER_EGG);
+      mutate({ achievementId: AchievementId.EASTER_EGG, progress: 1 });
+    }
+  };
+
+  useEffect(() => {
+    if (isAchievementUnlocked) setIsModalAchievementOpen(true);
+  }, [isAchievementUnlocked]);
+
+  return {
+    achievementId,
+    updateAchievement,
+    isModalAchievementOpen,
+    setIsModalAchievementOpen,
+  };
 };

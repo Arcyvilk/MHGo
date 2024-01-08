@@ -17,11 +17,11 @@ export const getResourceMarkersByUserId = async (
     const { db } = mongoInstance.getDb();
 
     // Show only markers within some set distance
-    const fixedLat = lat ? Number(Number(lat).toFixed(2)) : null;
-    const fixedLng = lng ? Number(Number(lng).toFixed(2)) : null;
+    const fixedLat = lat !== undefined ? Number(Number(lat).toFixed(2)) : null;
+    const fixedLng = lng !== undefined ? Number(Number(lng).toFixed(2)) : null;
 
     const filterCoords =
-      fixedLat && fixedLng
+      fixedLat !== null && fixedLng !== null
         ? {
             'coords.0': {
               $lt: fixedLat + 0.01,

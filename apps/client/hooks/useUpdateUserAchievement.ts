@@ -5,6 +5,10 @@ export enum AchievementId {
   HABEMUS_PAPAM = 'habemus_papam',
   TGTG = 'tgtg',
   DARK_ARTS = 'dark_arts',
+  FOR_WHY = 'for_why',
+  PRIMAL_RAGE = 'primal_rage',
+  EASTER_EGG = 'easter_egg',
+  HOARDER_EXTRAORDINAIRE = 'hoarder_extraordinaire',
 }
 
 export const useUpdateUserAchievement = () => {
