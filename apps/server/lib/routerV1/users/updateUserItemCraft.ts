@@ -67,7 +67,10 @@ export const updateUserItemCraft = async (
         throw new Error(
           "User doesn't have enough ingredients to craft this item!",
         );
-      return { ...ingredient, amount: ownedItem.amount - amountNeeded };
+      return {
+        ...ingredient,
+        amount: ownedItem.amount - amountNeeded,
+      };
     });
 
     // Check if user has enough material ingredients to craft the item
@@ -78,36 +81,41 @@ export const updateUserItemCraft = async (
         throw new Error(
           "User doesn't have enough ingredients to craft this item",
         );
-      return { ...ingredient, amount: ownedMat.amount - amountNeeded };
+      return {
+        ...ingredient,
+        amount: ownedMat.amount - amountNeeded,
+      };
     });
 
     // Remove item ingredients from user's inventory
-    let updatedUserItems: UserAmount[] = userItems.map(userItem => {
-      const ownedItem = userOwnedItems.find(
-        ownedItem => ownedItem.id === userItem.id,
-      );
-      if (ownedItem)
+    let updatedUserItems: UserAmount[] = userItems
+      .map(userItem => {
+        const ownedItem = userOwnedItems.find(
+          ownedItem => ownedItem.id === userItem.id,
+        );
+        if (!ownedItem) return userItem;
+        if (ownedItem.amount <= 0) return null;
         return {
           ...userItem,
           amount: ownedItem.amount,
         };
-      else return userItem;
-    });
+      })
+      .filter(Boolean);
 
     // Remove material ingredients from user's inventory
-    const updatedUserMaterials: UserAmount[] = userMaterials.map(
-      userMaterial => {
+    const updatedUserMaterials: UserAmount[] = userMaterials
+      .map(userMaterial => {
         const ownedMat = userOwnedMaterials.find(
           ownedMat => ownedMat.id === userMaterial.id,
         );
-        if (ownedMat)
-          return {
-            ...userMaterial,
-            amount: ownedMat.amount,
-          };
-        else return userMaterial;
-      },
-    );
+        if (!ownedMat) return userMaterial;
+        if (ownedMat.amount <= 0) return null;
+        return {
+          ...userMaterial,
+          amount: ownedMat.amount,
+        };
+      })
+      .filter(Boolean);
 
     // Add newly crafted item to user's inventory
     const userHasItem = updatedUserItems.find(

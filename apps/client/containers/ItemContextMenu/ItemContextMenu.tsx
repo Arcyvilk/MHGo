@@ -225,7 +225,7 @@ const useItemActionAchievements = (
         setAchievementId(AchievementId.TGTG);
         mutate({ achievementId: AchievementId.TGTG, progress: 1 });
       }
-      if (item.id === 'nettle_whip' && userHealth.currentHealth <= 1) {
+      if (item.id === 'nettle_whip' && userHealth.currentHealth === 1) {
         // Call for the achievement when killing yourself with nettle whip
         setAchievementId(AchievementId.FOR_WHY);
         mutate({ achievementId: AchievementId.FOR_WHY, progress: 1 });
