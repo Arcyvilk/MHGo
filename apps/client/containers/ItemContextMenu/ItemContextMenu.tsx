@@ -105,7 +105,7 @@ export const ItemContextMenu = ({
         playSound(SoundSE.BUBBLE);
         toast.success(`Healed for ${itemAction.heal}!`);
       } else {
-        playSound(SoundSE.OUCH);
+        playSound(SoundSE.PUNCH);
         toast.success(`Damaged yourself for ${Math.abs(itemAction.heal)}!`);
       }
     }
