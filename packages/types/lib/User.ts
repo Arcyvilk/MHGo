@@ -2,8 +2,6 @@
 export type User = {
   name: string;
   id: string;
-  // TODO Don't send it from server ._.
-  pwdHash: string;
   avatar: string;
   exp: number;
   isAdmin: boolean;

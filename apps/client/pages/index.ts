@@ -4,6 +4,7 @@ export * from './EquipmentView';
 export * from './ForageView';
 export * from './HomeView';
 export * from './ItemBoxView';
+export * from './LoginView';
 export * from './NotImplementedView';
 export * from './QuestView';
 export * from './SettingsView';

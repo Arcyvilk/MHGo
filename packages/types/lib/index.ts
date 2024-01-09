@@ -5,6 +5,7 @@ export * from './Habitats';
 export * from './Items';
 export * from './ItemStats';
 export * from './Loadout';
+export * from './Login';
 export * from './MapMarkers';
 export * from './Materials';
 export * from './Monsters';

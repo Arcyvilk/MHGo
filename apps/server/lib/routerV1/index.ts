@@ -5,6 +5,17 @@ export const routerV1 = express.Router();
 
 // TODO ADD API AUTH TO ALL ROUTES IN PROD!!!!
 
+/*****************************
+ *         LOGIN         *
+ *****************************/
+
+import { login, update, logout, signIn, verifyToken } from './login';
+
+routerV1.post('/auth/signIn', signIn);
+routerV1.post('/auth/login', login);
+routerV1.post('/auth/update', verifyToken, update);
+routerV1.get('/auth/logout', logout);
+
 /********************************
  *         ADMIN ROUTES         *
  ********************************/
