@@ -15,7 +15,7 @@ import {
 
 import { ModalLevelUp } from './ModalLevelUp';
 import { ModalAchievement } from '../../containers';
-import { useUser, useUserLoadout } from '../../hooks/useUser';
+import { useUser } from '../../hooks/useUser';
 import { useUserLevelUp } from '../../hooks/useUserLevelUp';
 import {
   AchievementId,
