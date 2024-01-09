@@ -29,7 +29,6 @@ const BUTTONS: {
     modal: <AppearanceModal />,
   },
   { icon: 'Gear', label: 'Settings', link: '/settings' },
-  { icon: 'Medal', label: 'Credits', link: '/credits' },
 ];
 
 export const Buttons = () => {
@@ -53,22 +52,35 @@ export const Buttons = () => {
   };
 
   return (
-    <div className={s.buttons}>
-      {BUTTONS.map(b => (
-        <Button
-          key={b.label}
-          onClick={() => onButtonClick(b.link, b.modal)}
-          label={
-            <>
-              <Icon icon={b.icon} size={Size.MICRO} />
-              {b.label}
-            </>
-          }
-        />
-      ))}
+    <>
       <Modal isOpen={isModalOpen} setIsOpen={setIsModalOpen}>
         {activeModal}
       </Modal>
-    </div>
+      <div className={s.buttons}>
+        {BUTTONS.map(b => (
+          <Button
+            key={b.label}
+            onClick={() => onButtonClick(b.link, b.modal)}
+            label={
+              <>
+                <Icon icon={b.icon} size={Size.MICRO} />
+                {b.label}
+              </>
+            }
+          />
+        ))}
+      </div>
+      <Button
+        style={{ marginBottom: '3.2rem' }}
+        key="credits"
+        onClick={() => onButtonClick('/credits')}
+        label={
+          <>
+            <Icon icon="Medal" size={Size.MICRO} />
+            Credits
+          </>
+        }
+      />
+    </>
   );
 };
