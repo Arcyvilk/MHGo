@@ -25,9 +25,11 @@ export const HomeView = () => {
     <div className={s.homeView}>
       <Map />
       <div className={s.actions}>
-        <Modal isOpen={isModalOpen} setIsOpen={setIsModalOpen}>
-          <QuickUseModal />
-        </Modal>
+        {isModalOpen && (
+          <Modal isOpen={isModalOpen} setIsOpen={setIsModalOpen}>
+            <QuickUseModal />
+          </Modal>
+        )}
         <div className={s.actions__top}>
           <ActionButton icon="Face" onClick={onYouClick} />
           <ActionButton icon="Armory" onClick={onEquipmentClick} />

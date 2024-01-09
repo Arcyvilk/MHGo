@@ -96,7 +96,10 @@ export const useItemPriceApi = (itemId: string | null) => {
   return { data, isLoading, isFetched, isError };
 };
 
-export const useItemStatsApi = (itemId: string | null) => {
+export const useItemStatsApi = (
+  itemId: string | null,
+  isEquippable?: boolean,
+) => {
   const getItemStats = async (): Promise<Stats> => {
     const res = await fetch(`${API_URL}/items/item/${itemId}/stats`);
     return res.json();
@@ -110,8 +113,10 @@ export const useItemStatsApi = (itemId: string | null) => {
   >({
     queryKey: ['items', itemId!, 'stats'],
     queryFn: getItemStats,
-    enabled: Boolean(itemId),
+    enabled: isEquippable && Boolean(itemId),
   });
+
+  console.log(Boolean(isEquippable && Boolean(itemId)));
 
   return { data, isLoading, isFetched, isError };
 };
