@@ -106,7 +106,7 @@ export const ItemContextMenu = ({
         toast.success(`Healed for ${itemAction.heal}!`);
       } else {
         playSound(SoundSE.PUNCH);
-        toast.success(`Damaged yourself for ${Math.abs(itemAction.heal)}!`);
+        toast.error(`Damaged yourself for ${Math.abs(itemAction.heal)}!`);
       }
     }
     if (item.consumable) {
