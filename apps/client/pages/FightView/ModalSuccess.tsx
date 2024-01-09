@@ -10,11 +10,12 @@ import {
   addCdnUrl,
   useMonsterMarkerDropsApi,
   useUpdateUserWealthApi,
+  useUserLoadoutApi,
 } from '@mhgo/front';
 
 import { ModalLevelUp } from './ModalLevelUp';
 import { ModalAchievement } from '../../containers';
-import { useUser } from '../../hooks/useUser';
+import { useUser, useUserLoadout } from '../../hooks/useUser';
 import { useUserLevelUp } from '../../hooks/useUserLevelUp';
 import {
   AchievementId,
@@ -143,6 +144,8 @@ const Load = ({ onClose }: { onClose: () => void }) => {
 };
 
 const useKillingAchievements = (monsterId: string) => {
+  const { userId } = useUser();
+  const { data: userLoadout } = useUserLoadoutApi(userId);
   const [achievementId, setAchievementId] = useState<string | null>();
   const [isModalAchievementOpen, setIsModalAchievementOpen] = useState(false);
   const {
@@ -152,16 +155,27 @@ const useKillingAchievements = (monsterId: string) => {
   } = useUpdateUserAchievement();
 
   const isAchievementUnlocked = useMemo(() => {
-    const { unlockedNewAchievement } = getIsAchievementUnlocked(
+    const { unlockedNewAchievement: unlocked2137 } = getIsAchievementUnlocked(
       AchievementId.HABEMUS_PAPAM,
     );
-    return unlockedNewAchievement;
+    const { unlockedNewAchievement: unlockedRage } = getIsAchievementUnlocked(
+      AchievementId.PRIMAL_RAGE,
+    );
+    if (unlocked2137 || unlockedRage) return true;
+    return false;
   }, [isAchievementUpdateSuccess]);
 
   const updateAchievement = () => {
     if (monsterId === 'babcianiath') {
       setAchievementId(AchievementId.HABEMUS_PAPAM);
       mutate({ achievementId: AchievementId.HABEMUS_PAPAM, progress: 1 });
+    }
+    if (
+      monsterId === 'dracolich' &&
+      userLoadout.find(slot => slot.slot === 'weapon')?.itemId === 'bare_fist'
+    ) {
+      setAchievementId(AchievementId.PRIMAL_RAGE);
+      mutate({ achievementId: AchievementId.PRIMAL_RAGE, progress: 1 });
     }
   };
 
