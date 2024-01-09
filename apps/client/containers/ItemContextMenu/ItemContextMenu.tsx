@@ -105,8 +105,8 @@ export const ItemContextMenu = ({
         playSound(SoundSE.BUBBLE);
         toast.success(`Healed for ${itemAction.heal}!`);
       } else {
-        playSound(SoundSE.OUCH);
-        toast.success(`Damaged yourself for ${Math.abs(itemAction.heal)}!`);
+        playSound(SoundSE.PUNCH);
+        toast.error(`Damaged yourself for ${Math.abs(itemAction.heal)}!`);
       }
     }
     if (item.consumable) {
@@ -225,7 +225,7 @@ const useItemActionAchievements = (
         setAchievementId(AchievementId.TGTG);
         mutate({ achievementId: AchievementId.TGTG, progress: 1 });
       }
-      if (item.id === 'nettle_whip' && userHealth.currentHealth <= 1) {
+      if (item.id === 'nettle_whip' && userHealth.currentHealth === 1) {
         // Call for the achievement when killing yourself with nettle whip
         setAchievementId(AchievementId.FOR_WHY);
         mutate({ achievementId: AchievementId.FOR_WHY, progress: 1 });

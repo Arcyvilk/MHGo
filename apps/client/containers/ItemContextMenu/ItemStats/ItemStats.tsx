@@ -24,12 +24,16 @@ export const ItemStats = ({
 
   // We check which slot the item goes to
   const itemSlot = items.find(i => i.id === itemId)?.slot;
+  const isEquippable = Boolean(itemSlot);
   // We check the ID of item already occupying that slot
   const slottedItemId =
     userLoadout.find(loadoutSlot => loadoutSlot.slot === itemSlot)?.itemId ??
     null;
 
-  const { data: slottedItemStats = {} } = useItemStatsApi(slottedItemId);
+  const { data: slottedItemStats = {} } = useItemStatsApi(
+    slottedItemId,
+    isEquippable,
+  );
 
   if (!itemStats) return null;
   if (!itemSlot) return null;

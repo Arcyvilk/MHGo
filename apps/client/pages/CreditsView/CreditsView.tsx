@@ -77,6 +77,13 @@ const images: Credit[] = [
     link: 'https://agroshka.tumblr.com/',
     license: 'https://choosealicense.com/no-permission/',
   },
+  {
+    usage: 'resource/item/material icons',
+    title: 'Monster Hunter',
+    author: 'Capcom',
+    link: 'https://fanonmonsterhunter.fandom.com/wiki/Item_Icon_List',
+    license: '',
+  },
 ];
 const sounds: Credit[] = [
   {
@@ -146,8 +153,15 @@ const music: Credit[] = [
     license: 'https://musmus.main.jp/info.html',
   },
   {
+    usage: 'idle shop music',
+    title: 'Local Forecast - Elevator',
+    author: 'Kevin MacLeod',
+    link: 'https://incompetech.com/music/royalty-free/index.html?isrc=USUAN1300012',
+    license: 'CC BY 3.0 DEED',
+  },
+  {
     usage: 'death music',
-    title: 'Horror/Creepy sound atmosphere ambience (Spectral)- 02',
+    title: 'Horror/Creepy sound atmosphere ambience (Spectral) - 02',
     author: 'bolkmar',
     link: 'https://freesound.org/people/bolkmar/sounds/417497/',
     license: 'Attribution 3.0',

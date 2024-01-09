@@ -5,9 +5,7 @@ import s from './ModalView.module.scss';
 
 export const QuickUseModal = () => {
   const { consumableItems } = useConsumableItems();
-  const hasQuickUseItems =
-    consumableItems?.length > 0 &&
-    !consumableItems.some(item => item.amount === 0);
+  const hasQuickUseItems = consumableItems?.length > 0;
 
   return (
     <div className={s.modalView__quickUse}>
@@ -32,7 +30,7 @@ const useConsumableItems = () => {
   const userItems = useUserItems(userId);
 
   const consumableItems = userItems.filter(
-    item => item?.usable && item?.quickUse,
+    item => item?.usable && item?.quickUse && item.amount > 0,
   );
 
   return { consumableItems };
