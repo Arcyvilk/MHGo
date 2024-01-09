@@ -36,7 +36,7 @@ const Load = ({ coords }: ResourceMarkerProps) => {
       {resourceMarkers.map(r => {
         const position = L.latLng(r.coords[0], r.coords[1]);
         const onClick = () => {
-          playSound(SoundSE.SNAP);
+          playSound(SoundSE.CLICK);
           // @ts-expect-error _id in fact exists
           navigate(`/forage?id=${String(r._id)}`);
         };

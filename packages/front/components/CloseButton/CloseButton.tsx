@@ -9,7 +9,7 @@ export const CloseButton = () => {
   const { playSound } = useSounds(undefined);
 
   const onClickClose = () => {
-    playSound(SoundSE.SNAP);
+    playSound(SoundSE.CLICK);
     navigate(-1);
   };
 

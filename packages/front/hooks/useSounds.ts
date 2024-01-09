@@ -25,10 +25,6 @@ export enum SoundSE {
   NUKE = 'NUKE',
   OUCH = 'OUCH',
   PUNCH = 'PUNCH',
-  SLAP = 'SLAP',
-  SNAP = 'SNAP',
-  WHIP = 'WHIP',
-  WHIP2 = 'WHIP2',
 }
 
 export const useSounds = (
@@ -80,14 +76,10 @@ const musicSrc: Record<SoundBG, string> = {
 const soundSrc: Record<SoundSE, Howl> = {
   [SoundSE.BELT]: new Howl({ src: [`${CDN_URL}/sounds/belt.wav`] }),
   [SoundSE.BUBBLE]: new Howl({ src: [`${CDN_URL}/sounds/bubble.wav`] }),
-  [SoundSE.CLICK]: new Howl({ src: [`${CDN_URL}/sounds/click.mp3`] }),
+  [SoundSE.CLICK]: new Howl({ src: [`${CDN_URL}/sounds/snap.wav`] }),
   [SoundSE.CRYSTAL]: new Howl({ src: [`${CDN_URL}/sounds/crystal.wav`] }),
   [SoundSE.DEATH]: new Howl({ src: [`${CDN_URL}/sounds/death.wav`] }),
   [SoundSE.NUKE]: new Howl({ src: [`${CDN_URL}/sounds/nuke.mp3`] }),
   [SoundSE.OUCH]: new Howl({ src: [`${CDN_URL}/sounds/ouch.wav`] }),
-  [SoundSE.PUNCH]: new Howl({ src: [`${CDN_URL}/sounds/punch.wav`] }),
-  [SoundSE.SLAP]: new Howl({ src: [`${CDN_URL}/sounds/slap.wav`] }),
-  [SoundSE.SNAP]: new Howl({ src: [`${CDN_URL}/sounds/snap.mp3`] }),
-  [SoundSE.WHIP]: new Howl({ src: [`${CDN_URL}/sounds/action_punch.mp3`] }),
-  [SoundSE.WHIP2]: new Howl({ src: [`${CDN_URL}/sounds/whip.wav`] }),
+  [SoundSE.PUNCH]: new Howl({ src: [`${CDN_URL}/sounds/punch.mp3`] }),
 };

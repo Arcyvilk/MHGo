@@ -33,7 +33,7 @@ export const Button = ({
   const { playSound } = useSounds(undefined);
 
   const onButtonClick = () => {
-    playSound(SoundSE.SNAP);
+    playSound(SoundSE.CLICK);
     onClick();
   };
 

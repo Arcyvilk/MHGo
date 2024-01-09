@@ -95,10 +95,10 @@ const sounds: Credit[] = [
   },
   {
     usage: 'monster hit sound',
-    title: 'Whip',
-    author: 'UNIVERSFIELD',
-    link: 'https://pixabay.com/sound-effects/whip-123738/',
-    license: 'https://pixabay.com/service/license-summary/',
+    title: 'Punch sound effect',
+    author: 'Swiggity',
+    link: 'https://www.youtube.com/watch?v=VfMy7U-q3-Y',
+    license: '?',
   },
   {
     usage: 'pain grunt',
@@ -127,46 +127,6 @@ const sounds: Credit[] = [
     author: 'ironcross32',
     link: 'https://freesound.org/people/ironcross32/sounds/582898/',
     license: 'CC0 1.0 DEED',
-  },
-  {
-    // Not used
-    usage: 'alternative click sound',
-    title: 'Mechanical Switch',
-    author: 'Jagadamba',
-    link: 'https://freesound.org/people/Jagadamba/sounds/254286/',
-    license: 'CC BY-NC 4.0 Deed',
-  },
-  {
-    // Not used
-    usage: 'slapping sound 1',
-    title: 'belt',
-    author: 'nuncaconoci',
-    link: 'https://freesound.org/people/nuncaconoci/sounds/534553/',
-    license: 'CC0 1.0 Deed',
-  },
-  {
-    // Not used
-    usage: 'slapping sound 2',
-    title: 'Punch',
-    author: 'ethanchase7744',
-    link: 'https://freesound.org/people/ethanchase7744/sounds/448982/',
-    license: 'CC0 1.0 Deed',
-  },
-  {
-    // Not used
-    usage: 'slapping sound 3',
-    title: 'Whipslap-P',
-    author: 'Seidhepriest',
-    link: 'https://freesound.org/people/Seidhepriest/sounds/192077/',
-    license: 'CC BY-NC 4.0 Deed',
-  },
-  {
-    // Not used
-    usage: 'slapping sound 4',
-    title: 'Impact LeatherBelt 001',
-    author: 'DWOBoyle',
-    link: 'https://freesound.org/people/DWOBoyle/sounds/144266/',
-    license: 'CC BY 4.0 Deed',
   },
 ];
 

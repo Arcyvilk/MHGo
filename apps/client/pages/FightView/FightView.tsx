@@ -56,7 +56,7 @@ const Load = () => {
     const newHP = monsterHP - (userStats?.attack ?? 1);
 
     if (newHP > 0) {
-      playSound(SoundSE.SLAP);
+      playSound(SoundSE.PUNCH);
       setMonsterHP(newHP);
     } else {
       setMonsterHP(0);

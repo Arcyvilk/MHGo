@@ -30,7 +30,7 @@ export const Item = ({
   const { playSound } = useSounds(undefined);
 
   const onButtonClick = () => {
-    playSound(SoundSE.SNAP);
+    playSound(SoundSE.CLICK);
     if (onClick) onClick();
   };
 

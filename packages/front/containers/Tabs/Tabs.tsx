@@ -14,7 +14,7 @@ export const Tabs = <T extends Record<string, string>>({
   const { playSound } = useSounds(undefined);
 
   const onTabClick = (tabValue: string) => {
-    playSound(SoundSE.SNAP);
+    playSound(SoundSE.CLICK);
     setActiveTab(tabValue);
   };
 

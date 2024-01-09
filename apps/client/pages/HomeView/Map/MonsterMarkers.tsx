@@ -37,7 +37,7 @@ const Load = ({ coords }: MonsterMarkersProps) => {
       {monsterMarkers.map(m => {
         const position = L.latLng(m.coords[0], m.coords[1]);
         const onClick = () => {
-          playSound(SoundSE.SNAP);
+          playSound(SoundSE.CLICK);
           navigate(`/prepare?id=${m.id}&level=${m.level}`);
         };
 

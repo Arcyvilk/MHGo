@@ -49,7 +49,7 @@ const ActionButton = ({ icon, onClick }: ActionButtonProps) => {
   const { playSound } = useSounds(undefined);
 
   const onButtonClick = () => {
-    playSound(SoundSE.SNAP);
+    playSound(SoundSE.CLICK);
     onClick();
   };
 
@@ -64,7 +64,7 @@ const QuestButton = ({ onClick }: { onClick: () => void }) => {
   const { playSound } = useSounds(undefined);
 
   const onButtonClick = () => {
-    playSound(SoundSE.SNAP);
+    playSound(SoundSE.CLICK);
     onClick();
   };
 
