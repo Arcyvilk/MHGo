@@ -100,9 +100,14 @@ export const ItemContextMenu = ({
       window.open(itemAction.redirect);
     }
     if (itemAction.heal) {
-      playSound(SoundSE.BUBBLE);
       mutateUserHealth({ healthChange: itemAction.heal });
-      toast.success(`Healed for ${itemAction.heal}!`);
+      if (itemAction.heal > 0) {
+        playSound(SoundSE.BUBBLE);
+        toast.success(`Healed for ${itemAction.heal}!`);
+      } else {
+        playSound(SoundSE.OUCH);
+        toast.success(`Damaged yourself for ${Math.abs(itemAction.heal)}!`);
+      }
     }
     if (item.consumable) {
       mutateConsumeItem([{ itemId: item.id, amountUsed: 1 }]);
@@ -111,7 +116,10 @@ export const ItemContextMenu = ({
 
   return (
     <div className={s.itemContextMenu} key={item.id}>
-      <Flash type="green" isActivated={isHealedSuccessfully} />
+      <Flash
+        type={(itemAction?.heal ?? 0) >= 0 ? 'green' : 'red'}
+        isActivated={isHealedSuccessfully}
+      />
       <ModalAchievement
         achievementId={achievementId}
         isOpen={isModalAchievementOpen}
@@ -164,7 +172,7 @@ export const ItemContextMenu = ({
               {item.purchasable && (
                 <Button simple label="Purchase" onClick={onItemPurchase} />
               )}
-              {item.usable && !purchaseOnly && itemAction && isItemOwned && (
+              {!purchaseOnly && item.usable && itemAction && isItemOwned && (
                 <Button simple label="Use" onClick={onItemUse} />
               )}
             </div>
