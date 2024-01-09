@@ -208,18 +208,27 @@ const useItemActionAchievements = (
 
   const isAchievementUnlocked = useMemo(() => {
     if (!isAchievementUpdateSuccess) return;
-    const { unlockedNewAchievement } = getIsAchievementUnlocked(
+    const { unlockedNewAchievement: unlockedTGTG } = getIsAchievementUnlocked(
       AchievementId.TGTG,
     );
-    return unlockedNewAchievement;
+    const { unlockedNewAchievement: unlockedForWhy } = getIsAchievementUnlocked(
+      AchievementId.FOR_WHY,
+    );
+    if (unlockedTGTG || unlockedForWhy) return true;
+    return false;
   }, [isAchievementUpdateSuccess]);
 
-  // Call for the achievement when deer burger is successfully eaten
   useEffect(() => {
     if (isUsedSuccessfully) {
       if (item.id === 'deer_burger' && isUserFullHP) {
+        // Call for the achievement when deer burger is successfully eaten
         setAchievementId(AchievementId.TGTG);
         mutate({ achievementId: AchievementId.TGTG, progress: 1 });
+      }
+      if (item.id === 'nettle_whip' && userHealth.currentHealth <= 1) {
+        // Call for the achievement when killing yourself with nettle whip
+        setAchievementId(AchievementId.FOR_WHY);
+        mutate({ achievementId: AchievementId.FOR_WHY, progress: 1 });
       }
     }
   }, [isUsedSuccessfully]);
