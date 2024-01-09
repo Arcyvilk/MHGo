@@ -21,7 +21,13 @@ export const GlobalAchievements = () => {
 
   useEffect(() => {
     const baseMoney = userWealth.find(u => u.id === 'base')?.amount ?? 0;
-    updateAchievement(AchievementId.HOARDER_EXTRAORDINAIRE, true, 0, baseMoney);
+    if (baseMoney)
+      updateAchievement(
+        AchievementId.HOARDER_EXTRAORDINAIRE,
+        true,
+        0,
+        baseMoney,
+      );
   }, [userWealth]);
 
   if (!isModalAchievementOpen) return null;
