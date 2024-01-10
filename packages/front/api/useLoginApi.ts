@@ -51,6 +51,7 @@ export const useLoginApi = (
     if (response.status !== 200)
       throw new Error((await response.json()).error ?? 'Did not work!');
 
+    queryClient.invalidateQueries({ queryKey: ['me'] });
     queryClient.invalidateQueries({ queryKey: ['user'], exact: false });
     return response.json();
   };
@@ -85,6 +86,7 @@ export const useLogoutApi = (
     if (res.status !== 200)
       throw new Error((await res.json()).error ?? 'Did not work!');
 
+    queryClient.invalidateQueries({ queryKey: ['me'] });
     queryClient.invalidateQueries({ queryKey: ['user'], exact: false });
     return true;
   };
@@ -124,6 +126,7 @@ export const useSignInApi = (
     if (response.status !== 200)
       throw new Error((await response.json()).error ?? 'Did not work!');
 
+    queryClient.invalidateQueries({ queryKey: ['me'] });
     queryClient.invalidateQueries({ queryKey: ['user'], exact: false });
     return response.json();
   };

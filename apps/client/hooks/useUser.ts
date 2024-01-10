@@ -14,7 +14,6 @@ export const USER_NAME = '-';
 
 export const useUser = () => {
   const { userId } = useMe();
-  console.log(userId);
   const { data: user } = useUserApi(userId);
   const { setting: expPerLevel = 1 } = useSettingsApi<number>(
     'exp_per_level',
