@@ -1,17 +1,28 @@
-import { useLoginApi, useMeApi } from '@mhgo/front';
+import { useLoginApi, useLogoutApi, useMeApi } from '@mhgo/front';
+import { useAppContext } from '../utils/context';
 
 export const useMe = () => {
-  const { mutate: mutateLogin, isLoggedIn, isPending } = useLoginApi();
+  const { isLoggedIn, setIsLoggedIn, setBearerToken } = useAppContext();
+  const { mutate: mutateLogin, isPending } = useLoginApi(
+    setIsLoggedIn,
+    setBearerToken,
+  );
+  const { mutate: mutateLogout } = useLogoutApi(setIsLoggedIn, setBearerToken);
   const { data: userAuthData } = useMeApi();
 
   const loginUser = (userName: string, pwd: string) => {
     mutateLogin({ userName, pwd });
   };
 
+  const logoutUser = () => {
+    mutateLogout();
+  };
+
   return {
-    loginUser,
-    isLoggedIn,
-    isPending,
     ...userAuthData,
+    loginUser,
+    logoutUser,
+    isPending,
+    isLoggedIn: isLoggedIn.loggedIn,
   };
 };

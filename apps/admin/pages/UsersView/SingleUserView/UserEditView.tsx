@@ -144,7 +144,6 @@ const useUpdateUser = (setStatus: (status: Status) => void) => {
   const id = params.get('id');
 
   const { data: user, isFetched: isUsersFetched } = useUserApi(id);
-  console.log(user);
 
   const [updatedUser, setUpdatedUser] = useState(user);
   const [toReset, setToReset] = useState<UserResetType>({

@@ -1,7 +1,16 @@
-import { DEFAULT_VOLUME, Volume, useLocalStorage } from '@mhgo/front';
+import {
+  DEFAULT_VOLUME,
+  Volume,
+  useLocalStorage,
+  useSessionStorage,
+} from '@mhgo/front';
 import React, { PropsWithChildren, useContext, useState } from 'react';
 
 type ContextType = {
+  isLoggedIn: { loggedIn: boolean };
+  setIsLoggedIn: (isLoggedIn: { loggedIn: boolean }) => void;
+  bearerToken: { bearer: string | null };
+  setBearerToken: (bearerToken: { bearer: string | null }) => void;
   music: string | undefined;
   setMusic: (music: string | undefined) => void;
   musicVolume: number;
@@ -15,6 +24,15 @@ export const AppContextProvider = ({
     'MHGO_VOLUME',
     DEFAULT_VOLUME,
   );
+  const [isLoggedIn, setIsLoggedIn] = useSessionStorage<{ loggedIn: boolean }>(
+    'MHGO_LOGGED_IN',
+    { loggedIn: false },
+  );
+  const [bearerToken, setBearerToken] = useLocalStorage<{
+    bearer: string | null;
+  }>('MHGO_AUTH', {
+    bearer: null,
+  });
 
   const [music, setMusic] = useState<string>();
   // TODO maybe this can be done somewhere else
@@ -23,7 +41,16 @@ export const AppContextProvider = ({
     (volume.bgm / 100) * (volume.master / 100),
   );
 
-  const value = { music, setMusic, musicVolume, setMusicVolume };
+  const value = {
+    isLoggedIn,
+    setIsLoggedIn,
+    bearerToken,
+    setBearerToken,
+    music,
+    setMusic,
+    musicVolume,
+    setMusicVolume,
+  };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 };

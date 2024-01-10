@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Navigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import {
@@ -9,9 +10,9 @@ import {
   CloseButton,
   Slider,
 } from '@mhgo/front';
-import { STATUS, useLogin } from '../../hooks/useLogin';
 import { APP_NAME, APP_VERSION } from '../../utils/consts';
 import { useAppContext } from '../../utils/context';
+import { useMe } from '../../hooks/useAuth';
 
 import s from './SettingsView.module.scss';
 
@@ -21,11 +22,10 @@ const DEFAULT = {
 };
 
 export const SettingsView = () => {
+  const { logoutUser, isLoggedIn } = useMe();
   const { setMusic, setMusicVolume } = useAppContext();
   const { volume, setVolume, changeMusicVolume } = useSounds(setMusic);
   const [installPrompt, setInstallPrompt] = useState<any>(null);
-
-  const { onLogOut, onDeleteAccount } = useLogin();
 
   useEffect(() => {
     window.addEventListener('beforeinstallprompt', event => {
@@ -39,16 +39,8 @@ export const SettingsView = () => {
     setMusicVolume(newMusicVolume);
   }, [volume]);
 
-  const onLogOutClick = async () => {
-    const logOutStatus = await onLogOut();
-    if (logOutStatus === STATUS.ERROR) toast.error('Did not work :C');
-    if (logOutStatus === STATUS.SUCCESS) toast.success('Did work :3');
-  };
-
   const onDeleteAccountClick = async () => {
-    const deleteStatus = await onDeleteAccount();
-    if (deleteStatus === STATUS.ERROR) toast.error('Did not work :C');
-    if (deleteStatus === STATUS.SUCCESS) toast.success('Did work :3');
+    toast.info('Coming soon!');
   };
 
   const onInstallClick = async () => {
@@ -58,6 +50,8 @@ export const SettingsView = () => {
     setInstallPrompt(null);
   };
 
+  console.log(isLoggedIn);
+  if (!isLoggedIn) return <Navigate to="/login" replace={true} />;
   return (
     <div className={s.settingsView}>
       <div className={s.header}>
@@ -86,7 +80,7 @@ export const SettingsView = () => {
         </div>
 
         <div className={s.section}>
-          <Button label="Log out" onClick={onLogOutClick} />
+          <Button label="Log out" onClick={logoutUser} />
           <Button
             label="Delete account"
             onClick={onDeleteAccountClick}

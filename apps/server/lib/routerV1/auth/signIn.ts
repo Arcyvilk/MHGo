@@ -58,7 +58,7 @@ export const signIn = async (req: Request, res: Response): Promise<void> => {
     }
 
     const token = await jwt.sign({ userId }, privateKey, {
-      expiresIn: '24h',
+      expiresIn: '7d',
     });
 
     if (!token) {
@@ -79,6 +79,7 @@ const createNewUser = async (db: Db, userId: string, userName: string) => {
     exp: 0,
     id: userId,
     wounds: 0,
+    createdAt: new Date(),
   };
   const collection = db.collection<Omit<User, 'progress'>>('users');
   const response = await collection.insertOne(newUser);

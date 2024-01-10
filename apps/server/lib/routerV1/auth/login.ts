@@ -18,7 +18,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
     const { db } = mongoInstance.getDb();
     const collectionUsers = db.collection<User>('users');
     const user = await collectionUsers.findOne({ name: userName });
-    if (!user) throw new Error('This user does not exist!');
+    if (!user) throw new Error('Invalid credentials!');
 
     // Get user's credentials
     const userId = user.id;
@@ -27,10 +27,10 @@ export const login = async (req: Request, res: Response): Promise<void> => {
     const { pwdHash } = await collectionLogin.findOne({ userId });
 
     const match = await bcrypt.compare(pwd, pwdHash);
-    if (!match) throw new Error('Incorrect credentials!');
+    if (!match) throw new Error('Invalid credentials!');
 
     token = await jwt.sign({ userId }, privateKey, {
-      expiresIn: '24h',
+      expiresIn: '7d',
     });
 
     setTimeout(() => {

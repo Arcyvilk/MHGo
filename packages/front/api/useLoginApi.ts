@@ -3,7 +3,7 @@ import { toast } from 'react-toastify';
 import { UserAuth, UserBan } from '@mhgo/types';
 
 import { API_URL } from '../env';
-import { fetcher, useLocalStorage, useSessionStorage } from '..';
+import { fetcher } from '..';
 
 type UserAuthInfo = Pick<
   UserAuth,
@@ -11,7 +11,7 @@ type UserAuthInfo = Pick<
 > &
   UserBan;
 export const useMeApi = () => {
-  const getItems = async (): Promise<UserAuthInfo> => {
+  const getMe = async (): Promise<UserAuthInfo> => {
     const res = await fetcher(`${API_URL}/auth/me`);
     return res.json();
   };
@@ -23,23 +23,16 @@ export const useMeApi = () => {
     string[]
   >({
     queryKey: ['me'],
-    queryFn: getItems,
+    queryFn: getMe,
   });
 
   return { data, isLoading, isFetched, isError };
 };
 
-export const useLoginApi = () => {
-  const [isLoggedIn, setIsLoggedIn] = useSessionStorage(
-    'MHGO_LOGGED_IN',
-    false,
-  );
-  const [bearerToken, setBearerToken] = useLocalStorage<
-    Record<string, string | null>
-  >('MHGO_AUTH', {
-    bearer: null,
-  });
-
+export const useLoginApi = (
+  setIsLoggedIn: (isLoggedIn: { loggedIn: boolean }) => void,
+  setBearerToken: (bearerToken: { bearer: string | null }) => void,
+) => {
   const login = async (variables: {
     userName: string;
     pwd: string;
@@ -65,17 +58,40 @@ export const useLoginApi = () => {
     onSuccess: data => {
       if (data?.token) {
         setBearerToken({ bearer: data?.token ?? null });
-        setIsLoggedIn(true);
+        setIsLoggedIn({ loggedIn: true });
       }
     },
     onError: (err: string) => {
       setBearerToken({ bearer: null });
       toast.error(err.toString());
-      setIsLoggedIn(false);
+      setIsLoggedIn({ loggedIn: false });
     },
   });
 
-  return { mutate, error, status, isPending, isSuccess, isError, isLoggedIn };
+  return { mutate, error, status, isPending, isSuccess, isError };
+};
+
+export const useLogoutApi = (
+  setIsLoggedIn: (isLoggedIn: { loggedIn: boolean }) => void,
+  setBearerToken: (bearerToken: { bearer: string | null }) => void,
+) => {
+  const logOut = async (): Promise<boolean> => {
+    const res = await fetcher(`${API_URL}/auth/logout`);
+    if (res.status !== 200)
+      throw new Error((await res.json()).error ?? 'Did not work!');
+    return true;
+  };
+
+  const { mutate, isPending, isSuccess, isError } = useMutation({
+    mutationKey: ['logout'],
+    mutationFn: logOut,
+    onSuccess: () => {
+      setIsLoggedIn({ loggedIn: false });
+      setBearerToken({ bearer: null });
+    },
+  });
+
+  return { mutate, isPending, isSuccess, isError };
 };
 
 export const useSignInApi = () => {
