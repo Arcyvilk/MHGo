@@ -11,7 +11,7 @@ import {
 import { API_URL } from '../env';
 import { fetcher } from '..';
 
-export const useUserApi = (userId: string | null) => {
+export const useUserApi = (userId: string | null | undefined) => {
   const getUser = async (): Promise<User> => {
     const res = await fetcher(`${API_URL}/users/user/${userId}`);
     return res.json();

@@ -8,24 +8,26 @@ import {
   useUserMaterialsApi,
 } from '@mhgo/front';
 import { ItemSlot } from '@mhgo/types';
+import { useMe } from './useAuth';
 
-export const USER_NAME = 'SzatanSzatanSzatan';
-export const USER_ID = 'TESTER';
+export const USER_NAME = '-';
 
 export const useUser = () => {
-  const { data: user } = useUserApi(USER_ID);
+  const { userId } = useMe();
+  console.log(userId);
+  const { data: user } = useUserApi(userId);
   const { setting: expPerLevel = 1 } = useSettingsApi<number>(
     'exp_per_level',
     0,
   );
 
-  const { name, exp, id } = user ?? { name: USER_NAME, exp: 0, id: USER_ID };
+  const { name, exp } = user ?? { name: USER_NAME, exp: 0, id: userId };
   const userExp = exp % expPerLevel;
   const userLevel = 1 + Math.floor(exp / expPerLevel);
 
   return {
     ...user,
-    userId: id,
+    userId,
     userName: name,
     userExp,
     userLevel,

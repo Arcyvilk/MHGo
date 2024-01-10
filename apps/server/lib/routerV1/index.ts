@@ -9,7 +9,15 @@ export const routerV1 = express.Router();
  *         LOGIN         *
  *****************************/
 
-import { getMe, login, update, logout, signIn, verifyToken } from './auth';
+import {
+  getMe,
+  login,
+  update,
+  logout,
+  signIn,
+  verifyToken,
+  verifyAdminToken,
+} from './auth';
 
 routerV1.get('/auth/me', verifyToken, getMe);
 routerV1.post('/auth/signIn', signIn);
@@ -47,91 +55,96 @@ import {
   adminUpdateSettings,
 } from './admin';
 
-routerV1.get('/admin/users/list', verifyToken, adminGetAllUsers);
-routerV1.put('/admin/users/user/:userId', verifyToken, adminUpdateUser);
-routerV1.put('/admin/users/user/:userId/reset', verifyToken, adminResetUser);
+routerV1.get('/admin/users/list', verifyAdminToken, adminGetAllUsers);
+routerV1.put('/admin/users/user/:userId', verifyAdminToken, adminUpdateUser);
+routerV1.put(
+  '/admin/users/user/:userId/reset',
+  verifyAdminToken,
+  adminResetUser,
+);
 routerV1.post(
   '/admin/users/user/:userId/godmode',
-  verifyToken,
+  verifyAdminToken,
   adminUserEnableGodmode,
 );
 
-routerV1.post('/admin/items/create', verifyToken, adminCreateItem);
-routerV1.post('/admin/materials/create', verifyToken, adminCreateMaterial);
-routerV1.post('/admin/monsters/create', verifyToken, adminCreateMonster);
-routerV1.post('/admin/resources/create', verifyToken, adminCreateResource);
+routerV1.post('/admin/items/create', verifyAdminToken, adminCreateItem);
+routerV1.post('/admin/materials/create', verifyAdminToken, adminCreateMaterial);
+routerV1.post('/admin/monsters/create', verifyAdminToken, adminCreateMonster);
+routerV1.post('/admin/resources/create', verifyAdminToken, adminCreateResource);
 
-routerV1.put('/admin/items/item/:itemId', verifyToken, adminUpdateItem);
+routerV1.put('/admin/items/item/:itemId', verifyAdminToken, adminUpdateItem);
 routerV1.put(
   '/admin/items/item/:itemId/action',
-  verifyToken,
+  verifyAdminToken,
   adminUpdateItemAction,
 );
 routerV1.put(
   '/admin/items/item/:itemId/crafts',
-  verifyToken,
+  verifyAdminToken,
   adminUpdateItemCrafts,
 );
 routerV1.put(
   '/admin/items/item/:itemId/stats',
-  verifyToken,
+  verifyAdminToken,
   adminUpdateItemStats,
 );
 
 routerV1.put(
   '/admin/materials/material/:materialId',
-  verifyToken,
+  verifyAdminToken,
   adminUpdateMaterial,
 );
 routerV1.put(
   '/admin/monsters/monster/:monsterId',
-  verifyToken,
+  verifyAdminToken,
   adminUpdateMonster,
 );
 routerV1.put(
   '/admin/resources/resource/:resourceId',
-  verifyToken,
+  verifyAdminToken,
   adminUpdateResource,
 );
 
 routerV1.post(
   '/admin/marker/monster/create',
-  verifyToken,
+  verifyAdminToken,
   adminCreateMonsterMarker,
 );
 routerV1.put(
   '/admin/marker/monster/:markerId',
-  verifyToken,
+  verifyAdminToken,
   adminUpdateMonsterMarker,
 );
 routerV1.delete(
   '/admin/marker/monster/:markerId',
-  verifyToken,
+  verifyAdminToken,
   adminDeleteMonsterMarker,
 );
 
 routerV1.post(
   '/admin/marker/resource/create',
-  verifyToken,
+  verifyAdminToken,
   adminCreateResourceMarker,
 );
 routerV1.put(
   '/admin/marker/resource/:markerId',
-  verifyToken,
+  verifyAdminToken,
   adminUpdateResourceMarker,
 );
 routerV1.delete(
   '/admin/marker/resource/:markerId',
-  verifyToken,
+  verifyAdminToken,
   adminDeleteResourceMarker,
 );
 
 routerV1.put(
   '/admin/monsters/monster/:monsterId/drops',
+  verifyAdminToken,
   adminUpdateMonsterDrops,
 );
 
-routerV1.put('/admin/settings/update', verifyToken, adminUpdateSettings);
+routerV1.put('/admin/settings/update', verifyAdminToken, adminUpdateSettings);
 
 /*****************************
  *         RESOURCES         *

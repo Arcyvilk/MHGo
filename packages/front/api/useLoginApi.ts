@@ -94,7 +94,10 @@ export const useLogoutApi = (
   return { mutate, isPending, isSuccess, isError };
 };
 
-export const useSignInApi = () => {
+export const useSignInApi = (
+  setIsLoggedIn: (isLoggedIn: { loggedIn: boolean }) => void,
+  setBearerToken: (bearerToken: { bearer: string | null }) => void,
+) => {
   const login = async (variables: {
     userName: string;
     email: string;
@@ -118,6 +121,17 @@ export const useSignInApi = () => {
   const { mutate, error, status, isPending, isSuccess, isError } = useMutation({
     mutationKey: ['user', 'signin'],
     mutationFn: login,
+    onSuccess: data => {
+      if (data?.token) {
+        setBearerToken({ bearer: data?.token ?? null });
+        setIsLoggedIn({ loggedIn: true });
+      }
+    },
+    onError: (err: string) => {
+      setBearerToken({ bearer: null });
+      toast.error(err.toString());
+      setIsLoggedIn({ loggedIn: false });
+    },
   });
 
   return { mutate, error, status, isPending, isSuccess, isError };

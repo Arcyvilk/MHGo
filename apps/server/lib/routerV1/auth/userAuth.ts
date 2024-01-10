@@ -7,8 +7,8 @@ import { mongoInstance } from '../../../api';
 export const getMe = async (req: Request, res: Response): Promise<void> => {
   try {
     const { db } = mongoInstance.getDb();
-    // @ts-ignore
-    const userId = 'TESTER';
+    // @ts-expect-error req.user IS defined
+    const { userId } = req.user;
 
     if (!userId) throw new Error('Incorrect user requested');
 
@@ -21,6 +21,7 @@ export const getMe = async (req: Request, res: Response): Promise<void> => {
     const userBan = (await collectionUserBan.findOne({ userId })) ?? {};
 
     const censoredUserAuth = {
+      userId,
       isAdmin: userAuth.isAdmin,
       isModApproved: userAuth.isModApproved,
       isAwaitingModApproval: userAuth.isAwaitingModApproval,

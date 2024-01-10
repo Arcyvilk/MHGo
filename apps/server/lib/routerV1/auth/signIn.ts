@@ -4,7 +4,7 @@ import { Request, Response } from 'express';
 import { log } from '@mhgo/utils';
 
 import { mongoInstance } from '../../../api';
-import { User, UserItems, UserAuth } from '@mhgo/types';
+import { User, UserItems, UserAuth, UserLoadout } from '@mhgo/types';
 import { Db } from 'mongodb';
 
 const saltRounds = 10; //required by bcrypt
@@ -61,11 +61,13 @@ export const signIn = async (req: Request, res: Response): Promise<void> => {
       expiresIn: '7d',
     });
 
-    if (!token) {
-      res.sendStatus(401);
-    } else {
-      res.json({ userId, token });
-    }
+    setTimeout(() => {
+      if (!token) {
+        res.sendStatus(401);
+      } else {
+        res.json({ userId, token });
+      }
+    }, 2000);
   } catch (err) {
     log.WARN(err);
     res.status(500).send({ error: err.message ?? 'Internal server error' });
@@ -88,6 +90,7 @@ const createNewUser = async (db: Db, userId: string, userName: string) => {
 };
 
 const giveUserStarterPack = async (db: Db, userId: string) => {
+  // Give items
   const userItems: UserItems = {
     userId,
     items: [
@@ -102,8 +105,24 @@ const giveUserStarterPack = async (db: Db, userId: string) => {
     ],
   };
 
-  const collection = db.collection<UserItems>('userItems');
-  const response = await collection.insertOne(userItems);
+  const collectionItems = db.collection<UserItems>('userItems');
+  const responseItems = await collectionItems.insertOne(userItems);
 
-  return response;
+  // Equip items
+  const userLoadout: UserLoadout = {
+    userId,
+    loadout: [
+      {
+        slot: 'weapon',
+        itemId: 'bare_fist',
+      },
+    ],
+  };
+
+  const collectionLoadout = db.collection<UserLoadout>('userLoadout');
+  const responseLoadout = await collectionLoadout.insertOne(userLoadout);
+
+  return {
+    acknowledged: responseItems.acknowledged && responseLoadout.acknowledged,
+  };
 };

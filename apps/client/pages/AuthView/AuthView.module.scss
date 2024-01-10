@@ -38,6 +38,7 @@
 
   &__title {
     @include page-title; 
+    text-align: center;
     font-size: $size-24;
   }
 

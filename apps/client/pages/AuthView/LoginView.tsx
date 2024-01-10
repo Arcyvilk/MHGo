@@ -1,13 +1,13 @@
 import { useState } from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { Button, Icon, Input, Size } from '@mhgo/front';
 import { useMe } from '../../hooks/useAuth';
 
 import s from './AuthView.module.scss';
-import { toast } from 'react-toastify';
 
 export const LoginView = () => {
-  const { isLoggedIn, loginUser, isPending } = useMe();
+  const navigate = useNavigate();
+  const { isLoggedIn, loginUser, isLoginPending } = useMe();
   const [userName, setUserName] = useState('');
   const [pwd, setPwd] = useState('');
 
@@ -16,7 +16,7 @@ export const LoginView = () => {
   };
 
   const onSignIn = () => {
-    toast.info('Coming soon!');
+    navigate('/signin');
   };
 
   if (isLoggedIn) return <Navigate to="/" replace={true} />;
@@ -48,7 +48,7 @@ export const LoginView = () => {
             style={{ width: '275px', maxWidth: '100%' }}
           />
         </div>
-        {isPending ? (
+        {isLoginPending ? (
           <Icon icon="Spin" spin size={Size.BIG} />
         ) : (
           <div className={s.authView__inputs}>
