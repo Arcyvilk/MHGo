@@ -4,10 +4,11 @@ import { UserAuth, UserBan } from '@mhgo/types';
 
 import { mongoInstance } from '../../../api';
 
-export const userAuth = async (req: Request, res: Response): Promise<void> => {
+export const getMe = async (req: Request, res: Response): Promise<void> => {
   try {
     const { db } = mongoInstance.getDb();
-    const { userId } = req.params;
+    // @ts-ignore
+    const userId = 'TESTER';
 
     if (!userId) throw new Error('Incorrect user requested');
 

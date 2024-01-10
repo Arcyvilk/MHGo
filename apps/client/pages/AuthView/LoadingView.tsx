@@ -1,10 +1,10 @@
 import { Navigate } from 'react-router-dom';
 import { Loader } from '@mhgo/front';
-import { useAuth } from '../../hooks/useAuth';
+import { useMe } from '../../hooks/useAuth';
 import s from './AuthView.module.scss';
 
 export const LoadingView = () => {
-  const { isPending } = useAuth();
+  const { isPending } = useMe();
 
   if (!isPending) {
     return <Navigate to="/" replace={true} />;

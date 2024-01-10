@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Habitat } from '@mhgo/types';
 
 import { API_URL } from '../env';
+import { fetcher } from '..';
 
 /**
  *
@@ -9,7 +10,7 @@ import { API_URL } from '../env';
  */
 export const useHabitatsApi = () => {
   const getHabitats = async (): Promise<Habitat[]> => {
-    const res = await fetch(`${API_URL}/habitats/list`);
+    const res = await fetcher(`${API_URL}/habitats/list`);
     return res.json();
   };
 

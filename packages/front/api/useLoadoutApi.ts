@@ -2,10 +2,11 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Loadout } from '@mhgo/types';
 
 import { API_URL } from '../env';
+import { fetcher } from '..';
 
 export const useUserLoadoutApi = (userId: string) => {
   const getUserLoadout = async (): Promise<Loadout[]> => {
-    const res = await fetch(`${API_URL}/users/user/${userId}/loadout/list`);
+    const res = await fetcher(`${API_URL}/users/user/${userId}/loadout/list`);
     return res.json();
   };
 
@@ -27,7 +28,7 @@ export const useUserEquipItemApi = (userId: string, itemId: string) => {
   const queryClient = useQueryClient();
 
   const getEquipItem = async (): Promise<void> => {
-    await fetch(`${API_URL}/users/user/${userId}/item/${itemId}/equip`);
+    await fetcher(`${API_URL}/users/user/${userId}/item/${itemId}/equip`);
     queryClient.invalidateQueries({ queryKey: ['user', userId, 'loadout'] });
     queryClient.invalidateQueries({ queryKey: ['user', userId, 'stats'] });
   };

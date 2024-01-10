@@ -3,16 +3,16 @@ import { toast } from 'react-toastify';
 import { UserAuth, UserBan } from '@mhgo/types';
 
 import { API_URL } from '../env';
-import { useSessionStorage } from '..';
+import { fetcher, useLocalStorage, useSessionStorage } from '..';
 
 type UserAuthInfo = Pick<
   UserAuth,
   'isAdmin' | 'isAwaitingModApproval' | 'isModApproved'
 > &
   UserBan;
-export const useUserAuth = (userId: string) => {
+export const useMeApi = () => {
   const getItems = async (): Promise<UserAuthInfo> => {
-    const res = await fetch(`${API_URL}/auth/user/${userId}`);
+    const res = await fetcher(`${API_URL}/auth/me`);
     return res.json();
   };
 
@@ -22,7 +22,7 @@ export const useUserAuth = (userId: string) => {
     UserAuthInfo,
     string[]
   >({
-    queryKey: ['user', 'auth', userId, 'info'],
+    queryKey: ['me'],
     queryFn: getItems,
   });
 
@@ -30,13 +30,21 @@ export const useUserAuth = (userId: string) => {
 };
 
 export const useLoginApi = () => {
-  const [isLoggedIn, setIsLoggedIn] = useSessionStorage('LOGIN_STATUS', false);
+  const [isLoggedIn, setIsLoggedIn] = useSessionStorage(
+    'MHGO_LOGGED_IN',
+    false,
+  );
+  const [bearerToken, setBearerToken] = useLocalStorage<
+    Record<string, string | null>
+  >('MHGO_AUTH', {
+    bearer: null,
+  });
 
   const login = async (variables: {
     userName: string;
     pwd: string;
-  }): Promise<UserAuth> => {
-    const response = await fetch(`${API_URL}/auth/login`, {
+  }): Promise<{ userId: string; token: string }> => {
+    const response = await fetcher(`${API_URL}/auth/login`, {
       method: 'POST',
       body: JSON.stringify(variables),
       headers: {
@@ -54,12 +62,16 @@ export const useLoginApi = () => {
   const { mutate, error, status, isPending, isSuccess, isError } = useMutation({
     mutationKey: ['user', 'login'],
     mutationFn: login,
-    onSuccess: () => {
-      setIsLoggedIn(true);
+    onSuccess: data => {
+      if (data?.token) {
+        setBearerToken({ bearer: data?.token ?? null });
+        setIsLoggedIn(true);
+      }
     },
     onError: (err: string) => {
-      setIsLoggedIn(false);
+      setBearerToken({ bearer: null });
       toast.error(err.toString());
+      setIsLoggedIn(false);
     },
   });
 
@@ -72,7 +84,7 @@ export const useSignInApi = () => {
     email: string;
     pwd: string;
   }): Promise<{ userId: string; token: string }> => {
-    const response = await fetch(`${API_URL}/auth/signIn`, {
+    const response = await fetcher(`${API_URL}/auth/signIn`, {
       method: 'POST',
       body: JSON.stringify(variables),
       headers: {

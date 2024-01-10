@@ -1,11 +1,12 @@
-import { useQuery, useMutation } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { MonsterMarker, ResourceMarker } from '@mhgo/types';
 
 import { API_URL } from '../env';
+import { fetcher } from '..';
 
 export const useSingleMonsterMarkerApi = (markerId: string | null) => {
   const getMonsterMarker = async (): Promise<MonsterMarker> => {
-    const res = await fetch(`${API_URL}/map/markers/monsters/${markerId}`);
+    const res = await fetcher(`${API_URL}/map/markers/monsters/${markerId}`);
     return res.json();
   };
 
@@ -29,7 +30,7 @@ export const useMonsterMarkersApi = (userId?: string, coords?: number[]) => {
 
   const getAllMonsterMarkers = async (): Promise<MonsterMarker[]> => {
     const path = `${API_URL}/map/monsters/user/${userId}?lat=${lat}&lng=${lng}`;
-    const res = await fetch(path);
+    const res = await fetcher(path);
     return res.json();
   };
 
@@ -55,7 +56,7 @@ export const useMonsterMarkersApi = (userId?: string, coords?: number[]) => {
 
 export const useAllResourceMarkersApi = () => {
   const getResourceMarkers = async (): Promise<ResourceMarker[]> => {
-    const res = await fetch(`${API_URL}/map/markers/resources/list`);
+    const res = await fetcher(`${API_URL}/map/markers/resources/list`);
     return res.json();
   };
 
@@ -78,7 +79,7 @@ export const useResourceMarkersApi = (userId?: string, coords?: number[]) => {
 
   const getAllResourceMarkers = async (): Promise<ResourceMarker[]> => {
     const path = `${API_URL}/map/resources/user/${userId}?lat=${lat}&lng=${lng}`;
-    const res = await fetch(path);
+    const res = await fetcher(path);
     return res.json();
   };
 

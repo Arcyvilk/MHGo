@@ -9,13 +9,13 @@ export const routerV1 = express.Router();
  *         LOGIN         *
  *****************************/
 
-import { userAuth, login, update, logout, signIn, verifyToken } from './auth';
+import { getMe, login, update, logout, signIn, verifyToken } from './auth';
 
-routerV1.get('/auth/user/:userId', userAuth);
+routerV1.get('/auth/me', verifyToken, getMe);
 routerV1.post('/auth/signIn', signIn);
 routerV1.post('/auth/login', login);
 routerV1.post('/auth/update', verifyToken, update);
-routerV1.get('/auth/logout', logout);
+routerV1.get('/auth/logout', verifyToken, logout);
 
 /********************************
  *         ADMIN ROUTES         *
@@ -47,39 +47,91 @@ import {
   adminUpdateSettings,
 } from './admin';
 
-routerV1.get('/admin/users/list', adminGetAllUsers);
-routerV1.put('/admin/users/user/:userId', adminUpdateUser);
-routerV1.put('/admin/users/user/:userId/reset', adminResetUser);
-routerV1.post('/admin/users/user/:userId/godmode', adminUserEnableGodmode);
+routerV1.get('/admin/users/list', verifyToken, adminGetAllUsers);
+routerV1.put('/admin/users/user/:userId', verifyToken, adminUpdateUser);
+routerV1.put('/admin/users/user/:userId/reset', verifyToken, adminResetUser);
+routerV1.post(
+  '/admin/users/user/:userId/godmode',
+  verifyToken,
+  adminUserEnableGodmode,
+);
 
-routerV1.post('/admin/items/create', adminCreateItem);
-routerV1.post('/admin/materials/create', adminCreateMaterial);
-routerV1.post('/admin/monsters/create', adminCreateMonster);
-routerV1.post('/admin/resources/create', adminCreateResource);
+routerV1.post('/admin/items/create', verifyToken, adminCreateItem);
+routerV1.post('/admin/materials/create', verifyToken, adminCreateMaterial);
+routerV1.post('/admin/monsters/create', verifyToken, adminCreateMonster);
+routerV1.post('/admin/resources/create', verifyToken, adminCreateResource);
 
-routerV1.put('/admin/items/item/:itemId', adminUpdateItem);
-routerV1.put('/admin/items/item/:itemId/action', adminUpdateItemAction);
-routerV1.put('/admin/items/item/:itemId/crafts', adminUpdateItemCrafts);
-routerV1.put('/admin/items/item/:itemId/stats', adminUpdateItemStats);
+routerV1.put('/admin/items/item/:itemId', verifyToken, adminUpdateItem);
+routerV1.put(
+  '/admin/items/item/:itemId/action',
+  verifyToken,
+  adminUpdateItemAction,
+);
+routerV1.put(
+  '/admin/items/item/:itemId/crafts',
+  verifyToken,
+  adminUpdateItemCrafts,
+);
+routerV1.put(
+  '/admin/items/item/:itemId/stats',
+  verifyToken,
+  adminUpdateItemStats,
+);
 
-routerV1.put('/admin/materials/material/:materialId', adminUpdateMaterial);
-routerV1.put('/admin/monsters/monster/:monsterId', adminUpdateMonster);
-routerV1.put('/admin/resources/resource/:resourceId', adminUpdateResource);
+routerV1.put(
+  '/admin/materials/material/:materialId',
+  verifyToken,
+  adminUpdateMaterial,
+);
+routerV1.put(
+  '/admin/monsters/monster/:monsterId',
+  verifyToken,
+  adminUpdateMonster,
+);
+routerV1.put(
+  '/admin/resources/resource/:resourceId',
+  verifyToken,
+  adminUpdateResource,
+);
 
-routerV1.post('/admin/marker/monster/create', adminCreateMonsterMarker);
-routerV1.put('/admin/marker/monster/:markerId', adminUpdateMonsterMarker);
-routerV1.delete('/admin/marker/monster/:markerId', adminDeleteMonsterMarker);
+routerV1.post(
+  '/admin/marker/monster/create',
+  verifyToken,
+  adminCreateMonsterMarker,
+);
+routerV1.put(
+  '/admin/marker/monster/:markerId',
+  verifyToken,
+  adminUpdateMonsterMarker,
+);
+routerV1.delete(
+  '/admin/marker/monster/:markerId',
+  verifyToken,
+  adminDeleteMonsterMarker,
+);
 
-routerV1.post('/admin/marker/resource/create', adminCreateResourceMarker);
-routerV1.put('/admin/marker/resource/:markerId', adminUpdateResourceMarker);
-routerV1.delete('/admin/marker/resource/:markerId', adminDeleteResourceMarker);
+routerV1.post(
+  '/admin/marker/resource/create',
+  verifyToken,
+  adminCreateResourceMarker,
+);
+routerV1.put(
+  '/admin/marker/resource/:markerId',
+  verifyToken,
+  adminUpdateResourceMarker,
+);
+routerV1.delete(
+  '/admin/marker/resource/:markerId',
+  verifyToken,
+  adminDeleteResourceMarker,
+);
 
 routerV1.put(
   '/admin/monsters/monster/:monsterId/drops',
   adminUpdateMonsterDrops,
 );
 
-routerV1.put('/admin/settings/update', adminUpdateSettings);
+routerV1.put('/admin/settings/update', verifyToken, adminUpdateSettings);
 
 /*****************************
  *         RESOURCES         *
@@ -87,7 +139,7 @@ routerV1.put('/admin/settings/update', adminUpdateSettings);
 
 import { getResources } from './resources';
 
-routerV1.get('/resources/list', getResources);
+routerV1.get('/resources/list', verifyToken, getResources);
 
 /****************************
  *         MONSTERS         *
@@ -95,7 +147,7 @@ routerV1.get('/resources/list', getResources);
 
 import { getMonsters } from './monsters';
 
-routerV1.get('/monsters/list', getMonsters);
+routerV1.get('/monsters/list', verifyToken, getMonsters);
 
 /*************************
  *         ITEMS         *
@@ -110,12 +162,16 @@ import {
   getItemCraftingList,
 } from './items';
 
-routerV1.get('/items/list', getItems);
-routerV1.get('/items/item/:itemId/actions', getItemActions);
-routerV1.get('/items/item/:itemId/crafts', getItemCrafts);
-routerV1.get('/items/item/:itemId/price', getItemPrice);
-routerV1.get('/items/item/:itemId/stats', getItemStats);
-routerV1.get('/users/user/:userId/craft/:itemId', getItemCraftingList);
+routerV1.get('/items/list', verifyToken, getItems);
+routerV1.get('/items/item/:itemId/actions', verifyToken, getItemActions);
+routerV1.get('/items/item/:itemId/crafts', verifyToken, getItemCrafts);
+routerV1.get('/items/item/:itemId/price', verifyToken, getItemPrice);
+routerV1.get('/items/item/:itemId/stats', verifyToken, getItemStats);
+routerV1.get(
+  '/users/user/:userId/craft/:itemId',
+  verifyToken,
+  getItemCraftingList,
+);
 
 /*************************
  *         DROPS         *
@@ -130,13 +186,21 @@ import {
   getDropsByResourceId,
 } from './drops';
 
-routerV1.get('/drops/monster/list', getMonsterDrops);
-routerV1.get('/drops/monster/:monsterId', getDropsByMonsterId);
-routerV1.put('/drops/monster/user/:userId', getMonsterDropsForUser);
+routerV1.get('/drops/monster/list', verifyToken, getMonsterDrops);
+routerV1.get('/drops/monster/:monsterId', verifyToken, getDropsByMonsterId);
+routerV1.put(
+  '/drops/monster/user/:userId',
+  verifyToken,
+  getMonsterDropsForUser,
+);
 
-routerV1.get('/drops/resource/list', getResourceDrops);
-routerV1.get('/drops/resource/:resourceId', getDropsByResourceId);
-routerV1.put('/drops/resource/user/:userId', getResourceDropsForUser);
+routerV1.get('/drops/resource/list', verifyToken, getResourceDrops);
+routerV1.get('/drops/resource/:resourceId', verifyToken, getDropsByResourceId);
+routerV1.put(
+  '/drops/resource/user/:userId',
+  verifyToken,
+  getResourceDropsForUser,
+);
 
 /************************
  *         USER         *
@@ -161,24 +225,52 @@ import {
   updateUserItemPurchase,
 } from './users';
 
-routerV1.get('/users/user/:userId', getUser);
-routerV1.get('/users/user/:userId/achievements/list', getUserAchievements);
-routerV1.get('/users/user/:userId/items/list', getUserItems);
-routerV1.get('/users/user/:userId/loadout/list', getUserLoadout);
-routerV1.get('/users/user/:userId/materials/list', getUserMaterials);
-routerV1.get('/users/user/:userId/wealth/list', getUserWealth);
-routerV1.get('/users/user/:userId/stats', getUserStats);
-routerV1.get('/users/user/:userId/item/:itemId/equip', getUserEquipItem);
+routerV1.get('/users/user/:userId', verifyToken, getUser);
+routerV1.get(
+  '/users/user/:userId/achievements/list',
+  verifyToken,
+  getUserAchievements,
+);
+routerV1.get('/users/user/:userId/items/list', verifyToken, getUserItems);
+routerV1.get('/users/user/:userId/loadout/list', verifyToken, getUserLoadout);
+routerV1.get(
+  '/users/user/:userId/materials/list',
+  verifyToken,
+  getUserMaterials,
+);
+routerV1.get('/users/user/:userId/wealth/list', verifyToken, getUserWealth);
+routerV1.get('/users/user/:userId/stats', verifyToken, getUserStats);
+routerV1.get(
+  '/users/user/:userId/item/:itemId/equip',
+  verifyToken,
+  getUserEquipItem,
+);
 
-routerV1.get('/users/user/:userId/health', getUserHealth);
-routerV1.put('/users/user/:userId/health', updateUserHealth);
-routerV1.put('/users/user/:userId/achievement', updateUserAchievement);
+routerV1.get('/users/user/:userId/health', verifyToken, getUserHealth);
+routerV1.put('/users/user/:userId/health', verifyToken, updateUserHealth);
+routerV1.put(
+  '/users/user/:userId/achievement',
+  verifyToken,
+  updateUserAchievement,
+);
 
-routerV1.put('/users/user/:userId/wealth', updateUserWealth);
-routerV1.put('/users/user/:userId/exp', updateUserExp);
-routerV1.put('/users/user/:userId/consume', updateUserItemsConsume);
-routerV1.put('/users/user/:userId/craft/:itemId', updateUserItemCraft);
-routerV1.put('/users/user/:userId/purchase/:itemId', updateUserItemPurchase);
+routerV1.put('/users/user/:userId/wealth', verifyToken, updateUserWealth);
+routerV1.put('/users/user/:userId/exp', verifyToken, updateUserExp);
+routerV1.put(
+  '/users/user/:userId/consume',
+  verifyToken,
+  updateUserItemsConsume,
+);
+routerV1.put(
+  '/users/user/:userId/craft/:itemId',
+  verifyToken,
+  updateUserItemCraft,
+);
+routerV1.put(
+  '/users/user/:userId/purchase/:itemId',
+  verifyToken,
+  updateUserItemPurchase,
+);
 
 /****************************
  *         MAP         *
@@ -192,11 +284,23 @@ import {
   getResourceMarkersByUserId,
 } from './markers';
 
-routerV1.get('/map/markers/monsters/list', getAllMonsterMarkers);
-routerV1.get('/map/markers/resources/list', getAllResourceMarkers);
-routerV1.get('/map/markers/monsters/:markerId', getSingleMonsterMarker);
-routerV1.get('/map/monsters/user/:userId', getMonsterMarkersByUserId);
-routerV1.get('/map/resources/user/:userId', getResourceMarkersByUserId);
+routerV1.get('/map/markers/monsters/list', verifyToken, getAllMonsterMarkers);
+routerV1.get('/map/markers/resources/list', verifyToken, getAllResourceMarkers);
+routerV1.get(
+  '/map/markers/monsters/:markerId',
+  verifyToken,
+  getSingleMonsterMarker,
+);
+routerV1.get(
+  '/map/monsters/user/:userId',
+  verifyToken,
+  getMonsterMarkersByUserId,
+);
+routerV1.get(
+  '/map/resources/user/:userId',
+  verifyToken,
+  getResourceMarkersByUserId,
+);
 
 /*****************************
  *         MATERIALS         *
@@ -204,7 +308,7 @@ routerV1.get('/map/resources/user/:userId', getResourceMarkersByUserId);
 
 import { getMaterials } from './materials';
 
-routerV1.get('/materials/list', getMaterials);
+routerV1.get('/materials/list', verifyToken, getMaterials);
 
 /****************************
  *         HABITATS         *
@@ -212,7 +316,7 @@ routerV1.get('/materials/list', getMaterials);
 
 import { getHabitats } from './habitats';
 
-routerV1.get('/habitats/list', getHabitats);
+routerV1.get('/habitats/list', verifyToken, getHabitats);
 
 /********************************
  *         ACHIEVEMENTS         *
@@ -220,7 +324,7 @@ routerV1.get('/habitats/list', getHabitats);
 
 import { getAchievements } from './achievements';
 
-routerV1.get('/achievements/list', getAchievements);
+routerV1.get('/achievements/list', verifyToken, getAchievements);
 
 /************************
  *         NEWS         *
@@ -228,7 +332,7 @@ routerV1.get('/achievements/list', getAchievements);
 
 import { getNews } from './news';
 
-routerV1.get('/news/list', getNews);
+routerV1.get('/news/list', verifyToken, getNews);
 
 /****************************
  *         SETTINGS         *
@@ -236,4 +340,4 @@ routerV1.get('/news/list', getNews);
 
 import { getSettings } from './settings';
 
-routerV1.get('/settings', getSettings);
+routerV1.get('/settings', verifyToken, getSettings);

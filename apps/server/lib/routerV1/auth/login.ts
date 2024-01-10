@@ -1,6 +1,7 @@
+import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
-import { Request, Response } from 'express';
+
 import { log } from '@mhgo/utils';
 import { User, UserAuth } from '@mhgo/types';
 

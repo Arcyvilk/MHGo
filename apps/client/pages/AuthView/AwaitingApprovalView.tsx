@@ -1,9 +1,9 @@
 import { Navigate } from 'react-router-dom';
-import { useAuth } from '../../hooks/useAuth';
+import { useMe } from '../../hooks/useAuth';
 import s from './AuthView.module.scss';
 
 export const AwaitingApprovalView = () => {
-  const { isAwaitingModApproval, isModApproved } = useAuth();
+  const { isAwaitingModApproval, isModApproved } = useMe();
 
   if (!isAwaitingModApproval && isModApproved) {
     return <Navigate to="/" replace={true} />;

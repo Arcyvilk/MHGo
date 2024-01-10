@@ -3,6 +3,7 @@ import { News } from '@mhgo/types';
 
 import { API_URL } from '../env';
 import { addCdnUrl } from '../utils/addCdnUrl';
+import { fetcher } from '..';
 
 /**
  *
@@ -10,7 +11,7 @@ import { addCdnUrl } from '../utils/addCdnUrl';
  */
 export const useNewsApi = () => {
   const getNews = async (): Promise<News[]> => {
-    const res = await fetch(`${API_URL}/news/list`);
+    const res = await fetcher(`${API_URL}/news/list`);
     return res.json();
   };
 

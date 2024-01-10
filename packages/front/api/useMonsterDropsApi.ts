@@ -2,10 +2,11 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Material, MonsterDrop } from '@mhgo/types';
 
 import { API_URL } from '../env';
+import { fetcher } from '..';
 
 export const useMonsterDropsApi = () => {
   const getMonsterMarkers = async (): Promise<MonsterDrop[]> => {
-    const res = await fetch(`${API_URL}/drops/monster/list`);
+    const res = await fetcher(`${API_URL}/drops/monster/list`);
     return res.json();
   };
 
@@ -29,7 +30,7 @@ export const useMonsterMarkerDropsApi = (userId: string) => {
     markerId: string;
     monsterLevel?: number;
   }): Promise<Material[]> => {
-    const res = await fetch(`${API_URL}/drops/monster/user/${userId}`, {
+    const res = await fetcher(`${API_URL}/drops/monster/user/${userId}`, {
       method: 'PUT',
       body: JSON.stringify(variables),
       headers: {

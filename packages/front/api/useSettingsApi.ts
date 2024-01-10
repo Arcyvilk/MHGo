@@ -1,10 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
 import { API_URL } from '../env';
 import { Settings } from '@mhgo/types';
+import { fetcher } from '..';
 
 export const useSettingsApi = <T>(key: string, defaultValue?: T) => {
   const getSettings = async (): Promise<Settings<T>> => {
-    const res = await fetch(`${API_URL}/settings`);
+    const res = await fetcher(`${API_URL}/settings`);
     return res.json();
   };
 
@@ -25,7 +26,7 @@ export const useSettingsApi = <T>(key: string, defaultValue?: T) => {
 
 export const useAllSettingsApi = () => {
   const getSettings = async (): Promise<Settings<unknown>> => {
-    const res = await fetch(`${API_URL}/settings`);
+    const res = await fetcher(`${API_URL}/settings`);
     return res.json();
   };
 

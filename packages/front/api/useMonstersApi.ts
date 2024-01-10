@@ -3,10 +3,11 @@ import { Monster } from '@mhgo/types';
 
 import { API_URL } from '../env';
 import { addCdnUrl } from '../utils/addCdnUrl';
+import { fetcher } from '..';
 
 export const useMonstersApi = () => {
   const getMonsters = async (): Promise<Monster[]> => {
-    const res = await fetch(`${API_URL}/monsters/list`);
+    const res = await fetcher(`${API_URL}/monsters/list`);
     return res.json();
   };
 

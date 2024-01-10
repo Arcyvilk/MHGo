@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import { Button, Icon, Input, Size } from '@mhgo/front';
-import { useAuth } from '../../hooks/useAuth';
+import { useMe } from '../../hooks/useAuth';
 
 import s from './AuthView.module.scss';
 import { toast } from 'react-toastify';
 
 export const LoginView = () => {
-  const { isLoggedIn, loginUser, isPending } = useAuth();
+  const { isLoggedIn, loginUser, isPending } = useMe();
   const [userName, setUserName] = useState('');
   const [pwd, setPwd] = useState('');
 

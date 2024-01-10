@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Achievement } from '@mhgo/types';
 
 import { API_URL } from '../env';
-import { addCdnUrl } from '..';
+import { addCdnUrl, fetcher } from '..';
 
 /**
  *
@@ -10,7 +10,7 @@ import { addCdnUrl } from '..';
  */
 export const useAchievementsApi = () => {
   const getAchievements = async (): Promise<Achievement[]> => {
-    const res = await fetch(`${API_URL}/achievements/list`);
+    const res = await fetcher(`${API_URL}/achievements/list`);
     return res.json();
   };
 

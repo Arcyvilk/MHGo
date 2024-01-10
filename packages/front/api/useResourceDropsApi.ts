@@ -2,10 +2,11 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Material, Resource } from '@mhgo/types';
 
 import { API_URL } from '../env';
+import { fetcher } from '..';
 
 export const useResourceDropsApi = () => {
   const getResourceDrops = async (): Promise<Resource[]> => {
-    const res = await fetch(`${API_URL}/drops/resource/list`);
+    const res = await fetcher(`${API_URL}/drops/resource/list`);
     return res.json();
   };
 
@@ -28,7 +29,7 @@ export const useResourceMarkerDropsApi = (userId: string) => {
   const getDropsForUser = async (variables: {
     markerId: string;
   }): Promise<Material[]> => {
-    const res = await fetch(`${API_URL}/drops/resource/user/${userId}`, {
+    const res = await fetcher(`${API_URL}/drops/resource/user/${userId}`, {
       method: 'PUT',
       body: JSON.stringify(variables),
       headers: {

@@ -3,10 +3,11 @@ import { Resource } from '@mhgo/types';
 
 import { API_URL } from '../env';
 import { addCdnUrl } from '../utils/addCdnUrl';
+import { fetcher } from '..';
 
 export const useResourcesApi = () => {
   const getResources = async (): Promise<Resource[]> => {
-    const res = await fetch(`${API_URL}/resources/list`);
+    const res = await fetcher(`${API_URL}/resources/list`);
     return res.json();
   };
 

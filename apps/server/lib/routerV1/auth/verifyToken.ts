@@ -1,17 +1,35 @@
 import { Request, Response } from 'express';
+import jwt from 'jsonwebtoken';
 
 export const verifyToken = (req: Request, res: Response, next) => {
-  // const { userId: null, verified: false } = req.user;
-  // const { privateKey } = process.env;
-  // const bearerHeader = req.headers['authorization'];
-  // if (typeof bearerHeader !== 'undefined') {
-  //   const bearerToken = bearerHeader.split(' ')[1];
-  //   jwt.verify(bearerToken, privateKey, function (err, data) {
-  //     if (!(err && typeof data === 'undefined')) {
-  //       req.user = { username: data.username, verified: true };
-  //       next();
-  //     }
-  //   });
-  // }
-  return res.sendStatus(403);
+  const privateKey = process.env.PRIVATE_KEY;
+  const bearerHeader = req.headers['authorization'];
+
+  if (typeof bearerHeader === 'undefined') return res.sendStatus(403);
+
+  const bearerToken = bearerHeader.split(' ')[1];
+  jwt.verify(bearerToken, privateKey, (err, data) => {
+    if (!err && data) {
+      // @ts-ignore
+      req.user = { userId: data.userId, verified: true };
+      return next();
+    } else return res.sendStatus(403);
+  });
+};
+
+// TODO Admin token
+export const verifyAdminToken = (req: Request, res: Response, next) => {
+  const privateKey = process.env.PRIVATE_KEY;
+  const bearerHeader = req.headers['authorization'];
+
+  if (typeof bearerHeader === 'undefined') return res.sendStatus(403);
+
+  const bearerToken = bearerHeader.split(' ')[1];
+  jwt.verify(bearerToken, privateKey, (err, data) => {
+    if (!err && data) {
+      // @ts-ignore
+      req.user = { userId: data.userId, verified: true };
+      return next();
+    } else return res.sendStatus(403);
+  });
 };

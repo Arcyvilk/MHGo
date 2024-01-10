@@ -1,9 +1,9 @@
 import { Navigate } from 'react-router-dom';
-import { useAuth } from '../../hooks/useAuth';
+import { useMe } from '../../hooks/useAuth';
 import s from './AuthView.module.scss';
 
 export const BannedView = () => {
-  const { isBanned, banReason, banEndDate } = useAuth();
+  const { isBanned, banReason, banEndDate } = useMe();
 
   if (!isBanned) {
     return <Navigate to="/" replace={true} />;

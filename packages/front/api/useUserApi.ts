@@ -9,10 +9,11 @@ import {
 } from '@mhgo/types';
 
 import { API_URL } from '../env';
+import { fetcher } from '..';
 
 export const useUserApi = (userId: string | null) => {
   const getUser = async (): Promise<User> => {
-    const res = await fetch(`${API_URL}/users/user/${userId}`);
+    const res = await fetcher(`${API_URL}/users/user/${userId}`);
     return res.json();
   };
 
@@ -32,7 +33,7 @@ export const useUserApi = (userId: string | null) => {
 
 export const useUserItemsApi = (userId: string) => {
   const getUserItems = async (): Promise<UserAmount[]> => {
-    const res = await fetch(`${API_URL}/users/user/${userId}/items/list`);
+    const res = await fetcher(`${API_URL}/users/user/${userId}/items/list`);
     return res.json();
   };
 
@@ -52,7 +53,7 @@ export const useUserItemsApi = (userId: string) => {
 
 export const useUserMaterialsApi = (userId: string) => {
   const getUserMaterials = async (): Promise<UserAmount[]> => {
-    const res = await fetch(`${API_URL}/users/user/${userId}/materials/list`);
+    const res = await fetcher(`${API_URL}/users/user/${userId}/materials/list`);
     return res.json();
   };
 
@@ -72,7 +73,7 @@ export const useUserMaterialsApi = (userId: string) => {
 
 export const useUserAchievementsApi = (userId: string) => {
   const getUserAchievements = async (): Promise<UserAchievement[]> => {
-    const res = await fetch(
+    const res = await fetcher(
       `${API_URL}/users/user/${userId}/achievements/list`,
     );
     return res.json();
@@ -94,7 +95,7 @@ export const useUserAchievementsApi = (userId: string) => {
 
 export const useUserWealthApi = (userId: string) => {
   const getUserWealth = async (): Promise<UserAmount[]> => {
-    const res = await fetch(`${API_URL}/users/user/${userId}/wealth/list`);
+    const res = await fetcher(`${API_URL}/users/user/${userId}/wealth/list`);
     return res.json();
   };
 
@@ -114,7 +115,7 @@ export const useUserWealthApi = (userId: string) => {
 
 export const useUserStatsApi = (userId: string) => {
   const getUserStats = async (): Promise<Stats> => {
-    const res = await fetch(`${API_URL}/users/user/${userId}/stats`);
+    const res = await fetcher(`${API_URL}/users/user/${userId}/stats`);
     return res.json();
   };
 
@@ -135,7 +136,7 @@ export const useUserStatsApi = (userId: string) => {
 type UserHealth = { maxHealth: number; currentHealth: number };
 export const useUserHealthApi = (userId: string) => {
   const getUserHealth = async (): Promise<UserHealth> => {
-    const res = await fetch(`${API_URL}/users/user/${userId}/health`);
+    const res = await fetcher(`${API_URL}/users/user/${userId}/health`);
     return res.json();
   };
 
@@ -159,7 +160,7 @@ export const useUpdateUserHealthApi = (userId: string) => {
   const updateUserHealth = async (variables: {
     healthChange: number;
   }): Promise<void> => {
-    await fetch(`${API_URL}/users/user/${userId}/health`, {
+    await fetcher(`${API_URL}/users/user/${userId}/health`, {
       method: 'PUT',
       body: JSON.stringify(variables),
       headers: {
@@ -192,7 +193,7 @@ export const useUpdateUserExpApi = (userId: string) => {
   const updateUserExp = async (variables: {
     expChange: number;
   }): Promise<LevelUpdate> => {
-    const res = await fetch(`${API_URL}/users/user/${userId}/exp`, {
+    const res = await fetcher(`${API_URL}/users/user/${userId}/exp`, {
       method: 'PUT',
       body: JSON.stringify(variables),
       headers: {
@@ -229,7 +230,7 @@ export const useUpdateUserWealthApi = (userId: string) => {
   const updateUserWealth = async (variables: {
     [key in CurrencyType]?: number;
   }): Promise<void> => {
-    await fetch(`${API_URL}/users/user/${userId}/wealth`, {
+    await fetcher(`${API_URL}/users/user/${userId}/wealth`, {
       method: 'PUT',
       body: JSON.stringify(variables),
       headers: {
@@ -254,7 +255,7 @@ export const useUserConsumeItemsApi = (userId: string) => {
   const queryClient = useQueryClient();
 
   const consumeItems = async (variables: ItemToUse[]): Promise<void> => {
-    await fetch(`${API_URL}/users/user/${userId}/consume`, {
+    await fetcher(`${API_URL}/users/user/${userId}/consume`, {
       method: 'PUT',
       body: JSON.stringify(variables),
       headers: {
@@ -279,7 +280,7 @@ export const useUserCraftItemApi = (userId: string, itemId: string) => {
   const queryClient = useQueryClient();
 
   const craftItems = async (variables: { amount: number }): Promise<void> => {
-    await fetch(`${API_URL}/users/user/${userId}/craft/${itemId}`, {
+    await fetcher(`${API_URL}/users/user/${userId}/craft/${itemId}`, {
       method: 'PUT',
       body: JSON.stringify(variables),
       headers: {
@@ -307,7 +308,7 @@ export const useUserPurchaseItemApi = (userId: string, itemId: string) => {
   const purchaseItems = async (variables: {
     amount: number;
   }): Promise<void> => {
-    await fetch(`${API_URL}/users/user/${userId}/purchase/${itemId}`, {
+    await fetcher(`${API_URL}/users/user/${userId}/purchase/${itemId}`, {
       method: 'PUT',
       body: JSON.stringify(variables),
       headers: {
@@ -336,7 +337,7 @@ export const useUserUpdateAchievementApi = (userId: string) => {
       newValue?: number;
     },
   ): Promise<UserAchievement> => {
-    const res = await fetch(`${API_URL}/users/user/${userId}/achievement`, {
+    const res = await fetcher(`${API_URL}/users/user/${userId}/achievement`, {
       method: 'PUT',
       body: JSON.stringify(variables),
       headers: {

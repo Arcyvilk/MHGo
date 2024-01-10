@@ -3,7 +3,7 @@ import ReactHowler from 'react-howler';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
 import { ToastContainer, ToastContainerProps } from 'react-toastify';
-import { Loader, SoundBG, useSounds } from '@mhgo/front';
+import { SoundBG, useSounds } from '@mhgo/front';
 
 import {
   AchievementsView,
@@ -28,7 +28,7 @@ import { FightView, PrepareView } from './pages/FightView';
 import { MonsterGuideView } from './pages/MonsterGuideView';
 import { useAppContext } from './utils/context';
 import { GlobalAchievements } from './containers';
-import { useAuth } from './hooks/useAuth';
+import { useMe } from './hooks/useAuth';
 
 import s from './App.module.scss';
 
@@ -211,7 +211,7 @@ const RequireAuth: FC<{ children: React.ReactElement }> = ({
     isBanned,
     isLoggedIn,
     isPending,
-  } = useAuth();
+  } = useMe();
 
   // const isDev = ENV === 'development';
   // if (isDev) return children;

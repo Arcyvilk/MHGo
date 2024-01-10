@@ -1,10 +1,8 @@
-import { useLoginApi, useUserAuth } from '@mhgo/front';
-import { useUser } from './useUser';
+import { useLoginApi, useMeApi } from '@mhgo/front';
 
-export const useAuth = () => {
-  const { userId } = useUser();
+export const useMe = () => {
   const { mutate: mutateLogin, isLoggedIn, isPending } = useLoginApi();
-  const { data: userAuthData } = useUserAuth(userId);
+  const { data: userAuthData } = useMeApi();
 
   const loginUser = (userName: string, pwd: string) => {
     mutateLogin({ userName, pwd });

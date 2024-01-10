@@ -10,10 +10,11 @@ import {
 
 import { API_URL } from '../env';
 import { addCdnUrl } from '../utils/addCdnUrl';
+import { fetcher } from '..';
 
 export const useItemsApi = () => {
   const getItems = async (): Promise<Item[]> => {
-    const res = await fetch(`${API_URL}/items/list`);
+    const res = await fetcher(`${API_URL}/items/list`);
     return res.json();
   };
 
@@ -38,7 +39,7 @@ export const useItemsApi = () => {
 
 export const useItemActionsApi = (itemId: string | null) => {
   const getItemActions = async (): Promise<ItemAction> => {
-    const res = await fetch(`${API_URL}/items/item/${itemId}/actions`);
+    const res = await fetcher(`${API_URL}/items/item/${itemId}/actions`);
     return res.json();
   };
 
@@ -58,7 +59,7 @@ export const useItemActionsApi = (itemId: string | null) => {
 
 export const useItemCraftsApi = (itemId: string | null) => {
   const getItemCraft = async (): Promise<CraftList[]> => {
-    const res = await fetch(`${API_URL}/items/item/${itemId}/crafts`);
+    const res = await fetcher(`${API_URL}/items/item/${itemId}/crafts`);
     return res.json();
   };
 
@@ -78,7 +79,7 @@ export const useItemCraftsApi = (itemId: string | null) => {
 
 export const useItemPriceApi = (itemId: string | null) => {
   const getItemPrice = async (): Promise<UserAmount[]> => {
-    const res = await fetch(`${API_URL}/items/item/${itemId}/price`);
+    const res = await fetcher(`${API_URL}/items/item/${itemId}/price`);
     return res.json();
   };
 
@@ -101,7 +102,7 @@ export const useItemStatsApi = (
   isEquippable?: boolean,
 ) => {
   const getItemStats = async (): Promise<Stats> => {
-    const res = await fetch(`${API_URL}/items/item/${itemId}/stats`);
+    const res = await fetcher(`${API_URL}/items/item/${itemId}/stats`);
     return res.json();
   };
 
@@ -121,7 +122,9 @@ export const useItemStatsApi = (
 
 export const useItemCraftListApi = (userId: string, itemId: string) => {
   const getItemCraftList = async (): Promise<ItemCraftingList[]> => {
-    const res = await fetch(`${API_URL}/users/user/${userId}/craft/${itemId}`);
+    const res = await fetcher(
+      `${API_URL}/users/user/${userId}/craft/${itemId}`,
+    );
     return res.json();
   };
 
