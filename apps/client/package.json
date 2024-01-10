@@ -7,7 +7,7 @@
   "type": "module",
   "scripts": {
     "dev": "turbo dev:client",
-    "dev:client": "vite --config vite.config.client.ts --port 3091",
+    "dev:client": "env MODE=dev vite --config vite.config.client.ts --port 3091",
     "build:client": "vite --config vite.config.client.ts build",
     "turbo:build": "turbo type-check build:client",
     "type-check": "tsc",

@@ -24,6 +24,7 @@ import { FightView, PrepareView } from './pages/FightView';
 import { MonsterGuideView } from './pages/MonsterGuideView';
 import { useAppContext } from './utils/context';
 import { GlobalAchievements } from './containers';
+import { ENV } from './env';
 
 import s from './App.module.scss';
 import { useUser } from './hooks/useUser';
@@ -199,7 +200,7 @@ const RequireAuth: FC<{ children: React.ReactElement }> = ({
 }: PropsWithChildren) => {
   const { isLoggedIn } = useUser();
 
-  if (!isLoggedIn) {
+  if (ENV !== 'development' && !isLoggedIn) {
     return <Navigate to="/login" replace={true} />;
   }
   return children;

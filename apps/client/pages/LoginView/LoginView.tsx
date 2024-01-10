@@ -14,8 +14,6 @@ export const LoginView = () => {
     loginUser(userName, pwd);
   };
 
-  console.log('login', isLoggedIn);
-
   if (isLoggedIn) return <Navigate to="/" replace={true} />;
   return (
     <div className={s.loginView}>
