@@ -1,10 +1,10 @@
 import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query';
-import { User, UserResetType } from '@mhgo/types';
+import { AdminUser, User, UserAuth, UserBan, UserResetType } from '@mhgo/types';
 
 import { API_URL } from '../../env';
 
 export const useAdminAllUsersApi = () => {
-  const getAllUsers = async (): Promise<User[]> => {
+  const getAllUsers = async (): Promise<AdminUser[]> => {
     const res = await fetch(`${API_URL}/admin/users/list`);
     return res.json();
   };
@@ -14,7 +14,7 @@ export const useAdminAllUsersApi = () => {
     isLoading,
     isFetched,
     isError,
-  } = useQuery<User[], unknown, User[], string[]>({
+  } = useQuery<AdminUser[], unknown, AdminUser[], string[]>({
     queryKey: ['admin', 'users', 'all'],
     queryFn: getAllUsers,
   });
@@ -29,13 +29,23 @@ export const useAdminUpdateUserApi = () => {
   const adminUpdateResource = async ({
     userId,
     user,
+    userAuth,
+    userBan,
   }: {
     userId: string;
-    user: Partial<User>;
+    user?: Partial<User>;
+    userBan?: Partial<UserBan>;
+    userAuth?: Partial<
+      Pick<UserAuth, 'isAdmin' | 'isAwaitingModApproval' | 'isModApproved'>
+    >;
   }): Promise<void> => {
     const response = await fetch(`${API_URL}/admin/users/user/${userId}`, {
       method: 'PUT',
-      body: JSON.stringify(user),
+      body: JSON.stringify({
+        user,
+        userBan,
+        userAuth,
+      }),
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',

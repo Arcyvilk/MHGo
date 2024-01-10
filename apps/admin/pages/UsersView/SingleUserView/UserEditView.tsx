@@ -10,6 +10,7 @@ import {
   useAdminResetUserApi,
   useAdminUpdateUserApi,
   useAdminUserGodmodeApi,
+  useUserApi,
 } from '@mhgo/front';
 import { UserResetType } from '@mhgo/types';
 import { Status } from '../../../utils/types';
@@ -142,12 +143,9 @@ const useUpdateUser = (setStatus: (status: Status) => void) => {
   const params = new URLSearchParams(location.search);
   const id = params.get('id');
 
-  const { data: users, isFetched: isUsersFetched } = useAdminAllUsersApi();
+  const { data: user, isFetched: isUsersFetched } = useUserApi(id);
+  console.log(user);
 
-  const user = useMemo(
-    () => users.find(i => i.id === id),
-    [users, isUsersFetched],
-  );
   const [updatedUser, setUpdatedUser] = useState(user);
   const [toReset, setToReset] = useState<UserResetType>({
     achievements: false,

@@ -10,7 +10,7 @@ import {
 
 import { API_URL } from '../env';
 
-export const useUserApi = (userId: string) => {
+export const useUserApi = (userId: string | null) => {
   const getUser = async (): Promise<User> => {
     const res = await fetch(`${API_URL}/users/user/${userId}`);
     return res.json();
@@ -22,7 +22,7 @@ export const useUserApi = (userId: string) => {
     User,
     string[]
   >({
-    queryKey: ['user', userId],
+    queryKey: ['user', userId!],
     queryFn: getUser,
     enabled: Boolean(userId),
   });

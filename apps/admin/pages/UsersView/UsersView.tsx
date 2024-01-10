@@ -28,10 +28,6 @@ export const UsersView = () => {
   const { data: users } = useAdminAllUsersApi();
   const { mutate, isSuccess, isError, isPending } = useAdminUpdateUserApi();
 
-  const onSwitch = (checked: boolean, user: User, property: keyof User) => {
-    mutate({ userId: user.id, user: { [property]: checked } });
-  };
-
   const onUserCreate = () => {
     navigate('/users/create');
   };
@@ -47,21 +43,34 @@ export const UsersView = () => {
     <Switch
       color="default"
       checked={user.isAdmin}
-      onChange={(_, checked) => onSwitch(checked, user, 'isAdmin')}
+      onChange={(_, checked) =>
+        mutate({ userId: user.id, userAuth: { isAdmin: checked } })
+      }
     />,
     <Switch
       color="default"
       checked={user.isAwaitingModApproval}
       onChange={(_, checked) =>
-        onSwitch(checked, user, 'isAwaitingModApproval')
+        mutate({
+          userId: user.id,
+          userAuth: { isAwaitingModApproval: checked },
+        })
       }
     />,
     <Switch
       color="default"
       checked={user.isModApproved}
-      onChange={(_, checked) => onSwitch(checked, user, 'isModApproved')}
+      onChange={(_, checked) =>
+        mutate({ userId: user.id, userAuth: { isModApproved: checked } })
+      }
     />,
-    <Switch color="default" checked={user.ban.isBanned} disabled />,
+    <Switch
+      color="default"
+      checked={user.isBanned}
+      onChange={(_, checked) =>
+        mutate({ userId: user.id, userBan: { isBanned: checked } })
+      }
+    />,
     <Button
       label={<Icon icon="Edit" size={Size.MICRO} />}
       onClick={() => {

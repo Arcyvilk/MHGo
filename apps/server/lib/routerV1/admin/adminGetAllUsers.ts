@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { log } from '@mhgo/utils';
-import { User } from '@mhgo/types';
+import { User, UserAuth, UserBan } from '@mhgo/types';
 
 import { mongoInstance } from '../../../api';
 
@@ -10,15 +10,49 @@ export const adminGetAllUsers = async (
 ): Promise<void> => {
   try {
     const { db } = mongoInstance.getDb();
-    const collection = db.collection<User>('users');
-    const users: User[] = [];
-    const cursor = collection.find();
 
-    for await (const el of cursor) {
+    // Get list of users
+    const collectionUsers = db.collection<User>('users');
+    const users: User[] = [];
+    const cursorUsers = collectionUsers.find();
+
+    for await (const el of cursorUsers) {
       users.push(el);
     }
 
-    res.status(200).send(users);
+    // Get list of users' bans
+    const collectionUserBans = db.collection<UserBan>('userBans');
+    const usersBans: UserBan[] = [];
+    const cursorUserBans = collectionUserBans.find();
+
+    for await (const el of cursorUserBans) {
+      usersBans.push(el);
+    }
+
+    // Get list of users' auth
+    const collectionUserAuth = db.collection<UserAuth>('userAuth');
+    const usersAuth: UserAuth[] = [];
+    const cursorUserAuth = collectionUserAuth.find();
+
+    for await (const el of cursorUserAuth) {
+      usersAuth.push(el);
+    }
+
+    // Merge everything into one
+    const mergedUsers = users.map(user => {
+      const userAuth = usersAuth.find(u => u.userId === user.id);
+      const userBan = usersBans.find(u => u.userId === user.id);
+
+      return {
+        ...user,
+        userBan,
+        isAdmin: userAuth.isAdmin,
+        isAwaitingModApproval: userAuth.isAwaitingModApproval,
+        isModApproved: userAuth.isModApproved,
+      };
+    });
+
+    res.status(200).send(mergedUsers);
   } catch (err: any) {
     log.WARN(err);
     res.status(500).send({ error: err.message ?? 'Internal server error' });
