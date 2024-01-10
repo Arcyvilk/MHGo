@@ -32,13 +32,17 @@ export const login = async (req: Request, res: Response): Promise<void> => {
       expiresIn: '24h',
     });
 
-    if (!token) {
-      res.sendStatus(401);
-    } else {
-      res.json({ userId, token });
-    }
+    setTimeout(() => {
+      if (!token) {
+        res.sendStatus(401);
+      } else {
+        res.json({ userId, token });
+      }
+    }, 2000);
   } catch (err) {
     log.WARN(err);
-    res.status(500).send({ error: err.message ?? 'Internal server error' });
+    setTimeout(() => {
+      res.status(500).send({ error: err.message ?? 'Internal server error' });
+    }, 2000);
   }
 };
