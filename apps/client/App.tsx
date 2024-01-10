@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { FC, PropsWithChildren, useEffect } from 'react';
 import ReactHowler from 'react-howler';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
@@ -37,7 +37,6 @@ const toastOptions: ToastContainerProps = {
 };
 
 export const App = () => {
-  const { isLoggedIn } = useUser();
   const { music, setMusic, musicVolume } = useAppContext();
   const { changeMusic } = useSounds(setMusic);
 
@@ -55,43 +54,153 @@ export const App = () => {
     changeMusic(SoundBG.SNOW_AND_CHILDREN);
   }, []);
 
-  const checkLogin = (Component: JSX.Element) => {
-    if (isLoggedIn) return Component;
-    else return <Navigate to="/login" replace={true} />;
-  };
-
   return (
     <div className={s.app}>
       {music && <ReactHowler src={music} playing loop volume={musicVolume} />}
       <BrowserRouter>
         <GlobalAchievements />
         <Routes>
-          <Route path="/login" element={<LoginView />} />
-          <Route path="/" element={checkLogin(<HomeView />)} />
+          <Route
+            path="/"
+            element={
+              <RequireAuth>
+                <HomeView />
+              </RequireAuth>
+            }
+          />
 
           {/* INTERACTIVE PATHS */}
-          <Route path="/prepare" element={checkLogin(<PrepareView />)} />
-          <Route path="/fight" element={checkLogin(<FightView />)} />
-          <Route path="/forage" element={checkLogin(<ForageView />)} />
+          <Route
+            path="/prepare"
+            element={
+              <RequireAuth>
+                <PrepareView />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/fight"
+            element={
+              <RequireAuth>
+                <FightView />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/forage"
+            element={
+              <RequireAuth>
+                <ForageView />
+              </RequireAuth>
+            }
+          />
 
           {/* STATIC PATHS */}
           <Route
             path="/achievements"
-            element={checkLogin(<AchievementsView />)}
+            element={
+              <RequireAuth>
+                <AchievementsView />
+              </RequireAuth>
+            }
           />
-          <Route path="/guide" element={checkLogin(<MonsterGuideView />)} />
-          <Route path="/equipment" element={checkLogin(<EquipmentView />)} />
-          <Route path="/items" element={checkLogin(<ItemBoxView />)} />
-          <Route path="/paintball" element={checkLogin(<PaintballView />)} />
-          <Route path="/settings" element={checkLogin(<SettingsView />)} />
-          <Route path="/shop" element={checkLogin(<ShopView />)} />
-          <Route path="/quest" element={checkLogin(<QuestView />)} />
-          <Route path="/you" element={checkLogin(<YouView />)} />
-          <Route path="/credits" element={checkLogin(<CreditsView />)} />
-          <Route path="/404" element={checkLogin(<NotImplementedView />)} />
+          <Route
+            path="/guide"
+            element={
+              <RequireAuth>
+                <MonsterGuideView />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/equipment"
+            element={
+              <RequireAuth>
+                <EquipmentView />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/items"
+            element={
+              <RequireAuth>
+                <ItemBoxView />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/paintball"
+            element={
+              <RequireAuth>
+                <PaintballView />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/settings"
+            element={
+              <RequireAuth>
+                <SettingsView />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/shop"
+            element={
+              <RequireAuth>
+                <ShopView />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/quest"
+            element={
+              <RequireAuth>
+                <QuestView />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/you"
+            element={
+              <RequireAuth>
+                <YouView />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/credits"
+            element={
+              <RequireAuth>
+                <CreditsView />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/404"
+            element={
+              <RequireAuth>
+                <NotImplementedView />
+              </RequireAuth>
+            }
+          />
+
+          {/* AUTH */}
+          <Route path="/login" element={<LoginView />} />
         </Routes>
       </BrowserRouter>
       <ToastContainer {...toastOptions} />
     </div>
   );
+};
+
+const RequireAuth: FC<{ children: React.ReactElement }> = ({
+  children,
+}: PropsWithChildren) => {
+  const { isLoggedIn } = useUser();
+
+  if (!isLoggedIn) {
+    return <Navigate to="/login" replace={true} />;
+  }
+  return children;
 };

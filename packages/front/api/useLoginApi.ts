@@ -5,9 +5,7 @@ import { API_URL } from '../env';
 import { useSessionStorage } from '..';
 
 export const useLoginApi = () => {
-  const [isLoggedIn, setIsLoggedIn] = useSessionStorage('LOGIN_STATUS', {
-    isLoggedIn: false,
-  });
+  const [isLoggedIn, setIsLoggedIn] = useSessionStorage('LOGIN_STATUS', false);
 
   const login = async (variables: {
     userName: string;
@@ -32,10 +30,10 @@ export const useLoginApi = () => {
     mutationKey: ['user', 'login'],
     mutationFn: login,
     onSuccess: () => {
-      setIsLoggedIn({ isLoggedIn: true });
+      setIsLoggedIn(true);
     },
     onError: (err: string) => {
-      setIsLoggedIn({ isLoggedIn: false });
+      setIsLoggedIn(false);
       toast.error(err.toString());
     },
   });

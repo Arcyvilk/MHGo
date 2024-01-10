@@ -17,7 +17,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
     const { db } = mongoInstance.getDb();
     const collectionUsers = db.collection<User>('users');
     const user = await collectionUsers.findOne({ name: userName });
-    if (!user) throw new Error('Incorrect credentials!');
+    if (!user) throw new Error('This user does not exist!');
 
     // Get user's credentials
     const userId = user.id;

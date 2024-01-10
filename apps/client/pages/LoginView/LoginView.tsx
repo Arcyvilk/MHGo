@@ -1,12 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import { Navigate } from 'react-router-dom';
 import { Button, Icon, Input, Size } from '@mhgo/front';
 import { useUser } from '../../hooks/useUser';
 
 import s from './LoginView.module.scss';
-import { useNavigate } from 'react-router-dom';
 
 export const LoginView = () => {
-  const navigate = useNavigate();
   const { isLoggedIn, loginUser, isPending } = useUser();
   const [userName, setUserName] = useState('');
   const [pwd, setPwd] = useState('');
@@ -15,10 +14,9 @@ export const LoginView = () => {
     loginUser(userName, pwd);
   };
 
-  useEffect(() => {
-    if (isLoggedIn) navigate('/');
-  }, [isLoggedIn]);
+  console.log('login', isLoggedIn);
 
+  if (isLoggedIn) return <Navigate to="/" replace={true} />;
   return (
     <div className={s.loginView}>
       <div className={s.loginView__wrapper}>

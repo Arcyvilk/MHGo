@@ -116,8 +116,6 @@ export const useItemStatsApi = (
     enabled: isEquippable && Boolean(itemId),
   });
 
-  console.log(Boolean(isEquippable && Boolean(itemId)));
-
   return { data, isLoading, isFetched, isError };
 };
 
