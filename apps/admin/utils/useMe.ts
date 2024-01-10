@@ -1,8 +1,9 @@
 import { useLoginApi, useLogoutApi, useMeApi, useSignInApi } from '@mhgo/front';
 import { useAppContext } from './context';
+import { useEffect } from 'react';
 
 export const useMe = () => {
-  const { isLoggedIn, setBearerToken } = useAppContext();
+  const { isLoggedIn, bearerToken, setBearerToken } = useAppContext();
 
   const { mutate: mutateLogin, isPending: isLoginPending } =
     useLoginApi(setBearerToken);
@@ -10,7 +11,11 @@ export const useMe = () => {
   const { mutate: mutateSignIn, isPending: isSigninPending } =
     useSignInApi(setBearerToken);
 
-  const { data: userAuthData } = useMeApi();
+  const {
+    data: userAuthData,
+    isError,
+    isFetched,
+  } = useMeApi(Boolean(bearerToken.bearer));
 
   const loginUser = (userName: string, pwd: string) => {
     mutateLogin({ userName, pwd });
@@ -20,7 +25,11 @@ export const useMe = () => {
     mutateLogout();
   };
 
-  console.log(userAuthData);
+  useEffect(() => {
+    if (isFetched && isError) {
+      logoutUser();
+    }
+  }, [isError, isFetched]);
 
   const signinUser = (signinData: {
     userName: string;
