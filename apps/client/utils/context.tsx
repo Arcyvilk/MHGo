@@ -24,7 +24,7 @@ export const AppContextProvider = ({
     'MHGO_VOLUME',
     DEFAULT_VOLUME,
   );
-  const [isLoggedIn, setIsLoggedIn] = useSessionStorage<{ loggedIn: boolean }>(
+  const [isLoggedIn, setIsLoggedIn] = useLocalStorage<{ loggedIn: boolean }>(
     'MHGO_LOGGED_IN',
     { loggedIn: false },
   );
