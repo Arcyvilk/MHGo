@@ -1,9 +1,4 @@
-import {
-  DEFAULT_VOLUME,
-  Volume,
-  useLocalStorage,
-  useSessionStorage,
-} from '@mhgo/front';
+import { DEFAULT_VOLUME, Volume, useLocalStorage } from '@mhgo/front';
 import React, { PropsWithChildren, useContext, useState } from 'react';
 
 type ContextType = {
