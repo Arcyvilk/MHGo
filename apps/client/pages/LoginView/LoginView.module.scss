@@ -2,33 +2,41 @@
 
 .loginView {
   @include page-wrapper;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: $admin-color-primary-bg;
+  color: $admin-color-primary-text;
+  overflow: hidden;
+
   &__wrapper {
+    @include page-section-admin;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     padding: $size-16;
-    gap: $size-16;
+    gap: $size-32;
+    width: 300px;
+    max-width: 100%;
   }
 
-  &__image  {
-    max-width: 90%;
-    object-fit: contain;
+  &__inputs  {
+    display:flex;
+    flex-direction: column;
+    gap: $size-4;
   }
 
   &__title {
-    font-size: $size-18;
+    @include page-title; 
+    font-size: $size-24;
   }
 
   &__desc {
     font-size: $size-14;
     color: rgba($color-primary-text, 0.9);
     font-weight: 400;
-  }
-}
-
-.header {
-  @include page-header;
-  &__title {
-    @include page-title; 
   }
 }

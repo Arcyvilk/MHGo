@@ -1,5 +1,6 @@
 import {
   useItemsApi,
+  useLoginApi,
   useMaterialsApi,
   useSettingsApi,
   useUserApi,
@@ -14,17 +15,30 @@ export const USER_ID = 'TESTER';
 
 export const useUser = () => {
   const { data: user } = useUserApi(USER_ID);
+  const { mutate: mutateLogin, isLoggedIn, isPending } = useLoginApi();
   const { setting: expPerLevel = 1 } = useSettingsApi<number>(
     'exp_per_level',
     0,
   );
 
   const { name, exp, id } = user ?? { name: USER_NAME, exp: 0, id: USER_ID };
-
   const userExp = exp % expPerLevel;
   const userLevel = 1 + Math.floor(exp / expPerLevel);
 
-  return { ...user, userId: id, userName: name, userExp, userLevel };
+  const loginUser = (userName: string, pwd: string) => {
+    mutateLogin({ userName, pwd });
+  };
+
+  return {
+    ...user,
+    userId: id,
+    userName: name,
+    userExp,
+    userLevel,
+    loginUser,
+    isLoggedIn,
+    isPending,
+  };
 };
 
 export const useUserItems = (userId: string) => {

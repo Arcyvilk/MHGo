@@ -4,6 +4,7 @@ export * from './useAchievementsApi';
 export * from './useHabitatsApi';
 export * from './useItemsApi';
 export * from './useLoadoutApi';
+export * from './useLoginApi';
 export * from './useMaterialsApi';
 export * from './useMonsterDropsApi';
 export * from './useMarkersApi';
