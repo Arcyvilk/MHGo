@@ -1,4 +1,4 @@
-import { useQuery, useMutation } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 import { UserAuth, UserBan } from '@mhgo/types';
 
@@ -33,6 +33,8 @@ export const useLoginApi = (
   setIsLoggedIn: (isLoggedIn: { loggedIn: boolean }) => void,
   setBearerToken: (bearerToken: { bearer: string | null }) => void,
 ) => {
+  const queryClient = useQueryClient();
+
   const login = async (variables: {
     userName: string;
     pwd: string;
@@ -49,6 +51,7 @@ export const useLoginApi = (
     if (response.status !== 200)
       throw new Error((await response.json()).error ?? 'Did not work!');
 
+    queryClient.invalidateQueries({ queryKey: ['user'], exact: false });
     return response.json();
   };
 
@@ -75,10 +78,14 @@ export const useLogoutApi = (
   setIsLoggedIn: (isLoggedIn: { loggedIn: boolean }) => void,
   setBearerToken: (bearerToken: { bearer: string | null }) => void,
 ) => {
+  const queryClient = useQueryClient();
+
   const logOut = async (): Promise<boolean> => {
     const res = await fetcher(`${API_URL}/auth/logout`);
     if (res.status !== 200)
       throw new Error((await res.json()).error ?? 'Did not work!');
+
+    queryClient.invalidateQueries({ queryKey: ['user'], exact: false });
     return true;
   };
 
@@ -98,6 +105,8 @@ export const useSignInApi = (
   setIsLoggedIn: (isLoggedIn: { loggedIn: boolean }) => void,
   setBearerToken: (bearerToken: { bearer: string | null }) => void,
 ) => {
+  const queryClient = useQueryClient();
+
   const login = async (variables: {
     userName: string;
     email: string;
@@ -115,6 +124,7 @@ export const useSignInApi = (
     if (response.status !== 200)
       throw new Error((await response.json()).error ?? 'Did not work!');
 
+    queryClient.invalidateQueries({ queryKey: ['user'], exact: false });
     return response.json();
   };
 
