@@ -1,15 +1,10 @@
-// TODO temp user type
 export type User = {
   name: string;
   id: string;
   avatar: string;
   exp: number;
-  isAdmin: boolean;
-  isAwaitingModApproval: boolean;
-  isModApproved: boolean;
-  progress: UserProgress;
-  ban: UserBan;
   wounds: number; // How much HP user lacks
+  createdAt: Date;
 };
 
 export type UserAchievement = {
@@ -24,11 +19,6 @@ export type UserAchievements = {
 };
 
 export type UserAmount = { id: string; amount: number };
-
-export type UserBan = {
-  isBanned: boolean;
-  endDate: Date;
-};
 
 export type UserItems = {
   userId: string;

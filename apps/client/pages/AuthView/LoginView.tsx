@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { Navigate } from 'react-router-dom';
-import { Button, Icon, Input, Loader, Size } from '@mhgo/front';
-import { useUser } from '../../hooks/useUser';
+import { Button, Icon, Input, Size } from '@mhgo/front';
+import { useAuth } from '../../hooks/useAuth';
 
-import s from './LoginView.module.scss';
+import s from './AuthView.module.scss';
 import { toast } from 'react-toastify';
 
 export const LoginView = () => {
-  const { isLoggedIn, loginUser, isPending } = useUser();
+  const { isLoggedIn, loginUser, isPending } = useAuth();
   const [userName, setUserName] = useState('');
   const [pwd, setPwd] = useState('');
 
@@ -21,15 +21,15 @@ export const LoginView = () => {
 
   if (isLoggedIn) return <Navigate to="/" replace={true} />;
   return (
-    <div className={s.loginView}>
-      <div className={s.loginView__wrapper}>
+    <div className={s.authView}>
+      <div className={s.authView__wrapper}>
         <img
-          className={s.loginView__logo}
+          className={s.authView__logo}
           src="https://cdn.arcyvilk.com/mhgo/misc/logo.png"
           alt="logo"
         />
-        <div className={s.loginView__title}>Login</div>
-        <div className={s.loginView__inputs}>
+        <div className={s.authView__title}>Login</div>
+        <div className={s.authView__inputs}>
           <Input
             name="login_name"
             label="Username"
@@ -51,7 +51,7 @@ export const LoginView = () => {
         {isPending ? (
           <Icon icon="Spin" spin size={Size.BIG} />
         ) : (
-          <div className={s.loginView__inputs}>
+          <div className={s.authView__inputs}>
             <Button
               variant={Button.Variant.ACTION}
               label="Log in"

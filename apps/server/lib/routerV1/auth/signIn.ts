@@ -4,7 +4,7 @@ import { Request, Response } from 'express';
 import { log } from '@mhgo/utils';
 
 import { mongoInstance } from '../../../api';
-import { User, UserItems, UserLogin } from '@mhgo/types';
+import { User, UserItems, UserAuth } from '@mhgo/types';
 import { Db } from 'mongodb';
 
 const saltRounds = 10; //required by bcrypt
@@ -21,10 +21,13 @@ export const signIn = async (req: Request, res: Response): Promise<void> => {
     const pwdHash = await bcrypt.hash(pwd, saltRounds);
     const userId =
       userName.toLowerCase().replace(/[^a-zA-Z0-9 -]/g, '') + Date.now();
-    const newUserLogin: UserLogin = {
+    const newUserLogin: UserAuth = {
       userId,
       pwdHash,
       email,
+      isAdmin: false,
+      isAwaitingModApproval: true,
+      isModApproved: false,
     };
 
     // Check if the username is not taken
@@ -35,7 +38,7 @@ export const signIn = async (req: Request, res: Response): Promise<void> => {
     }
 
     // Save new user credentials to database
-    const collectionLogin = db.collection<UserLogin>('login');
+    const collectionLogin = db.collection<UserAuth>('userAuth');
     const responseSignIn = await collectionLogin.insertOne(newUserLogin);
 
     if (!responseSignIn.acknowledged) {
@@ -70,19 +73,12 @@ export const signIn = async (req: Request, res: Response): Promise<void> => {
 };
 
 const createNewUser = async (db: Db, userId: string, userName: string) => {
-  const newUser: Omit<User, 'progress'> = {
+  const newUser: User = {
     name: userName,
     avatar: '/misc/avatar.png',
     exp: 0,
     id: userId,
-    isAdmin: false,
-    isAwaitingModApproval: true,
-    isModApproved: false,
     wounds: 0,
-    ban: {
-      isBanned: false,
-      endDate: new Date(0),
-    },
   };
   const collection = db.collection<Omit<User, 'progress'>>('users');
   const response = await collection.insertOne(newUser);

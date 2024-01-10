@@ -1,8 +1,33 @@
+import { useQuery, useMutation } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
-import { useMutation } from '@tanstack/react-query';
+import { UserAuth, UserBan } from '@mhgo/types';
 
 import { API_URL } from '../env';
 import { useSessionStorage } from '..';
+
+type UserAuthInfo = Pick<
+  UserAuth,
+  'isAdmin' | 'isAwaitingModApproval' | 'isModApproved'
+> &
+  UserBan;
+export const useUserAuth = (userId: string) => {
+  const getItems = async (): Promise<UserAuthInfo> => {
+    const res = await fetch(`${API_URL}/auth/user/${userId}`);
+    return res.json();
+  };
+
+  const { data, isLoading, isFetched, isError } = useQuery<
+    UserAuthInfo,
+    unknown,
+    UserAuthInfo,
+    string[]
+  >({
+    queryKey: ['user', 'auth', userId, 'info'],
+    queryFn: getItems,
+  });
+
+  return { data, isLoading, isFetched, isError };
+};
 
 export const useLoginApi = () => {
   const [isLoggedIn, setIsLoggedIn] = useSessionStorage('LOGIN_STATUS', false);
@@ -10,7 +35,7 @@ export const useLoginApi = () => {
   const login = async (variables: {
     userName: string;
     pwd: string;
-  }): Promise<{ userId: string; token: string }> => {
+  }): Promise<UserAuth> => {
     const response = await fetch(`${API_URL}/auth/login`, {
       method: 'POST',
       body: JSON.stringify(variables),

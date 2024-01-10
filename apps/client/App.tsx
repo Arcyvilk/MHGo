@@ -7,6 +7,8 @@ import { SoundBG, useSounds } from '@mhgo/front';
 
 import {
   AchievementsView,
+  AwaitingApprovalView,
+  BannedView,
   CreditsView,
   EquipmentView,
   ForageView,
@@ -17,6 +19,7 @@ import {
   QuestView,
   SettingsView,
   ShopView,
+  SignInView,
   YouView,
 } from './pages';
 import { PaintballView } from './pages/PaintballView';
@@ -24,10 +27,9 @@ import { FightView, PrepareView } from './pages/FightView';
 import { MonsterGuideView } from './pages/MonsterGuideView';
 import { useAppContext } from './utils/context';
 import { GlobalAchievements } from './containers';
-import { ENV } from './env';
+import { useAuth } from './hooks/useAuth';
 
 import s from './App.module.scss';
-import { useUser } from './hooks/useUser';
 
 const toastOptions: ToastContainerProps = {
   closeOnClick: true,
@@ -188,6 +190,9 @@ export const App = () => {
 
           {/* AUTH */}
           <Route path="/login" element={<LoginView />} />
+          <Route path="/signin" element={<SignInView />} />
+          <Route path="/ban" element={<BannedView />} />
+          <Route path="/awaiting" element={<AwaitingApprovalView />} />
         </Routes>
       </BrowserRouter>
       <ToastContainer {...toastOptions} />
@@ -198,11 +203,23 @@ export const App = () => {
 const RequireAuth: FC<{ children: React.ReactElement }> = ({
   children,
 }: PropsWithChildren) => {
-  const { isLoggedIn } = useUser();
-  const isDev = ENV === 'development';
+  const { isAwaitingModApproval, isModApproved, isBanned, isLoggedIn } =
+    useAuth();
+
+  // const isDev = ENV === 'development';
+  // if (isDev) return children;
 
   if (!isLoggedIn) {
     return <Navigate to="/login" replace={true} />;
   }
-  return children;
+  if (isBanned) {
+    return <Navigate to="/ban" replace={true} />;
+  }
+  if (isAwaitingModApproval || !isModApproved) {
+    return <Navigate to="/awaiting" replace={true} />;
+  }
+  if (isModApproved) {
+    return children;
+  }
+  return;
 };

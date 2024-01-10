@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import { Request, Response } from 'express';
 import { log } from '@mhgo/utils';
-import { User, UserLogin } from '@mhgo/types';
+import { User, UserAuth } from '@mhgo/types';
 
 import { mongoInstance } from '../../../api';
 
@@ -22,7 +22,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
     // Get user's credentials
     const userId = user.id;
     const privateKey = process.env.PRIVATE_KEY;
-    const collectionLogin = db.collection<UserLogin>('login');
+    const collectionLogin = db.collection<UserAuth>('userAuth');
     const { pwdHash } = await collectionLogin.findOne({ userId });
 
     const match = await bcrypt.compare(pwd, pwdHash);

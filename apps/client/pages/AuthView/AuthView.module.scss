@@ -1,6 +1,6 @@
 @import '@mhgo/front/styles/index.scss';
 
-.loginView {
+.authView {
   @include page-wrapper;
   width: 100vw;
   height: 100vh;
@@ -42,8 +42,14 @@
   }
 
   &__desc {
+    text-align: center;
     font-size: $size-14;
-    color: rgba($color-primary-text, 0.9);
+    font-weight: 600;
+  }
+
+  &__detail {
+    text-align: center;
     font-weight: 400;
+    font-style: italic;
   }
 }

@@ -15,7 +15,6 @@ export const USER_ID = 'TESTER';
 
 export const useUser = () => {
   const { data: user } = useUserApi(USER_ID);
-  const { mutate: mutateLogin, isLoggedIn, isPending } = useLoginApi();
   const { setting: expPerLevel = 1 } = useSettingsApi<number>(
     'exp_per_level',
     0,
@@ -25,19 +24,12 @@ export const useUser = () => {
   const userExp = exp % expPerLevel;
   const userLevel = 1 + Math.floor(exp / expPerLevel);
 
-  const loginUser = (userName: string, pwd: string) => {
-    mutateLogin({ userName, pwd });
-  };
-
   return {
     ...user,
     userId: id,
     userName: name,
     userExp,
     userLevel,
-    loginUser,
-    isLoggedIn,
-    isPending,
   };
 };
 

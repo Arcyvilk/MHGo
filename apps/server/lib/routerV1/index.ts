@@ -9,8 +9,9 @@ export const routerV1 = express.Router();
  *         LOGIN         *
  *****************************/
 
-import { login, update, logout, signIn, verifyToken } from './login';
+import { userAuth, login, update, logout, signIn, verifyToken } from './auth';
 
+routerV1.get('/auth/user/:userId', userAuth);
 routerV1.post('/auth/signIn', signIn);
 routerV1.post('/auth/login', login);
 routerV1.post('/auth/update', verifyToken, update);
