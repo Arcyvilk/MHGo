@@ -3,7 +3,7 @@ import ReactHowler from 'react-howler';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
 import { ToastContainer, ToastContainerProps } from 'react-toastify';
-import { SoundBG, useSounds } from '@mhgo/front';
+import { Loader, SoundBG, useSounds } from '@mhgo/front';
 
 import {
   AchievementsView,
@@ -14,6 +14,7 @@ import {
   ForageView,
   HomeView,
   ItemBoxView,
+  LoadingView,
   LoginView,
   NotImplementedView,
   QuestView,
@@ -189,6 +190,7 @@ export const App = () => {
           />
 
           {/* AUTH */}
+          <Route path="/loading" element={<LoadingView />} />
           <Route path="/login" element={<LoginView />} />
           <Route path="/signin" element={<SignInView />} />
           <Route path="/ban" element={<BannedView />} />
@@ -203,22 +205,30 @@ export const App = () => {
 const RequireAuth: FC<{ children: React.ReactElement }> = ({
   children,
 }: PropsWithChildren) => {
-  const { isAwaitingModApproval, isModApproved, isBanned, isLoggedIn } =
-    useAuth();
+  const {
+    isAwaitingModApproval,
+    isModApproved,
+    isBanned,
+    isLoggedIn,
+    isPending,
+  } = useAuth();
 
   // const isDev = ENV === 'development';
   // if (isDev) return children;
 
-  if (!isLoggedIn) {
-    return <Navigate to="/login" replace={true} />;
+  if (isPending) {
+    return <Navigate to="/loading" replace={true} />;
   }
   if (isBanned) {
     return <Navigate to="/ban" replace={true} />;
   }
-  if (isAwaitingModApproval || !isModApproved) {
+  if (isAwaitingModApproval === true || isModApproved === false) {
     return <Navigate to="/awaiting" replace={true} />;
   }
-  if (isModApproved) {
+  if (!isLoggedIn) {
+    return <Navigate to="/login" replace={true} />;
+  }
+  if (isAwaitingModApproval === false || isModApproved === true) {
     return children;
   }
   return;
