@@ -199,8 +199,9 @@ const RequireAuth: FC<{ children: React.ReactElement }> = ({
   children,
 }: PropsWithChildren) => {
   const { isLoggedIn } = useUser();
+  const isDev = ENV === 'development';
 
-  if (ENV !== 'development' && !isLoggedIn) {
+  if (!isLoggedIn) {
     return <Navigate to="/login" replace={true} />;
   }
   return children;

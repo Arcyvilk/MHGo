@@ -23,10 +23,17 @@
     max-width: 100%;
   }
 
+  &__logo {
+    max-width: 128px;
+    aspect-ratio: 1/1;
+    filter: drop-shadow(0 0 $size-12 $admin-color-tertiary-bg);
+  }
+
   &__inputs  {
     display:flex;
     flex-direction: column;
-    gap: $size-4;
+    gap: $size-8;
+    width: 100%;
   }
 
   &__title {
