@@ -1,6 +1,7 @@
 import { FC, PropsWithChildren, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { ToastContainer, ToastContainerProps } from 'react-toastify';
+import { modifiers } from '@mhgo/front';
 
 import { entries } from './utils/entries';
 import { useMe } from './utils/useMe';
@@ -8,9 +9,7 @@ import { Sidebar } from './containers';
 
 import s from './App.module.scss';
 import 'leaflet/dist/leaflet.css';
-import { useAppContext } from './utils/context';
 import { LoginView, NoPermissions } from './pages';
-import { modifiers } from '@mhgo/front';
 
 const toastOptions: ToastContainerProps = {
   closeOnClick: true,
@@ -44,6 +43,8 @@ export const App = () => {
                 element={<RequireAuth>{entry.component}</RequireAuth>}
               />
             ))}
+            <Route path="/login" element={<LoginView />} />
+            <Route path="/forbidden" element={<NoPermissions />} />
           </Routes>
         </RouteWrapper>
       </BrowserRouter>
@@ -69,10 +70,10 @@ const RequireAuth: FC<{ children: React.ReactNode }> = ({
   const { isAwaitingModApproval, isModApproved, isLoggedIn, isAdmin } = useMe();
 
   if (!isLoggedIn) {
-    return <LoginView />;
+    return <Navigate to="/login" replace={true} />;
   }
   if (!isAdmin) {
-    return <NoPermissions />;
+    return <Navigate to="/forbidden" replace={true} />;
   }
   if (isAwaitingModApproval === false || isModApproved === true) {
     return children;

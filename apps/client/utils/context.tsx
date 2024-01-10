@@ -1,9 +1,14 @@
 import { DEFAULT_VOLUME, Volume, useLocalStorage } from '@mhgo/front';
-import React, { PropsWithChildren, useContext, useState } from 'react';
+import React, {
+  PropsWithChildren,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 
 type ContextType = {
-  isLoggedIn: { loggedIn: boolean };
-  setIsLoggedIn: (isLoggedIn: { loggedIn: boolean }) => void;
+  isLoggedIn: boolean;
+  setIsLoggedIn: (isLoggedIn: boolean) => void;
   bearerToken: { bearer: string | null };
   setBearerToken: (bearerToken: { bearer: string | null }) => void;
   music: string | undefined;
@@ -19,15 +24,19 @@ export const AppContextProvider = ({
     'MHGO_VOLUME',
     DEFAULT_VOLUME,
   );
-  const [isLoggedIn, setIsLoggedIn] = useLocalStorage<{ loggedIn: boolean }>(
-    'MHGO_LOGGED_IN',
-    { loggedIn: false },
-  );
   const [bearerToken, setBearerToken] = useLocalStorage<{
     bearer: string | null;
   }>('MHGO_AUTH', {
     bearer: null,
   });
+
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(
+    Boolean(bearerToken.bearer),
+  );
+
+  useEffect(() => {
+    setIsLoggedIn(Boolean(bearerToken.bearer));
+  }, [bearerToken.bearer]);
 
   const [music, setMusic] = useState<string>();
   // TODO maybe this can be done somewhere else

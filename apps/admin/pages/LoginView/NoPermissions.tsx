@@ -5,8 +5,9 @@ import { useMe } from '../../utils/useMe';
 import s from './LoginView.module.scss';
 
 export const NoPermissions = () => {
-  const { isAdmin, logoutUser } = useMe();
+  const { isAdmin, isLoggedIn, logoutUser } = useMe();
 
+  if (!isLoggedIn) return <Navigate to="/login" replace={true} />;
   if (isAdmin) return <Navigate to="/" replace={true} />;
   return (
     <div className={s.loginView}>

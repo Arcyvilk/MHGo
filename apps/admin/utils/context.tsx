@@ -1,9 +1,8 @@
-import React, { PropsWithChildren, useContext } from 'react';
+import React, { PropsWithChildren, useContext, useMemo } from 'react';
 import { useLocalStorage } from '@mhgo/front';
 
 type ContextType = {
-  isLoggedIn: { loggedIn: boolean };
-  setIsLoggedIn: (isLoggedIn: { loggedIn: boolean }) => void;
+  isLoggedIn: boolean;
   bearerToken: { bearer: string | null };
   setBearerToken: (bearerToken: { bearer: string | null }) => void;
 };
@@ -11,19 +10,19 @@ type ContextType = {
 export const AppContextProvider = ({
   children,
 }: PropsWithChildren): JSX.Element => {
-  const [isLoggedIn, setIsLoggedIn] = useLocalStorage<{ loggedIn: boolean }>(
-    'MHGO_LOGGED_IN',
-    { loggedIn: false },
-  );
   const [bearerToken, setBearerToken] = useLocalStorage<{
     bearer: string | null;
   }>('MHGO_AUTH', {
     bearer: null,
   });
 
+  const isLoggedIn = useMemo<boolean>(
+    () => Boolean(bearerToken.bearer),
+    [bearerToken?.bearer],
+  );
+
   const value = {
     isLoggedIn,
-    setIsLoggedIn,
     bearerToken,
     setBearerToken,
   };

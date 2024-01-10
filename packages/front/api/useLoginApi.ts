@@ -10,27 +10,29 @@ type UserAuthInfo = Pick<
   'isAdmin' | 'isAwaitingModApproval' | 'isModApproved'
 > &
   UserBan;
-export const useMeApi = () => {
-  const getMe = async (): Promise<UserAuthInfo> => {
+export const useMeApi = (enabled: boolean = true) => {
+  const getMe = async (): Promise<UserAuthInfo | null> => {
+    const bearer = JSON.parse(localStorage.MHGO_AUTH ?? {})?.bearer;
+    if (!bearer) return null;
     const res = await fetcher(`${API_URL}/auth/me`);
     return res.json();
   };
 
   const { data, isLoading, isFetched, isError } = useQuery<
-    UserAuthInfo,
+    UserAuthInfo | null,
     unknown,
-    UserAuthInfo,
+    UserAuthInfo | null,
     string[]
   >({
     queryKey: ['me'],
     queryFn: getMe,
+    enabled,
   });
 
   return { data, isLoading, isFetched, isError };
 };
 
 export const useLoginApi = (
-  setIsLoggedIn: (isLoggedIn: { loggedIn: boolean }) => void,
   setBearerToken: (bearerToken: { bearer: string | null }) => void,
 ) => {
   const queryClient = useQueryClient();
@@ -39,7 +41,7 @@ export const useLoginApi = (
     userName: string;
     pwd: string;
   }): Promise<{ userId: string; token: string }> => {
-    const response = await fetcher(`${API_URL}/auth/login`, {
+    const response = await fetch(`${API_URL}/auth/login`, {
       method: 'POST',
       body: JSON.stringify(variables),
       headers: {
@@ -50,9 +52,6 @@ export const useLoginApi = (
 
     if (response.status !== 200)
       throw new Error((await response.json()).error ?? 'Did not work!');
-
-    queryClient.invalidateQueries({ queryKey: ['me'] });
-    queryClient.invalidateQueries({ queryKey: ['user'], exact: false });
     return response.json();
   };
 
@@ -62,13 +61,14 @@ export const useLoginApi = (
     onSuccess: data => {
       if (data?.token) {
         setBearerToken({ bearer: data?.token ?? null });
-        setIsLoggedIn({ loggedIn: true });
+        queryClient.invalidateQueries({ queryKey: ['me'] });
+        queryClient.invalidateQueries({ queryKey: ['user'], exact: false });
+        queryClient.invalidateQueries({ queryKey: ['admin'], exact: false });
       }
     },
     onError: (err: string) => {
       setBearerToken({ bearer: null });
       toast.error(err.toString());
-      setIsLoggedIn({ loggedIn: false });
     },
   });
 
@@ -76,18 +76,16 @@ export const useLoginApi = (
 };
 
 export const useLogoutApi = (
-  setIsLoggedIn: (isLoggedIn: { loggedIn: boolean }) => void,
   setBearerToken: (bearerToken: { bearer: string | null }) => void,
 ) => {
   const queryClient = useQueryClient();
 
   const logOut = async (): Promise<boolean> => {
     const res = await fetcher(`${API_URL}/auth/logout`);
+
     if (res.status !== 200)
       throw new Error((await res.json()).error ?? 'Did not work!');
 
-    queryClient.invalidateQueries({ queryKey: ['me'] });
-    queryClient.invalidateQueries({ queryKey: ['user'], exact: false });
     return true;
   };
 
@@ -95,8 +93,16 @@ export const useLogoutApi = (
     mutationKey: ['logout'],
     mutationFn: logOut,
     onSuccess: () => {
-      setIsLoggedIn({ loggedIn: false });
       setBearerToken({ bearer: null });
+      queryClient.invalidateQueries({ queryKey: ['me'] });
+      queryClient.invalidateQueries({ queryKey: ['user'], exact: false });
+      queryClient.invalidateQueries({ queryKey: ['admin'], exact: false });
+    },
+    onError: () => {
+      setBearerToken({ bearer: null });
+      queryClient.invalidateQueries({ queryKey: ['me'] });
+      queryClient.invalidateQueries({ queryKey: ['user'], exact: false });
+      queryClient.invalidateQueries({ queryKey: ['admin'], exact: false });
     },
   });
 
@@ -104,7 +110,6 @@ export const useLogoutApi = (
 };
 
 export const useSignInApi = (
-  setIsLoggedIn: (isLoggedIn: { loggedIn: boolean }) => void,
   setBearerToken: (bearerToken: { bearer: string | null }) => void,
 ) => {
   const queryClient = useQueryClient();
@@ -125,9 +130,6 @@ export const useSignInApi = (
 
     if (response.status !== 200)
       throw new Error((await response.json()).error ?? 'Did not work!');
-
-    queryClient.invalidateQueries({ queryKey: ['me'] });
-    queryClient.invalidateQueries({ queryKey: ['user'], exact: false });
     return response.json();
   };
 
@@ -137,13 +139,17 @@ export const useSignInApi = (
     onSuccess: data => {
       if (data?.token) {
         setBearerToken({ bearer: data?.token ?? null });
-        setIsLoggedIn({ loggedIn: true });
+        queryClient.invalidateQueries({ queryKey: ['me'] });
+        queryClient.invalidateQueries({ queryKey: ['user'], exact: false });
+        queryClient.invalidateQueries({ queryKey: ['admin'], exact: false });
       }
     },
     onError: (err: string) => {
       setBearerToken({ bearer: null });
       toast.error(err.toString());
-      setIsLoggedIn({ loggedIn: false });
+      queryClient.invalidateQueries({ queryKey: ['me'] });
+      queryClient.invalidateQueries({ queryKey: ['user'], exact: false });
+      queryClient.invalidateQueries({ queryKey: ['admin'], exact: false });
     },
   });
 

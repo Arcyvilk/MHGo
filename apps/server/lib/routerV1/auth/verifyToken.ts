@@ -32,7 +32,7 @@ export const verifyAdminToken = (req: Request, res: Response, next) => {
     bearerToken,
     privateKey,
     (err, data: { userId: string; isAdmin: boolean }) => {
-      if (!err && data && data.isAdmin) {
+      if (!err && data?.isAdmin) {
         // @ts-ignore
         req.user = { userId: data.userId, verified: true };
         return next();

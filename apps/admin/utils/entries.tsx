@@ -1,6 +1,5 @@
 import { IconType } from '@mhgo/front';
 import {
-  LoginView,
   HomeView,
   ItemsView,
   MapView,
@@ -39,14 +38,6 @@ export const entries: Entry[] = [
     icon: 'Home',
     mainRoute: true,
     component: <HomeView />,
-  },
-  {
-    id: 'login',
-    title: 'Login',
-    link: '/login',
-    icon: 'Home',
-    mainRoute: false,
-    component: <LoginView />,
   },
   {
     id: 'map',
