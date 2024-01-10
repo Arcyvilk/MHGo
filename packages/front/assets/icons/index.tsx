@@ -14,6 +14,7 @@ import Gear from './Gear.svg?react';
 import Home from './Home.svg?react';
 import Info from './Info.svg?react';
 import ItemBox from './ItemBox.svg?react';
+import Logout from './Logout.svg?react';
 import Luck from './Luck.svg?react';
 import Map from './Map.svg?react';
 import Marker from './Marker.svg?react';
@@ -51,6 +52,7 @@ const icons = {
   Home,
   Info,
   ItemBox,
+  Logout,
   Luck,
   Map,
   Marker,

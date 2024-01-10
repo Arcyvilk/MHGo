@@ -2,13 +2,14 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Material } from '@mhgo/types';
 
 import { API_URL } from '../../env';
+import { fetcher } from '../..';
 
 // Create material
 export const useAdminCreateMaterialApi = () => {
   const queryClient = useQueryClient();
 
   const adminCreateMaterial = async (variables: Material): Promise<void> => {
-    const response = await fetch(`${API_URL}/admin/materials/create`, {
+    const response = await fetcher(`${API_URL}/admin/materials/create`, {
       method: 'POST',
       body: JSON.stringify(variables),
       headers: {
@@ -18,7 +19,7 @@ export const useAdminCreateMaterialApi = () => {
     });
 
     if (response.status !== 201)
-      throw new Error((await response.json()).error ?? 'Did not work!'); 
+      throw new Error((await response.json()).error ?? 'Did not work!');
     queryClient.invalidateQueries({ queryKey: ['materials'] });
   };
 
@@ -36,7 +37,7 @@ export const useAdminUpdateMaterialApi = () => {
 
   const adminUpdateMaterial = async (variables: Material): Promise<void> => {
     const { id, ...materialProperties } = variables;
-    const response = await fetch(
+    const response = await fetcher(
       `${API_URL}/admin/materials/material/${variables.id}`,
       {
         method: 'PUT',
@@ -49,7 +50,7 @@ export const useAdminUpdateMaterialApi = () => {
     );
 
     if (response.status !== 200 && response.status !== 201)
-      throw new Error((await response.json()).error ?? 'Did not work!'); 
+      throw new Error((await response.json()).error ?? 'Did not work!');
     queryClient.invalidateQueries({ queryKey: ['materials'] });
   };
 

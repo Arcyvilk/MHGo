@@ -12,5 +12,9 @@
     &__routeWrapper {
         margin-left: $sidebar-width;
         width: 100%;
+
+        &--isFullScreen {
+            margin-left: 0;
+        }
     }
 }

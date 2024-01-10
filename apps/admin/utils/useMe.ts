@@ -1,5 +1,5 @@
 import { useLoginApi, useLogoutApi, useMeApi, useSignInApi } from '@mhgo/front';
-import { useAppContext } from '../utils/context';
+import { useAppContext } from './context';
 
 export const useMe = () => {
   const { isLoggedIn, setIsLoggedIn, setBearerToken } = useAppContext();

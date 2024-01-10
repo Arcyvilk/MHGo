@@ -2,10 +2,11 @@ import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query';
 import { AdminUser, User, UserAuth, UserBan, UserResetType } from '@mhgo/types';
 
 import { API_URL } from '../../env';
+import { fetcher } from '../..';
 
 export const useAdminAllUsersApi = () => {
   const getAllUsers = async (): Promise<AdminUser[]> => {
-    const res = await fetch(`${API_URL}/admin/users/list`);
+    const res = await fetcher(`${API_URL}/admin/users/list`);
     return res.json();
   };
 
@@ -39,7 +40,7 @@ export const useAdminUpdateUserApi = () => {
       Pick<UserAuth, 'isAdmin' | 'isAwaitingModApproval' | 'isModApproved'>
     >;
   }): Promise<void> => {
-    const response = await fetch(`${API_URL}/admin/users/user/${userId}`, {
+    const response = await fetcher(`${API_URL}/admin/users/user/${userId}`, {
       method: 'PUT',
       body: JSON.stringify({
         user,
@@ -76,7 +77,7 @@ export const useAdminResetUserApi = () => {
     toReset: UserResetType;
   }): Promise<void> => {
     const { userId, toReset } = variables;
-    const response = await fetch(
+    const response = await fetcher(
       `${API_URL}/admin/users/user/${userId}/reset`,
       {
         method: 'PUT',
@@ -107,7 +108,7 @@ export const useAdminUserGodmodeApi = () => {
   const queryClient = useQueryClient();
 
   const adminUpdateResource = async (userId: string): Promise<void> => {
-    const response = await fetch(
+    const response = await fetcher(
       `${API_URL}/admin/users/user/${userId}/godmode`,
       {
         method: 'POST',

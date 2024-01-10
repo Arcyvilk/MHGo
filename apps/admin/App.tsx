@@ -1,22 +1,16 @@
-import { useEffect } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
+import { FC, PropsWithChildren, useEffect } from 'react';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { ToastContainer, ToastContainerProps } from 'react-toastify';
 
 import { entries } from './utils/entries';
+import { useMe } from './utils/useMe';
 import { Sidebar } from './containers';
 
 import s from './App.module.scss';
 import 'leaflet/dist/leaflet.css';
-
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      retry: false,
-      staleTime: 10 * 60 * 1000, // 10 minutes
-    },
-  },
-});
+import { useAppContext } from './utils/context';
+import { LoginView, NoPermissions } from './pages';
+import { modifiers } from '@mhgo/front';
 
 const toastOptions: ToastContainerProps = {
   closeOnClick: true,
@@ -38,28 +32,50 @@ export const App = () => {
   }, []);
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <div className={s.app}>
-        <BrowserRouter>
-          <Sidebar />
-          <RouteWrapper>
-            <Routes>
-              {entries.map(entry => (
-                <Route
-                  key={entry.id}
-                  path={entry.link}
-                  element={entry.component}
-                />
-              ))}
-            </Routes>
-          </RouteWrapper>
-        </BrowserRouter>
-        <ToastContainer {...toastOptions} />
-      </div>
-    </QueryClientProvider>
+    <div className={s.app}>
+      <BrowserRouter>
+        <Sidebar />
+        <RouteWrapper>
+          <Routes>
+            {entries.map(entry => (
+              <Route
+                key={entry.id}
+                path={entry.link}
+                element={<RequireAuth>{entry.component}</RequireAuth>}
+              />
+            ))}
+          </Routes>
+        </RouteWrapper>
+      </BrowserRouter>
+      <ToastContainer {...toastOptions} />
+    </div>
   );
 };
 
 const RouteWrapper = ({ children }: React.PropsWithChildren) => {
-  return <div className={s.app__routeWrapper}>{children}</div>;
+  const { isLoggedIn, isAdmin } = useMe();
+  const isFullScreen = !isLoggedIn || !isAdmin;
+
+  return (
+    <div className={modifiers(s, 'app__routeWrapper', { isFullScreen })}>
+      {children}
+    </div>
+  );
+};
+
+const RequireAuth: FC<{ children: React.ReactNode }> = ({
+  children,
+}: PropsWithChildren) => {
+  const { isAwaitingModApproval, isModApproved, isLoggedIn, isAdmin } = useMe();
+
+  if (!isLoggedIn) {
+    return <LoginView />;
+  }
+  if (!isAdmin) {
+    return <NoPermissions />;
+  }
+  if (isAwaitingModApproval === false || isModApproved === true) {
+    return children;
+  }
+  return children;
 };

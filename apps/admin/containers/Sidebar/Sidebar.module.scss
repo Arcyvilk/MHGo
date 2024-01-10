@@ -29,8 +29,14 @@
     text-transform: uppercase;
     cursor: pointer;
 
+    &--logout {
+      margin: auto 0 0 0;
+    }
+
     &:hover {
       background-color: rgba($admin-color-tertiary-bg, 0.8);
     }
   }
+
+  
 }

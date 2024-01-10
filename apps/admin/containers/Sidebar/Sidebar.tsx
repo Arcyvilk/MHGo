@@ -1,16 +1,19 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Icon, Size } from '@mhgo/front';
+import { Icon, Size, modifiers } from '@mhgo/front';
 
 import { Entry, entries } from '../../utils/entries';
 
 import s from './Sidebar.module.scss';
+import { useMe } from '../../utils/useMe';
 
 type Props = { title?: React.ReactNode };
 export const Sidebar = ({ title }: Props) => {
+  const { isLoggedIn, isAdmin, logoutUser } = useMe();
   const navigate = useNavigate();
   const onEntryClick = (entry: Entry) => navigate(entry.link);
 
+  if (!isLoggedIn || !isAdmin) return null;
   return (
     <div className={s.sidebar}>
       {title && <h2>{title}</h2>}
@@ -25,6 +28,13 @@ export const Sidebar = ({ title }: Props) => {
             {entry.title}
           </button>
         ))}
+      <button
+        key="logout"
+        className={modifiers(s, 'sidebar__entry', 'logout')}
+        onClick={logoutUser}>
+        <Icon icon="Logout" size={Size.MICRO} />
+        Logout
+      </button>
     </div>
   );
 };

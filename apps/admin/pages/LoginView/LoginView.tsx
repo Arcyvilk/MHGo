@@ -1,11 +1,12 @@
 import { useState } from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { Button, Icon, Input, Size } from '@mhgo/front';
-import { useMe } from '../../hooks/useAuth';
+import { useMe } from '../../utils/useMe';
 
-import s from './AuthView.module.scss';
+import s from './LoginView.module.scss';
 
 export const LoginView = () => {
+  const navigate = useNavigate();
   const { isLoggedIn, loginUser, isLoginPending } = useMe();
   const [userName, setUserName] = useState('');
   const [pwd, setPwd] = useState('');
@@ -14,17 +15,21 @@ export const LoginView = () => {
     loginUser(userName, pwd);
   };
 
+  const onSignIn = () => {
+    navigate('/signin');
+  };
+
   if (isLoggedIn) return <Navigate to="/" replace={true} />;
   return (
-    <div className={s.authView}>
-      <div className={s.authView__wrapper}>
+    <div className={s.loginView}>
+      <div className={s.loginView__wrapper}>
         <img
-          className={s.authView__logo}
+          className={s.loginView__logo}
           src="https://cdn.arcyvilk.com/mhgo/misc/logo.png"
           alt="logo"
         />
-        <div className={s.authView__title}>Login</div>
-        <div className={s.authView__inputs}>
+        <div className={s.loginView__title}>Login</div>
+        <div className={s.loginView__inputs}>
           <Input
             name="login_name"
             label="Username"
@@ -46,11 +51,17 @@ export const LoginView = () => {
         {isLoginPending ? (
           <Icon icon="Spin" spin size={Size.BIG} />
         ) : (
-          <div className={s.authView__inputs}>
+          <div className={s.loginView__inputs}>
             <Button
               variant={Button.Variant.ACTION}
               label="Log in"
               onClick={onLogin}
+            />
+            <Button
+              variant={Button.Variant.GHOST}
+              inverted
+              label="Sign in"
+              onClick={onSignIn}
             />
           </div>
         )}

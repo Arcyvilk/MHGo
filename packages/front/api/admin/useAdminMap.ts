@@ -1,10 +1,11 @@
 import { MonsterMarker, ResourceMarker } from '@mhgo/types';
 import { API_URL } from '../../env';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { fetcher } from '../..';
 
 export const useAdminAllMonsterMarkersApi = () => {
   const getAllMonsterMarkers = async (): Promise<MonsterMarker[]> => {
-    const res = await fetch(`${API_URL}/map/markers/monsters/list`);
+    const res = await fetcher(`${API_URL}/map/markers/monsters/list`);
     return res.json();
   };
 
@@ -28,7 +29,7 @@ export const useAdminCreateMonsterMarkerApi = () => {
   const adminCreateMonsterMarker = async (
     variables: Omit<MonsterMarker, 'id'>,
   ): Promise<void> => {
-    const response = await fetch(`${API_URL}/admin/marker/monster/create`, {
+    const response = await fetcher(`${API_URL}/admin/marker/monster/create`, {
       method: 'POST',
       body: JSON.stringify(variables),
       headers: {
@@ -38,7 +39,7 @@ export const useAdminCreateMonsterMarkerApi = () => {
     });
 
     if (response.status !== 201)
-      throw new Error((await response.json()).error ?? 'Did not work!'); 
+      throw new Error((await response.json()).error ?? 'Did not work!');
 
     queryClient.invalidateQueries({
       queryKey: ['admin', 'markers', 'monsters', 'all'],
@@ -61,7 +62,7 @@ export const useAdminUpdateMonsterMarkerApi = () => {
     variables: MonsterMarker,
   ): Promise<void> => {
     const { id, ...monsterProperties } = variables;
-    const response = await fetch(
+    const response = await fetcher(
       `${API_URL}/admin/marker/monster/${variables.id}`,
       {
         method: 'PUT',
@@ -74,7 +75,7 @@ export const useAdminUpdateMonsterMarkerApi = () => {
     );
 
     if (response.status !== 200 && response.status !== 201)
-      throw new Error((await response.json()).error ?? 'Did not work!'); 
+      throw new Error((await response.json()).error ?? 'Did not work!');
 
     queryClient.invalidateQueries({
       queryKey: ['admin', 'markers', 'monsters', 'all'],
@@ -96,13 +97,13 @@ export const useAdminDeleteMonsterMarkerApi = () => {
   const adminDeleteMonsterMarker = async (variables: {
     markerId: string;
   }): Promise<void> => {
-    const response = await fetch(
+    const response = await fetcher(
       `${API_URL}/admin/marker/monster/${variables.markerId}`,
       { method: 'DELETE' },
     );
 
     if (response.status !== 200)
-      throw new Error((await response.json()).error ?? 'Did not work!'); 
+      throw new Error((await response.json()).error ?? 'Did not work!');
 
     queryClient.invalidateQueries({
       queryKey: ['admin', 'markers', 'monsters', 'all'],
@@ -124,7 +125,7 @@ export const useAdminCreateResourceMarkerApi = () => {
   const adminCreateMonsterMarker = async (
     variables: Omit<ResourceMarker, 'id'>,
   ): Promise<void> => {
-    const response = await fetch(`${API_URL}/admin/marker/resource/create`, {
+    const response = await fetcher(`${API_URL}/admin/marker/resource/create`, {
       method: 'POST',
       body: JSON.stringify(variables),
       headers: {
@@ -134,7 +135,7 @@ export const useAdminCreateResourceMarkerApi = () => {
     });
 
     if (response.status !== 201)
-      throw new Error((await response.json()).error ?? 'Did not work!'); 
+      throw new Error((await response.json()).error ?? 'Did not work!');
 
     queryClient.invalidateQueries({ queryKey: ['markers', 'resource', 'all'] });
   };
@@ -155,7 +156,7 @@ export const useAdminUpdateResourceMarkerApi = () => {
     variables: ResourceMarker,
   ): Promise<void> => {
     const { id, ...resourceProperties } = variables;
-    const response = await fetch(
+    const response = await fetcher(
       `${API_URL}/admin/marker/resource/${variables.id}`,
       {
         method: 'PUT',
@@ -168,7 +169,7 @@ export const useAdminUpdateResourceMarkerApi = () => {
     );
 
     if (response.status !== 200 && response.status !== 201)
-      throw new Error((await response.json()).error ?? 'Did not work!'); 
+      throw new Error((await response.json()).error ?? 'Did not work!');
 
     queryClient.invalidateQueries({ queryKey: ['markers', 'resource', 'all'] });
   };
@@ -188,13 +189,13 @@ export const useAdminDeleteResourceMarkerApi = () => {
   const adminDeleteResourceMarker = async (variables: {
     markerId: string;
   }): Promise<void> => {
-    const response = await fetch(
+    const response = await fetcher(
       `${API_URL}/admin/marker/resource/${variables.markerId}`,
       { method: 'DELETE' },
     );
 
     if (response.status !== 200)
-      throw new Error((await response.json()).error ?? 'Did not work!'); 
+      throw new Error((await response.json()).error ?? 'Did not work!');
 
     queryClient.invalidateQueries({ queryKey: ['markers', 'resource', 'all'] });
   };

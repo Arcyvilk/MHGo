@@ -2,13 +2,14 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Resource } from '@mhgo/types';
 
 import { API_URL } from '../../env';
+import { fetcher } from '../..';
 
 // Create resource
 export const useAdminCreateResourceApi = () => {
   const queryClient = useQueryClient();
 
   const adminCreateResource = async (variables: Resource): Promise<void> => {
-    const response = await fetch(`${API_URL}/admin/resources/create`, {
+    const response = await fetcher(`${API_URL}/admin/resources/create`, {
       method: 'POST',
       body: JSON.stringify(variables),
       headers: {
@@ -18,7 +19,7 @@ export const useAdminCreateResourceApi = () => {
     });
 
     if (response.status !== 201)
-      throw new Error((await response.json()).error ?? 'Did not work!'); 
+      throw new Error((await response.json()).error ?? 'Did not work!');
 
     queryClient.invalidateQueries({
       queryKey: ['drops', 'resource'],
@@ -41,7 +42,7 @@ export const useAdminUpdateResourceApi = () => {
 
   const adminUpdateResource = async (variables: Resource): Promise<void> => {
     const { id, ...resourceProperties } = variables;
-    const response = await fetch(
+    const response = await fetcher(
       `${API_URL}/admin/resources/resource/${variables.id}`,
       {
         method: 'PUT',
@@ -54,7 +55,7 @@ export const useAdminUpdateResourceApi = () => {
     );
 
     if (response.status !== 200 && response.status !== 201)
-      throw new Error((await response.json()).error ?? 'Did not work!'); 
+      throw new Error((await response.json()).error ?? 'Did not work!');
 
     queryClient.invalidateQueries({
       queryKey: ['drops', 'resource'],

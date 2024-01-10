@@ -1,5 +1,6 @@
 export * from './HomeView';
 export * from './ItemsView';
+export * from './LoginView';
 export * from './MapView';
 export * from './MaterialsView';
 export * from './MonstersView';

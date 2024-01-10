@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CraftList, Item, ItemAction, Stats } from '@mhgo/types';
 
 import { API_URL } from '../../env';
+import { fetcher } from '../..';
 
 type ItemCreate = {
   item: Item;
@@ -13,7 +14,7 @@ export const useAdminCreateItemApi = () => {
   const queryClient = useQueryClient();
 
   const adminCreateItem = async (variables: ItemCreate): Promise<void> => {
-    const response = await fetch(`${API_URL}/admin/items/create`, {
+    const response = await fetcher(`${API_URL}/admin/items/create`, {
       method: 'post',
       body: JSON.stringify(variables),
       headers: {
@@ -40,7 +41,7 @@ export const useAdminUpdateItemApi = () => {
 
   const adminUpdateItem = async (variables: Item): Promise<void> => {
     const { id, ...itemProperties } = variables;
-    const response = await fetch(
+    const response = await fetcher(
       `${API_URL}/admin/items/item/${variables.id}`,
       {
         method: 'PUT',
@@ -72,7 +73,7 @@ export const useAdminUpdateItemActionApi = () => {
     variables: ItemAction & { itemId: string },
   ): Promise<void> => {
     const { itemId, ...action } = variables;
-    const response = await fetch(
+    const response = await fetcher(
       `${API_URL}/admin/items/item/${itemId}/action`,
       {
         method: 'PUT',
@@ -105,7 +106,7 @@ export const useAdminUpdateItemCraftlistApi = () => {
     craftList: CraftList[];
   }): Promise<void> => {
     const { itemId, craftList } = variables;
-    const response = await fetch(
+    const response = await fetcher(
       `${API_URL}/admin/items/item/${itemId}/crafts`,
       {
         method: 'PUT',
@@ -138,7 +139,7 @@ export const useAdminUpdateItemStatsApi = () => {
     stats: Stats;
   }): Promise<void> => {
     const { itemId, stats } = variables;
-    const response = await fetch(
+    const response = await fetcher(
       `${API_URL}/admin/items/item/${itemId}/stats`,
       {
         method: 'PUT',

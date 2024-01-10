@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Monster, MonsterDrop } from '@mhgo/types';
 
 import { API_URL } from '../../env';
+import { fetcher } from '../..';
 
 // Create monster
 export const useAdminCreateMonsterApi = () => {
@@ -11,7 +12,7 @@ export const useAdminCreateMonsterApi = () => {
     monster: Monster;
     drops: MonsterDrop;
   }): Promise<void> => {
-    const response = await fetch(`${API_URL}/admin/monsters/create`, {
+    const response = await fetcher(`${API_URL}/admin/monsters/create`, {
       method: 'POST',
       body: JSON.stringify(variables),
       headers: {
@@ -38,7 +39,7 @@ export const useAdminUpdateMonsterApi = () => {
 
   const adminUpdateMonster = async (variables: Monster): Promise<void> => {
     const { id, ...monsterProperties } = variables;
-    const response = await fetch(
+    const response = await fetcher(
       `${API_URL}/admin/monsters/monster/${variables.id}`,
       {
         method: 'PUT',
