@@ -57,7 +57,7 @@ export const signIn = async (req: Request, res: Response): Promise<void> => {
       throw new Error('Could not give user the starter pack!');
     }
 
-    const token = await jwt.sign({ userId }, privateKey, {
+    const token = await jwt.sign({ userId, isAdmin: false }, privateKey, {
       expiresIn: '7d',
     });
 

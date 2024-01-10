@@ -24,12 +24,12 @@ export const login = async (req: Request, res: Response): Promise<void> => {
     const userId = user.id;
     const privateKey = process.env.PRIVATE_KEY;
     const collectionLogin = db.collection<UserAuth>('userAuth');
-    const { pwdHash } = await collectionLogin.findOne({ userId });
+    const { pwdHash, isAdmin } = await collectionLogin.findOne({ userId });
 
     const match = await bcrypt.compare(pwd, pwdHash);
     if (!match) throw new Error('Invalid credentials!');
 
-    token = await jwt.sign({ userId }, privateKey, {
+    token = await jwt.sign({ userId, isAdmin }, privateKey, {
       expiresIn: '7d',
     });
 
