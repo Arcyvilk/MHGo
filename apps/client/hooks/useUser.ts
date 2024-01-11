@@ -26,7 +26,7 @@ export const useUser = () => {
 
   return {
     ...user,
-    userId,
+    userId: userId ?? '-',
     userName: name,
     userExp,
     userLevel,
