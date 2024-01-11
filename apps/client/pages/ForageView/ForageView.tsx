@@ -55,7 +55,6 @@ const Load = () => {
         setIsModalOpen(true);
       }, 2000);
   }, [isActive]);
-  const dupa = true;
 
   if (!resource) return null;
   return (
@@ -65,7 +64,7 @@ const Load = () => {
       )}
       <Header name={resource.name} />
       <div className={s.forageView__resourceWrapper}>
-        {dupa ? (
+        {inRange ? (
           <>
             {isActive && <Rays />}
             {isOnCooldown && <Nuke />}
