@@ -31,6 +31,9 @@ export const useUserEquipItemApi = (userId: string, itemId: string) => {
     await fetcher(`${API_URL}/users/user/${userId}/item/${itemId}/equip`);
     queryClient.invalidateQueries({ queryKey: ['user', userId, 'loadout'] });
     queryClient.invalidateQueries({ queryKey: ['user', userId, 'stats'] });
+    queryClient.invalidateQueries({
+      queryKey: ['user', userId, 'health', 'get'],
+    });
   };
 
   const { mutate, error, status, isPending, isSuccess, isError } = useMutation({
