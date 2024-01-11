@@ -23,6 +23,7 @@ import { useMonsterMarker } from '../../hooks/useMonsterMarker';
 import { useUser } from '../../hooks/useUser';
 import { ModalSuccess } from './ModalSuccess';
 import { ModalFailure } from './ModalFailure';
+import { MonsterAttackTimer } from './MonsterAttackTimer';
 
 import s from './FightView.module.scss';
 import { useInterval } from '../../hooks/useInterval';
@@ -53,7 +54,10 @@ const Load = () => {
     [isPlayerAlive, isMonsterAlive],
   );
 
-  const { isUserHit } = useMonsterAttack(isFightFinished, setIsPlayerAlive);
+  const { isUserHit, percentageToNextHit } = useMonsterAttack(
+    isFightFinished,
+    setIsPlayerAlive,
+  );
 
   useEffect(() => {
     changeMusic(SoundBG.EDGE_OF_THE_GALAXY);
@@ -97,6 +101,9 @@ const Load = () => {
         <ModalFailure isOpen setIsOpen={setIsModalOpen} onClose={onFightEnd} />
       )}
       <Header name={name} maxHP={level * baseHP} currentHP={monsterHP} />
+      {!isFightFinished && (
+        <MonsterAttackTimer percentage={percentageToNextHit} />
+      )}
       {!isMonsterAlive && <Nuke />}
       {!isPlayerAlive && <Death />}
       <div className={s.fightView__wrapper}>
@@ -132,16 +139,21 @@ const Header = ({ name = '?', maxHP, currentHP }: HeaderProps) => {
   );
 };
 
+const FRAME_CADENCE = 40;
+
 const useMonsterAttack = (
   isFightFinished: boolean,
   setIsPlayerAlive: (isAlive: boolean) => void,
 ) => {
   const { setMusic } = useAppContext();
   const { playSound, changeMusic } = useSounds(setMusic);
+
   const { userId } = useUser();
   const { mutate, isSuccess: isUserHit } = useUpdateUserHealthApi(userId);
   const { data: userHealth } = useUserHealthApi(userId);
   const { monster } = useMonsterMarker();
+  const [percentageToNextHit, setPercentageToNextHit] = useState(0);
+
   const { level, baseAttackSpeed, baseDamage } = monster;
 
   const attackSpeed = 1000 / baseAttackSpeed;
@@ -156,6 +168,17 @@ const useMonsterAttack = (
     isFightFinished ? null : attackSpeed,
   );
 
+  useInterval(
+    () => {
+      const cooldownPerFrame = baseAttackSpeed / FRAME_CADENCE;
+      const newPercentage = percentageToNextHit + cooldownPerFrame * 100;
+
+      if (newPercentage > 100) setPercentageToNextHit(newPercentage - 100);
+      else setPercentageToNextHit(newPercentage);
+    },
+    isFightFinished ? null : 1000 / FRAME_CADENCE,
+  );
+
   useEffect(() => {
     if (userHealth?.currentHealth <= 0) {
       setIsPlayerAlive(false);
@@ -163,5 +186,5 @@ const useMonsterAttack = (
     }
   }, [userHealth.currentHealth]);
 
-  return { isUserHit };
+  return { isUserHit, percentageToNextHit };
 };
