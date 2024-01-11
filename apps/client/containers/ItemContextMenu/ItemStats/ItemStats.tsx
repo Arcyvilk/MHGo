@@ -30,7 +30,7 @@ export const ItemStats = ({
     userLoadout.find(loadoutSlot => loadoutSlot.slot === itemSlot)?.itemId ??
     null;
 
-  const { data: slottedItemStats = {} } = useItemStatsApi(
+  const { data: slottedItemStats = { element: 'none' } } = useItemStatsApi(
     slottedItemId,
     isEquippable,
   );
@@ -39,13 +39,21 @@ export const ItemStats = ({
   if (!itemSlot) return null;
 
   const statsToCompare = Object.keys(DEFAULT_STATS)
-    .map(key => ({
-      key,
-      prev: slottedItemStats[key as keyof Stats] ?? 0,
-      next: itemStats[key as keyof Stats] ?? 0,
-    }))
+    .map(key => {
+      const prev = slottedItemStats[key as keyof Stats] ?? 0;
+      const next = itemStats[key as keyof Stats] ?? 0;
+      return {
+        key,
+        prev,
+        next,
+      };
+    })
     // Dont show stats irrelevant for the item
-    .filter(stat => !(stat.prev === 0 && stat.next === 0));
+    .filter(
+      stat =>
+        !(stat.prev === 0 && stat.next === 0) &&
+        !(stat.prev === 'none' && stat.next === 'none'),
+    );
 
   return (
     <div className={s.itemStats}>

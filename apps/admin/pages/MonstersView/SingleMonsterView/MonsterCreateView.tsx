@@ -200,6 +200,7 @@ const Load = () => {
               name="monster_baseas"
               type="number"
               min={0}
+              step={0.1}
               value={String(monster?.baseAttackSpeed ?? 0)}
               setValue={baseAttackSpeed =>
                 setMonster({

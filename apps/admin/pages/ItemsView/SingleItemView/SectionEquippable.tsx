@@ -78,8 +78,6 @@ export const SectionEquippable = ({
                   type={typeof oldStat === 'number' ? 'number' : 'text'}
                   value={String(oldStat)}
                   style={{ maxWidth: '100px' }}
-                  // TODO Implement elements
-                  disabled={stat === 'element'}
                   setValue={newStat => {
                     const updatedEntries = {
                       ...itemStats,
