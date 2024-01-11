@@ -3,7 +3,14 @@ import { useNavigate } from 'react-router-dom';
 
 import { CDN_URL } from '@mhgo/front/env';
 import { BaseWealth, HabitatType, Monster, MonsterDrop } from '@mhgo/types';
-import { Button, Input, Select, useAdminCreateMonsterApi } from '@mhgo/front';
+import {
+  Button,
+  Input,
+  Loader,
+  QueryBoundary,
+  Select,
+  useAdminCreateMonsterApi,
+} from '@mhgo/front';
 import { ActionBar, HeaderEdit, IconInfo } from '../../../containers';
 import { DEFAULT_MONSTER } from '../../../utils/defaults';
 
@@ -11,7 +18,13 @@ import s from './SingleMonsterView.module.scss';
 import { MonsterDrops } from './MonsterDrops';
 import { Status } from '../../../utils/types';
 
-export const MonsterCreateView = () => {
+export const MonsterCreateView = () => (
+  <QueryBoundary fallback={<Loader />}>
+    <Load />
+  </QueryBoundary>
+);
+
+const Load = () => {
   const navigate = useNavigate();
   const [updatedDrops, setUpdatedDrops] = useState<MonsterDrop['drops']>([]);
   const [status, setStatus] = useState({

@@ -5,6 +5,8 @@ import { CDN_URL } from '@mhgo/front/env';
 import {
   Button,
   Input,
+  Loader,
+  QueryBoundary,
   useAdminUpdateResourceApi,
   useResourcesApi,
 } from '@mhgo/front';
@@ -15,7 +17,13 @@ import { ResourceDrops } from '.';
 import { Resource } from '@mhgo/types';
 import { Status } from '../../../utils/types';
 
-export const ResourceEditView = () => {
+export const ResourceEditView = () => (
+  <QueryBoundary fallback={<Loader />}>
+    <Load />
+  </QueryBoundary>
+);
+
+const Load = () => {
   const navigate = useNavigate();
   const [updatedDrops, setUpdatedDrops] = useState<Resource['drops']>([]);
   const [status, setStatus] = useState({
@@ -34,20 +42,22 @@ export const ResourceEditView = () => {
   if (!updatedResource)
     return (
       <div className={s.singleResourceView}>
-        <div className={s.singleResourceView__header}>
-          <h1 className={s.singleResourceView__title}>
-            This resource does not exist!
-          </h1>
-        </div>
-        <div className={s.singleResourceView__footer}>
-          <Button label="Back" onClick={() => navigate(-1)} />
-        </div>
+        <HeaderEdit title="This resource does not exist" status={status} />
+        <ActionBar
+          buttons={
+            <Button
+              label="Back"
+              variant={Button.Variant.ACTION}
+              onClick={() => navigate(-1)}
+            />
+          }
+        />
       </div>
     );
 
   return (
     <div className={s.singleResourceView}>
-      <HeaderEdit status={status} title="Edit resource" />
+      <HeaderEdit title="Edit resource" status={status} />
       <ActionBar
         title={`Resource ID: ${updatedResource?.id}`}
         buttons={
@@ -180,6 +190,7 @@ const useUpdateResource = (
   return {
     updatedResource,
     setUpdatedResource,
+    isResourcesFetched,
     resourceImg,
     resourceThumbnail,
     onSave,

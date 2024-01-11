@@ -1,5 +1,12 @@
 import { useNavigate } from 'react-router-dom';
-import { Button, Icon, Size, useResourcesApi } from '@mhgo/front';
+import {
+  Button,
+  Icon,
+  Loader,
+  QueryBoundary,
+  Size,
+  useResourcesApi,
+} from '@mhgo/front';
 import { Resource } from '@mhgo/types';
 
 import { ActionBar, Table } from '../../containers';
@@ -8,7 +15,13 @@ import s from './ResourcesView.module.scss';
 
 const tableHeaders = ['Name', 'Description', 'Actions'];
 
-export const ResourcesView = () => {
+export const ResourcesView = () => (
+  <QueryBoundary fallback={<Loader />}>
+    <Load />
+  </QueryBoundary>
+);
+
+const Load = () => {
   const navigate = useNavigate();
   const { data: resources } = useResourcesApi();
 

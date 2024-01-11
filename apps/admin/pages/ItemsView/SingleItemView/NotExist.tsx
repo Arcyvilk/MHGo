@@ -1,9 +1,15 @@
 import { useNavigate } from 'react-router-dom';
-import { Button } from '@mhgo/front';
+import { Button, Loader, QueryBoundary } from '@mhgo/front';
 
 import s from './SingleItemView.module.scss';
 
-export const NotExist = () => {
+export const NotExist = () => (
+  <QueryBoundary fallback={<Loader />}>
+    <Load />
+  </QueryBoundary>
+);
+
+const Load = () => {
   const navigate = useNavigate();
   return (
     <div className={s.singleItemView}>

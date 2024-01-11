@@ -6,6 +6,8 @@ import { Item as TItem } from '@mhgo/types';
 import {
   Button,
   Icon,
+  Loader,
+  QueryBoundary,
   Size,
   useAdminUpdateItemApi,
   useItemsApi,
@@ -28,7 +30,13 @@ const tableHeaders = [
   'Actions',
 ];
 
-export const ItemsView = () => {
+export const ItemsView = () => (
+  <QueryBoundary fallback={<Loader />}>
+    <Load />
+  </QueryBoundary>
+);
+
+const Load = () => {
   const navigate = useNavigate();
   const { data: items } = useItemsApi();
   const { mutate, isSuccess, isError } = useAdminUpdateItemApi();

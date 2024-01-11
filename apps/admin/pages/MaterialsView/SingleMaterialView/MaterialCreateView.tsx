@@ -1,15 +1,29 @@
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
+
 import { CDN_URL } from '@mhgo/front/env';
 import { Material } from '@mhgo/types';
-import { Button, Input, Item, useAdminCreateMaterialApi } from '@mhgo/front';
+import {
+  Button,
+  Input,
+  Item,
+  Loader,
+  QueryBoundary,
+  useAdminCreateMaterialApi,
+} from '@mhgo/front';
+
 import { ActionBar, HeaderEdit } from '../../../containers';
 import { DEFAULT_MATERIAL } from '../../../utils/defaults';
 
 import s from './SingleMaterialView.module.scss';
 
-export const MaterialCreateView = () => {
+export const MaterialCreateView = () => (
+  <QueryBoundary fallback={<Loader />}>
+    <Load />
+  </QueryBoundary>
+);
+
+const Load = () => {
   const navigate = useNavigate();
   const {
     material,

@@ -4,6 +4,8 @@ import { MapMarker, MonsterMarker, ResourceMarker } from '@mhgo/types';
 import {
   Button,
   Input,
+  Loader,
+  QueryBoundary,
   Select,
   modifiers,
   useAdminCreateMonsterMarkerApi,
@@ -30,11 +32,13 @@ type MarkerProps = {
   onCancel: () => void;
   setStatus: (status: Status) => void;
 };
-export const MarkerCreateView = ({
-  selectedCoords,
-  onCancel,
-  setStatus,
-}: MarkerProps) => {
+export const MarkerCreateView = (props: MarkerProps) => (
+  <QueryBoundary fallback={<Loader />}>
+    <Load {...props} />
+  </QueryBoundary>
+);
+
+const Load = ({ selectedCoords, onCancel, setStatus }: MarkerProps) => {
   const {
     markerType,
     setMarkerType,
@@ -146,7 +150,9 @@ export const MarkerCreateView = ({
           */}
           {markerType === MarkerType.MONSTER && (
             <div
-              className={modifiers(s, 'markerView__section', { hidden: true })}>
+              className={modifiers(s, 'markerView__section', {
+                hidden: true,
+              })}>
               <Select
                 name="monster_marker"
                 label="Monster on marker"
@@ -194,7 +200,9 @@ export const MarkerCreateView = ({
         */}
           {markerType === MarkerType.RESOURCE && (
             <div
-              className={modifiers(s, 'markerView__section', { hidden: true })}>
+              className={modifiers(s, 'markerView__section', {
+                hidden: true,
+              })}>
               <Select
                 name="resource_marker"
                 label="Resource on marker"

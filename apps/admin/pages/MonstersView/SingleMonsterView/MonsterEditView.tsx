@@ -10,6 +10,8 @@ import {
   useAdminUpdateMonsterApi,
   useMonstersApi,
   useAdminUpdateMonsterDropsApi,
+  QueryBoundary,
+  Loader,
 } from '@mhgo/front';
 import { ActionBar, HeaderEdit, IconInfo } from '../../../containers';
 import { MonsterDrops } from './MonsterDrops';
@@ -17,7 +19,13 @@ import { MonsterDrops } from './MonsterDrops';
 import s from './SingleMonsterView.module.scss';
 import { Status } from '../../../utils/types';
 
-export const MonsterEditView = () => {
+export const MonsterEditView = () => (
+  <QueryBoundary fallback={<Loader />}>
+    <Load />
+  </QueryBoundary>
+);
+
+const Load = () => {
   const [updatedDrops, setUpdatedDrops] = useState<MonsterDrop['drops']>([]);
   const [status, setStatus] = useState({
     isSuccess: false,

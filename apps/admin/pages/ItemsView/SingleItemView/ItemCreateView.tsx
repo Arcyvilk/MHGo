@@ -2,7 +2,12 @@ import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CraftList, ItemAction, Item as TItem } from '@mhgo/types';
 import { CDN_URL } from '@mhgo/front/env';
-import { Button, useAdminCreateItemApi } from '@mhgo/front';
+import {
+  Button,
+  Loader,
+  QueryBoundary,
+  useAdminCreateItemApi,
+} from '@mhgo/front';
 import { ActionBar, HeaderEdit } from '../../../containers';
 import { DEFAULT_ITEM, DEFAULT_STATS } from '../../../utils/defaults';
 import { Status } from '../../../utils/types';
@@ -16,7 +21,13 @@ import { NotExist } from './NotExist';
 import s from './SingleItemView.module.scss';
 import { toast } from 'react-toastify';
 
-export const ItemCreateView = () => {
+export const ItemCreateView = () => (
+  <QueryBoundary fallback={<Loader />}>
+    <Load />
+  </QueryBoundary>
+);
+
+const Load = () => {
   const navigate = useNavigate();
   const [status, setStatus] = useState({
     isSuccess: false,

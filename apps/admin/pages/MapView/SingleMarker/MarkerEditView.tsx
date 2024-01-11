@@ -5,6 +5,8 @@ import { MapMarker, MonsterMarker, ResourceMarker } from '@mhgo/types';
 import {
   Button,
   Input,
+  Loader,
+  QueryBoundary,
   Select,
   modifiers,
   useAdminAllMonsterMarkersApi,
@@ -38,7 +40,13 @@ type MarkerProps = {
   onCancel: () => void;
   setStatus: (status: Status) => void;
 };
-export const MarkerEditView = ({
+export const MarkerEditView = (props: MarkerProps) => (
+  <QueryBoundary fallback={<Loader />}>
+    <Load {...props} />
+  </QueryBoundary>
+);
+
+const Load = ({
   selectedMarker,
   setSelectedMarker,
   selectedCoords,

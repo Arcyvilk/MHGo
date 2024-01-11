@@ -1,5 +1,12 @@
 import { useNavigate } from 'react-router-dom';
-import { Button, Icon, Size, useMaterialsApi } from '@mhgo/front';
+import {
+  Button,
+  Icon,
+  Loader,
+  QueryBoundary,
+  Size,
+  useMaterialsApi,
+} from '@mhgo/front';
 import { Material } from '@mhgo/types';
 
 import { ActionBar, Table } from '../../containers';
@@ -8,7 +15,13 @@ import s from './MaterialsView.module.scss';
 
 const tableHeaders = ['Name', 'Rarity', 'Description', 'Actions'];
 
-export const MaterialsView = () => {
+export const MaterialsView = () => (
+  <QueryBoundary fallback={<Loader />}>
+    <Load />
+  </QueryBoundary>
+);
+
+const Load = () => {
   const navigate = useNavigate();
   const { data: materials } = useMaterialsApi();
 

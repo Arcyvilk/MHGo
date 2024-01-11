@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { CDN_URL } from '@mhgo/front/env';
 import {
   Button,
+  Loader,
+  QueryBoundary,
   useAdminUpdateItemActionApi,
   useAdminUpdateItemApi,
   useAdminUpdateItemCraftlistApi,
@@ -25,7 +27,13 @@ import { NotExist } from './NotExist';
 
 import s from './SingleItemView.module.scss';
 
-export const ItemEditView = () => {
+export const ItemEditView = () => (
+  <QueryBoundary fallback={<Loader />}>
+    <Load />
+  </QueryBoundary>
+);
+
+const Load = () => {
   const navigate = useNavigate();
   const [status, setStatus] = useState({
     isSuccess: false,

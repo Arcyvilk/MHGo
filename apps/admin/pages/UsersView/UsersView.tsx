@@ -2,6 +2,8 @@ import { useNavigate } from 'react-router-dom';
 import {
   Button,
   Icon,
+  Loader,
+  QueryBoundary,
   Size,
   useAdminAllUsersApi,
   useAdminUpdateUserApi,
@@ -23,7 +25,13 @@ const tableHeaders = [
   'Is banned?',
   'Actions',
 ];
-export const UsersView = () => {
+export const UsersView = () => (
+  <QueryBoundary fallback={<Loader />}>
+    <Load />
+  </QueryBoundary>
+);
+
+const Load = () => {
   const navigate = useNavigate();
   const { data: users } = useAdminAllUsersApi();
   const { mutate, isSuccess, isError, isPending } = useAdminUpdateUserApi();

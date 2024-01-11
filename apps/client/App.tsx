@@ -3,7 +3,7 @@ import ReactHowler from 'react-howler';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
 import { ToastContainer, ToastContainerProps } from 'react-toastify';
-import { SoundBG, useSounds } from '@mhgo/front';
+import { Loader, QueryBoundary, SoundBG, useSounds } from '@mhgo/front';
 
 import {
   AchievementsView,
@@ -202,9 +202,17 @@ export const App = () => {
   );
 };
 
-const RequireAuth: FC<{ children: React.ReactElement }> = ({
+const RequireAuth: FC<{ children: React.ReactNode }> = ({
   children,
 }: PropsWithChildren) => {
+  return (
+    <QueryBoundary fallback={<Loader />}>
+      <LoadAuth>{children}</LoadAuth>
+    </QueryBoundary>
+  );
+};
+
+const LoadAuth = ({ children }: PropsWithChildren) => {
   const {
     isAwaitingModApproval,
     isModApproved,
@@ -216,16 +224,16 @@ const RequireAuth: FC<{ children: React.ReactElement }> = ({
   // const isDev = ENV === 'development';
   // if (isDev) return children;
 
-  if (isPending) {
+  if (isPending === true) {
     return <Navigate to="/loading" replace={true} />;
   }
-  if (isBanned) {
+  if (isBanned === true) {
     return <Navigate to="/ban" replace={true} />;
   }
   if (isAwaitingModApproval === true || isModApproved === false) {
     return <Navigate to="/awaiting" replace={true} />;
   }
-  if (!isLoggedIn) {
+  if (isLoggedIn === false) {
     return <Navigate to="/login" replace={true} />;
   }
   if (isAwaitingModApproval === false || isModApproved === true) {

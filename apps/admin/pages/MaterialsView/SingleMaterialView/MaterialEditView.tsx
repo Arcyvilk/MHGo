@@ -7,6 +7,8 @@ import {
   Button,
   Input,
   Item,
+  Loader,
+  QueryBoundary,
   useAdminUpdateMaterialApi,
   useMaterialsApi,
   useMonsterDropsApi,
@@ -16,7 +18,13 @@ import { ActionBar, HeaderEdit } from '../../../containers';
 
 import s from './SingleMaterialView.module.scss';
 
-export const MaterialEditView = () => {
+export const MaterialEditView = () => (
+  <QueryBoundary fallback={<Loader />}>
+    <Load />
+  </QueryBoundary>
+);
+
+const Load = () => {
   const navigate = useNavigate();
   const {
     material,

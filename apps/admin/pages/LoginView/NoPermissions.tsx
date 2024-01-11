@@ -1,10 +1,16 @@
 import { Navigate } from 'react-router-dom';
-import { Button, Icon, Size } from '@mhgo/front';
+import { Button, Icon, Loader, QueryBoundary, Size } from '@mhgo/front';
 import { useMe } from '../../utils/useMe';
 
 import s from './LoginView.module.scss';
 
-export const NoPermissions = () => {
+export const NoPermissions = () => (
+  <QueryBoundary fallback={<Loader />}>
+    <Load />
+  </QueryBoundary>
+);
+
+const Load = () => {
   const { isAdmin, isLoggedIn, logoutUser } = useMe();
 
   if (!isLoggedIn) return <Navigate to="/login" replace={true} />;

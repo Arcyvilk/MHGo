@@ -1,12 +1,13 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import {
   Button,
   Input,
+  Loader,
+  QueryBoundary,
   Switch,
   modifiers,
-  useAdminAllUsersApi,
   useAdminResetUserApi,
   useAdminUpdateUserApi,
   useAdminUserGodmodeApi,
@@ -18,7 +19,13 @@ import { ActionBar, HeaderEdit } from '../../../containers';
 
 import s from './SingleUserView.module.scss';
 
-export const UserEditView = () => {
+export const UserEditView = () => (
+  <QueryBoundary fallback={<Loader />}>
+    <Load />
+  </QueryBoundary>
+);
+
+const Load = () => {
   const navigate = useNavigate();
   const [status, setStatus] = useState({
     isSuccess: false,

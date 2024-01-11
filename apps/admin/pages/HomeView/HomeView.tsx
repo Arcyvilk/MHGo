@@ -1,6 +1,13 @@
+import { Loader, QueryBoundary } from '@mhgo/front';
 import s from './HomeView.module.scss';
 
-export const HomeView = () => {
+export const HomeView = () => (
+  <QueryBoundary fallback={<Loader />}>
+    <Load />
+  </QueryBoundary>
+);
+
+const Load = () => {
   return (
     <div className={s.homeView}>
       <div className={s.homeView__header}>

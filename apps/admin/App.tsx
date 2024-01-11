@@ -1,7 +1,7 @@
 import { FC, PropsWithChildren, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { ToastContainer, ToastContainerProps } from 'react-toastify';
-import { modifiers } from '@mhgo/front';
+import { Loader, QueryBoundary, modifiers } from '@mhgo/front';
 
 import { entries } from './utils/entries';
 import { useMe } from './utils/useMe';
@@ -55,7 +55,7 @@ export const App = () => {
 
 const RouteWrapper = ({ children }: React.PropsWithChildren) => {
   const { isLoggedIn, isAdmin } = useMe();
-  const isFullScreen = !isLoggedIn || !isAdmin;
+  const isFullScreen = isLoggedIn === false || isAdmin === false;
 
   return (
     <div className={modifiers(s, 'app__routeWrapper', { isFullScreen })}>
@@ -67,12 +67,20 @@ const RouteWrapper = ({ children }: React.PropsWithChildren) => {
 const RequireAuth: FC<{ children: React.ReactNode }> = ({
   children,
 }: PropsWithChildren) => {
+  return (
+    <QueryBoundary fallback={<Loader />}>
+      <LoadAuth>{children}</LoadAuth>
+    </QueryBoundary>
+  );
+};
+
+const LoadAuth = ({ children }: PropsWithChildren) => {
   const { isAwaitingModApproval, isModApproved, isLoggedIn, isAdmin } = useMe();
 
-  if (!isLoggedIn) {
+  if (isLoggedIn === false) {
     return <Navigate to="/login" replace={true} />;
   }
-  if (!isAdmin) {
+  if (isAdmin === false) {
     return <Navigate to="/forbidden" replace={true} />;
   }
   if (isAwaitingModApproval === false || isModApproved === true) {

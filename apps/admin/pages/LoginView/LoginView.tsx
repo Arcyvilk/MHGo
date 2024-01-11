@@ -1,11 +1,17 @@
 import { useState } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
-import { Button, Icon, Input, Size } from '@mhgo/front';
+import { Button, Icon, Input, Loader, QueryBoundary, Size } from '@mhgo/front';
 import { useMe } from '../../utils/useMe';
 
 import s from './LoginView.module.scss';
 
-export const LoginView = () => {
+export const LoginView = () => (
+  <QueryBoundary fallback={<Loader />}>
+    <Load />
+  </QueryBoundary>
+);
+
+const Load = () => {
   const navigate = useNavigate();
   const { isLoggedIn, loginUser, isLoginPending } = useMe();
   const [userName, setUserName] = useState('');
