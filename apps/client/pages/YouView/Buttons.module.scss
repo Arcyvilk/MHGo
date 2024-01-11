@@ -2,6 +2,7 @@
 
 .buttons {
   display: grid;
-  grid-template-columns: 48% 48%;
-  gap: $size-8 $size-10;
+  grid-template-columns: 49% 49%;
+  align-items: center;
+  gap: $size-10 2%;
 }
