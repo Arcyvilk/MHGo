@@ -1,26 +1,16 @@
-import { useEffect } from 'react';
-
 import {
-  useUpdateUserHealthApi,
   useUserHealthApi,
   Flash,
   Loader,
   QueryBoundary,
   modifiers,
-  useSounds,
-  SoundSE,
-  SoundBG,
 } from '@mhgo/front';
-import { useMonsterMarker } from '../../hooks/useMonsterMarker';
 import { useUser } from '../../hooks/useUser';
-import { useInterval } from '../../hooks/useInterval';
 
 import s from './HealthBar.module.scss';
-import { useAppContext } from '../../utils/context';
 
 type HealthBarUserProps = {
-  isFightFinished: boolean;
-  setIsPlayerAlive: (isAlive: boolean) => void;
+  isUserHit: boolean;
 };
 export const HealthBarUser = (props: HealthBarUserProps) => (
   <QueryBoundary fallback={<Loader />}>
@@ -28,33 +18,9 @@ export const HealthBarUser = (props: HealthBarUserProps) => (
   </QueryBoundary>
 );
 
-const Load = ({ isFightFinished, setIsPlayerAlive }: HealthBarUserProps) => {
-  const { setMusic } = useAppContext();
-  const { playSound, changeMusic } = useSounds(setMusic);
+const Load = ({ isUserHit }: HealthBarUserProps) => {
   const { userId } = useUser();
-  const { mutate, isSuccess: isUserHit } = useUpdateUserHealthApi(userId);
   const { data: userHealth } = useUserHealthApi(userId);
-  const { monster } = useMonsterMarker();
-  const { level, baseAttackSpeed, baseDamage } = monster;
-
-  const attackSpeed = 1000 / baseAttackSpeed;
-
-  useInterval(
-    () => {
-      playSound(SoundSE.OUCH);
-      mutate({
-        healthChange: baseDamage * level * -1,
-      });
-    },
-    isFightFinished ? null : attackSpeed,
-  );
-
-  useEffect(() => {
-    if (userHealth?.currentHealth <= 0) {
-      setIsPlayerAlive(false);
-      changeMusic(SoundBG.HORROR_CREEPY);
-    }
-  }, [userHealth.currentHealth]);
 
   return (
     <div className={s.wrapper}>

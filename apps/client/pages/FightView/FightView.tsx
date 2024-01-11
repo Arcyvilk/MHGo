@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { HealthBarMonster, HealthBarUser } from '../../containers';
@@ -13,15 +13,19 @@ import {
   SoundSE,
   modifiers,
   useSounds,
+  useUpdateUserHealthApi,
+  useUserHealthApi,
   useUserStatsApi,
 } from '@mhgo/front';
+
+import { useAppContext } from '../../utils/context';
 import { useMonsterMarker } from '../../hooks/useMonsterMarker';
 import { useUser } from '../../hooks/useUser';
 import { ModalSuccess } from './ModalSuccess';
 import { ModalFailure } from './ModalFailure';
 
 import s from './FightView.module.scss';
-import { useAppContext } from '../../utils/context';
+import { useInterval } from '../../hooks/useInterval';
 
 export const FightView = () => (
   <QueryBoundary fallback={<Loader />}>
@@ -43,6 +47,13 @@ const Load = () => {
   const [isMonsterAlive, setIsMonsterAlive] = useState<boolean>(true);
   const [isPlayerAlive, setIsPlayerAlive] = useState<boolean>(true);
   const [monsterHP, setMonsterHP] = useState<number>(level * baseHP);
+
+  const isFightFinished = useMemo(
+    () => !isPlayerAlive || !isMonsterAlive,
+    [isPlayerAlive, isMonsterAlive],
+  );
+
+  const { isUserHit } = useMonsterAttack(isFightFinished, setIsPlayerAlive);
 
   useEffect(() => {
     changeMusic(SoundBG.EDGE_OF_THE_GALAXY);
@@ -101,10 +112,7 @@ const Load = () => {
           src={img}
         />
       </div>
-      <HealthBarUser
-        setIsPlayerAlive={setIsPlayerAlive}
-        isFightFinished={!isMonsterAlive || !isPlayerAlive}
-      />
+      <HealthBarUser isUserHit={isUserHit} />
       <CloseButton />
     </div>
   );
@@ -122,4 +130,38 @@ const Header = ({ name = '?', maxHP, currentHP }: HeaderProps) => {
       <HealthBarMonster maxHP={maxHP} currentHP={currentHP} />
     </div>
   );
+};
+
+const useMonsterAttack = (
+  isFightFinished: boolean,
+  setIsPlayerAlive: (isAlive: boolean) => void,
+) => {
+  const { setMusic } = useAppContext();
+  const { playSound, changeMusic } = useSounds(setMusic);
+  const { userId } = useUser();
+  const { mutate, isSuccess: isUserHit } = useUpdateUserHealthApi(userId);
+  const { data: userHealth } = useUserHealthApi(userId);
+  const { monster } = useMonsterMarker();
+  const { level, baseAttackSpeed, baseDamage } = monster;
+
+  const attackSpeed = 1000 / baseAttackSpeed;
+
+  useInterval(
+    () => {
+      playSound(SoundSE.OUCH);
+      mutate({
+        healthChange: baseDamage * level * -1,
+      });
+    },
+    isFightFinished ? null : attackSpeed,
+  );
+
+  useEffect(() => {
+    if (userHealth?.currentHealth <= 0) {
+      setIsPlayerAlive(false);
+      changeMusic(SoundBG.HORROR_CREEPY);
+    }
+  }, [userHealth.currentHealth]);
+
+  return { isUserHit };
 };
