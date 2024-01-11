@@ -2,6 +2,7 @@ import {
   useItemsApi,
   useMaterialsApi,
   useSettingsApi,
+  useUserAchievementsApi,
   useUserApi,
   useUserItemsApi,
   useUserLoadoutApi,
@@ -31,6 +32,14 @@ export const useUser = () => {
     userExp,
     userLevel,
   };
+};
+
+export const useUserTutorial = (userId: string) => {
+  const { data: userAchievements } = useUserAchievementsApi(userId);
+  const achievement = userAchievements.find(
+    achievement => achievement.achievementId === 'tutorial',
+  );
+  return { isFinishedTutorial: Boolean(achievement) };
 };
 
 export const useUserItems = (userId: string) => {

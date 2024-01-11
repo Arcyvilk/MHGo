@@ -7,10 +7,12 @@ type ModalProps = {
   setIsOpen: (isOpen: boolean) => void;
   onClose?: () => void;
   isHighModal?: boolean;
+  isTransparent?: boolean;
 };
 export const Modal = ({
   children,
   isHighModal = false,
+  isTransparent = false,
   isOpen,
   setIsOpen,
   onClose,
@@ -27,11 +29,17 @@ export const Modal = ({
 
   return (
     <div
-      className={modifiers(s, 'modal', { isOpen, isHighModal })}
+      className={modifiers(s, 'modal', { isOpen, isHighModal, isTransparent })}
       onClick={onModalClose}>
-      <div className={s.modal__content} onClick={onPreventBubbling}>
-        {children}
-      </div>
+      {isTransparent ? (
+        children
+      ) : (
+        <div
+          className={modifiers(s, 'modal__content')}
+          onClick={onPreventBubbling}>
+          {children}
+        </div>
+      )}
     </div>
   );
 };

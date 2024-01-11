@@ -16,7 +16,11 @@
   &--isHighModal {
     z-index: $zindex-modal-highest;
   }
-
+  
+  &--isTransparent {
+    background-color: transparent;
+  }
+  
   &--isOpen {
     display: flex;
   }
@@ -29,8 +33,8 @@
     max-height: 90%;
     padding: $size-16;
     box-sizing: border-box;
-    background-color: $color-white;
     border-radius: $size-16;
     overflow-y: auto;
+    background-color: $color-white;
   }
 }

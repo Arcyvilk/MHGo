@@ -27,7 +27,7 @@ import { PaintballView } from './pages/PaintballView';
 import { FightView, PrepareView } from './pages/FightView';
 import { MonsterGuideView } from './pages/MonsterGuideView';
 import { useAppContext } from './utils/context';
-import { GlobalAchievements } from './containers';
+import { GlobalAchievements, Tutorial } from './containers';
 import { useMe } from './hooks/useAuth';
 
 import s from './App.module.scss';
@@ -63,6 +63,7 @@ export const App = () => {
       {music && <ReactHowler src={music} playing loop volume={musicVolume} />}
       <BrowserRouter>
         <GlobalAchievements />
+        <Tutorial />
         <Routes>
           <Route
             path="/"
