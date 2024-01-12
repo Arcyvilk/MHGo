@@ -7,6 +7,7 @@ import { QuickUseModal } from '../ModalView';
 import { Map } from './Map';
 
 import s from './HomeView.module.scss';
+import { Tutorial } from '../../containers';
 
 const TEMP_SRC = 'https://cdn.arcyvilk.com/mhgo/misc/question.svg';
 
@@ -23,6 +24,7 @@ export const HomeView = () => {
 
   return (
     <div className={s.homeView}>
+      <Tutorial />
       <Map />
       <div className={s.actions}>
         {isModalOpen && (

@@ -1,6 +1,7 @@
 export * from './Achievements';
 export * from './Admin';
 export * from './Auth';
+export * from './Companion';
 export * from './Drops';
 export * from './Habitats';
 export * from './Items';

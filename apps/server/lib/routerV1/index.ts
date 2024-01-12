@@ -339,6 +339,18 @@ import { getAchievements } from './achievements';
 
 routerV1.get('/achievements/list', verifyToken, getAchievements);
 
+/******************************
+ *         COMPANIONS         *
+ ******************************/
+
+import { getCompanionById } from './companions';
+
+routerV1.get(
+  '/companions/companion/:companionId',
+  verifyToken,
+  getCompanionById,
+);
+
 /************************
  *         NEWS         *
  ************************/
