@@ -7,8 +7,8 @@ import React, {
 } from 'react';
 
 type ContextType = {
-  tutorialStep: number;
-  setTutorialStep: (tutorialStep: number) => void;
+  tutorialStep: string;
+  setTutorialStep: (tutorialStep: string) => void;
   isTutorialDummyKilled: boolean;
   setIsTutorialDummyKilled: (isTutorialDummyKilled: boolean) => void;
   isLoggedIn: boolean;
@@ -24,7 +24,7 @@ type ContextType = {
 export const AppContextProvider = ({
   children,
 }: PropsWithChildren): JSX.Element => {
-  const [tutorialStep, setTutorialStep] = useState(0);
+  const [tutorialStep, setTutorialStep] = useState('part1_start');
   const [isTutorialDummyKilled, setIsTutorialDummyKilled] = useState(false);
   const [volume] = useLocalStorage<Record<Volume, number>>(
     'MHGO_VOLUME',

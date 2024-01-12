@@ -285,9 +285,9 @@ routerV1.put(
   updateUserItemPurchase,
 );
 
-/****************************
+/***********************
  *         MAP         *
- ****************************/
+ ***********************/
 
 import {
   getSingleMonsterMarker,
@@ -358,6 +358,14 @@ routerV1.get(
 import { getNews } from './news';
 
 routerV1.get('/news/list', verifyToken, getNews);
+
+/****************************
+ *         TUTORIAL         *
+ ****************************/
+
+import { getTutorial } from './tutorial';
+
+routerV1.get('/tutorial', verifyToken, getTutorial);
 
 /****************************
  *         SETTINGS         *

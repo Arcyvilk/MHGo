@@ -1,15 +1,19 @@
 import {
+  useCompanionApi,
   useItemsApi,
   useMaterialsApi,
   useSettingsApi,
+  useTutorialApi,
   useUserAchievementsApi,
   useUserApi,
   useUserItemsApi,
   useUserLoadoutApi,
   useUserMaterialsApi,
 } from '@mhgo/front';
-import { ItemSlot } from '@mhgo/types';
+import { Companion, ItemSlot, TutorialStep } from '@mhgo/types';
 import { useMe } from './useAuth';
+import { useMemo } from 'react';
+import { useAppContext } from '../utils/context';
 
 export const USER_NAME = '-';
 
@@ -34,12 +38,76 @@ export const useUser = () => {
   };
 };
 
-export const useUserTutorial = (userId: string) => {
+export const useUserTutorial = (
+  userId: string,
+  stepFrom?: string,
+  stepTo?: string,
+) => {
+  const { tutorialStep: step, setTutorialStep } = useAppContext();
   const { data: userAchievements } = useUserAchievementsApi(userId);
+  const { setting = '' } = useSettingsApi<string>('default_companion', '');
+  const { data: companion, isFetched: isCompanionFetched } =
+    useCompanionApi(setting);
+  const { data: tutorialPart, isFetched: isTutorialFetched } = useTutorialApi(
+    stepFrom,
+    stepTo,
+  );
+
   const achievement = userAchievements.find(
     achievement => achievement.achievementId === 'tutorial',
   );
-  return { isFinishedTutorial: Boolean(achievement) };
+
+  const insertCompanionToTutorial = (c: Companion) => {
+    return tutorialPart.tutorial.map((step: TutorialStep) => ({
+      ...step,
+      ...(step.companionImg
+        ? {
+            companionImg: c[step.companionImg as keyof Companion],
+          }
+        : {}),
+    }));
+  };
+
+  const tutorial = useMemo(() => {
+    if (isCompanionFetched && companion)
+      return insertCompanionToTutorial(companion);
+    else return tutorialPart.tutorial;
+  }, [isCompanionFetched, companion]);
+
+  const currentStep = useMemo(() => {
+    const curr = tutorial.find(t => t.id === step);
+    return curr ?? null;
+  }, [tutorial, step]);
+
+  const finishTutorial = () => {
+    alert('Tutorial finished');
+  };
+
+  const goToNextStep = (onEnd: () => void) => {
+    const currStepIndex = tutorial.findIndex(t => t.id === step);
+    const nextStep = tutorial[currStepIndex + 1];
+
+    // This part of tutorial still has next step
+    if (nextStep) setTutorialStep(nextStep.id);
+    // This part of tutorial has finished...
+    else {
+      // ...but more is coming soon
+      if (tutorialPart.nextPartId) setTutorialStep(tutorialPart.nextPartId);
+      // And this happens if tutorial finished altogether!
+      else {
+        finishTutorial();
+        onEnd();
+      }
+    }
+  };
+
+  return {
+    tutorial,
+    currentStep,
+    goToNextStep,
+    isFinishedTutorial: Boolean(achievement),
+    isFetched: isCompanionFetched && isTutorialFetched,
+  };
 };
 
 export const useUserItems = (userId: string) => {

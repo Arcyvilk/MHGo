@@ -1,20 +1,15 @@
-import { useMemo, useState } from 'react';
-import {
-  Modal,
-  QueryBoundary,
-  useCompanionApi,
-  useSettingsApi,
-} from '@mhgo/front';
+import { useState } from 'react';
+import { Modal, QueryBoundary } from '@mhgo/front';
+
+import { useAppContext } from '../../utils/context';
 import { useMe } from '../../hooks/useAuth';
 import { useUserTutorial } from '../../hooks/useUser';
 
 import s from './Tutorial.module.scss';
-import { Companion } from '@mhgo/types';
-import { useAppContext } from '../../utils/context';
 
 type TutorialProps = {
-  stepFrom: number;
-  stepTo: number;
+  stepFrom: string;
+  stepTo: string;
 };
 export const Tutorial = (props: TutorialProps) => (
   <QueryBoundary fallback={null}>
@@ -23,42 +18,20 @@ export const Tutorial = (props: TutorialProps) => (
 );
 
 const Load = ({ stepFrom, stepTo }: TutorialProps) => {
-  const { tutorialStep: step, setTutorialStep } = useAppContext();
-  const { userId } = useMe();
-  const { setting = '' } = useSettingsApi<string>('default_companion', '');
-  const { isFinishedTutorial } = useUserTutorial(userId!);
-  const { data: companion, isFetched } = useCompanionApi(setting);
-
   const [isOpen, setIsOpen] = useState(true);
+  const { userId } = useMe();
 
-  const tutorial = useMemo(() => {
-    if (isFetched && companion) return getTutorial(companion);
-    else return [];
-  }, [isFetched, companion]);
-
-  const finishTutorial = () => {
-    alert('Tutorial finished');
-  };
+  const { currentStep, goToNextStep, isFinishedTutorial, isFetched } =
+    useUserTutorial(userId!, stepFrom, stepTo);
 
   const nextStep = () => {
-    if (step >= stepFrom) {
-      setTutorialStep(step + 1);
-      return;
-    }
-    if (!tutorial[step + 1]) {
-      finishTutorial();
+    goToNextStep(() => {
       setIsOpen(false);
-      return;
-    }
-    if (tutorial[step].closeNext || step >= stepTo) {
-      setTutorialStep(step + 1);
-      setIsOpen(false);
-      return;
-    }
+    });
   };
 
-  if (!isFetched || isFinishedTutorial || step < stepFrom || step > stepTo)
-    return null;
+  if (!isFetched || isFinishedTutorial) return null;
+  if (!currentStep) return null;
   return (
     <Modal
       isTransparent
@@ -67,113 +40,189 @@ const Load = ({ stepFrom, stepTo }: TutorialProps) => {
       setIsOpen={setIsOpen}
       onClose={nextStep}>
       <div className={s.tutorial}>
-        {tutorial[step]?.spotlight && (
+        {currentStep.spotlight && (
           <div
             className={s.tutorial__spotlight}
             style={{
               position: 'absolute',
-              top: tutorial[step]?.spotlight![0],
-              left: tutorial[step]?.spotlight![1],
-              width: tutorial[step]?.spotlight![2],
-              height: tutorial[step]?.spotlight![2],
-              borderRadius: tutorial[step]?.spotlight![2],
+              top: currentStep.spotlight[0],
+              left: currentStep.spotlight[1],
+              width: currentStep.spotlight[2],
+              height:
+                currentStep.spotlightShape === 'rectangle'
+                  ? currentStep.spotlight[3]
+                  : currentStep.spotlight[2],
+              borderRadius:
+                currentStep.spotlightShape === 'circle'
+                  ? currentStep.spotlight[2]
+                  : 0,
             }}
           />
         )}
-        <div className={s.tutorial__bubble}>{tutorial[step].text}</div>
-        <img className={s.tutorial__guide} src={tutorial[step].img} />
+        {currentStep.companionImg && (
+          <>
+            <div className={s.tutorial__bubble}>
+              {currentStep.companionSpeech}
+            </div>
+            <img className={s.tutorial__guide} src={currentStep.companionImg} />
+          </>
+        )}
       </div>
     </Modal>
   );
 };
 
-type TutorialStep = {
-  img: string;
-  text: string;
-  closeNext: boolean;
-  spotlight: [string, string, string] | null;
-};
-const getTutorial = (companion: Companion): TutorialStep[] => [
-  // HOME VIEW PART - 0-3
-  {
-    img: companion.img_idle,
-    text: 'Hello there master!',
-    spotlight: null,
-    closeNext: false,
-  },
-  {
-    img: companion.img_happy,
-    text: 'This is a very cool tutorial!',
-    spotlight: null,
-    closeNext: false,
-  },
-  {
-    img: companion.img_happy,
-    text: 'Look how awesome it is!',
-    spotlight: ['calc(50% - 50px)', 'calc(50% - 50px)', '100px'],
-    closeNext: false,
-  },
-  {
-    img: companion.img_surprised,
-    text: 'Thats it for now, goodbye!',
-    spotlight: null,
-    closeNext: true,
-  },
-  // PREPARE VIEW PART - 4-6
-  {
-    img: companion.img_happy,
-    text: "This is a Training Slime - it won't hurt you, and you can test your combat abilities on it.",
-    spotlight: ['calc(50% - 300px)', 'calc(50% - 300px)', '600px'],
-    closeNext: false,
-  },
-  {
-    img: companion.img_surprised,
-    text: 'MURDER HIM!!!',
-    spotlight: null,
-    closeNext: false,
-  },
-  {
-    img: companion.img_surprised,
-    text: 'Woof :3',
-    spotlight: null,
-    closeNext: true,
-  },
-  // FIGHT VIEW PART - 7-9
-  {
-    img: companion.img_idle,
-    text: 'Tap to hit! Woof.',
-    spotlight: null,
-    closeNext: false,
-  },
-  {
-    img: companion.img_idle,
-    text: 'Top left corner shows the time until the next monster attack.',
-    spotlight: ['-80px', '-80px', '200px'],
-    closeNext: true,
-  },
-  {
-    img: companion.img_idle,
-    text: "If you're sure the next attack would kill you, you can quickly flee by clicking the button at the bottom.",
-    spotlight: ['calc(100% - 180px)', 'calc(50% - 150px)', '300px'],
-    closeNext: true,
-  },
-  // FINAL VIEW PART - 10-12
-  {
-    img: companion.img_surprised,
-    text: 'Congratulations! You mercilessly murdered the Training Slime.',
-    spotlight: null,
-    closeNext: false,
-  },
-  {
-    img: companion.img_surprised,
-    text: "I'll let you know that this was the last specimen of its family and will NEVER respawn. You officially commited a genocide.",
-    spotlight: null,
-    closeNext: false,
-  },
-  {
-    img: companion.img_surprised,
-    text: 'Yay for murder!',
-    spotlight: null,
-    closeNext: true,
-  },
-];
+// const getTutorial = (companion: Companion): TutorialStep[] => [
+//   // HOME VIEW PART - 0-3
+//   {
+//     id: 'start',
+//     companionImg: companion.img_idle,
+//     companionSpeech: 'Hello there master!',
+//     spotlight: null,
+//     spotlightShape: null,
+//     img: null,
+//     text: null,
+//     effects: null,
+//     closeNext: false,
+//   },
+//   {
+//     id: 'cool_tutorial',
+//     companionImg: companion.img_happy,
+//     companionSpeech: 'This is a very cool tutorial!',
+//     spotlight: null,
+//     spotlightShape: null,
+//     img: null,
+//     text: null,
+//     effects: null,
+//     closeNext: false,
+//   },
+//   {
+//     id: 'awesome',
+//     companionImg: companion.img_happy,
+//     companionSpeech: 'Look how awesome it is!',
+//     spotlight: ['calc(50% - 50px)', 'calc(50% - 50px)', '100px'],
+//     spotlightShape: null,
+//     img: null,
+//     text: null,
+//     effects: null,
+//     closeNext: false,
+//   },
+//   {
+//     id: 'goodbye_1',
+//     companionImg: companion.img_surprised,
+//     companionSpeech: 'Thats it for now, goodbye!',
+//     spotlight: null,
+//     spotlightShape: null,
+//     img: null,
+//     text: null,
+//     effects: null,
+//     closeNext: true,
+//   },
+//   // PREPARE VIEW PART - 4-6
+//   {
+//     id: 'slime',
+//     companionImg: companion.img_happy,
+//     companionSpeech:
+//       "This is a Training Slime - it won't hurt you, and you can test your combat abilities on it.",
+//     spotlight: ['calc(50% - 300px)', 'calc(50% - 300px)', '600px'],
+//     spotlightShape: null,
+//     img: null,
+//     text: null,
+//     effects: null,
+//     closeNext: false,
+//   },
+//   {
+//     id: 'murder',
+//     companionImg: companion.img_surprised,
+//     companionSpeech: 'MURDER HIM!!!',
+//     spotlight: null,
+//     spotlightShape: null,
+//     img: null,
+//     text: null,
+//     effects: null,
+//     closeNext: false,
+//   },
+//   {
+//     id: 'woof',
+//     companionImg: companion.img_surprised,
+//     companionSpeech: 'Woof :3',
+//     spotlight: null,
+//     spotlightShape: null,
+//     img: null,
+//     text: null,
+//     effects: null,
+//     closeNext: true,
+//   },
+//   // FIGHT VIEW PART - 7-9
+//   {
+//     id: 'tap_to_hit',
+//     companionImg: companion.img_idle,
+//     companionSpeech: 'Tap to hit! Woof.',
+//     spotlight: null,
+//     spotlightShape: null,
+//     img: null,
+//     text: null,
+//     effects: null,
+//     closeNext: false,
+//   },
+//   {
+//     id: 'attack_timer',
+//     companionImg: companion.img_idle,
+//     companionSpeech:
+//       'Top left corner shows the time until the next monster attack.',
+//     spotlight: ['-80px', '-80px', '200px'],
+//     spotlightShape: null,
+//     img: null,
+//     text: null,
+//     effects: null,
+//     closeNext: true,
+//   },
+//   {
+//     id: 'flee',
+//     companionImg: companion.img_idle,
+//     companionSpeech:
+//       "If you're sure the next attack would kill you, you can quickly flee by clicking the button at the bottom.",
+//     spotlight: ['calc(100% - 180px)', 'calc(50% - 150px)', '300px'],
+//     spotlightShape: null,
+//     img: null,
+//     text: null,
+//     effects: null,
+//     closeNext: true,
+//   },
+//   // FINAL VIEW PART - 10-12
+//   {
+//     id: 'congratulations',
+//     companionImg: companion.img_surprised,
+//     companionSpeech:
+//       'Congratulations! You mercilessly murdered the Training Slime.',
+//     spotlight: null,
+//     spotlightShape: null,
+//     img: null,
+//     text: null,
+//     effects: null,
+//     closeNext: false,
+//   },
+//   {
+//     id: 'last_specimen',
+//     companionImg: companion.img_surprised,
+//     companionSpeech:
+//       "I'll let you know that this was the last specimen of its family and will NEVER respawn. You officially commited a genocide.",
+//     spotlight: null,
+//     spotlightShape: null,
+//     img: null,
+//     text: null,
+//     effects: null,
+//     closeNext: false,
+//   },
+//   {
+//     id: 'goodbye_2',
+//     companionImg: companion.img_surprised,
+//     companionSpeech: 'Yay for murder!',
+//     spotlight: null,
+//     spotlightShape: null,
+//     img: null,
+//     text: null,
+//     effects: null,
+//     closeNext: true,
+//   },
+// ];

@@ -33,8 +33,11 @@ export const HomeView = () => {
     <div className={s.homeView}>
       {!isFinishedTutorial && (
         <>
-          {isTutorialDummyKilled && <Tutorial stepFrom={10} stepTo={12} />}
-          <Tutorial stepFrom={0} stepTo={3} />
+          {!isTutorialDummyKilled ? (
+            <Tutorial stepFrom="part1_start" stepTo="part1_end" />
+          ) : (
+            <Tutorial stepFrom="part4_start" stepTo="part4_end" />
+          )}
         </>
       )}
       <Map />

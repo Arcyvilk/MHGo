@@ -33,7 +33,9 @@ const Load = () => {
 
   return (
     <div className={modifiers(s, 'fightView', habitat)}>
-      {!isFinishedTutorial && <Tutorial stepFrom={4} stepTo={6} />}
+      {!isFinishedTutorial && (
+        <Tutorial stepFrom="part2_start" stepTo="part2_end" />
+      )}
       <Header name={name} level={level} />
       {inRange ? (
         <div className={s.fightView__wrapper}>

@@ -13,5 +13,6 @@ export * from './Monsters';
 export * from './News';
 export * from './Resource';
 export * from './Settings';
+export * from './Tutorial';
 export * from './User';
 export * from './Wealth';

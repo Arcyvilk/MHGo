@@ -14,4 +14,5 @@ export * from './useNewsApi';
 export * from './useResourceDropsApi';
 export * from './useResourcesApi';
 export * from './useSettingsApi';
+export * from './useTutorialApi';
 export * from './useUserApi';
