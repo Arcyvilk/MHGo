@@ -30,6 +30,8 @@ export const DEFAULT_MONSTER: Monster = {
   habitat: 'swamp',
   name: '',
   description: '',
+  hideInGuide: false,
+  extinct: false,
   levelRequirements: 0,
   baseAttackSpeed: 0,
   baseHP: 0,

@@ -46,8 +46,10 @@ export const useTutorial = (
     return curr ?? null;
   }, [tutorial, step]);
 
-  const { finishTutorial, unlockAchievementIfApplicable } =
-    useTutorialAchievement(currentStep, setIsModalAchievementOpen);
+  const { unlockAchievementIfApplicable } = useTutorialAchievement(
+    currentStep,
+    setIsModalAchievementOpen,
+  );
   const { isFinishedTutorialPartOne, isFinishedTutorialPartTwo } =
     useTutorialProgress();
 
@@ -64,10 +66,7 @@ export const useTutorial = (
       // ...but more is coming soon
       if (tutorialPart.nextPartId) setTutorialStep(tutorialPart.nextPartId);
       // And this happens if tutorial finished altogether!
-      else {
-        finishTutorial();
-        onEnd();
-      }
+      else onEnd();
     }
   };
 
@@ -179,12 +178,5 @@ const useTutorialAchievement = (
     else mutate({ achievementId: AchievementId.TUTORIAL, progress: 1 });
   };
 
-  const finishTutorial = () => {
-    alert('Tutorial finished');
-  };
-
-  return {
-    finishTutorial,
-    unlockAchievementIfApplicable,
-  };
+  return { unlockAchievementIfApplicable };
 };

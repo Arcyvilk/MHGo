@@ -17,5 +17,7 @@ export type Monster = {
   baseAttackSpeed: number;
   baseExp: number;
   baseWealth: BaseWealth[];
+  extinct: boolean;
+  hideInGuide: boolean;
   levelRequirements: number | null;
 };

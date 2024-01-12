@@ -24,7 +24,7 @@ type ContextType = {
 export const AppContextProvider = ({
   children,
 }: PropsWithChildren): JSX.Element => {
-  const [tutorialStep, setTutorialStep] = useState(null);
+  const [tutorialStep, setTutorialStep] = useState<string | null>(null);
   const [isTutorialDummyKilled, setIsTutorialDummyKilled] = useState(false);
   const [volume] = useLocalStorage<Record<Volume, number>>(
     'MHGO_VOLUME',

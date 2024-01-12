@@ -1,6 +1,6 @@
 import { Material, Monster, Item as TItem, Drop } from '@mhgo/types';
 
-import { Item, modifiers, useItemsApi } from '@mhgo/front';
+import { Item, addCdnUrl, modifiers, useItemsApi } from '@mhgo/front';
 import { CloseButton, Loader, QueryBoundary, Tooltip } from '@mhgo/front';
 import {
   useMonstersApi,
@@ -19,10 +19,16 @@ export const MonsterGuideView = () => (
 
 const Load = () => {
   const { data: monsters } = useMonstersApi();
-  const sortedMonsters = monsters.sort((a, b) => {
-    if ((a.levelRequirements ?? 0) > (b.levelRequirements ?? 0)) return 1;
-    return -1;
-  });
+  const sortedMonsters = monsters
+    .filter(m => !m.hideInGuide)
+    .sort((a, b) => {
+      if ((a.levelRequirements ?? 0) > (b.levelRequirements ?? 0)) return 1;
+      return -1;
+    });
+  const extinctMonsters = sortedMonsters.filter(m => m.extinct);
+  const aliveMonsters = sortedMonsters.filter(m => !m.extinct);
+
+  const allMonsters = [...aliveMonsters, ...extinctMonsters];
 
   return (
     <div className={s.monsterGuideView}>
@@ -30,7 +36,7 @@ const Load = () => {
         <div className={s.header__title}>Monster Guide</div>
       </div>
       <div className={s.monsterGuideView__monsters}>
-        {sortedMonsters.map(monster => (
+        {allMonsters.map(monster => (
           <MonsterTile monster={monster} key={monster.id} />
         ))}
       </div>
@@ -74,30 +80,43 @@ const MonsterTile = ({ monster }: { monster: Monster }) => {
     );
   return (
     <div className={s.monster}>
-      <img className={s.monster__thumbnail} src={monster.thumbnail} />
+      <img
+        src={monster.thumbnail}
+        className={modifiers(s, 'monster__thumbnail', {
+          isExtinct: monster.extinct,
+        })}
+      />
       <div className={s.monster__details}>
         <h2 className={s.monster__name}>{monster.name}</h2>
-        <div className={s.monster__table}>
-          <div className={s.monster__detail}>
-            Found in: <span style={{ fontWeight: 400 }}>{monster.habitat}</span>
-          </div>
-          <div className={s.monster__detail}>
-            Weakness: <span style={{ fontWeight: 400 }}>getting killed</span>
-          </div>
-          <div className={s.monster__detail}>
-            Drops:{' '}
-            <div className={s.monster__drops}>
-              {uniqueMonsterDrops.map(drop => {
-                const data = { ...drop, purchasable: false };
-                return (
-                  <Tooltip content={drop.name}>
-                    <Item data={data} simple key={drop.id} />
-                  </Tooltip>
-                );
-              })}
+        {monster.extinct ? (
+          <img
+            src={addCdnUrl('/misc/extinct.png')}
+            className={s.monster__extinct}
+          />
+        ) : (
+          <div className={s.monster__table}>
+            <div className={s.monster__detail}>
+              Found in:{' '}
+              <span style={{ fontWeight: 400 }}>{monster.habitat}</span>
+            </div>
+            <div className={s.monster__detail}>
+              Weakness: <span style={{ fontWeight: 400 }}>getting killed</span>
+            </div>
+            <div className={s.monster__detail}>
+              Drops:{' '}
+              <div className={s.monster__drops}>
+                {uniqueMonsterDrops.map(drop => {
+                  const data = { ...drop, purchasable: false };
+                  return (
+                    <Tooltip content={drop.name}>
+                      <Item data={data} simple key={drop.id} />
+                    </Tooltip>
+                  );
+                })}
+              </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );

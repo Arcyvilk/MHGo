@@ -25,6 +25,7 @@
 }
 
 .monster {
+  position: relative;
   display: flex;
   width: 100%;
   padding: $size-16;
@@ -32,6 +33,16 @@
   justify-content: space-around;
   background-color: rgba($color-white, 0.6);
   gap: $size-32;
+  overflow: hidden;
+
+
+  &__extinct {
+    top: calc(50% - 80px);
+    left: 30%;
+    position: absolute;
+    aspect-ratio: 1 / 1;
+    object-fit: contain;
+  }
 
   &__thumbnail {
     flex: 1 1 40%;
@@ -43,6 +54,10 @@
     &--locked {
       opacity: 0.3;
       filter: contrast(0) brightness(0);
+    }
+
+    &--isExtinct {
+      filter: grayscale(90%);
     }
   }
 
