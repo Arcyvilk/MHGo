@@ -10,21 +10,26 @@ import { useUserTutorial } from '../../hooks/useUser';
 
 import s from './Tutorial.module.scss';
 import { Companion } from '@mhgo/types';
+import { useAppContext } from '../../utils/context';
 
-export const Tutorial = () => (
+type TutorialProps = {
+  stepFrom: number;
+  stepTo: number;
+};
+export const Tutorial = (props: TutorialProps) => (
   <QueryBoundary fallback={null}>
-    <Load />
+    <Load {...props} />
   </QueryBoundary>
 );
 
-const Load = () => {
+const Load = ({ stepFrom, stepTo }: TutorialProps) => {
+  const { tutorialStep: step, setTutorialStep } = useAppContext();
   const { userId } = useMe();
   const { setting = '' } = useSettingsApi<string>('default_companion', '');
   const { isFinishedTutorial } = useUserTutorial(userId!);
   const { data: companion, isFetched } = useCompanionApi(setting);
 
   const [isOpen, setIsOpen] = useState(true);
-  const [step, setStep] = useState(0);
 
   const tutorial = useMemo(() => {
     if (isFetched && companion) return getTutorial(companion);
@@ -32,9 +37,10 @@ const Load = () => {
   }, [isFetched, companion]);
 
   const nextStep = () => {
-    if (tutorial[step].closeNext || !tutorial[step + 1]) {
+    setTutorialStep(step + 1);
+    if (tutorial[step].closeNext || !tutorial[step + 1] || step >= stepTo) {
       setIsOpen(false);
-    } else setStep(step + 1);
+    }
   };
 
   if (!isFetched || isFinishedTutorial) return null;
@@ -95,6 +101,30 @@ const getTutorial = (companion: Companion): TutorialStep[] => [
     img: companion.img_surprised,
     text: 'Thats it for now, goodbye!',
     spotlight: null,
-    closeNext: true,
+    closeNext: false,
+  },
+  {
+    img: companion.img_happy,
+    text: 'Attack this dude!',
+    spotlight: ['calc(50% - 250px)', 'calc(50% - 250px)', '500px'],
+    closeNext: false,
+  },
+  {
+    img: companion.img_surprised,
+    text: 'MURDER HIM!!!',
+    spotlight: null,
+    closeNext: false,
+  },
+  {
+    img: companion.img_surprised,
+    text: 'Woof :3',
+    spotlight: null,
+    closeNext: false,
+  },
+  {
+    img: companion.img_surprised,
+    text: 'Congratulations!!!',
+    spotlight: null,
+    closeNext: false,
   },
 ];

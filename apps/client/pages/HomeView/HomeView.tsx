@@ -8,12 +8,17 @@ import { Map } from './Map';
 
 import s from './HomeView.module.scss';
 import { Tutorial } from '../../containers';
+import { useMe } from '../../hooks/useAuth';
+import { useUserTutorial } from '../../hooks/useUser';
 
 const TEMP_SRC = 'https://cdn.arcyvilk.com/mhgo/misc/question.svg';
 
 export const HomeView = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
+
+  const { userId } = useMe();
+  const { isFinishedTutorial } = useUserTutorial(userId!);
 
   const onEquipmentClick = () => navigate('/equipment');
   const onItemsClick = () => setIsModalOpen(true);
@@ -24,7 +29,7 @@ export const HomeView = () => {
 
   return (
     <div className={s.homeView}>
-      <Tutorial />
+      <Tutorial stepFrom={0} stepTo={3} />
       <Map />
       <div className={s.actions}>
         {isModalOpen && (
@@ -32,14 +37,18 @@ export const HomeView = () => {
             <QuickUseModal />
           </Modal>
         )}
-        <div className={s.actions__top}>
-          <ActionButton icon="Face" onClick={onYouClick} />
-          <ActionButton icon="Armory" onClick={onEquipmentClick} />
-          <ActionButton icon="Paintball" onClick={onPaintballClick} />
-          <ActionButton icon="Potion" onClick={onItemsClick} />
-          <ActionButton icon="Shop" onClick={onShopClick} />
-        </div>
-        <QuestButton onClick={onQuestClick} />
+        {isFinishedTutorial && (
+          <>
+            <div className={s.actions__top}>
+              <ActionButton icon="Face" onClick={onYouClick} />
+              <ActionButton icon="Armory" onClick={onEquipmentClick} />
+              <ActionButton icon="Paintball" onClick={onPaintballClick} />
+              <ActionButton icon="Potion" onClick={onItemsClick} />
+              <ActionButton icon="Shop" onClick={onShopClick} />
+            </div>
+            <QuestButton onClick={onQuestClick} />
+          </>
+        )}
       </div>
     </div>
   );

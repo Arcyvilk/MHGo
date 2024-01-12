@@ -11,7 +11,7 @@ import {
   modifiers,
   useUserHealthApi,
 } from '@mhgo/front';
-import { HealthBarSimple } from '../../containers';
+import { HealthBarSimple, Tutorial } from '../../containers';
 import { useUser } from '../../hooks/useUser';
 import { useMonsterMarker } from '../../hooks/useMonsterMarker';
 
@@ -31,6 +31,7 @@ const Load = () => {
 
   return (
     <div className={modifiers(s, 'fightView', habitat)}>
+      <Tutorial stepFrom={4} stepTo={6} />
       <Header name={name} level={level} />
       {inRange ? (
         <div className={s.fightView__wrapper}>

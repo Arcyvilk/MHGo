@@ -22,8 +22,8 @@ const geoOptions = {
 };
 
 const mapOptions = {
-  zoom: 16,
-  minZoom: 15,
+  zoom: 17,
+  minZoom: 16,
   maxZoom: 18,
   scrollWheelZoom: 'center' as Zoom,
   dragging: false,
