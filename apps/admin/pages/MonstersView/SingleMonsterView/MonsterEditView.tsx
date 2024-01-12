@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { FormControlLabel, Switch } from '@mui/material';
 
 import { CDN_URL } from '@mhgo/front/env';
 import { BaseWealth, HabitatType, MonsterDrop } from '@mhgo/types';
@@ -14,10 +15,10 @@ import {
   Loader,
 } from '@mhgo/front';
 import { ActionBar, HeaderEdit, IconInfo } from '../../../containers';
+import { Status } from '../../../utils/types';
 import { MonsterDrops } from './MonsterDrops';
 
 import s from './SingleMonsterView.module.scss';
-import { Status } from '../../../utils/types';
 
 export const MonsterEditView = () => (
   <QueryBoundary fallback={<Loader />}>
@@ -332,6 +333,34 @@ const Load = () => {
                   ],
                 });
               }}
+            />
+          </div>
+          <div className={s.singleMonsterView__section}>
+            <FormControlLabel
+              label="Extinct?"
+              control={
+                <Switch
+                  color="default"
+                  checked={updatedMonster?.extinct}
+                  onChange={(_, extinct) =>
+                    updatedMonster &&
+                    setUpdatedMonster({ ...updatedMonster, extinct })
+                  }
+                />
+              }
+            />
+            <FormControlLabel
+              label="Hidden in Monster Guide?"
+              control={
+                <Switch
+                  color="default"
+                  checked={updatedMonster?.hideInGuide}
+                  onChange={(_, hideInGuide) =>
+                    updatedMonster &&
+                    setUpdatedMonster({ ...updatedMonster, hideInGuide })
+                  }
+                />
+              }
             />
           </div>
         </div>

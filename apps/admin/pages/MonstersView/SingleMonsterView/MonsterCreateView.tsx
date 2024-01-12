@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { FormControlLabel, Switch } from '@mui/material';
 
 import { CDN_URL } from '@mhgo/front/env';
 import { BaseWealth, HabitatType, Monster, MonsterDrop } from '@mhgo/types';
@@ -11,12 +12,12 @@ import {
   Select,
   useAdminCreateMonsterApi,
 } from '@mhgo/front';
+import { MonsterDrops } from './MonsterDrops';
+import { Status } from '../../../utils/types';
 import { ActionBar, HeaderEdit, IconInfo } from '../../../containers';
 import { DEFAULT_MONSTER } from '../../../utils/defaults';
 
 import s from './SingleMonsterView.module.scss';
-import { MonsterDrops } from './MonsterDrops';
-import { Status } from '../../../utils/types';
 
 export const MonsterCreateView = () => (
   <QueryBoundary fallback={<Loader />}>
@@ -302,6 +303,30 @@ const Load = () => {
                   ],
                 });
               }}
+            />
+          </div>
+          <div className={s.singleMonsterView__section}>
+            <FormControlLabel
+              label="Extinct?"
+              control={
+                <Switch
+                  color="default"
+                  checked={monster.extinct}
+                  onChange={(_, extinct) => setMonster({ ...monster, extinct })}
+                />
+              }
+            />
+            <FormControlLabel
+              label="Hidden in Monster Guide?"
+              control={
+                <Switch
+                  color="default"
+                  checked={monster?.hideInGuide}
+                  onChange={(_, hideInGuide) =>
+                    setMonster({ ...monster, hideInGuide })
+                  }
+                />
+              }
             />
           </div>
         </div>
