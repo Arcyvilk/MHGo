@@ -8,9 +8,7 @@ import { fetcher } from '..';
 export const useCompanionApi = (companionId: string) => {
   const getCompanion = async (): Promise<Companion> => {
     const path = `${API_URL}/companions/companion/${companionId}`;
-    console.log(path);
     const res = await fetcher(path);
-    console.log(res);
     return res.json();
   };
 
@@ -22,10 +20,8 @@ export const useCompanionApi = (companionId: string) => {
   } = useQuery<Companion, unknown, Companion, string[]>({
     queryKey: ['companion'],
     queryFn: getCompanion,
-    enabled: true,
+    enabled: Boolean(companionId),
   });
-
-  console.log(companionId, isLoading, isFetched, isError);
 
   const data = companion
     ? {

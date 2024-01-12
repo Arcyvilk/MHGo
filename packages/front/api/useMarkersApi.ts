@@ -4,8 +4,18 @@ import { MonsterMarker, ResourceMarker } from '@mhgo/types';
 import { API_URL } from '../env';
 import { fetcher } from '..';
 
-export const useSingleMonsterMarkerApi = (markerId: string | null) => {
+export const useSingleMonsterMarkerApi = (
+  markerId: string | null,
+  isTutorial?: boolean,
+) => {
   const getMonsterMarker = async (): Promise<MonsterMarker> => {
+    if (isTutorial)
+      return {
+        id: 'tutorial',
+        monsterId: 'tutorial',
+        coords: [0, 0],
+        level: null,
+      };
     const res = await fetcher(`${API_URL}/map/markers/monsters/${markerId}`);
     return res.json();
   };

@@ -7,10 +7,13 @@ import { Loader, QueryBoundary } from '@mhgo/front';
 import { UserMarker } from './Marker';
 import { MonsterMarkers } from './MonsterMarkers';
 import { ResourceMarkers } from './ResourceMarkers';
+import { TutorialMarkers } from './TutorialMarkers';
 import { DEFAULT_COORDS, DEFAULT_ZOOM } from '../../../utils/consts';
 
 import 'leaflet/dist/leaflet.css';
 import s from './Map.module.scss';
+import { useMe } from '../../../hooks/useAuth';
+import { useUserTutorial } from '../../../hooks/useUser';
 
 const geoOptions = {
   enableHighAccuracy: false,
@@ -67,6 +70,8 @@ const Load = () => {
 
 type MapLayerProps = { coords: number[] };
 const MapLayer = ({ coords }: MapLayerProps) => {
+  const { userId } = useMe();
+  const { isFinishedTutorial } = useUserTutorial(userId!);
   const [_, setZoom] = useLocalStorage('MHGO_MAP_ZOOM', DEFAULT_ZOOM);
   const map = useMap();
 
@@ -91,8 +96,14 @@ const MapLayer = ({ coords }: MapLayerProps) => {
           &copy; <a href="https://www.openstreetmap.org/copyright/" target="_blank">OpenStreetMap contributors</a>'
         url="https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}.png"
       />
-      <MonsterMarkers coords={coords} />
-      <ResourceMarkers coords={coords} />
+      {isFinishedTutorial ? (
+        <>
+          <MonsterMarkers coords={coords} />
+          <ResourceMarkers coords={coords} />
+        </>
+      ) : (
+        <TutorialMarkers coords={coords} />
+      )}
       <UserMarker coords={coords} />
     </>
   );

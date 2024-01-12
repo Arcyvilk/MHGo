@@ -16,13 +16,16 @@ export const useMonsterMarker = () => {
   const params = new URLSearchParams(location.search);
   const markerId = params.get('id');
   const level = params.get('level') ?? '0';
+
+  const isTutorial = markerId === 'tutorial';
+
   const { data: monsters, isFetched: isFetchedMonster } = useMonstersApi();
   const { data: monsterMarker, isFetched: isSingleMarkerFetched } =
-    useSingleMonsterMarkerApi(markerId);
+    useSingleMonsterMarkerApi(markerId, isTutorial);
 
-  const { inRange } = useMonsterMarkerDistance();
+  const { inRange } = useMonsterMarkerDistance(isTutorial);
 
-  const monsterId = monsterMarker?.monsterId;
+  const monsterId = isTutorial ? 'tutorial' : monsterMarker?.monsterId;
   const monsterData = monsters.find(m => m.id === monsterId);
 
   if (!monsterMarker || !monsterData)
@@ -48,7 +51,7 @@ export const useMonsterMarker = () => {
   };
 };
 
-const useMonsterMarkerDistance = () => {
+const useMonsterMarkerDistance = (isTutorial?: boolean) => {
   const params = new URLSearchParams(location.search);
   const markerId = params.get('id');
 
@@ -64,7 +67,7 @@ const useMonsterMarkerDistance = () => {
   const positionUser = new L.LatLng(coordsUser[0], coordsUser[1]);
 
   const distance = positionUser.distanceTo(positionMonster);
-  const inRange = distance <= mapRadius;
+  const inRange = isTutorial ? true : distance <= mapRadius!;
 
   return { distance, inRange, isFetched };
 };
