@@ -3,14 +3,14 @@ import { useNavigate } from 'react-router-dom';
 
 import { Icon, IconType, Modal, SoundSE, useSounds } from '@mhgo/front';
 import { Size } from '@mhgo/front';
+
+import { Tutorial } from '../../containers';
+import { useTutorialProgress } from '../../hooks/useTutorial';
+import { useAppContext } from '../../utils/context';
 import { QuickUseModal } from '../ModalView';
 import { Map } from './Map';
 
 import s from './HomeView.module.scss';
-import { Tutorial } from '../../containers';
-import { useMe } from '../../hooks/useAuth';
-import { useUserTutorial } from '../../hooks/useUser';
-import { useAppContext } from '../../utils/context';
 
 const TEMP_SRC = 'https://cdn.arcyvilk.com/mhgo/misc/question.svg';
 
@@ -19,8 +19,7 @@ export const HomeView = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
 
-  const { userId } = useMe();
-  const { isFinishedTutorial } = useUserTutorial(userId!);
+  const { isFinishedTutorialPartOne } = useTutorialProgress();
 
   const onEquipmentClick = () => navigate('/equipment');
   const onItemsClick = () => setIsModalOpen(true);
@@ -31,7 +30,7 @@ export const HomeView = () => {
 
   return (
     <div className={s.homeView}>
-      {!isFinishedTutorial && (
+      {!isFinishedTutorialPartOne && (
         <>
           {!isTutorialDummyKilled ? (
             <Tutorial stepFrom="part1_start" stepTo="part1_end" />
@@ -47,7 +46,7 @@ export const HomeView = () => {
             <QuickUseModal />
           </Modal>
         )}
-        {isFinishedTutorial && (
+        {isFinishedTutorialPartOne && (
           <>
             <div className={s.actions__top}>
               <ActionButton icon="Face" onClick={onYouClick} />

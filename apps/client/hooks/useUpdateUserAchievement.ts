@@ -2,6 +2,7 @@ import { useAchievementsApi, useUserUpdateAchievementApi } from '@mhgo/front';
 import { useUser } from './useUser';
 
 export enum AchievementId {
+  TUTORIAL = 'tutorial',
   HABEMUS_PAPAM = 'habemus_papam',
   TGTG = 'tgtg',
   DARK_ARTS = 'dark_arts',
@@ -9,6 +10,7 @@ export enum AchievementId {
   PRIMAL_RAGE = 'primal_rage',
   EASTER_EGG = 'easter_egg',
   HOARDER_EXTRAORDINAIRE = 'hoarder_extraordinaire',
+  HEARTLESS_MURDERER = 'heartless_murderer',
 }
 
 export const useUpdateUserAchievement = () => {

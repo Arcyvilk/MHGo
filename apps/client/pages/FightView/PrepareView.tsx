@@ -12,7 +12,8 @@ import {
   useUserHealthApi,
 } from '@mhgo/front';
 import { HealthBarSimple, Tutorial } from '../../containers';
-import { useUser, useUserTutorial } from '../../hooks/useUser';
+import { useUser } from '../../hooks/useUser';
+import { useTutorialProgress } from '../../hooks/useTutorial';
 import { useMonsterMarker } from '../../hooks/useMonsterMarker';
 
 import s from './FightView.module.scss';
@@ -24,8 +25,7 @@ export const PrepareView = () => (
 );
 
 const Load = () => {
-  const { userId } = useUser();
-  const { isFinishedTutorial } = useUserTutorial(userId);
+  const { isFinishedTutorialPartOne } = useTutorialProgress();
   const { markerId, monster, isFetched, inRange } = useMonsterMarker();
   const { habitat, level, name, img } = monster;
 
@@ -33,7 +33,7 @@ const Load = () => {
 
   return (
     <div className={modifiers(s, 'fightView', habitat)}>
-      {!isFinishedTutorial && (
+      {!isFinishedTutorialPartOne && (
         <Tutorial stepFrom="part2_start" stepTo="part2_end" />
       )}
       <Header name={name} level={level} />

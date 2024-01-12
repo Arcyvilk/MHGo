@@ -9,11 +9,11 @@ import { MonsterMarkers } from './MonsterMarkers';
 import { ResourceMarkers } from './ResourceMarkers';
 import { TutorialMarkers } from './TutorialMarkers';
 import { DEFAULT_COORDS, DEFAULT_ZOOM } from '../../../utils/consts';
+import { useMe } from '../../../hooks/useAuth';
+import { useTutorialProgress } from '../../../hooks/useTutorial';
 
 import 'leaflet/dist/leaflet.css';
 import s from './Map.module.scss';
-import { useMe } from '../../../hooks/useAuth';
-import { useUserTutorial } from '../../../hooks/useUser';
 
 const geoOptions = {
   enableHighAccuracy: false,
@@ -70,8 +70,7 @@ const Load = () => {
 
 type MapLayerProps = { coords: number[] };
 const MapLayer = ({ coords }: MapLayerProps) => {
-  const { userId } = useMe();
-  const { isFinishedTutorial } = useUserTutorial(userId!);
+  const { isFinishedTutorialPartOne } = useTutorialProgress();
   const [_, setZoom] = useLocalStorage('MHGO_MAP_ZOOM', DEFAULT_ZOOM);
   const map = useMap();
 
@@ -87,6 +86,8 @@ const MapLayer = ({ coords }: MapLayerProps) => {
     if (map) map.flyTo(L.latLng(coords[0], coords[1]));
   }, [coords, map]);
 
+  console.log(isFinishedTutorialPartOne);
+
   return (
     <>
       <TileLayer
@@ -96,7 +97,7 @@ const MapLayer = ({ coords }: MapLayerProps) => {
           &copy; <a href="https://www.openstreetmap.org/copyright/" target="_blank">OpenStreetMap contributors</a>'
         url="https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}.png"
       />
-      {isFinishedTutorial ? (
+      {isFinishedTutorialPartOne ? (
         <>
           <MonsterMarkers coords={coords} />
           <ResourceMarkers coords={coords} />

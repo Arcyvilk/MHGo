@@ -20,7 +20,9 @@ import {
 
 import { useAppContext } from '../../utils/context';
 import { useMonsterMarker } from '../../hooks/useMonsterMarker';
-import { useUser, useUserTutorial } from '../../hooks/useUser';
+import { useTutorialProgress } from '../../hooks/useTutorial';
+import { useUser } from '../../hooks/useUser';
+
 import { ModalSuccess } from './ModalSuccess';
 import { ModalFailure } from './ModalFailure';
 import { MonsterAttackTimer } from './MonsterAttackTimer';
@@ -40,7 +42,7 @@ const Load = () => {
   const navigate = useNavigate();
   const { userId } = useUser();
   const { data: userStats } = useUserStatsApi(userId);
-  const { isFinishedTutorial } = useUserTutorial(userId);
+  const { isFinishedTutorialPartOne } = useTutorialProgress();
 
   const { monster } = useMonsterMarker();
   const { habitat, level, baseHP = 0, name, img } = monster;
@@ -95,7 +97,7 @@ const Load = () => {
 
   return (
     <div className={modifiers(s, 'fightView', habitat)}>
-      {!isFinishedTutorial && (
+      {!isFinishedTutorialPartOne && (
         <Tutorial stepFrom="part3_start" stepTo="part3_end" />
       )}
       {isPlayerAlive && !isMonsterAlive && isModalOpen && (

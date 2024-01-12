@@ -4,7 +4,7 @@ import { TutorialStep } from '@mhgo/types';
 import { API_URL } from '../env';
 import { addCdnUrl, fetcher } from '..';
 
-type TutorialPart = {
+export type TutorialPart = {
   tutorial: TutorialStep[];
   nextPartId: string | null;
 };

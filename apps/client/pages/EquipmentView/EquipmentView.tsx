@@ -4,8 +4,12 @@ import { EquipmentLoadout } from './EquipmentLoadout';
 import { EquipmentOverview } from './EquipmentOverview';
 
 import s from './EquipmentView.module.scss';
+import { Tutorial } from '../../containers';
+import { useTutorialProgress } from '../../hooks/useTutorial';
 
 export const EquipmentView = () => {
+  const { isFinishedTutorialPartTwo } = useTutorialProgress();
+
   return (
     <div
       className={s.equipmentView}
@@ -13,6 +17,9 @@ export const EquipmentView = () => {
         // TODO get this from database
         backgroundImage: `url('${addCdnUrl('/misc/avatar_nobg.png')}')`,
       }}>
+      {!isFinishedTutorialPartTwo && (
+        <Tutorial stepFrom="part5_start" stepTo="part5_end" />
+      )}
       <div className={s.header}>
         <div className={s.header__title}>Equipment</div>
       </div>

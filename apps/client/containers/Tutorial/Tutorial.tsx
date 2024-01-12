@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { Modal, QueryBoundary, Rays, modifiers } from '@mhgo/front';
-import { useMe } from '../../hooks/useAuth';
-import { useUserTutorial } from '../../hooks/useUser';
+import { useTutorial } from '../../hooks/useTutorial';
 
 import s from './Tutorial.module.scss';
 import { TutorialStep } from '@mhgo/types';
+import { ModalAchievement } from '..';
+import { AchievementId } from '../../hooks/useUpdateUserAchievement';
 
 type TutorialProps = {
   stepFrom: string;
@@ -17,11 +18,11 @@ export const Tutorial = (props: TutorialProps) => (
 );
 
 const Load = ({ stepFrom, stepTo }: TutorialProps) => {
+  const [isModalAchievementOpen, setIsModalAchievementOpen] = useState(false);
   const [isOpen, setIsOpen] = useState(true);
-  const { userId } = useMe();
 
-  const { currentStep, goToNextStep, isFinishedTutorial, isFetched } =
-    useUserTutorial(userId!, stepFrom, stepTo);
+  const { currentStep, goToNextStep, isFinishedTutorialPartTwo, isFetched } =
+    useTutorial(stepFrom, stepTo, setIsModalAchievementOpen);
 
   const nextStep = () => {
     goToNextStep(() => {
@@ -31,22 +32,29 @@ const Load = ({ stepFrom, stepTo }: TutorialProps) => {
 
   const isCentered = currentStep?.img || currentStep?.text;
 
-  if (!isFetched || isFinishedTutorial) return null;
+  if (!isFetched || isFinishedTutorialPartTwo) return null;
   if (!currentStep) return null;
   return (
-    <Modal
-      isTransparent
-      isHighModal
-      isOpen={isOpen}
-      setIsOpen={setIsOpen}
-      onClose={nextStep}>
-      <div className={modifiers(s, 'tutorial', { isCentered })}>
-        {currentStep.effects === 'rays' && <Rays />}
-        <Spotlight currentStep={currentStep} />
-        <Companion currentStep={currentStep} />
-        <InfoDialog currentStep={currentStep} />
-      </div>
-    </Modal>
+    <>
+      <Modal
+        isTransparent
+        isHighModal
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        onClose={nextStep}>
+        <div className={modifiers(s, 'tutorial', { isCentered })}>
+          {currentStep.effects === 'rays' && <Rays />}
+          <Spotlight currentStep={currentStep} />
+          <Companion currentStep={currentStep} />
+          <InfoDialog currentStep={currentStep} />
+        </div>
+      </Modal>
+      <ModalAchievement
+        achievementId={AchievementId.TUTORIAL}
+        isOpen={isModalAchievementOpen}
+        setIsOpen={setIsModalAchievementOpen}
+      />
+    </>
   );
 };
 
