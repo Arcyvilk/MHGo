@@ -36,14 +36,29 @@ const Load = ({ stepFrom, stepTo }: TutorialProps) => {
     else return [];
   }, [isFetched, companion]);
 
+  const finishTutorial = () => {
+    alert('Tutorial finished');
+  };
+
   const nextStep = () => {
-    setTutorialStep(step + 1);
-    if (tutorial[step].closeNext || !tutorial[step + 1] || step >= stepTo) {
+    if (step >= stepFrom) {
+      setTutorialStep(step + 1);
+      return;
+    }
+    if (!tutorial[step + 1]) {
+      finishTutorial();
       setIsOpen(false);
+      return;
+    }
+    if (tutorial[step].closeNext || step >= stepTo) {
+      setTutorialStep(step + 1);
+      setIsOpen(false);
+      return;
     }
   };
 
-  if (!isFetched || isFinishedTutorial) return null;
+  if (!isFetched || isFinishedTutorial || step < stepFrom || step > stepTo)
+    return null;
   return (
     <Modal
       isTransparent
@@ -52,8 +67,6 @@ const Load = ({ stepFrom, stepTo }: TutorialProps) => {
       setIsOpen={setIsOpen}
       onClose={nextStep}>
       <div className={s.tutorial}>
-        <div className={s.tutorial__bubble}>{tutorial[step].text}</div>
-        <img className={s.tutorial__guide} src={tutorial[step].img} />
         {tutorial[step]?.spotlight && (
           <div
             className={s.tutorial__spotlight}
@@ -67,6 +80,8 @@ const Load = ({ stepFrom, stepTo }: TutorialProps) => {
             }}
           />
         )}
+        <div className={s.tutorial__bubble}>{tutorial[step].text}</div>
+        <img className={s.tutorial__guide} src={tutorial[step].img} />
       </div>
     </Modal>
   );
@@ -79,6 +94,7 @@ type TutorialStep = {
   spotlight: [string, string, string] | null;
 };
 const getTutorial = (companion: Companion): TutorialStep[] => [
+  // HOME VIEW PART - 0-3
   {
     img: companion.img_idle,
     text: 'Hello there master!',
@@ -101,12 +117,13 @@ const getTutorial = (companion: Companion): TutorialStep[] => [
     img: companion.img_surprised,
     text: 'Thats it for now, goodbye!',
     spotlight: null,
-    closeNext: false,
+    closeNext: true,
   },
+  // PREPARE VIEW PART - 4-6
   {
     img: companion.img_happy,
-    text: 'Attack this dude!',
-    spotlight: ['calc(50% - 250px)', 'calc(50% - 250px)', '500px'],
+    text: "This is a Training Slime - it won't hurt you, and you can test your combat abilities on it.",
+    spotlight: ['calc(50% - 300px)', 'calc(50% - 300px)', '600px'],
     closeNext: false,
   },
   {
@@ -119,12 +136,44 @@ const getTutorial = (companion: Companion): TutorialStep[] => [
     img: companion.img_surprised,
     text: 'Woof :3',
     spotlight: null,
+    closeNext: true,
+  },
+  // FIGHT VIEW PART - 7-9
+  {
+    img: companion.img_idle,
+    text: 'Tap to hit! Woof.',
+    spotlight: null,
+    closeNext: false,
+  },
+  {
+    img: companion.img_idle,
+    text: 'Top left corner shows the time until the next monster attack.',
+    spotlight: ['-80px', '-80px', '200px'],
+    closeNext: true,
+  },
+  {
+    img: companion.img_idle,
+    text: "If you're sure the next attack would kill you, you can quickly flee by clicking the button at the bottom.",
+    spotlight: ['calc(100% - 180px)', 'calc(50% - 150px)', '300px'],
+    closeNext: true,
+  },
+  // FINAL VIEW PART - 10-12
+  {
+    img: companion.img_surprised,
+    text: 'Congratulations! You mercilessly murdered the Training Slime.',
+    spotlight: null,
     closeNext: false,
   },
   {
     img: companion.img_surprised,
-    text: 'Congratulations!!!',
+    text: "I'll let you know that this was the last specimen of its family and will NEVER respawn. You officially commited a genocide.",
     spotlight: null,
     closeNext: false,
+  },
+  {
+    img: companion.img_surprised,
+    text: 'Yay for murder!',
+    spotlight: null,
+    closeNext: true,
   },
 ];

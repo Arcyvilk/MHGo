@@ -10,10 +10,12 @@ import s from './HomeView.module.scss';
 import { Tutorial } from '../../containers';
 import { useMe } from '../../hooks/useAuth';
 import { useUserTutorial } from '../../hooks/useUser';
+import { useAppContext } from '../../utils/context';
 
 const TEMP_SRC = 'https://cdn.arcyvilk.com/mhgo/misc/question.svg';
 
 export const HomeView = () => {
+  const { isTutorialDummyKilled } = useAppContext();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -29,7 +31,12 @@ export const HomeView = () => {
 
   return (
     <div className={s.homeView}>
-      <Tutorial stepFrom={0} stepTo={3} />
+      {!isFinishedTutorial && (
+        <>
+          {isTutorialDummyKilled && <Tutorial stepFrom={10} stepTo={12} />}
+          <Tutorial stepFrom={0} stepTo={3} />
+        </>
+      )}
       <Map />
       <div className={s.actions}>
         {isModalOpen && (

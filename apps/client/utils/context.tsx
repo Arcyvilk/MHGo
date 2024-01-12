@@ -9,6 +9,8 @@ import React, {
 type ContextType = {
   tutorialStep: number;
   setTutorialStep: (tutorialStep: number) => void;
+  isTutorialDummyKilled: boolean;
+  setIsTutorialDummyKilled: (isTutorialDummyKilled: boolean) => void;
   isLoggedIn: boolean;
   setIsLoggedIn: (isLoggedIn: boolean) => void;
   bearerToken: { bearer: string | null };
@@ -23,6 +25,7 @@ export const AppContextProvider = ({
   children,
 }: PropsWithChildren): JSX.Element => {
   const [tutorialStep, setTutorialStep] = useState(0);
+  const [isTutorialDummyKilled, setIsTutorialDummyKilled] = useState(false);
   const [volume] = useLocalStorage<Record<Volume, number>>(
     'MHGO_VOLUME',
     DEFAULT_VOLUME,
@@ -51,6 +54,8 @@ export const AppContextProvider = ({
   const value = {
     tutorialStep,
     setTutorialStep,
+    isTutorialDummyKilled,
+    setIsTutorialDummyKilled,
     isLoggedIn,
     setIsLoggedIn,
     bearerToken,

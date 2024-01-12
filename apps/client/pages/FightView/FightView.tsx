@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { HealthBarMonster, HealthBarUser } from '../../containers';
+import { HealthBarMonster, HealthBarUser, Tutorial } from '../../containers';
 import {
   CloseButton,
   Death,
@@ -20,7 +20,7 @@ import {
 
 import { useAppContext } from '../../utils/context';
 import { useMonsterMarker } from '../../hooks/useMonsterMarker';
-import { useUser } from '../../hooks/useUser';
+import { useUser, useUserTutorial } from '../../hooks/useUser';
 import { ModalSuccess } from './ModalSuccess';
 import { ModalFailure } from './ModalFailure';
 import { MonsterAttackTimer } from './MonsterAttackTimer';
@@ -40,6 +40,7 @@ const Load = () => {
   const navigate = useNavigate();
   const { userId } = useUser();
   const { data: userStats } = useUserStatsApi(userId);
+  const { isFinishedTutorial } = useUserTutorial(userId);
 
   const { monster } = useMonsterMarker();
   const { habitat, level, baseHP = 0, name, img } = monster;
@@ -94,6 +95,7 @@ const Load = () => {
 
   return (
     <div className={modifiers(s, 'fightView', habitat)}>
+      {!isFinishedTutorial && <Tutorial stepFrom={7} stepTo={9} />}
       {isPlayerAlive && !isMonsterAlive && isModalOpen && (
         <ModalSuccess isOpen setIsOpen={setIsModalOpen} onClose={onFightEnd} />
       )}

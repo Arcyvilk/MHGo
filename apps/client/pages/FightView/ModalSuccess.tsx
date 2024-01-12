@@ -24,6 +24,7 @@ import {
 import { useMonsterMarker } from '../../hooks/useMonsterMarker';
 
 import s from './ModalResult.module.scss';
+import { useAppContext } from '../../utils/context';
 
 type ModalProps = {
   isOpen: boolean;
@@ -46,10 +47,11 @@ const Load = ({ onClose }: { onClose: () => void }) => {
   const markerId = params.get('id') ?? '';
   const level = params.get('level') ?? '0';
 
+  const { setIsTutorialDummyKilled } = useAppContext();
   const [isModalLevelUpOpen, setIsModalLevelUpOpen] = useState(false);
   const [isLootRedeemed, setIsLootRedeemed] = useState(false);
   const { userId } = useUser();
-  const { monster } = useMonsterMarker();
+  const { monster, isTutorial } = useMonsterMarker();
   const {
     data: drops,
     mutate: mutateUserDrops,
@@ -72,7 +74,7 @@ const Load = ({ onClose }: { onClose: () => void }) => {
   });
 
   const redeemLoot = useCallback(() => {
-    if (isLootRedeemed) return;
+    if (isLootRedeemed || isTutorial) return;
     setIsLootRedeemed(true);
     mutateUserWealth(wealthChange);
     mutateUserExp({ expChange });
@@ -83,6 +85,7 @@ const Load = ({ onClose }: { onClose: () => void }) => {
   }, [isLootRedeemed]);
 
   useEffect(() => {
+    if (isTutorial) setIsTutorialDummyKilled(true);
     redeemLoot();
     updateAchievement();
   }, []);
@@ -116,29 +119,33 @@ const Load = ({ onClose }: { onClose: () => void }) => {
           setIsOpen={setIsModalAchievementOpen}
         />
       )}
-      <div className={s.result__misc}>
-        <div>
-          <span style={{ fontWeight: 900 }}>EXP:</span> +{expChange}
-        </div>
-        {/* TODO display money properly */}
-        <div>
-          <span style={{ fontWeight: 900 }}>Money:</span>
-          {JSON.stringify(wealthChange)}
-        </div>
-      </div>
-      <p className={s.result__desc}>Monster dropped the following items:</p>
-      <div className={s.result__drops}>
-        {isSuccess ? (
-          listOfDrops?.length ? (
-            listOfDrops
-          ) : (
-            "NOTHING! God damn it you're so unlucky ;-;"
-          )
-        ) : (
-          <Loader />
-        )}
-      </div>
-      <Button label="Claim" onClick={onClose} simple />
+      {!isTutorial && (
+        <>
+          <div className={s.result__misc}>
+            <div>
+              <span style={{ fontWeight: 900 }}>EXP:</span> +{expChange}
+            </div>
+            {/* TODO display money properly */}
+            <div>
+              <span style={{ fontWeight: 900 }}>Money:</span>
+              {JSON.stringify(wealthChange)}
+            </div>
+          </div>
+          <p className={s.result__desc}>Monster dropped the following items:</p>
+          <div className={s.result__drops}>
+            {isSuccess ? (
+              listOfDrops?.length ? (
+                listOfDrops
+              ) : (
+                "NOTHING! God damn it you're so unlucky ;-;"
+              )
+            ) : (
+              <Loader />
+            )}
+          </div>
+        </>
+      )}
+      <Button label={isTutorial ? 'Yay!' : 'Claim'} onClick={onClose} simple />
     </div>
   );
 };
