@@ -10,6 +10,10 @@
   gap: $size-32;
   background-color: rgba($color-black, 0.6);
 
+  &--isCentered {
+    justify-content: center;
+  }
+
   &__guide {
     max-width: 60%;
     max-height: 40%;
@@ -45,5 +49,18 @@
       right: 19px;
       bottom: -19px;
     }
+  }
+
+  &__infoDialog {
+    display: flex;
+    flex-direction: column;
+    gap: $size-16;
+    align-self: center;
+    align-items: center;
+    justify-content: center;
+    padding: $size-16;
+    border-radius: $size-16;
+    background-color: $color-white;
+    filter: drop-shadow(0 0 10px $color-black);
   }
 }

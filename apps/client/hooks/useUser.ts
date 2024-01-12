@@ -43,6 +43,7 @@ export const useUserTutorial = (
   stepFrom?: string,
   stepTo?: string,
 ) => {
+  const { userName } = useUser();
   const { tutorialStep: step, setTutorialStep } = useAppContext();
   const { data: userAchievements } = useUserAchievementsApi(userId);
   const { setting = '' } = useSettingsApi<string>('default_companion', '');
@@ -60,6 +61,14 @@ export const useUserTutorial = (
   const insertCompanionToTutorial = (c: Companion) => {
     return tutorialPart.tutorial.map((step: TutorialStep) => ({
       ...step,
+      ...(step.companionSpeech
+        ? {
+            companionSpeech: step.companionSpeech
+              .replace(/PLAYER_NAME/g, userName)
+              .replace(/COMPANION_NAME/g, c.name)
+              .replace(/COMPANION_SPECIES/g, c.species),
+          }
+        : {}),
       ...(step.companionImg
         ? {
             companionImg: c[step.companionImg as keyof Companion],

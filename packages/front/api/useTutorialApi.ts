@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { TutorialStep } from '@mhgo/types';
 
 import { API_URL } from '../env';
-import { fetcher } from '..';
+import { addCdnUrl, fetcher } from '..';
 
 type TutorialPart = {
   tutorial: TutorialStep[];
@@ -17,7 +17,7 @@ export const useTutorialApi = (stepFrom?: string, stepTo?: string) => {
   };
 
   const {
-    data = { tutorial: [], nextPartId: null },
+    data: tutorials = { tutorial: [], nextPartId: null },
     isLoading,
     isFetched,
     isError,
@@ -26,6 +26,14 @@ export const useTutorialApi = (stepFrom?: string, stepTo?: string) => {
     queryFn: getTutorial,
     staleTime: Infinity,
   });
+
+  const data = {
+    ...tutorials,
+    tutorial: tutorials.tutorial.map(t => ({
+      ...t,
+      ...(t.img ? { img: addCdnUrl(t.img) } : {}),
+    })),
+  };
 
   return { data, isLoading, isFetched, isError };
 };
