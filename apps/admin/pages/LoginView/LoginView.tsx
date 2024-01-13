@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { Button, Icon, Input, Loader, QueryBoundary, Size } from '@mhgo/front';
 import { useMe } from '../../utils/useMe';
 
@@ -12,17 +12,12 @@ export const LoginView = () => (
 );
 
 const Load = () => {
-  const navigate = useNavigate();
   const { isLoggedIn, loginUser, isLoginPending } = useMe();
   const [userName, setUserName] = useState('');
   const [pwd, setPwd] = useState('');
 
   const onLogin = () => {
     loginUser(userName, pwd);
-  };
-
-  const onSignIn = () => {
-    navigate('/signin');
   };
 
   if (isLoggedIn) return <Navigate to="/" replace={true} />;
@@ -62,12 +57,6 @@ const Load = () => {
               variant={Button.Variant.ACTION}
               label="Log in"
               onClick={onLogin}
-            />
-            <Button
-              variant={Button.Variant.GHOST}
-              inverted
-              label="Sign in"
-              onClick={onSignIn}
             />
           </div>
         )}
