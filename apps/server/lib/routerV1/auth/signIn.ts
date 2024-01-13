@@ -4,7 +4,13 @@ import { Request, Response } from 'express';
 import { log } from '@mhgo/utils';
 
 import { mongoInstance } from '../../../api';
-import { User, UserItems, UserAuth, UserLoadout } from '@mhgo/types';
+import {
+  User,
+  UserItems,
+  UserAuth,
+  UserLoadout,
+  UserWealth,
+} from '@mhgo/types';
 import { Db } from 'mongodb';
 
 const saltRounds = 10; //required by bcrypt
@@ -95,6 +101,10 @@ const giveUserStarterPack = async (db: Db, userId: string) => {
     userId,
     items: [
       {
+        id: 'treasure_map',
+        amount: 1,
+      },
+      {
         id: 'bare_fist',
         amount: 1,
       },
@@ -122,7 +132,28 @@ const giveUserStarterPack = async (db: Db, userId: string) => {
   const collectionLoadout = db.collection<UserLoadout>('userLoadout');
   const responseLoadout = await collectionLoadout.insertOne(userLoadout);
 
+  // Add wealth
+  const userWealth: UserWealth = {
+    userId,
+    wealth: [
+      {
+        id: 'base',
+        amount: 0,
+      },
+      {
+        id: 'premium',
+        amount: 0,
+      },
+    ],
+  };
+
+  const collectionWealth = db.collection<UserWealth>('userWealth');
+  const responseWealth = await collectionWealth.insertOne(userWealth);
+
   return {
-    acknowledged: responseItems.acknowledged && responseLoadout.acknowledged,
+    acknowledged:
+      responseItems.acknowledged &&
+      responseLoadout.acknowledged &&
+      responseWealth.acknowledged,
   };
 };

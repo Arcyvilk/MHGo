@@ -86,8 +86,6 @@ const MapLayer = ({ coords }: MapLayerProps) => {
     if (map) map.flyTo(L.latLng(coords[0], coords[1]));
   }, [coords, map]);
 
-  console.log(isFinishedTutorialPartOne);
-
   return (
     <>
       <TileLayer

@@ -32,7 +32,7 @@ export const updateUserWealth = async (
     const updatedWealth = currencies.map(currency => {
       const newUserAmount = newWealth[currency.id] ?? 0;
       const oldUserAmount =
-        userWealth.find(u => u.id === currency.id)?.amount ?? 0;
+        userWealth?.find(u => u.id === currency.id)?.amount ?? 0;
 
       return {
         id: currency.id,
