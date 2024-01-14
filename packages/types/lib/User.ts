@@ -47,3 +47,9 @@ export type UserWealth = {
   userId: string;
   wealth: UserAmount[];
 };
+
+export type UserQuestDaily = {
+  userId: string;
+  dailyDate: Date;
+  daily: { id: string; progress: number }[];
+};

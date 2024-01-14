@@ -229,6 +229,7 @@ import {
   getUserStats,
   getUserHealth,
   getUserEquipItem,
+  getUserDailyQuests,
   updateUserExp,
   updateUserHealth,
   updateUserWealth,
@@ -265,6 +266,12 @@ routerV1.put(
   '/users/user/:userId/achievement',
   verifyToken,
   updateUserAchievement,
+);
+
+routerV1.get(
+  '/users/user/:userId/quests/daily',
+  verifyToken,
+  getUserDailyQuests,
 );
 
 routerV1.put('/users/user/:userId/wealth', verifyToken, updateUserWealth);
@@ -330,6 +337,14 @@ routerV1.get('/materials/list', verifyToken, getMaterials);
 import { getHabitats } from './habitats';
 
 routerV1.get('/habitats/list', verifyToken, getHabitats);
+
+/**************************
+ *         QUESTS         *
+ **************************/
+
+import { getQuestsDaily } from './quests';
+
+routerV1.get('/quests/daily/list', verifyToken, getQuestsDaily);
 
 /********************************
  *         ACHIEVEMENTS         *

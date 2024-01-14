@@ -11,6 +11,7 @@ export * from './MapMarkers';
 export * from './Materials';
 export * from './Monsters';
 export * from './News';
+export * from './Quest';
 export * from './Resource';
 export * from './Settings';
 export * from './Tutorial';

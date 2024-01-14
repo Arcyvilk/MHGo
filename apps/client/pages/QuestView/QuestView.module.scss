@@ -56,6 +56,10 @@
     border: none;
     box-shadow: 0 2px 5px rgba($color-black, 0.2);
     border-radius: $size-8;
+
+    &--isDone {
+      background-color: rgba(211, 235, 179, 0.8);
+    }
   }
 
   &__details {

@@ -8,6 +8,7 @@ export { getUserWealth } from './getUserWealth';
 export { getUserStats } from './getUserStats';
 export { getUserHealth } from './getUserHealth';
 export { getUserEquipItem } from './getUserEquipItem';
+export { getUserDailyQuests } from './getUserDailyQuests';
 
 export { updateUserExp } from './updateUserExp';
 export { updateUserHealth } from './updateUserHealth';
