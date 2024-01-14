@@ -22,6 +22,8 @@ export const MONSTER_MISSING: Monster = {
   baseExp: 0,
   baseHP: 0,
   levelRequirements: 0,
+  extinct: false,
+  hideInGuide: false,
 };
 
 export const MONSTER_MARKER_MISSING: Omit<MonsterMarker, 'level'> & {
