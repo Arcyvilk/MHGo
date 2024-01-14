@@ -8,11 +8,84 @@
     padding: $size-16;
     gap: $size-16;
   }
+
+  &__header {
+    @include page-header;
+    &__title {
+      @include page-title; 
+    }
+  }
 }
 
-.header {
-  @include page-header;
+.dailyView {
+  display: flex;
+  flex-direction: column;
+
+  &__header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: $size-4;
+    margin-bottom: $size-4;
+    gap: $size-4;
+    background-color: rgba($color-header-bg, 0.6);
+  }
+
   &__title {
-    @include page-title; 
+    font-size: $size-14;
+  }
+
+  &__remaining {
+    font-size: $size-12;
+    color: $color-success;
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: $size-16;
+    padding: $size-16;
+  }
+
+  &__quest {
+    display: flex;
+    flex-direction: column;
+    padding: $size-12 $size-10;
+    background-color: $color-white;
+    border: none;
+    box-shadow: 0 2px 5px rgba($color-black, 0.2);
+    border-radius: $size-8;
+  }
+
+  &__details {
+    display: flex;
+    flex-direction: column;
+    gap: $size-12;
+  }
+
+  &__questName {
+    margin: 0;
+    font-size: $size-16; 
+  }
+
+  &__section {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: $size-16;
+    padding: $size-8 0;
+    &:last-child {
+      padding-bottom: 0;
+    }
+    &:not(:last-child) {
+      border-bottom: 1px solid rgba(0,0,0,0.2);
+    }
+  }
+
+  &__payment {
+    display: flex;
+    flex-direction: row;
+    gap: $size-4;
   }
 }

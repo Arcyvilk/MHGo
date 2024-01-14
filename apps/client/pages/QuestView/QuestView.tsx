@@ -1,12 +1,14 @@
 import { useState } from 'react';
-import { CloseButton } from '@mhgo/front';
-import { Tabs } from '@mhgo/front';
+import { CloseButton, Loader, QueryBoundary, Tabs } from '@mhgo/front';
+
+import { QuestDailyView } from './QuestDailyView';
+import { QuestStoryView } from './QuestStoryView';
 
 import s from './QuestView.module.scss';
 
 export const TABS = {
   STORY: 'Story',
-  SPECIAL: 'Special',
+  DAILY: 'Daily',
 };
 
 export const QuestView = () => {
@@ -14,14 +16,23 @@ export const QuestView = () => {
 
   return (
     <div className={s.questView}>
-      <div className={s.questView__wrapper}>
+      <div className={s.questView__header}>
         <Tabs
           allTabs={TABS}
           activeTab={activeTab}
           setActiveTab={setActiveTab}
         />
-        QuestView
       </div>
+      {activeTab === TABS.STORY && (
+        <QueryBoundary fallback={<Loader />}>
+          <QuestStoryView />
+        </QueryBoundary>
+      )}
+      {activeTab === TABS.DAILY && (
+        <QueryBoundary fallback={<Loader />}>
+          <QuestDailyView />
+        </QueryBoundary>
+      )}
       <CloseButton />
     </div>
   );
