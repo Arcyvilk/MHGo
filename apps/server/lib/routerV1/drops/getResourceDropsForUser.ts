@@ -93,12 +93,14 @@ export const getResourceDropsForUser = async (
       res.status(400).send({ error: "Could not update user's materials." });
     }
 
-    // TODO Respect custom resource respawn times!
     // Put marker on cooldown
+    const isCustomRespawnTime = marker.respawnTime !== undefined;
     const collectionSettings = db.collection<Setting<number>>('settings');
     const resourceRespawnTime =
+      marker.respawnTime ??
       (await collectionSettings.findOne({ key: 'respawn_time_resource' }))
-        ?.value ?? DEFAULT_RESPAWN_TIME;
+        ?.value ??
+      DEFAULT_RESPAWN_TIME;
     const collectionUserRespawn = db.collection<UserRespawn>('userRespawn');
     await collectionUserRespawn.insertOne({
       userId,
@@ -107,16 +109,23 @@ export const getResourceDropsForUser = async (
       usedAt: new Date(),
     });
 
+    const indexName = isCustomRespawnTime
+      ? `respawn_time_resource_${markerId}`
+      : 'respawn_time_resource';
+
     try {
-      await collectionUserRespawn.dropIndex('respawn_time_resource', {});
+      await collectionUserRespawn.dropIndex(indexName, {});
     } catch (_e) {
       // If this failed, it meant the index didnt exist
     }
     await collectionUserRespawn.createIndex(
       { usedAt: 1 },
       {
-        name: 'respawn_time_resource',
-        partialFilterExpression: { markerType: 'resource' },
+        name: indexName,
+        partialFilterExpression: {
+          markerType: 'resource',
+          ...(isCustomRespawnTime ? { markerId } : {}),
+        },
         expireAfterSeconds: resourceRespawnTime,
       },
     );
