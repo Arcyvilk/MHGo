@@ -51,5 +51,12 @@ export type UserWealth = {
 export type UserQuestDaily = {
   userId: string;
   dailyDate: Date;
-  daily: { id: string; progress: number }[];
+  daily: { id: string; progress: number; isClaimed: boolean }[];
+};
+
+export type UserQuestStory = {
+  userId: string;
+  questId: string;
+  progress: number;
+  obtainDate: Date | null;
 };

@@ -16,4 +16,5 @@ export type Quest = {
   maxProgress: number;
   rewards: QuestReward[];
   payment: QuestPayment[];
+  levelRequirement: number | null;
 };

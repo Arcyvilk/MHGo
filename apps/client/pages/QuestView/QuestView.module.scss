@@ -15,31 +15,6 @@
       @include page-title; 
     }
   }
-}
-
-.dailyView {
-  display: flex;
-  flex-direction: column;
-
-  &__header {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: $size-4;
-    margin-bottom: $size-4;
-    gap: $size-4;
-    background-color: rgba($color-header-bg, 0.6);
-  }
-
-  &__title {
-    font-size: $size-14;
-  }
-
-  &__remaining {
-    font-size: $size-12;
-    color: $color-success;
-  }
 
   &__list {
     display: flex;
@@ -49,6 +24,7 @@
   }
 
   &__quest {
+    position: relative;
     display: flex;
     flex-direction: column;
     padding: $size-12 $size-10;
@@ -59,6 +35,10 @@
 
     &--isDone {
       background-color: rgba(211, 235, 179, 0.8);
+    }
+
+    &--isClaimed {
+      opacity: 0.4;
     }
   }
 
@@ -91,5 +71,38 @@
     display: flex;
     flex-direction: row;
     gap: $size-4;
+    margin: auto 0 auto auto;
+  }
+
+  &__claimed {
+    position: absolute;
+    top: $size-12;
+    right: $size-12;
+    object-fit: cover;
+    opacity: 0.6;
+    max-height: 90%;
+    
+  }
+}
+
+.dailyView {
+  &__header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: $size-4;
+    margin-bottom: $size-4;
+    gap: $size-4;
+    background-color: rgba($color-header-bg, 0.6);
+  }
+
+  &__title {
+    font-size: $size-14;
+  }
+
+  &__remaining {
+    font-size: $size-12;
+    color: $color-success;
   }
 }
