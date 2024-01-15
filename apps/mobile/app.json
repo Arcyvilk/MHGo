@@ -6,7 +6,12 @@
     "orientation": "portrait",
     "icon": "./assets/favicon.png",
     "userInterfaceStyle": "dark",
-    "plugins": ["expo-location"],
+    "plugins": ["expo-location", "expo-navigation-bar", {
+      "position": "absolute",
+      "visibility": "hidden",
+      "behavior": "overlay-swipe",
+      "backgroundColor": "transparent"
+    }],
     "splash": {
       "image": "./assets/cave.png",
       "resizeMode": "cover",
@@ -32,6 +37,9 @@
       "eas": {
         "projectId": "49b8ef64-cf99-426d-8d4c-909a664d0403"
       }
+    },
+    "androidStatusBar": {
+      "hidden": true
     },
     "owner": "arcyvilk"
   }
