@@ -6,12 +6,7 @@
     "orientation": "portrait",
     "icon": "./assets/favicon.png",
     "userInterfaceStyle": "dark",
-    "plugins": ["expo-location", "expo-navigation-bar", {
-      "position": "absolute",
-      "visibility": "hidden",
-      "behavior": "overlay-swipe",
-      "backgroundColor": "transparent"
-    }],
+    "plugins": ["expo-location", "expo-navigation-bar"],
     "splash": {
       "image": "./assets/cave.png",
       "resizeMode": "cover",
