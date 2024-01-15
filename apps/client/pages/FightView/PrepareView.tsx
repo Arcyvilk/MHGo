@@ -43,11 +43,11 @@ const Load = () => {
           <Actions markerId={markerId} level={level} />
         </div>
       ) : (
-        <>
+        <div className={s.fightView__wrapper}>
           <img className={s.fightView__monster} src={img} draggable={false} />
           <InfoBar text="You are not in range!" />
           <CloseButton />
-        </>
+        </div>
       )}
     </div>
   );
