@@ -17,9 +17,11 @@ export const EquipmentView = () => {
         // TODO get this from database
         backgroundImage: `url('${addCdnUrl('/misc/avatar_nobg.png')}')`,
       }}>
-      {!isFinishedTutorialPartTwo && (
-        <Tutorial stepFrom="part5_start" stepTo="part5_end" />
-      )}
+      <Tutorial
+        stepFrom="part5_start"
+        stepTo="part5_end"
+        requirement={!isFinishedTutorialPartTwo}
+      />
       <div className={s.header}>
         <div className={s.header__title}>Equipment</div>
       </div>

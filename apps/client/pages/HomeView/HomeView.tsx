@@ -40,15 +40,16 @@ export const HomeView = () => {
 
   return (
     <div className={s.homeView}>
-      {!isFinishedTutorialPartOne && (
-        <>
-          {!isTutorialDummyKilled ? (
-            <Tutorial stepFrom="part1_start" stepTo="part1_end" />
-          ) : (
-            <Tutorial stepFrom="part4_start" stepTo="part4_end" />
-          )}
-        </>
-      )}
+      <Tutorial
+        stepFrom="part1_start"
+        stepTo="part1_end"
+        requirement={!isFinishedTutorialPartOne && !isTutorialDummyKilled}
+      />
+      <Tutorial
+        stepFrom="part4_start"
+        stepTo="part4_end"
+        requirement={!isFinishedTutorialPartOne && isTutorialDummyKilled}
+      />
       <Map />
       <div className={s.actions}>
         {isModalOpen && (

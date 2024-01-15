@@ -10,6 +10,7 @@ import { AchievementId } from '../../hooks/useUpdateUserAchievement';
 type TutorialProps = {
   stepFrom: string;
   stepTo: string;
+  requirement: boolean;
 };
 export const Tutorial = (props: TutorialProps) => (
   <QueryBoundary fallback={null}>
@@ -17,7 +18,7 @@ export const Tutorial = (props: TutorialProps) => (
   </QueryBoundary>
 );
 
-const Load = ({ stepFrom, stepTo }: TutorialProps) => {
+const Load = ({ stepFrom, stepTo, requirement }: TutorialProps) => {
   const [isModalAchievementOpen, setIsModalAchievementOpen] = useState(false);
   const [isOpen, setIsOpen] = useState(true);
 
@@ -39,21 +40,24 @@ const Load = ({ stepFrom, stepTo }: TutorialProps) => {
         isOpen={isModalAchievementOpen}
         setIsOpen={setIsModalAchievementOpen}
       />
-      {!isFinishedTutorialPartTwo && isFetched && currentStep && (
-        <Modal
-          isTransparent
-          isHighModal
-          isOpen={isOpen}
-          setIsOpen={setIsOpen}
-          onClose={nextStep}>
-          <div className={modifiers(s, 'tutorial', { isCentered })}>
-            {currentStep.effects === 'rays' && <Rays />}
-            <Spotlight currentStep={currentStep} />
-            <Companion currentStep={currentStep} />
-            <InfoDialog currentStep={currentStep} />
-          </div>
-        </Modal>
-      )}
+      {!isFinishedTutorialPartTwo &&
+        isFetched &&
+        currentStep &&
+        requirement && (
+          <Modal
+            isTransparent
+            isHighModal
+            isOpen={isOpen}
+            setIsOpen={setIsOpen}
+            onClose={nextStep}>
+            <div className={modifiers(s, 'tutorial', { isCentered })}>
+              {currentStep.effects === 'rays' && <Rays />}
+              <Spotlight currentStep={currentStep} />
+              <Companion currentStep={currentStep} />
+              <InfoDialog currentStep={currentStep} />
+            </div>
+          </Modal>
+        )}
     </>
   );
 };

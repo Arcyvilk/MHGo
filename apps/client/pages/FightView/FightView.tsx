@@ -97,9 +97,11 @@ const Load = () => {
 
   return (
     <div className={modifiers(s, 'fightView', habitat)}>
-      {!isFinishedTutorialPartOne && (
-        <Tutorial stepFrom="part3_start" stepTo="part3_end" />
-      )}
+      <Tutorial
+        stepFrom="part3_start"
+        stepTo="part3_end"
+        requirement={!isFinishedTutorialPartOne}
+      />
       {isPlayerAlive && !isMonsterAlive && isModalOpen && (
         <ModalSuccess isOpen setIsOpen={setIsModalOpen} onClose={onFightEnd} />
       )}
