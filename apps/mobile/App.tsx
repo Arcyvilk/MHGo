@@ -1,14 +1,36 @@
-import * as React from 'react';
+import React, { useEffect } from 'react';
+import { AppState } from 'react-native';
 import { WebView } from 'react-native-webview';
 import { setStatusBarHidden } from 'expo-status-bar';
 import * as NavigationBar from 'expo-navigation-bar';
 import { PermissionsAndroid, StyleSheet } from 'react-native';
 
 const App = () => {
-  NavigationBar.setVisibilityAsync('hidden');
-  NavigationBar.setPositionAsync('relative');
-  NavigationBar.setBehaviorAsync('overlay-swipe');
-  setStatusBarHidden(true, 'none');
+  const hideNavBar = () => {
+    NavigationBar.setBackgroundColorAsync('transparent');
+    NavigationBar.setPositionAsync('absolute'); // content doesnt move up when navbar visible
+    NavigationBar.setVisibilityAsync('hidden');
+    NavigationBar.setBehaviorAsync('overlay-swipe');
+    setStatusBarHidden(true, 'none');
+  };
+
+  useEffect(() => {
+    const handleAppStateChange = (nextAppState: string) => {
+      // If app is being used, hide nav bar
+      if (nextAppState === 'active') hideNavBar();
+    };
+
+    const appStateSubscription = AppState.addEventListener(
+      // Subscribe to app state changes
+      'change',
+      handleAppStateChange,
+    );
+
+    // Clean up the event listener when the component unmounts
+    return () => {
+      appStateSubscription.remove();
+    };
+  }, []);
 
   PermissionsAndroid.request(
     PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
