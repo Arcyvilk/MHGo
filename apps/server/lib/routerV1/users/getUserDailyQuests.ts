@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { log } from '@mhgo/utils';
-import { Quest, UserQuestDaily } from '@mhgo/types';
+import { Quest, Setting, UserQuestDaily } from '@mhgo/types';
 
 import { mongoInstance } from '../../../api';
 
@@ -24,16 +24,23 @@ export const getUserDailyQuests = async (
       return;
     }
 
-    // If no, get three random dailies from the list...
+    // If no, find out how many dailies should be there...
+    // Get base stats of every user
+    const collectionSettings = db.collection<Setting<number>>('settings');
+    const { value: maxDailyQuests } = await collectionSettings.findOne({
+      key: 'max_daily_quests',
+    });
+
+    // get X random dailies from the list...
     const collectionDailyQuests = db.collection<Quest>('questsDaily');
     const dailyQuests: Quest[] = [];
     const cursorDailyQuests = collectionDailyQuests.find();
     for await (const el of cursorDailyQuests) {
-      dailyQuests.push(el);
+      if (el.enabled) dailyQuests.push(el);
     }
 
     const shuffled = dailyQuests.sort(() => 0.5 - Math.random()); // Shuffle array randomly
-    const randomDailies = shuffled.slice(0, 3); // Get three first dailies from randomly shuffled list
+    const randomDailies = shuffled.slice(0, maxDailyQuests); // Get X first dailies from randomly shuffled list
     const randomUserDailies = {
       userId,
       dailyDate: new Date(new Date().setHours(24, 0, 0, 0)), // this sets expiration date to next midnight

@@ -17,4 +17,5 @@ export type Quest = {
   rewards: QuestReward[];
   payment: QuestPayment[];
   levelRequirement: number | null;
+  enabled: boolean;
 };

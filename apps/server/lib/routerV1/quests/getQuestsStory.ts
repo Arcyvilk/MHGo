@@ -16,7 +16,7 @@ export const getQuestsStory = async (
     const cursor = collection.find();
 
     for await (const el of cursor) {
-      quests.push(el);
+      if (el.enabled) quests.push(el);
     }
 
     res.status(200).send(quests);
