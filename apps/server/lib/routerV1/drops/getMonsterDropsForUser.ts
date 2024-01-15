@@ -39,6 +39,15 @@ export const getMonsterDropsForUser = async (
 
     const { db } = mongoInstance.getDb();
 
+    // Get the specified monster marker
+    const collectionMonsterMarkers =
+      db.collection<MonsterMarker>('markersMonster');
+    const marker = await collectionMonsterMarkers.findOne({
+      _id: new ObjectId(markerId),
+    });
+
+    if (!marker) throw new Error('This marker does not exist!');
+
     // Get all materials
     const collectionMaterials = db.collection<Material>('materials');
     const materials: Material[] = [];
@@ -55,13 +64,6 @@ export const getMonsterDropsForUser = async (
     for await (const el of cursorItems) {
       items.push(el);
     }
-
-    // Get the specified monster marker
-    const collectionMonsterMarkers =
-      db.collection<MonsterMarker>('markersMonster');
-    const marker = await collectionMonsterMarkers.findOne({
-      _id: new ObjectId(markerId),
-    });
 
     // Get drops from the specified monster
     const monsterId = marker.monsterId;

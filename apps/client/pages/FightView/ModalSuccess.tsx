@@ -51,9 +51,9 @@ const Load = ({ onClose }: { onClose: () => void }) => {
   const [isModalLevelUpOpen, setIsModalLevelUpOpen] = useState(false);
   const [isLootRedeemed, setIsLootRedeemed] = useState(false);
   const { userId } = useUser();
-  const { monster, isTutorial } = useMonsterMarker();
+  const { monster, isTutorial, isDummy } = useMonsterMarker();
   const {
-    data: drops,
+    data: drops = [],
     mutate: mutateUserDrops,
     isSuccess,
   } = useMonsterMarkerDropsApi(userId);
@@ -74,7 +74,7 @@ const Load = ({ onClose }: { onClose: () => void }) => {
   });
 
   const redeemLoot = useCallback(() => {
-    if (isLootRedeemed || isTutorial) return;
+    if (isLootRedeemed || isTutorial || isDummy) return;
     setIsLootRedeemed(true);
     mutateUserWealth(wealthChange);
     mutateUserExp({ expChange });
@@ -119,7 +119,7 @@ const Load = ({ onClose }: { onClose: () => void }) => {
           setIsOpen={setIsModalAchievementOpen}
         />
       )}
-      {!isTutorial && (
+      {!isTutorial && !isDummy && (
         <>
           <div className={s.result__misc}>
             <div>
@@ -145,7 +145,11 @@ const Load = ({ onClose }: { onClose: () => void }) => {
           </div>
         </>
       )}
-      <Button label={isTutorial ? 'Yay!' : 'Claim'} onClick={onClose} simple />
+      <Button
+        label={isTutorial || isDummy ? 'Yay!' : 'Claim'}
+        onClick={onClose}
+        simple
+      />
     </div>
   );
 };
@@ -176,6 +180,10 @@ const useKillingAchievements = (monsterId: string) => {
     if (monsterId === 'babcianiath') {
       setAchievementId(AchievementId.HABEMUS_PAPAM);
       mutate({ achievementId: AchievementId.HABEMUS_PAPAM, progress: 1 });
+    }
+    if (monsterId === 'dummy') {
+      setAchievementId(AchievementId.HEARTLESS_MURDERER);
+      mutate({ achievementId: AchievementId.HEARTLESS_MURDERER, progress: 1 });
     }
     if (
       monsterId === 'dracolich' &&

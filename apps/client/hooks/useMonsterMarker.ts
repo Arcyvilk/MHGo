@@ -55,6 +55,7 @@ export const useMonsterMarker = () => {
     monster,
     inRange,
     isTutorial,
+    isDummy,
     isFetched: isFetchedMonster && isSingleMarkerFetched,
   };
 };

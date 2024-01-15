@@ -127,6 +127,7 @@ const Load = () => {
             <img
               src={addCdnUrl(companion.img_full_idle)}
               className={s.companionView__image}
+              onContextMenu={e => e.preventDefault()}
               onClick={onPet}
             />
             {isSpeechBubbleOpen && <SpeechBubble tip={companionTip} />}

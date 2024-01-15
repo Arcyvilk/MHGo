@@ -124,6 +124,7 @@ const Load = () => {
             { isDead: !isMonsterAlive },
           )}
           onClick={onMonsterHit}
+          onContextMenu={e => e.preventDefault()}
           src={img}
         />
       </div>

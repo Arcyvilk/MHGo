@@ -77,6 +77,7 @@ const Load = () => {
                 isOnCooldown,
               })}
               onClick={onForage}
+              onContextMenu={e => e.preventDefault()}
               src={resource.img}
               draggable={false}
             />
