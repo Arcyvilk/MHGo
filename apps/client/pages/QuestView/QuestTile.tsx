@@ -44,8 +44,10 @@ export const QuestTile = ({ type, quest }: QuestTileProps) => {
 
   const onClaimReward = () => {
     setIsConfirmationModalOpen(false);
-    // TODO add claiming rewards from quests
-    toast.info('Not implemented yet!');
+    if (type === 'daily') toast.info('Not implemented yet!');
+    if (type === 'story')
+      // TODO add claiming rewards from quests
+      toast.info('Not implemented yet!');
   };
 
   const isDone = quest.progress === quest.maxProgress;
@@ -119,7 +121,7 @@ const ModalDailyConfirm = ({
           simple
         />
         <Button
-          label="I solemnly swear I have performed and finished my daily quest"
+          label="I solemnly swear I have finished this daily quest"
           variant={Button.Variant.ACTION}
           onClick={onConfirm}
           simple
