@@ -6,8 +6,10 @@ import {
   ItemAction,
   ItemActions,
   ItemCraftList,
+  ItemPrice,
   ItemStat,
   Stats,
+  UserAmount,
 } from '@mhgo/types';
 
 import { mongoInstance } from '../../../api';
@@ -18,10 +20,11 @@ export const adminCreateItem = async (
 ): Promise<void> => {
   try {
     const { db } = mongoInstance.getDb();
-    const { item, itemAction, itemCraft, itemStats } = req.body as {
+    const { item, itemAction, itemCraft, itemPrice, itemStats } = req.body as {
       item: Item;
       itemAction: ItemAction;
       itemCraft: CraftList[];
+      itemPrice: UserAmount[];
       itemStats: Stats;
     };
     if (!item) throw new Error('Incorrect item!');
@@ -72,6 +75,13 @@ export const adminCreateItem = async (
     await collectionItemStats.insertOne({
       itemId,
       stats: itemStats,
+    });
+
+    // Create item price
+    const collectionItemPrice = db.collection<ItemPrice>('itemPrice');
+    await collectionItemPrice.insertOne({
+      itemId,
+      price: itemPrice,
     });
 
     // Fin!

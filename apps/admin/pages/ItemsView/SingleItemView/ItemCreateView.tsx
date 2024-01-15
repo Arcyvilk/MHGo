@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { CraftList, ItemAction, Item as TItem } from '@mhgo/types';
+import { CraftList, ItemAction, Item as TItem, UserAmount } from '@mhgo/types';
 import { CDN_URL } from '@mhgo/front/env';
 import {
   Button,
@@ -38,11 +38,13 @@ const Load = () => {
     item,
     itemAction,
     itemCraft,
+    itemPrice,
     itemStats,
     itemImg,
     setItem,
     setItemAction,
     setItemCraft,
+    setItemPrice,
     setItemStats,
     onSave,
   } = useUpdateItem(setStatus);
@@ -92,7 +94,12 @@ const Load = () => {
             itemAction={itemAction}
             setItemAction={setItemAction}
           />
-          <SectionPurchasable item={item} setItem={setItem} />
+          <SectionPurchasable
+            item={item}
+            setItem={setItem}
+            itemPrice={itemPrice}
+            setItemPrice={setItemPrice}
+          />
         </div>
       </div>
     </div>
@@ -104,6 +111,7 @@ const useUpdateItem = (setStatus: (status: Status) => void) => {
   const [itemAction, setItemAction] = useState<ItemAction>({});
   const [itemCraft, setItemCraft] = useState<CraftList[]>([]);
   const [itemStats, setItemStats] = useState(DEFAULT_STATS);
+  const [itemPrice, setItemPrice] = useState<UserAmount[]>([]);
 
   const itemImg = useMemo(() => item?.img.replace(CDN_URL, '') ?? '', [item]);
 
@@ -111,7 +119,7 @@ const useUpdateItem = (setStatus: (status: Status) => void) => {
 
   const onSave = () => {
     if (item) {
-      mutateItem({ item, itemAction, itemCraft, itemStats });
+      mutateItem({ item, itemAction, itemCraft, itemPrice, itemStats });
     }
   };
 
@@ -120,10 +128,12 @@ const useUpdateItem = (setStatus: (status: Status) => void) => {
     itemImg,
     itemAction,
     itemCraft,
+    itemPrice,
     itemStats,
     setItem,
     setItemAction,
     setItemCraft,
+    setItemPrice,
     setItemStats,
     onSave,
   };

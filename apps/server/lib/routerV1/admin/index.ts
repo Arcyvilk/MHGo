@@ -14,6 +14,7 @@ export {
   adminUpdateItem,
   adminUpdateItemAction,
   adminUpdateItemCrafts,
+  adminUpdateItemPrice,
   adminUpdateItemStats,
 } from './adminUpdateItem';
 export { adminUpdateMaterial } from './adminUpdateMaterial';

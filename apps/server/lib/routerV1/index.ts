@@ -38,6 +38,7 @@ import {
   adminUpdateItem,
   adminUpdateItemAction,
   adminUpdateItemCrafts,
+  adminUpdateItemPrice,
   adminUpdateItemStats,
   adminUpdateMaterial,
   adminUpdateMonster,
@@ -81,6 +82,11 @@ routerV1.put(
   '/admin/items/item/:itemId/crafts',
   verifyAdminToken,
   adminUpdateItemCrafts,
+);
+routerV1.put(
+  '/admin/items/item/:itemId/price',
+  verifyAdminToken,
+  adminUpdateItemPrice,
 );
 routerV1.put(
   '/admin/items/item/:itemId/stats',

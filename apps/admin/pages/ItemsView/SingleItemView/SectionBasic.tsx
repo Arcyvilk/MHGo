@@ -82,6 +82,20 @@ export const SectionBasic = ({
           }
         />
         <Input
+          name="item_requirement"
+          label="Item's level requirement"
+          min={0}
+          type="number"
+          value={String(item?.levelRequirement ?? 0)}
+          setValue={levelRequirement =>
+            item &&
+            setItem({
+              ...item,
+              levelRequirement: Number(levelRequirement),
+            })
+          }
+        />
+        <Input
           name="item_obtainedAt"
           label="Where item can be obtained?"
           value={item?.obtainedAt ?? ''}

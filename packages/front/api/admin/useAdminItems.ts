@@ -1,5 +1,12 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { CraftList, Item, ItemAction, Stats } from '@mhgo/types';
+import {
+  CraftList,
+  Item,
+  ItemAction,
+  ItemPrice,
+  Stats,
+  UserAmount,
+} from '@mhgo/types';
 
 import { API_URL } from '../../env';
 import { fetcher } from '../..';
@@ -8,6 +15,7 @@ type ItemCreate = {
   item: Item;
   itemAction: ItemAction;
   itemCraft: CraftList[];
+  itemPrice: UserAmount[];
   itemStats: Stats;
 };
 export const useAdminCreateItemApi = () => {
@@ -61,6 +69,36 @@ export const useAdminUpdateItemApi = () => {
   const { mutate, error, status, isPending, isSuccess, isError } = useMutation({
     mutationKey: ['admin', 'item', 'update'],
     mutationFn: adminUpdateItem,
+  });
+
+  return { mutate, error, status, isPending, isSuccess, isError };
+};
+
+export const useAdminUpdateItemPriceApi = () => {
+  const queryClient = useQueryClient();
+
+  const adminUpdateItemPrice = async (variables: ItemPrice): Promise<void> => {
+    const { itemId, price } = variables;
+    const response = await fetcher(
+      `${API_URL}/admin/items/item/${itemId}/price`,
+      {
+        method: 'PUT',
+        body: JSON.stringify(price),
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+      },
+    );
+
+    if (response.status !== 200)
+      throw new Error((await response.json()).error ?? 'Did not work!');
+    queryClient.invalidateQueries({ queryKey: ['items'], exact: false });
+  };
+
+  const { mutate, error, status, isPending, isSuccess, isError } = useMutation({
+    mutationKey: ['admin', 'item', 'price', 'update'],
+    mutationFn: adminUpdateItemPrice,
   });
 
   return { mutate, error, status, isPending, isSuccess, isError };

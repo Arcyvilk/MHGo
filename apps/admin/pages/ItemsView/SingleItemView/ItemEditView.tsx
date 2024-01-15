@@ -8,9 +8,11 @@ import {
   useAdminUpdateItemActionApi,
   useAdminUpdateItemApi,
   useAdminUpdateItemCraftlistApi,
+  useAdminUpdateItemPriceApi,
   useAdminUpdateItemStatsApi,
   useItemActionsApi,
   useItemCraftsApi,
+  useItemPriceApi,
   useItemStatsApi,
   useItemsApi,
   useMonsterDropsApi,
@@ -45,12 +47,14 @@ const Load = () => {
     updatedItem,
     updatedItemAction,
     updatedItemCraft,
+    updatedItemPrice,
     updatedItemStats,
     itemImg,
     itemDrops,
     setUpdatedItem,
     setUpdatedItemAction,
     setUpdatedItemCraft,
+    setUpdatedItemPrice,
     setUpdatedItemStats,
     onSave,
   } = useUpdateItem(setStatus);
@@ -106,7 +110,12 @@ const Load = () => {
             itemAction={updatedItemAction}
             setItemAction={setUpdatedItemAction}
           />
-          <SectionPurchasable item={updatedItem} setItem={setUpdatedItem} />
+          <SectionPurchasable
+            item={updatedItem}
+            setItem={setUpdatedItem}
+            itemPrice={updatedItemPrice}
+            setItemPrice={setUpdatedItemPrice}
+          />
         </div>
       </div>
     </div>
@@ -145,6 +154,14 @@ const useUpdateItem = (setStatus: (status: Status) => void) => {
     setUpdatedItemCraft(itemCraft);
   }, [isCraftFetched]);
 
+  // ITEM PRICE API
+  const { data: itemPrice = [], isFetched: isPriceFetched } =
+    useItemPriceApi(id);
+  const [updatedItemPrice, setUpdatedItemPrice] = useState(itemPrice);
+  useEffect(() => {
+    setUpdatedItemPrice(itemPrice);
+  }, [isPriceFetched]);
+
   // ITEM DROPS API
   const { data: drops, isFetched: isDropsFetched } = useMonsterDropsApi();
   const itemDrops = useMemo(() => {
@@ -165,8 +182,13 @@ const useUpdateItem = (setStatus: (status: Status) => void) => {
   useEffect(() => {
     setUpdatedItemStats(itemStats);
   }, [isStatsFetched]);
-  const { mutateItem, mutateItemStats, mutateItemCraft, mutateItemAction } =
-    useStatus(setStatus);
+  const {
+    mutateItem,
+    mutateItemStats,
+    mutateItemCraft,
+    mutateItemAction,
+    mutateItemPrice,
+  } = useStatus(setStatus);
 
   // OTHER
   const itemImg = useMemo(
@@ -175,13 +197,20 @@ const useUpdateItem = (setStatus: (status: Status) => void) => {
   );
 
   const onSave = () => {
-    if (updatedItem) mutateItem({ ...updatedItem, img: itemImg });
+    if (updatedItem)
+      mutateItem({
+        ...updatedItem,
+        img: itemImg,
+        levelRequirement: updatedItem.levelRequirement ?? 0,
+      });
     if (updatedItemAction)
       mutateItemAction({ itemId: item!.id, ...updatedItemAction });
     if (updatedItemCraft?.length)
       mutateItemCraft({ itemId: item!.id, craftList: updatedItemCraft });
     if (updatedItemStats)
       mutateItemStats({ itemId: item!.id, stats: updatedItemStats });
+    if (updatedItemPrice)
+      mutateItemPrice({ itemId: item!.id, price: updatedItemPrice });
   };
 
   return {
@@ -190,11 +219,13 @@ const useUpdateItem = (setStatus: (status: Status) => void) => {
     updatedItem,
     updatedItemAction,
     updatedItemCraft,
+    updatedItemPrice,
     updatedItemStats,
     itemDrops,
     setUpdatedItem,
     setUpdatedItemAction,
     setUpdatedItemCraft,
+    setUpdatedItemPrice,
     setUpdatedItemStats,
     onSave,
   };
@@ -249,6 +280,22 @@ const useStatus = (setStatus: (status: Status) => void) => {
     });
   }, [isUpdateCraftSuccess, isUpdateCraftError, isUpdateCraftPending]);
 
+  // STATUS: ITEM PRICE
+  const {
+    mutate: mutateItemPrice,
+    isSuccess: isUpdatePriceSuccess,
+    isError: isUpdatePriceError,
+    isPending: isUpdatePricePending,
+  } = useAdminUpdateItemPriceApi();
+
+  useEffect(() => {
+    setStatus({
+      isSuccess: isUpdatePriceSuccess,
+      isError: isUpdatePriceError,
+      isPending: isUpdatePricePending,
+    });
+  }, [isUpdatePriceSuccess, isUpdatePriceError, isUpdatePricePending]);
+
   // STATUS: ITEM ACTION
   const {
     mutate: mutateItemAction,
@@ -265,5 +312,11 @@ const useStatus = (setStatus: (status: Status) => void) => {
     });
   }, [isUpdateActionSuccess, isUpdateActionError, isUpdateActionPending]);
 
-  return { mutateItem, mutateItemStats, mutateItemCraft, mutateItemAction };
+  return {
+    mutateItem,
+    mutateItemStats,
+    mutateItemCraft,
+    mutateItemAction,
+    mutateItemPrice,
+  };
 };

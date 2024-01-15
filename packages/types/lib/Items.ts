@@ -1,5 +1,4 @@
 import { UserAmount } from './User';
-import { Currency } from './Wealth';
 
 export type ItemType = 'quest' | 'weapon' | 'armor' | 'other';
 
@@ -24,6 +23,7 @@ export type Item = {
   obtainedAt: string; // Short description of where this can be gotten from
   consumable: boolean; // Does the item disappear upon use
   quickUse: boolean; // Is the item present in the "quick use" menu
+  levelRequirement: number | null; // From which level item appears in crafting menu
 };
 
 export type ItemActions = {

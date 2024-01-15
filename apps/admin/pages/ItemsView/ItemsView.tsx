@@ -27,6 +27,7 @@ const tableHeaders = [
   'Equippable?',
   'Consumable?',
   'Quick use?',
+  'Level requirement',
   'Actions',
 ];
 
@@ -97,6 +98,7 @@ const Load = () => {
       checked={item.quickUse}
       onChange={(_, checked) => onSwitch(checked, item, 'quickUse')}
     />,
+    item.levelRequirement,
     <Button
       label={<Icon icon="Edit" size={Size.MICRO} />}
       onClick={() => onItemEdit(item)}
