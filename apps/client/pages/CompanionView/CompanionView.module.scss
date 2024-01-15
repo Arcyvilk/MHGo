@@ -12,6 +12,21 @@
     gap: $size-16;
   }
 
+  &__name {
+    position: absolute;
+    top: -$size-32;
+    align-self: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: $size-8;
+    border: 10px solid $color-header-bg;
+    border-radius: $size-16;
+    background-color: $color-white;
+    font-size: $size-16;
+    gap: $size-8;
+  }
+
   &__companionWrapper {
     position: relative;
     display: flex;
@@ -20,7 +35,6 @@
     border: 10px solid $color-header-bg;
     border-radius: $size-16;
     background-color: $color-white;
-    overflow: hidden;
   }
 
   &__image  {
@@ -56,10 +70,10 @@
 
   &__actionBar {
     display: flex;
-    flex-direction: column;
+    flex-direction: column-reverse;
     height: 100%;
     position: absolute;
-    top:0;
+    bottom:0;
     right: $size-16;
     gap: $size-8;
   }

@@ -109,8 +109,6 @@ const QuestButtonLoad = ({ onClick }: QuestButtonProps) => {
     mostRecentQuest &&
     mostRecentQuest?.progress === mostRecentQuest?.maxProgress;
 
-  console.log(userQuestsWithDetails);
-
   const onButtonClick = () => {
     playSound(SoundSE.CLICK);
     onClick();

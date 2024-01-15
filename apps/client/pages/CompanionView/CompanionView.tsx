@@ -7,6 +7,7 @@ import {
   Loader,
   QueryBoundary,
   Rain,
+  Size,
   SoundSE,
   addCdnUrl,
   useCompanionApi,
@@ -89,6 +90,8 @@ const Load = () => {
 
   const onFeed = () => {
     playSound(SoundSE.DOG_EATING);
+    setCompanionTip('*nom nom nom*');
+    setIsSpeechBubbleOpen(true);
   };
 
   const onSetHomePosition = () => {
@@ -111,9 +114,15 @@ const Load = () => {
       <div className={s.header}>
         <div className={s.header__title}>Companion</div>
       </div>
+
       <div className={s.companionView__wrapper}>
         {companion && (
           <div className={s.companionView__companionWrapper}>
+            <div className={s.companionView__name}>
+              <Icon icon="DogPaw" size={Size.TINY} />
+              {companion?.name}, professional {companion?.species}
+              <Icon icon="DogPaw" size={Size.TINY} />
+            </div>
             <img
               src={addCdnUrl(companion.img_full_idle)}
               className={s.companionView__image}
@@ -125,16 +134,10 @@ const Load = () => {
         )}
         <div className={s.companionView__actionBar}>
           <Button
-            label={<Icon icon="Question" />}
-            onClick={onTip}
+            label={<Icon icon="Drumstick" />}
+            onClick={onFeed}
             variant={Button.Variant.DEFAULT}
-            title="Ask your companion for a tip!"
-          />
-          <Button
-            label={<Icon icon="HouseLock" />}
-            onClick={onSetHomePosition}
-            variant={Button.Variant.DEFAULT}
-            title="Set your home position to your current position!"
+            title="Feed your companion!"
           />
           <Button
             label={<Icon icon="Music" />}
@@ -143,10 +146,16 @@ const Load = () => {
             title="Ask your companion for a motivational battle hymn!"
           />
           <Button
-            label={<Icon icon="Drumstick" />}
-            onClick={onFeed}
+            label={<Icon icon="HouseLock" />}
+            onClick={onSetHomePosition}
             variant={Button.Variant.DEFAULT}
-            title="Feed your companion!"
+            title="Set your home position to your current position!"
+          />
+          <Button
+            label={<Icon icon="Question" />}
+            onClick={onTip}
+            variant={Button.Variant.DEFAULT}
+            title="Ask your companion for a tip!"
           />
         </div>
       </div>
