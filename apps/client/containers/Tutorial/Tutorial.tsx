@@ -32,8 +32,6 @@ const Load = ({ stepFrom, stepTo }: TutorialProps) => {
 
   const isCentered = currentStep?.img || currentStep?.text;
 
-  if (!isFetched || isFinishedTutorialPartTwo) return null;
-  if (!currentStep) return null;
   return (
     <>
       <ModalAchievement
