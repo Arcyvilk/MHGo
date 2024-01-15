@@ -22,8 +22,6 @@ import { Map } from './Map';
 
 import s from './HomeView.module.scss';
 
-const TEMP_SRC = 'https://cdn.arcyvilk.com/mhgo/misc/question.svg';
-
 export const HomeView = () => {
   const { isTutorialDummyKilled } = useAppContext();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -131,7 +129,10 @@ const QuestButtonLoad = ({ onClick }: QuestButtonProps) => {
               Chapter 1: Path to becoming a Master Hoarder
             </p>
           </div>
-          <img className={s.button__image} src={TEMP_SRC} />
+          <img
+            className={s.button__image}
+            src={addCdnUrl('/misc/question.svg')}
+          />
         </>
       ) : null}
     </button>
