@@ -7,7 +7,7 @@ import { PermissionsAndroid, StyleSheet } from 'react-native';
 const App = () => {
   NavigationBar.setVisibilityAsync('hidden');
   NavigationBar.setPositionAsync('relative');
-  NavigationBar.setBehaviorAsync('inset-touch');
+  NavigationBar.setBehaviorAsync('overlay-swipe');
   setStatusBarHidden(true, 'none');
 
   PermissionsAndroid.request(
