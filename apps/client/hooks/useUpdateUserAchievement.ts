@@ -11,6 +11,7 @@ export enum AchievementId {
   EASTER_EGG = 'easter_egg',
   HOARDER_EXTRAORDINAIRE = 'hoarder_extraordinaire',
   HEARTLESS_MURDERER = 'heartless_murderer',
+  SWEET_REVENGE = 'sweet_revenge',
 }
 
 export const useUpdateUserAchievement = () => {
