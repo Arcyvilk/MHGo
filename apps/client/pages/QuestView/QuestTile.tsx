@@ -44,7 +44,7 @@ export const QuestTile = ({ quest }: QuestTileProps) => {
   return (
     <div className={modifiers(s, 'questView__quest', { isDone, isClaimed })}>
       <div className={s.questView__section}>
-        <img src={addCdnUrl(quest.img)} />
+        <img className={s.questView__img} src={addCdnUrl(quest.img)} />
         <div className={s.questView__details}>
           <h3 className={s.questView__questName}>{quest.title}</h3>
           <ProgressBar max={quest.maxProgress} current={quest.progress} />

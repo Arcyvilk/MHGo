@@ -27,7 +27,7 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    padding: $size-12 $size-10;
+    padding: $size-8;
     background-color: $color-white;
     border: none;
     box-shadow: 0 2px 5px rgba($color-black, 0.2);
@@ -42,6 +42,11 @@
     }
   }
 
+  &__img {
+    max-width: 48px;
+    object-fit: cover;
+  }
+
   &__details {
     display: flex;
     flex-direction: column;
@@ -50,7 +55,7 @@
 
   &__questName {
     margin: 0;
-    font-size: $size-16; 
+    font-size: $size-14;
   }
 
   &__section {
