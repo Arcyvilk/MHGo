@@ -39,7 +39,7 @@ const Wealth = () => {
   return (
     <div className={s.wealth}>
       {wealth.map(currency => (
-        <CurrencyInfo price={currency} />
+        <CurrencyInfo key={`wealth-${currency.id}`} price={currency} />
       ))}
     </div>
   );

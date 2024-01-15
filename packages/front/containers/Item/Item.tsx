@@ -69,7 +69,9 @@ export const Item = ({
       <div className={s.item__name}>{name}</div>
       {purchasable &&
         price?.map(p => (
-          <div className={modifiers(s, 'item__price', p.id)}>
+          <div
+            key={`price-${p.id}`}
+            className={modifiers(s, 'item__price', p.id)}>
             <CurrencyInfo price={p} small />
           </div>
         ))}

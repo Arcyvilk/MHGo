@@ -37,7 +37,7 @@ const Load = () => {
       </div>
       <div className={s.monsterGuideView__monsters}>
         {allMonsters.map(monster => (
-          <MonsterTile monster={monster} key={monster.id} />
+          <MonsterTile key={`monster-tile-${monster.id}`} monster={monster} />
         ))}
       </div>
       <CloseButton />
@@ -108,8 +108,8 @@ const MonsterTile = ({ monster }: { monster: Monster }) => {
                 {uniqueMonsterDrops.map(drop => {
                   const data = { ...drop, purchasable: false };
                   return (
-                    <Tooltip content={drop.name}>
-                      <Item data={data} simple key={drop.id} />
+                    <Tooltip content={drop.name} key={drop.id}>
+                      <Item data={data} simple />
                     </Tooltip>
                   );
                 })}

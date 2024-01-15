@@ -139,6 +139,7 @@ const getQuestMaterialReward = (materials: Material[], quest: Quest) => {
       if (material)
         return (
           <Item
+            key={`material-${material.id}`}
             simple
             data={{
               ...material,
@@ -158,6 +159,7 @@ const getQuestItemReward = (items: TItem[], quest: Quest) => {
       if (item)
         return (
           <Item
+            key={`item-${item.id}`}
             simple
             data={{
               ...item,
@@ -179,6 +181,7 @@ const getQuestPayment = (currencies: Currency[], quest: Quest) => {
     };
     return (
       <CurrencyInfo
+        key={`currency-${payment.id}`}
         price={{
           ...payment,
           ...currency,

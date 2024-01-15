@@ -24,12 +24,12 @@ export const QuestView = () => {
         />
       </div>
       {activeTab === TABS.STORY && (
-        <QueryBoundary fallback={<Loader />}>
+        <QueryBoundary key={`tab-${TABS.STORY}`} fallback={<Loader />}>
           <QuestStoryView />
         </QueryBoundary>
       )}
       {activeTab === TABS.DAILY && (
-        <QueryBoundary fallback={<Loader />}>
+        <QueryBoundary key={`tab-${TABS.DAILY}`} fallback={<Loader />}>
           <QuestDailyView />
         </QueryBoundary>
       )}

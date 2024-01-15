@@ -13,7 +13,7 @@ export const CreditsView = () => {
         <h2 className={s.creditsView__title}>Images</h2>
         <ul className={s.creditsView__list}>
           {images.map(i => (
-            <li>
+            <li key={`credits-image-${i.title}`}>
               <a href={i.link} target="_blank">
                 {i.author} - {i.title}
               </a>{' '}
@@ -34,7 +34,7 @@ export const CreditsView = () => {
         <h2 className={s.creditsView__title}>Music</h2>
         <ul className={s.creditsView__list}>
           {music.map(m => (
-            <li>
+            <li key={`credits-music-${m.title}`}>
               <a href={m.link} target="_blank">
                 {m.author} - {m.title}
               </a>{' '}
@@ -47,7 +47,7 @@ export const CreditsView = () => {
         <h2 className={s.creditsView__title}>Sounds</h2>
         <ul className={s.creditsView__list}>
           {sounds.map(s => (
-            <li>
+            <li key={`credits-sound-${s.title}`}>
               <a href={s.link} target="_blank">
                 {s.author} - {s.title}
               </a>{' '}

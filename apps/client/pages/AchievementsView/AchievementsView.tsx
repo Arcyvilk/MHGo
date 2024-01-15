@@ -51,7 +51,10 @@ export const AchievementsView = () => {
             return false;
           })
           .map(achievement => (
-            <AchievementTile achievement={achievement} />
+            <AchievementTile
+              key={`achievement-tile-${achievement.id}`}
+              achievement={achievement}
+            />
           ))}
       </div>
       <CloseButton />

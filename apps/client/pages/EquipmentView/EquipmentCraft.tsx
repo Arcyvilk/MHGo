@@ -42,6 +42,7 @@ const Load = () => {
       <Tabs allTabs={TABS} activeTab={activeTab} setActiveTab={setActiveTab} />
       {activeTab === TABS.QUEST && (
         <EquipmentPieces
+          key="tab_quest"
           itemType="quest"
           showOwned={showOwned}
           showNotOwned={showNotOwned}
@@ -49,6 +50,7 @@ const Load = () => {
       )}
       {activeTab === TABS.WEAPONS && (
         <EquipmentPieces
+          key="tab_weapon"
           itemType="weapon"
           showOwned={showOwned}
           showNotOwned={showNotOwned}
@@ -56,6 +58,7 @@ const Load = () => {
       )}
       {activeTab === TABS.ARMOR && (
         <EquipmentPieces
+          key="tab_armor"
           itemType="armor"
           showOwned={showOwned}
           showNotOwned={showNotOwned}
@@ -63,6 +66,7 @@ const Load = () => {
       )}
       {activeTab === TABS.UTILITY && (
         <EquipmentPieces
+          key="tab_other"
           itemType="other"
           showOwned={showOwned}
           showNotOwned={showNotOwned}
@@ -101,7 +105,11 @@ const EquipmentPieces = ({
           );
         })
         .map(item => (
-          <ItemContextMenu item={item} isItemOwned={item.isOwned} />
+          <ItemContextMenu
+            key={`context_menu_${item.id}`}
+            item={item}
+            isItemOwned={item.isOwned}
+          />
         ))}
     </div>
   );
