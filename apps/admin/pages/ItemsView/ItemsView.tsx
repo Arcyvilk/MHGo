@@ -1,8 +1,8 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
-import { Switch } from '@mui/material';
-import { Item as TItem } from '@mhgo/types';
+import { FormControlLabel, Switch } from '@mui/material';
+import { ItemType, Item as TItem } from '@mhgo/types';
 import {
   Button,
   Icon,
@@ -41,6 +41,16 @@ const Load = () => {
   const navigate = useNavigate();
   const { data: items } = useItemsApi();
   const { mutate, isSuccess, isError } = useAdminUpdateItemApi();
+  const [itemFilters, setItemFilters] = useState<ItemType[]>([
+    'quest',
+    'other',
+    'weapon',
+    'armor',
+  ]);
+
+  const filteredItems = useMemo(() => {
+    return items.filter(item => itemFilters.includes(item.type));
+  }, [itemFilters, items]);
 
   const onSwitch = (checked: boolean, item: TItem, property: keyof TItem) => {
     const updatedItem = {
@@ -64,7 +74,7 @@ const Load = () => {
     if (isError) toast.error('Could not save the item :c');
   }, [isError]);
 
-  const tableRows = items.map(item => [
+  const tableRows = filteredItems.map(item => [
     <ItemCell item={item} />,
     item.type,
     item.rarity,
@@ -114,6 +124,24 @@ const Load = () => {
       <ActionBar
         buttons={
           <>
+            {(['weapon', 'armor', 'quest', 'other'] as ItemType[]).map(
+              iType => (
+                <FormControlLabel
+                  label={iType.toLocaleUpperCase()}
+                  control={
+                    <Switch
+                      color="default"
+                      checked={itemFilters.includes(iType)}
+                      onChange={(_, checked) =>
+                        checked
+                          ? setItemFilters([...itemFilters, iType])
+                          : setItemFilters(itemFilters.filter(i => i !== iType))
+                      }
+                    />
+                  }
+                />
+              ),
+            )}
             <Button
               label="Create new item"
               onClick={() => navigate('create')}
