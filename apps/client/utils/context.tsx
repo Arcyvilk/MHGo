@@ -1,4 +1,4 @@
-import { DEFAULT_VOLUME, Volume, useLocalStorage } from '@mhgo/front';
+import { DEFAULT_VOLUME, LSKeys, Volume, useLocalStorage } from '@mhgo/front';
 import React, {
   PropsWithChildren,
   useContext,
@@ -27,12 +27,12 @@ export const AppContextProvider = ({
   const [tutorialStep, setTutorialStep] = useState<string | null>(null);
   const [isTutorialDummyKilled, setIsTutorialDummyKilled] = useState(false);
   const [volume] = useLocalStorage<Record<Volume, number>>(
-    'MHGO_VOLUME',
+    LSKeys.MHGO_VOLUME,
     DEFAULT_VOLUME,
   );
   const [bearerToken, setBearerToken] = useLocalStorage<{
     bearer: string | null;
-  }>('MHGO_AUTH', {
+  }>(LSKeys.MHGO_AUTH, {
     bearer: null,
   });
 

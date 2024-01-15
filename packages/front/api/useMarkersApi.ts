@@ -2,12 +2,19 @@ import { useQuery } from '@tanstack/react-query';
 import { MonsterMarker, ResourceMarker } from '@mhgo/types';
 
 import { API_URL } from '../env';
-import { fetcher } from '..';
+import { LSKeys, fetcher, useLocalStorage } from '..';
 
 export const useSingleMonsterMarkerApi = (
   markerId: string | null,
   isTutorial?: boolean,
+  isDummy?: boolean,
 ) => {
+  const [homePosition] = useLocalStorage<{
+    home: number[];
+  }>(LSKeys.MHGO_HOME_POSITION, {
+    home: [0, 0],
+  });
+
   const getMonsterMarker = async (): Promise<MonsterMarker> => {
     if (isTutorial)
       return {
@@ -16,6 +23,14 @@ export const useSingleMonsterMarkerApi = (
         coords: [0, 0],
         level: null,
       };
+    if (isDummy)
+      return {
+        id: 'dummy',
+        monsterId: 'dummy',
+        coords: homePosition.home,
+        level: null,
+      };
+
     const res = await fetcher(`${API_URL}/map/markers/monsters/${markerId}`);
     return res.json();
   };

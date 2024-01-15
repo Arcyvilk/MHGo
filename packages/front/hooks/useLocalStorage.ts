@@ -1,5 +1,13 @@
 import { useCallback, useState } from 'react';
 
+export enum LSKeys {
+  MHGO_MAP_ZOOM = 'MHGO_MAP_ZOOM',
+  MHGO_LAST_KNOWN_LOCATION = 'MHGO_LAST_KNOWN_LOCATION',
+  MHGO_HOME_POSITION = 'MHGO_HOME_POSITION',
+  MHGO_VOLUME = 'MHGO_VOLUME',
+  MHGO_AUTH = 'MHGO_AUTH',
+}
+
 export const useLocalStorage = <T extends Record<string, any>>(
   key: string,
   initialValue: T,

@@ -12,8 +12,11 @@ import {
   useResourcesApi,
   useSettingsApi,
   InfoBar,
+  LSKeys,
+  SoundSE,
+  useLocalStorage,
+  useSounds,
 } from '@mhgo/front';
-import { SoundSE, useLocalStorage, useSounds } from '@mhgo/front/hooks';
 
 import { DEFAULT_COORDS, DEFAULT_MAP_RADIUS } from '../../utils/consts';
 import { useAppContext } from '../../utils/context';
@@ -110,7 +113,10 @@ const useResource = () => {
     'map_radius',
     DEFAULT_MAP_RADIUS,
   );
-  const [coords] = useLocalStorage('MHGO_LAST_KNOWN_LOCATION', DEFAULT_COORDS);
+  const [coords] = useLocalStorage(
+    LSKeys.MHGO_LAST_KNOWN_LOCATION,
+    DEFAULT_COORDS,
+  );
 
   const params = new URLSearchParams(location.search);
   const resourceId = params.get('id');

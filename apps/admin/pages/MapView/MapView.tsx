@@ -2,7 +2,13 @@ import { useEffect, useMemo, useState } from 'react';
 import { MapContainer } from 'react-leaflet';
 import L from 'leaflet';
 import { FormControlLabel, Switch } from '@mui/material';
-import { Button, Loader, QueryBoundary, useLocalStorage } from '@mhgo/front';
+import {
+  Button,
+  LSKeys,
+  Loader,
+  QueryBoundary,
+  useLocalStorage,
+} from '@mhgo/front';
 
 import { ActionBar, HeaderEdit } from '../../containers';
 import { DEFAULT_COORDS } from '../../utils/defaults';
@@ -26,7 +32,7 @@ const Load = () => {
   });
 
   const [coords, setCoords] = useLocalStorage(
-    'MHGO_LAST_KNOWN_LOCATION',
+    LSKeys.MHGO_LAST_KNOWN_LOCATION,
     DEFAULT_COORDS,
   );
 

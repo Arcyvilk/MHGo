@@ -1,6 +1,6 @@
 import { Howl } from 'howler';
 
-import { useLocalStorage } from './useLocalStorage';
+import { LSKeys, useLocalStorage } from './useLocalStorage';
 import { CDN_URL } from '../env';
 
 export type Volume = 'master' | 'bgm' | 'se';
@@ -34,7 +34,7 @@ export const useSounds = (
   setMusic: ((music: string | undefined) => void) | undefined,
 ) => {
   const [volume, setVolume] = useLocalStorage<Record<Volume, number>>(
-    'MHGO_VOLUME',
+    LSKeys.MHGO_VOLUME,
     DEFAULT_VOLUME,
   );
 

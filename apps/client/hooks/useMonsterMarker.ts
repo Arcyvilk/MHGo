@@ -1,5 +1,6 @@
 import L from 'leaflet';
 import {
+  LSKeys,
   useLocalStorage,
   useMonstersApi,
   useSettingsApi,
@@ -18,14 +19,20 @@ export const useMonsterMarker = () => {
   const level = params.get('level') ?? '0';
 
   const isTutorial = markerId === 'tutorial';
+  const isDummy = markerId === 'dummy';
 
   const { data: monsters, isFetched: isFetchedMonster } = useMonstersApi();
   const { data: monsterMarker, isFetched: isSingleMarkerFetched } =
-    useSingleMonsterMarkerApi(markerId, isTutorial);
+    useSingleMonsterMarkerApi(markerId, isTutorial, isDummy);
 
   const { inRange } = useMonsterMarkerDistance(isTutorial);
 
-  const monsterId = isTutorial ? 'tutorial' : monsterMarker?.monsterId;
+  // I sincerely apologize for this nested ternary
+  const monsterId = isTutorial
+    ? 'tutorial'
+    : isDummy
+      ? 'dummy'
+      : monsterMarker?.monsterId;
   const monsterData = monsters.find(m => m.id === monsterId);
 
   if (!monsterMarker || !monsterData)
@@ -59,7 +66,10 @@ const useMonsterMarkerDistance = (isTutorial?: boolean) => {
   const { setting: mapRadius } = useSettingsApi('map_radius', 0);
   const { data: monsterMarker, isFetched } =
     useSingleMonsterMarkerApi(markerId);
-  const [coords] = useLocalStorage('MHGO_LAST_KNOWN_LOCATION', DEFAULT_COORDS);
+  const [coords] = useLocalStorage(
+    LSKeys.MHGO_LAST_KNOWN_LOCATION,
+    DEFAULT_COORDS,
+  );
 
   const coordsMonster = monsterMarker?.coords ?? [0, 0];
   const coordsUser = coords ?? [0, 0];

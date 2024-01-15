@@ -1,5 +1,5 @@
 import React, { PropsWithChildren, useContext, useMemo } from 'react';
-import { useLocalStorage } from '@mhgo/front';
+import { LSKeys, useLocalStorage } from '@mhgo/front';
 
 type ContextType = {
   isLoggedIn: boolean;
@@ -12,7 +12,7 @@ export const AppContextProvider = ({
 }: PropsWithChildren): JSX.Element => {
   const [bearerToken, setBearerToken] = useLocalStorage<{
     bearer: string | null;
-  }>('MHGO_AUTH', {
+  }>(LSKeys.MHGO_AUTH, {
     bearer: null,
   });
 

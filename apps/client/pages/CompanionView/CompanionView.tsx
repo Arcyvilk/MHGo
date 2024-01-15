@@ -4,6 +4,7 @@ import {
   Button,
   CloseButton,
   Icon,
+  LSKeys,
   Loader,
   QueryBoundary,
   Rain,
@@ -40,7 +41,7 @@ export const CompanionView = () => (
 const Load = () => {
   const [_, setHomePosition] = useLocalStorage<{
     home: number[];
-  }>('MHGO_HOME_POSITION', {
+  }>(LSKeys.MHGO_HOME_POSITION, {
     home: [0, 0],
   });
 

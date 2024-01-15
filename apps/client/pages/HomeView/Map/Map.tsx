@@ -1,12 +1,13 @@
 import { useEffect, useMemo } from 'react';
 import { MapContainer, TileLayer, useMap } from 'react-leaflet';
 import L, { Zoom } from 'leaflet';
-import { useLocalStorage } from '@mhgo/front';
+import { LSKeys, useLocalStorage } from '@mhgo/front';
 import { Loader, QueryBoundary } from '@mhgo/front';
 
 import { UserMarker } from './Marker';
 import { MonsterMarkers } from './MonsterMarkers';
 import { ResourceMarkers } from './ResourceMarkers';
+import { DummyMarkers } from './DummyMarkers';
 import { TutorialMarkers } from './TutorialMarkers';
 import { DEFAULT_COORDS, DEFAULT_ZOOM } from '../../../utils/consts';
 import { useTutorialProgress } from '../../../hooks/useTutorial';
@@ -37,9 +38,9 @@ export const Map = () => (
 const Load = () => {
   const geo = useMemo(() => navigator.geolocation, []);
 
-  const [zoom] = useLocalStorage('MHGO_MAP_ZOOM', DEFAULT_ZOOM);
+  const [zoom] = useLocalStorage(LSKeys.MHGO_MAP_ZOOM, DEFAULT_ZOOM);
   const [coords, setCoords] = useLocalStorage(
-    'MHGO_LAST_KNOWN_LOCATION',
+    LSKeys.MHGO_LAST_KNOWN_LOCATION,
     DEFAULT_COORDS,
   );
 
@@ -70,7 +71,10 @@ const Load = () => {
 type MapLayerProps = { coords: number[] };
 const MapLayer = ({ coords }: MapLayerProps) => {
   const { isFinishedTutorialPartOne } = useTutorialProgress();
-  const [zoom, setZoom] = useLocalStorage('MHGO_MAP_ZOOM', DEFAULT_ZOOM);
+  const [zoom, setZoom] = useLocalStorage(LSKeys.MHGO_MAP_ZOOM, DEFAULT_ZOOM);
+  const [homePosition] = useLocalStorage(LSKeys.MHGO_HOME_POSITION, {
+    home: null,
+  });
   const map = useMap();
 
   useEffect(() => {
@@ -114,6 +118,7 @@ const MapLayer = ({ coords }: MapLayerProps) => {
       ) : (
         <TutorialMarkers coords={coords} />
       )}
+      {homePosition?.home && <DummyMarkers coords={homePosition.home} />}
       <UserMarker coords={coords} />
     </>
   );
