@@ -9,12 +9,21 @@ type DropdownProps = {
 };
 export const Dropdown = ({ children, content }: DropdownProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [instance, setInstance] = useState<unknown>(null);
+
   return (
     <Tippy
       trigger="click"
       interactive
-      onShow={() => setIsOpen(true)}
-      onHide={() => setIsOpen(false)}
+      hideOnClick
+      onShow={tippyInstance => {
+        setIsOpen(true);
+        setInstance(tippyInstance);
+      }}
+      onHide={() => {
+        setInstance(null);
+        setIsOpen(false);
+      }}
       render={attrs => (
         <div className={s.dropdown} {...attrs}>
           {isOpen ? content : null}

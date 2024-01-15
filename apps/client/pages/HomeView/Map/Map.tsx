@@ -70,7 +70,7 @@ const Load = () => {
 type MapLayerProps = { coords: number[] };
 const MapLayer = ({ coords }: MapLayerProps) => {
   const { isFinishedTutorialPartOne } = useTutorialProgress();
-  const [_, setZoom] = useLocalStorage('MHGO_MAP_ZOOM', DEFAULT_ZOOM);
+  const [zoom, setZoom] = useLocalStorage('MHGO_MAP_ZOOM', DEFAULT_ZOOM);
   const map = useMap();
 
   useEffect(() => {
@@ -79,12 +79,12 @@ const MapLayer = ({ coords }: MapLayerProps) => {
 
   map.on('zoom', () => {
     const newZoom = Math.round(map.getZoom());
-    setZoom({ current: newZoom });
+    if (newZoom !== zoom.current) setZoom({ current: newZoom });
   });
 
   useEffect(() => {
     if (map)
-      map.flyTo(L.latLng(coords[0], coords[1]), DEFAULT_ZOOM.current, {
+      map.flyTo(L.latLng(coords[0], coords[1]), zoom.current, {
         duration: 0.5,
       });
   }, [coords, map]);
