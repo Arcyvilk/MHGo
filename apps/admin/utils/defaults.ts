@@ -57,7 +57,6 @@ export const DEFAULT_ITEM: TItem = {
   name: '',
   description: '',
   rarity: 1,
-  price: [],
   purchasable: false,
   craftable: false,
   craftList: [],
@@ -66,6 +65,7 @@ export const DEFAULT_ITEM: TItem = {
   obtainedAt: '',
   consumable: false,
   quickUse: false,
+  levelRequirement: 0,
 };
 
 export const DEFAULT_MATERIAL: Material = {

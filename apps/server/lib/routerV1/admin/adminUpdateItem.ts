@@ -178,6 +178,8 @@ export const adminUpdateItemPrice = async (
     const collection = db.collection<ItemPrice>('itemPrice');
     const price = req.body as UserAmount[];
 
+    console.log(price);
+
     const response = await collection.updateOne(
       { itemId },
       { $set: { price } },

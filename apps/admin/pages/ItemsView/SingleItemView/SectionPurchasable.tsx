@@ -16,8 +16,10 @@ export const SectionPurchasable = ({
   itemPrice,
   setItemPrice,
 }: PurchasableProps) => {
-  const { setting: currencies = [] as Currency[] } =
-    useSettingsApi<Currency[]>('currency_types');
+  const { setting: currencies } = useSettingsApi<Currency[]>(
+    'currency_types',
+    [],
+  );
 
   return (
     <div className={s.singleItemView__section}>
@@ -42,23 +44,29 @@ export const SectionPurchasable = ({
           className={modifiers(s, 'singleItemView__section', {
             hidden: true,
           })}>
-          {currencies.map(currency => {
-            const value = itemPrice.find(price => price.id === currency.id);
-            if (value === undefined) return null;
+          {currencies!.map(currency => {
+            const oldItemPrice = itemPrice.find(
+              price => price.id === currency.id,
+            );
             return (
               <Input
                 label={`Item price (${currency.id})`}
                 name={`item_price_${currency.id}`}
                 type="number"
                 min={0}
-                value={String(value.amount ?? 0)}
+                value={String(oldItemPrice?.amount ?? 0)}
                 setValue={amount => {
                   if (!item) return null;
-                  const newItemPrice = itemPrice.map(p => {
-                    if (p.id === currency.id) return { id: p.id, amount };
-                    else return p;
-                  });
-                  return setItemPrice(newItemPrice as UserAmount[]);
+                  const newItemPrice = {
+                    id: currency.id,
+                    amount: Number(amount),
+                  };
+                  const updatedItemPrice = [
+                    ...itemPrice.filter(p => p.id !== currency.id),
+                    newItemPrice,
+                  ];
+                  console.log(updatedItemPrice);
+                  return setItemPrice(updatedItemPrice as UserAmount[]);
                 }}
               />
             );
