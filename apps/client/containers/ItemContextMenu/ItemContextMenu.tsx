@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import { Instance } from 'tippy.js';
 
 import { ItemActions, Item as TItem } from '@mhgo/types';
 import {
@@ -49,6 +50,7 @@ export const ItemContextMenu = ({
   const { playSound } = useSounds(setMusic);
   const [action, setAction] = useState<Action>('craft');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [tippyInstance, setTippyInstance] = useState<Instance | null>(null);
 
   const { data: itemAction } = useItemActionsApi(item.id);
 
@@ -65,6 +67,7 @@ export const ItemContextMenu = ({
     if (!item.craftable) return;
     setAction('craft');
     setIsModalOpen(true);
+    tippyInstance?.hide();
   };
 
   const onItemEquip = () => {
@@ -150,6 +153,7 @@ export const ItemContextMenu = ({
         )}
       </Modal>
       <Dropdown
+        setInstance={setTippyInstance}
         content={
           <div className={s.itemContextMenu__dropdown}>
             <div className={s.itemContextMenu__section}>

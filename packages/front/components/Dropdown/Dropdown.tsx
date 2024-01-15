@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Instance } from 'tippy.js';
 import Tippy from '@tippyjs/react/headless';
 
 import s from './Dropdown.module.scss';
@@ -6,10 +7,10 @@ import s from './Dropdown.module.scss';
 type DropdownProps = {
   children: React.ReactElement;
   content: React.ReactNode;
+  setInstance: (instance: Instance | null) => void;
 };
-export const Dropdown = ({ children, content }: DropdownProps) => {
+export const Dropdown = ({ children, content, setInstance }: DropdownProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [instance, setInstance] = useState<unknown>(null);
 
   return (
     <Tippy
