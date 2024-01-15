@@ -83,11 +83,19 @@ const MapLayer = ({ coords }: MapLayerProps) => {
   });
 
   useEffect(() => {
-    if (map)
-      map.flyTo(L.latLng(coords[0], coords[1]), zoom.current, {
-        duration: 0.5,
-      });
-  }, [coords, map]);
+    if (!map) return;
+    const centerCurrent = map.getCenter();
+    const centerCoords = L.latLng(coords[0], coords[1]);
+    const didCoordsChange =
+      centerCurrent.lat.toFixed(4) !== centerCoords.lat.toFixed(4) ||
+      centerCurrent.lng.toFixed(4) !== centerCoords.lng.toFixed(4);
+
+    if (!didCoordsChange) return;
+
+    map.flyTo(centerCoords, zoom.current, {
+      duration: 0.5,
+    });
+  }, [coords, map, zoom]);
 
   return (
     <>
