@@ -36,24 +36,26 @@ const Load = ({ stepFrom, stepTo }: TutorialProps) => {
   if (!currentStep) return null;
   return (
     <>
-      <Modal
-        isTransparent
-        isHighModal
-        isOpen={isOpen}
-        setIsOpen={setIsOpen}
-        onClose={nextStep}>
-        <div className={modifiers(s, 'tutorial', { isCentered })}>
-          {currentStep.effects === 'rays' && <Rays />}
-          <Spotlight currentStep={currentStep} />
-          <Companion currentStep={currentStep} />
-          <InfoDialog currentStep={currentStep} />
-        </div>
-      </Modal>
       <ModalAchievement
         achievementId={AchievementId.TUTORIAL}
         isOpen={isModalAchievementOpen}
         setIsOpen={setIsModalAchievementOpen}
       />
+      {!isFinishedTutorialPartTwo && isFetched && currentStep && (
+        <Modal
+          isTransparent
+          isHighModal
+          isOpen={isOpen}
+          setIsOpen={setIsOpen}
+          onClose={nextStep}>
+          <div className={modifiers(s, 'tutorial', { isCentered })}>
+            {currentStep.effects === 'rays' && <Rays />}
+            <Spotlight currentStep={currentStep} />
+            <Companion currentStep={currentStep} />
+            <InfoDialog currentStep={currentStep} />
+          </div>
+        </Modal>
+      )}
     </>
   );
 };
