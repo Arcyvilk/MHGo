@@ -161,6 +161,8 @@ const useUpdateUser = (setStatus: (status: Status) => void) => {
     loadout: false,
     materials: false,
     wealth: false,
+    questsDaily: false,
+    questsStory: false,
   });
 
   useEffect(() => {

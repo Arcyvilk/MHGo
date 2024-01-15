@@ -3,8 +3,6 @@ import express from 'express';
 
 export const routerV1 = express.Router();
 
-// TODO ADD API AUTH TO ALL ROUTES IN PROD!!!!
-
 /*****************************
  *         LOGIN         *
  *****************************/

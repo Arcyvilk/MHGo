@@ -6,6 +6,8 @@ import {
   UserItems,
   UserLoadout,
   UserMaterials,
+  UserQuestDaily,
+  UserQuestStory,
   UserResetType,
   UserRespawn,
   UserWealth,
@@ -38,7 +40,14 @@ export const adminResetUser = async (
       const collectionItems = db.collection<UserItems>('userItems');
       await collectionItems.updateOne(
         { userId },
-        { $set: { items: [] } },
+        {
+          $set: {
+            items: [
+              { id: 'bare_fist', amount: 1 },
+              { id: 'potion', amount: 10 },
+            ],
+          },
+        },
         { upsert: true },
       );
     }
@@ -84,6 +93,19 @@ export const adminResetUser = async (
       const collectionAchievements =
         db.collection<UserAchievement>('userAchievements');
       await collectionAchievements.deleteMany({ userId });
+    }
+
+    // Reset user's daily quests
+    if (toReset.questsDaily) {
+      const collectionQuestsDaily =
+        db.collection<UserQuestDaily>('userQuestsDaily');
+      await collectionQuestsDaily.deleteMany({ userId });
+    }
+
+    // Reset user's story quests
+    if (toReset.questsStory) {
+      const collectionQuestsStory = db.collection<UserQuestStory>('userQuests');
+      await collectionQuestsStory.deleteMany({ userId });
     }
 
     // Fin!

@@ -13,4 +13,6 @@ export type UserResetType = {
   materials?: boolean;
   wealth?: boolean;
   cooldowns?: boolean;
+  questsDaily?: boolean;
+  questsStory?: boolean;
 };
