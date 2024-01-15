@@ -1,6 +1,7 @@
 @import '@mhgo/front/styles/index.scss';
 
 .hunter {
+  position: relative;
   display: flex;
   flex-direction: column;
   border: $size-12 solid $color-white;
@@ -9,6 +10,13 @@
   background-color: $color-secondary-bg;
   box-shadow: 0 5px 5px rgba($color-black, 0.2);
   width: 100%;
+
+  &__companion {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: $zindex-barText;
+  }
 
   &__top {
     position: relative;

@@ -17,6 +17,8 @@ export enum SoundBG {
   SNOW_AND_CHILDREN = 'SNOW_AND_CHILDREN',
 }
 export enum SoundSE {
+  OPERA_DOG = 'OPERA_DOG',
+  DOG_EATING = 'DOG_EATING',
   BELT = 'BELT',
   BUBBLE = 'BUBBLE',
   CLICK = 'CLICK',
@@ -25,6 +27,7 @@ export enum SoundSE {
   NUKE = 'NUKE',
   OUCH = 'OUCH',
   PUNCH = 'PUNCH',
+  WOOF = 'WOOF',
 }
 
 export const useSounds = (
@@ -74,6 +77,8 @@ const musicSrc: Record<SoundBG, string> = {
   [SoundBG.SNOW_AND_CHILDREN]: `${CDN_URL}/sounds/snow_and_children.mp3`,
 };
 const soundSrc: Record<SoundSE, Howl> = {
+  [SoundSE.DOG_EATING]: new Howl({ src: [`${CDN_URL}/sounds/dog_eating.mp3`] }),
+  [SoundSE.OPERA_DOG]: new Howl({ src: [`${CDN_URL}/sounds/opera_dog.mp3`] }),
   [SoundSE.BELT]: new Howl({ src: [`${CDN_URL}/sounds/belt.wav`] }),
   [SoundSE.BUBBLE]: new Howl({ src: [`${CDN_URL}/sounds/bubble.wav`] }),
   [SoundSE.CLICK]: new Howl({ src: [`${CDN_URL}/sounds/snap.wav`] }),
@@ -82,4 +87,5 @@ const soundSrc: Record<SoundSE, Howl> = {
   [SoundSE.NUKE]: new Howl({ src: [`${CDN_URL}/sounds/nuke.mp3`] }),
   [SoundSE.OUCH]: new Howl({ src: [`${CDN_URL}/sounds/ouch.wav`] }),
   [SoundSE.PUNCH]: new Howl({ src: [`${CDN_URL}/sounds/punch.mp3`] }),
+  [SoundSE.WOOF]: new Howl({ src: [`${CDN_URL}/sounds/woof.mp3`] }),
 };

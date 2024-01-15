@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import {
   Button,
@@ -16,6 +17,7 @@ import { HealthBarSimple } from '../../containers';
 import s from './Hunter.module.scss';
 
 export const Hunter = () => {
+  const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { userName, userId, userLevel } = useUser();
   const { data: userHealth } = useUserHealthApi(userId);
@@ -24,12 +26,24 @@ export const Hunter = () => {
     setIsModalOpen(!isModalOpen);
   };
 
+  const onCompanionView = () => {
+    navigate('/companion');
+  };
+
   return (
     <>
       <Modal isOpen={isModalOpen} setIsOpen={setIsModalOpen}>
         <img className={s.qr} src={qr} />
       </Modal>
       <div className={s.hunter}>
+        <div className={s.hunter__companion}>
+          <Button
+            label={<Icon icon="DogPaw" />}
+            variant={Button.Variant.GHOST}
+            simple
+            onClick={onCompanionView}
+          />
+        </div>
         <div className={s.hunter__top}>
           <div className={s.hunter__stats}>
             <div className={s.hunter__level}>HR {userLevel}</div>

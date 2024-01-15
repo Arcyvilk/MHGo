@@ -9,6 +9,7 @@ import {
   AchievementsView,
   AwaitingApprovalView,
   BannedView,
+  CompanionView,
   CreditsView,
   EquipmentView,
   ForageView,
@@ -169,6 +170,14 @@ export const App = () => {
             element={
               <RequireAuth>
                 <YouView />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/companion"
+            element={
+              <RequireAuth>
+                <CompanionView />
               </RequireAuth>
             }
           />

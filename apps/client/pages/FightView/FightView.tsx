@@ -13,6 +13,7 @@ import {
   SoundSE,
   modifiers,
   useSounds,
+  useInterval,
   useUpdateUserHealthApi,
   useUserHealthApi,
   useUserStatsApi,
@@ -28,7 +29,6 @@ import { ModalFailure } from './ModalFailure';
 import { MonsterAttackTimer } from './MonsterAttackTimer';
 
 import s from './FightView.module.scss';
-import { useInterval } from '../../hooks/useInterval';
 
 export const FightView = () => (
   <QueryBoundary fallback={<Loader />}>

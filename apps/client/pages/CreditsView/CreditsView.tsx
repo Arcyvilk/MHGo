@@ -135,6 +135,27 @@ const sounds: Credit[] = [
     link: 'https://freesound.org/people/ironcross32/sounds/582898/',
     license: 'CC0 1.0 DEED',
   },
+  {
+    usage: 'woof',
+    title: 'WoofSmall2',
+    author: 'Wdomino',
+    link: 'https://freesound.org/people/Wdomino/sounds/517131/',
+    license: 'CC0 1.0 DEED',
+  },
+  {
+    usage: "frendoggo's battlehymn",
+    title: 'Born to be opera singer',
+    author: 'Nicolas&Us',
+    link: 'https://www.tiktok.com/@nicolas_us/video/6993750339266645253',
+    license: '?',
+  },
+  {
+    usage: 'sound of eating frendoggo',
+    title: 'Eating Dog 2',
+    author: 'SpaceJoe',
+    link: 'https://freesound.org/people/SpaceJoe/sounds/483036/',
+    license: 'CC0 1.0 DEED',
+  },
 ];
 
 const music: Credit[] = [
