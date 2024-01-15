@@ -61,6 +61,19 @@ export const ResourceCreateView = () => {
                 setResource({ ...resource, description })
               }
             />
+            <Input
+              name="resource_req"
+              label="Resource spawn level requirement"
+              type="number"
+              min={0}
+              value={String(resource?.levelRequirements ?? 0)}
+              setValue={levelRequirements =>
+                setResource({
+                  ...resource,
+                  levelRequirements: Number(levelRequirements),
+                })
+              }
+            />
           </div>
           <div
             className={s.singleResourceView__section}
@@ -126,6 +139,7 @@ const useUpdateResource = (
         ...resource,
         img: resourceImg,
         thumbnail: resourceThumbnail,
+        levelRequirements: resource.levelRequirements ?? null,
         drops,
       });
   };

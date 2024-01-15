@@ -98,6 +98,20 @@ const Load = () => {
                 setUpdatedResource({ ...updatedResource, description })
               }
             />
+            <Input
+              name="resource_req"
+              label="Resource spawn level requirement"
+              type="number"
+              min={0}
+              value={String(updatedResource?.levelRequirements ?? 0)}
+              setValue={levelRequirements =>
+                updatedResource &&
+                setUpdatedResource({
+                  ...updatedResource,
+                  levelRequirements: Number(levelRequirements),
+                })
+              }
+            />
           </div>
           <div
             className={s.singleResourceView__section}
@@ -183,6 +197,7 @@ const useUpdateResource = (
         ...updatedResource,
         img: resourceImg,
         thumbnail: resourceThumbnail,
+        levelRequirements: updatedResource.levelRequirements ?? null,
         drops: updatedDrops,
       });
   };

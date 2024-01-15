@@ -1,9 +1,16 @@
+import { ObjectId } from 'mongodb';
 import { Request, Response } from 'express';
-import { ResourceMarker, UserRespawn } from '@mhgo/types';
+import {
+  Resource,
+  ResourceMarker,
+  Setting,
+  User,
+  UserRespawn,
+} from '@mhgo/types';
 import { log } from '@mhgo/utils';
 
 import { mongoInstance } from '../../../api';
-import { ObjectId } from 'mongodb';
+import { getUserLevel } from '../../helpers/getUserLevel';
 
 export const getResourceMarkersByUserId = async (
   req: Request,
@@ -15,6 +22,16 @@ export const getResourceMarkersByUserId = async (
     const { lat, lng } = req.query;
 
     const { db } = mongoInstance.getDb();
+
+    // Get the maximum level of resource that can spawn on random level spawns
+    const collectionUsers = db.collection<User>('users');
+    const collectionSettings = db.collection<Setting<number>>('settings');
+    const user = await collectionUsers.findOne({ id: userId });
+    const expPerLevel =
+      (await collectionSettings.findOne({ key: 'exp_per_level' }))?.value ??
+      100;
+    const userLevel = getUserLevel(user, expPerLevel);
+    const maxResourceLevel = userLevel;
 
     // Show only markers within some set distance
     const fixedLat = lat !== undefined ? Number(Number(lat).toFixed(2)) : null;
@@ -34,6 +51,22 @@ export const getResourceMarkersByUserId = async (
           }
         : {};
 
+    // Show only markers with no level or level lower than user's level
+    const filterLevel = [
+      { level: null },
+      { level: { $lte: maxResourceLevel } },
+    ];
+
+    // Filter out resources that have level requirements higher than user's level
+    const collectionResources = db.collection<Resource>('resources');
+    const filterTooHighLevelRequirement: { resourceId: string }[] = [];
+    const cursorAvailableResources = collectionResources.find({
+      levelRequirements: { $gt: userLevel },
+    });
+    for await (const el of cursorAvailableResources) {
+      filterTooHighLevelRequirement.push({ resourceId: el.id });
+    }
+
     // Filter out resources that are still respawning
     const collectionUserRespawn = db.collection<UserRespawn>('userRespawn');
     const filterCooldown: { _id: ObjectId }[] = [];
@@ -49,10 +82,12 @@ export const getResourceMarkersByUserId = async (
     const resourceMarkers: ResourceMarker[] = [];
 
     // Aggregate all filters together
-    const norFilters = [...filterCooldown];
+    const orFilters = [...filterLevel];
+    const norFilters = [...filterCooldown, ...filterTooHighLevelRequirement];
 
     const cursorResourceMarkers = collectionResourceMarkers.find({
       ...filterCoords,
+      ...(orFilters.length ? { $or: orFilters } : {}),
       ...(norFilters.length ? { $nor: norFilters } : {}),
     });
 

@@ -83,6 +83,7 @@ export const DEFAULT_RESOURCE: Resource = {
   description: '',
   img: '/resources/XXX.jpg',
   thumbnail: '/resources/thumbnail-XXX.svg',
+  levelRequirements: 0,
   drops: [],
 };
 

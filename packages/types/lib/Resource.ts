@@ -5,6 +5,7 @@ export type Resource = {
   img: string;
   thumbnail: string;
   drops: ResourceDrop[];
+  levelRequirements: number | null;
 };
 
 export type ResourceDrop = {

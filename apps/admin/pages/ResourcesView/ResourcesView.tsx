@@ -13,7 +13,7 @@ import { ActionBar, Table } from '../../containers';
 
 import s from './ResourcesView.module.scss';
 
-const tableHeaders = ['Name', 'Description', 'Actions'];
+const tableHeaders = ['Name', 'Description', 'Level requirement', 'Actions'];
 
 export const ResourcesView = () => (
   <QueryBoundary fallback={<Loader />}>
@@ -32,6 +32,7 @@ const Load = () => {
   const tableRows = resources.map(resource => [
     <ResourceCell resource={resource} />,
     resource.description,
+    resource.levelRequirements,
     <Button
       label={<Icon icon="Edit" size={Size.MICRO} />}
       onClick={() => onResourceEdit(resource)}
