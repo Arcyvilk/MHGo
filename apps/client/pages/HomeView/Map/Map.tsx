@@ -78,7 +78,8 @@ const MapLayer = ({ coords }: MapLayerProps) => {
   }, [map]);
 
   map.on('zoom', () => {
-    setZoom({ current: map.getZoom() });
+    const newZoom = Math.round(map.getZoom());
+    setZoom({ current: newZoom });
   });
 
   useEffect(() => {
