@@ -9,7 +9,6 @@ import { MonsterMarkers } from './MonsterMarkers';
 import { ResourceMarkers } from './ResourceMarkers';
 import { TutorialMarkers } from './TutorialMarkers';
 import { DEFAULT_COORDS, DEFAULT_ZOOM } from '../../../utils/consts';
-import { useMe } from '../../../hooks/useAuth';
 import { useTutorialProgress } from '../../../hooks/useTutorial';
 
 import 'leaflet/dist/leaflet.css';
@@ -83,7 +82,10 @@ const MapLayer = ({ coords }: MapLayerProps) => {
   });
 
   useEffect(() => {
-    if (map) map.flyTo(L.latLng(coords[0], coords[1]));
+    if (map)
+      map.flyTo(L.latLng(coords[0], coords[1]), DEFAULT_ZOOM.current, {
+        duration: 0.5,
+      });
   }, [coords, map]);
 
   return (
