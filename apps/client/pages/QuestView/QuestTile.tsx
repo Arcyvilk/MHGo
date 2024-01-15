@@ -3,6 +3,7 @@ import {
   CurrencyInfo,
   IconType,
   Item,
+  Modal,
   ProgressBar,
   addCdnUrl,
   modifiers,
@@ -21,11 +22,14 @@ import {
 
 import s from './QuestView.module.scss';
 import { toast } from 'react-toastify';
+import { useState } from 'react';
 
 type QuestTileProps = {
+  type: 'daily' | 'story';
   quest: Quest & { progress: number; questDate?: Date; isClaimed?: boolean };
 };
-export const QuestTile = ({ quest }: QuestTileProps) => {
+export const QuestTile = ({ type, quest }: QuestTileProps) => {
+  const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
   const { data: items } = useItemsApi();
   const { data: materials } = useMaterialsApi();
   const { setting: currencies } = useSettingsApi('currency_types', [
@@ -33,7 +37,13 @@ export const QuestTile = ({ quest }: QuestTileProps) => {
     { id: 'premium' as CurrencyType, icon: 'Question' as IconType },
   ]);
 
+  const onClaimButtonClick = () => {
+    if (type === 'daily') setIsConfirmationModalOpen(true);
+    else onClaimReward();
+  };
+
   const onClaimReward = () => {
+    setIsConfirmationModalOpen(false);
     // TODO add claiming rewards from quests
     toast.info('Not implemented yet!');
   };
@@ -43,6 +53,12 @@ export const QuestTile = ({ quest }: QuestTileProps) => {
 
   return (
     <div className={modifiers(s, 'questView__quest', { isDone, isClaimed })}>
+      <ModalDailyConfirm
+        isOpen={isConfirmationModalOpen}
+        setIsOpen={setIsConfirmationModalOpen}
+        onConfirm={onClaimReward}
+        onClose={() => setIsConfirmationModalOpen(false)}
+      />
       <div className={s.questView__section}>
         <img className={s.questView__img} src={addCdnUrl(quest.img)} />
         <div className={s.questView__details}>
@@ -53,7 +69,7 @@ export const QuestTile = ({ quest }: QuestTileProps) => {
           <Button
             label="Claim"
             variant={Button.Variant.ACTION}
-            onClick={onClaimReward}
+            onClick={onClaimButtonClick}
             style={{ maxWidth: '100px', margin: 'auto 0 auto auto' }}
           />
         )}
@@ -72,6 +88,44 @@ export const QuestTile = ({ quest }: QuestTileProps) => {
         </div>
       </div>
     </div>
+  );
+};
+
+type ModalProps = {
+  isOpen: boolean;
+  setIsOpen: (isOpen: boolean) => void;
+  onConfirm: () => void;
+  onClose: () => void;
+};
+const ModalDailyConfirm = ({
+  isOpen,
+  setIsOpen,
+  onConfirm,
+  onClose,
+}: ModalProps) => {
+  return (
+    <Modal isOpen={isOpen} setIsOpen={setIsOpen} onClose={() => {}}>
+      <div className={s.modal}>
+        <h1 className={s.modal__title}>Hold on a second!</h1>
+        <div className={s.modal__content}>
+          I have no way of checking if you ACTUALLY have done that daily quest.
+          It's a matter of trust, you know. Are you 100000% sure that you
+          deserve to claim that reward?
+        </div>
+        <Button
+          label="I'm actually trying to cheat"
+          variant={Button.Variant.DANGER}
+          onClick={onClose}
+          simple
+        />
+        <Button
+          label="I solemnly swear I have performed and finished my daily quest"
+          variant={Button.Variant.ACTION}
+          onClick={onConfirm}
+          simple
+        />
+      </div>
+    </Modal>
   );
 };
 

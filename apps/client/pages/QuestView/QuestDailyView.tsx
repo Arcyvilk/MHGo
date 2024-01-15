@@ -26,7 +26,7 @@ export const QuestDailyView = () => {
       </div>
       <div className={s.questView__list}>
         {userQuestsWithDetails.map(daily => (
-          <QuestTile quest={daily} />
+          <QuestTile quest={daily} type="daily" />
         ))}
       </div>
     </>

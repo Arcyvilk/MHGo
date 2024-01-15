@@ -111,3 +111,18 @@
     color: $color-success;
   }
 }
+
+.modal {
+  display: flex;
+  flex-direction: column;
+  gap: $size-8;
+
+  &__title {
+    margin: 0;
+  }
+
+  &__content {
+    font-size: $size-12;
+    font-weight: 400;
+  }
+}

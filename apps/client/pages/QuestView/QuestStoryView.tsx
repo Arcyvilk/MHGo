@@ -11,7 +11,7 @@ export const QuestStoryView = () => {
   return (
     <div className={s.questView__list}>
       {userQuestsWithDetails.map(quest => (
-        <QuestTile quest={quest} />
+        <QuestTile quest={quest} type="story" />
       ))}
     </div>
   );

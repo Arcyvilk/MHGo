@@ -46,7 +46,7 @@ export const getUserDailyQuests = async (
       dailyDate: new Date(new Date().setHours(24, 0, 0, 0)), // this sets expiration date to next midnight
       daily: randomDailies.map(r => ({
         id: r.id,
-        progress: 0,
+        progress: 1,
         isClaimed: false,
       })),
     };
@@ -58,7 +58,7 @@ export const getUserDailyQuests = async (
     if (!responseUserDailies.acknowledged)
       throw new Error('Failed to create new dailies for the user!');
 
-    const indexName = `daily_reset_${userId}`;
+    const indexName = `daily_reset`;
 
     try {
       await collectionUserDailyQuests.dropIndex(indexName, {});
@@ -69,6 +69,7 @@ export const getUserDailyQuests = async (
       { dailyDate: 1 },
       {
         name: indexName,
+        partialFilterExpression: {},
         expireAfterSeconds: 0, // This will expire document when it gets to the date specified in "dailyDate"
       },
     );
