@@ -59,4 +59,5 @@ export type UserQuestStory = {
   questId: string;
   progress: number;
   obtainDate: Date | null;
+  isClaimed: boolean;
 };

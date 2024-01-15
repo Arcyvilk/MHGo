@@ -34,7 +34,7 @@
     border-radius: $size-8;
 
     &--isDone {
-      background-color: rgba(211, 235, 179, 0.8);
+      background-color: rgba($color-quest-done, 0.8);
     }
 
     &--isClaimed {

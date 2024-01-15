@@ -1,11 +1,21 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { Icon, IconType, Modal, SoundSE, useSounds } from '@mhgo/front';
+import {
+  Icon,
+  IconType,
+  Modal,
+  QueryBoundary,
+  SoundSE,
+  addCdnUrl,
+  modifiers,
+  useSounds,
+} from '@mhgo/front';
 import { Size } from '@mhgo/front';
 
 import { Tutorial } from '../../containers';
 import { useTutorialProgress } from '../../hooks/useTutorial';
+import { useQuestsStory } from '../../hooks/useQuests';
 import { useAppContext } from '../../utils/context';
 import { QuickUseModal } from '../ModalView';
 import { Map } from './Map';
@@ -82,8 +92,24 @@ const ActionButton = ({ icon, onClick }: ActionButtonProps) => {
   );
 };
 
-const QuestButton = ({ onClick }: { onClick: () => void }) => {
+type QuestButtonProps = { onClick: () => void };
+const QuestButton = (props: QuestButtonProps) => (
+  <QueryBoundary fallback={null}>
+    <QuestButtonLoad {...props} />
+  </QueryBoundary>
+);
+
+const QuestButtonLoad = ({ onClick }: QuestButtonProps) => {
+  const { userQuestsWithDetails } = useQuestsStory();
   const { playSound } = useSounds(undefined);
+
+  const mostRecentQuest = (userQuestsWithDetails.filter(q => !q.isClaimed) ??
+    [])[0];
+  const isDone =
+    mostRecentQuest &&
+    mostRecentQuest?.progress === mostRecentQuest?.maxProgress;
+
+  console.log(userQuestsWithDetails);
 
   const onButtonClick = () => {
     playSound(SoundSE.CLICK);
@@ -91,15 +117,24 @@ const QuestButton = ({ onClick }: { onClick: () => void }) => {
   };
 
   return (
-    <button className={s.button} onClick={onButtonClick}>
-      <img className={s.button__image} src={TEMP_SRC} />
-      <div className={s.button__desc}>
-        <h2 className={s.button__title}>A Royal Audience with Rathian</h2>
-        <p className={s.button__subtitle}>
-          Chapter 9: Bright Lights and Beasts
-        </p>
-      </div>
-      <img className={s.button__image} src={TEMP_SRC} />
+    <button
+      className={modifiers(s, 'button', { isDone })}
+      onClick={onButtonClick}>
+      {userQuestsWithDetails?.length ? (
+        <>
+          <img
+            className={s.button__image}
+            src={addCdnUrl(mostRecentQuest.img)}
+          />
+          <div className={s.button__desc}>
+            <h2 className={s.button__title}>{mostRecentQuest.title}</h2>
+            <p className={s.button__subtitle}>
+              Chapter 1: Path to becoming a Master Hoarder
+            </p>
+          </div>
+          <img className={s.button__image} src={TEMP_SRC} />
+        </>
+      ) : null}
     </button>
   );
 };
