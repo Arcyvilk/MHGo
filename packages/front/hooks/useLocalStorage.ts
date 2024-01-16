@@ -30,8 +30,12 @@ export const useLocalStorage = <T extends Record<string, any>>(
   // Return a wrapped version of useState's setter function that ...
   // ... persists the new value to localStorage.
   const setValue = useCallback(
-    (value: T) => {
+    (value: T | null) => {
       try {
+        if (value === null) {
+          window.localStorage.removeItem(key);
+          return;
+        }
         setStoredValue(value);
         if (typeof window !== 'undefined') {
           window.localStorage.setItem(key, JSON.stringify(value));
@@ -42,5 +46,6 @@ export const useLocalStorage = <T extends Record<string, any>>(
     },
     [key, initialValue],
   );
+
   return [storedValue, setValue] as const;
 };
