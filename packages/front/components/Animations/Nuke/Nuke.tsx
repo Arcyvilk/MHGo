@@ -19,8 +19,8 @@ export const Nuke = () => {
 
   return (
     <>
-      <span style={{ position: 'absolute', top: '20px' }}>Im loases</span>
-      <span style={{ position: 'absolute', top: 0 }}>{src}</span>
+      <span className={s.nuke__test}>Im loaded</span>
+      <span className={s.nuke__test}>{src}</span>
       <img key={uuid()} className={s.nuke} src={src} />
     </>
   );

@@ -7,4 +7,10 @@
   top: calc(100vh / 2 - 150px);
   left: calc(100vw / 2 - 100px);
   z-index: $zindex-header;
+  border: 2px solid red;
+
+  &__test {
+    position: absolute;
+    top: 0;
+  }
 }
