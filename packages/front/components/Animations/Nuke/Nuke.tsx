@@ -17,11 +17,5 @@ export const Nuke = () => {
     playSound(SoundSE.NUKE);
   }, []);
 
-  return (
-    <>
-      <span className={s.nuke__test}>Im loaded</span>
-      <span className={s.nuke__test}>{src}</span>
-      <img key={uuid()} className={s.nuke} src={src} />
-    </>
-  );
+  return <img id={uuid()} className={s.nuke} src={src} />;
 };
