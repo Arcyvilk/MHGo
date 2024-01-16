@@ -60,8 +60,8 @@ const Header = ({ name = '?', level = 0 }: HeaderProps) => {
   return (
     <div className={s.header}>
       <div className={s.header__difficulty}>
-        {new Array(level).fill(null).map(_ => (
-          <Icon icon="Star" size={Size.SMALL} />
+        {new Array(level).fill(null).map((_, i) => (
+          <Icon key={`star-${i}`} icon="Star" size={Size.SMALL} />
         ))}
       </div>
       <h1 className={s.header__title}>{name}</h1>
