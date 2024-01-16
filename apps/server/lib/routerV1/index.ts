@@ -239,6 +239,7 @@ import {
   updateUserHealth,
   updateUserWealth,
   updateUserAchievement,
+  updateUserDailyQuests,
   updateUserItemCraft,
   updateUserItemsConsume,
   updateUserItemPurchase,
@@ -282,6 +283,11 @@ routerV1.get(
   '/users/user/:userId/quests/story',
   verifyToken,
   getUserStoryQuests,
+);
+routerV1.put(
+  '/users/user/:userId/quests/daily/:questId',
+  verifyToken,
+  updateUserDailyQuests,
 );
 
 routerV1.put('/users/user/:userId/wealth', verifyToken, updateUserWealth);

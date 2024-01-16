@@ -1,3 +1,5 @@
+import { toast } from 'react-toastify';
+import { useState } from 'react';
 import {
   Button,
   CurrencyInfo,
@@ -10,6 +12,7 @@ import {
   useItemsApi,
   useMaterialsApi,
   useSettingsApi,
+  useUpdateUserDailyQuestApi,
 } from '@mhgo/front';
 import {
   Currency,
@@ -19,19 +22,20 @@ import {
   QuestPayment,
   Material,
 } from '@mhgo/types';
+import { useUser } from '../../hooks/useUser';
 
 import s from './QuestView.module.scss';
-import { toast } from 'react-toastify';
-import { useState } from 'react';
 
 type QuestTileProps = {
   type: 'daily' | 'story';
   quest: Quest & { progress: number; questDate?: Date; isClaimed?: boolean };
 };
 export const QuestTile = ({ type, quest }: QuestTileProps) => {
+  const { userId } = useUser();
   const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
   const { data: items } = useItemsApi();
   const { data: materials } = useMaterialsApi();
+  const { mutate: mutateUserDaily } = useUpdateUserDailyQuestApi(userId);
   const { setting: currencies } = useSettingsApi('currency_types', [
     { id: 'base' as CurrencyType, icon: 'Question' as IconType },
     { id: 'premium' as CurrencyType, icon: 'Question' as IconType },
@@ -44,10 +48,13 @@ export const QuestTile = ({ type, quest }: QuestTileProps) => {
 
   const onClaimReward = () => {
     setIsConfirmationModalOpen(false);
-    if (type === 'daily') toast.info('Not implemented yet!');
-    if (type === 'story')
-      // TODO add claiming rewards from quests
-      toast.info('Not implemented yet!');
+    if (type === 'daily')
+      mutateUserDaily({
+        questId: quest.id,
+        progress: quest.progress,
+        isClaimed: true,
+      });
+    if (type === 'story') toast.info('Not implemented yet!');
   };
 
   const isDone = quest.progress === quest.maxProgress;
