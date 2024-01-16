@@ -1,5 +1,12 @@
-import { useState } from 'react';
-import { Modal, QueryBoundary, Rays, modifiers } from '@mhgo/front';
+import { useEffect, useState } from 'react';
+import {
+  Modal,
+  QueryBoundary,
+  Rays,
+  SoundSE,
+  modifiers,
+  useSounds,
+} from '@mhgo/front';
 import { useTutorial } from '../../hooks/useTutorial';
 
 import s from './Tutorial.module.scss';
@@ -19,6 +26,7 @@ export const Tutorial = (props: TutorialProps) => (
 );
 
 const Load = ({ stepFrom, stepTo, requirement }: TutorialProps) => {
+  const { playRandomSound } = useSounds(undefined);
   const [isModalAchievementOpen, setIsModalAchievementOpen] = useState(false);
   const [isOpen, setIsOpen] = useState(true);
 
@@ -30,6 +38,21 @@ const Load = ({ stepFrom, stepTo, requirement }: TutorialProps) => {
       setIsOpen(false);
     });
   };
+
+  useEffect(() => {
+    if (currentStep?.id === stepFrom && currentStep?.companionSpeech)
+      playRandomSound([
+        SoundSE.BARK01,
+        SoundSE.BARK02,
+        SoundSE.BARK03,
+        SoundSE.BARK04,
+        SoundSE.BARK05,
+        SoundSE.BARK06,
+        SoundSE.BARK07,
+        SoundSE.BARK08,
+        SoundSE.BARK09,
+      ]);
+  }, [currentStep]);
 
   const isCentered = currentStep?.img || currentStep?.text;
 
