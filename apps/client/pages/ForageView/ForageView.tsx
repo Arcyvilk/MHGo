@@ -41,7 +41,7 @@ const Load = () => {
   const isOnCooldown = remainingHits <= 0;
 
   const onForage = () => {
-    if (remainingHits > 0) {
+    if (isActive) {
       playSound(SoundSE.CRYSTAL);
       setRemainingHits(remainingHits - 1);
     }

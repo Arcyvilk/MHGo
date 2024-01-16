@@ -1,5 +1,4 @@
-import { CurrencyInfo, SoundSE, useSounds } from '@mhgo/front';
-import { modifiers } from '@mhgo/front';
+import { modifiers, CurrencyInfo, SoundSE, useSounds } from '@mhgo/front';
 
 import s from './Item.module.scss';
 import { UserAmount } from '@mhgo/types';
@@ -36,7 +35,9 @@ export const Item = ({
 
   if (simple)
     return (
-      <div className={modifiers(s, 'item__simple', { isNotOwned })}>
+      <div
+        id={data.id}
+        className={modifiers(s, 'item__simple', { isNotOwned })}>
         <img
           src={img}
           style={{ filter }}
@@ -53,6 +54,7 @@ export const Item = ({
     );
   return (
     <button
+      id={data.id}
       className={modifiers(s, 'item', { isNotOwned })}
       onClick={onButtonClick}>
       <div className={modifiers(s, 'item__tile', `rarity-${rarity}`)}>
