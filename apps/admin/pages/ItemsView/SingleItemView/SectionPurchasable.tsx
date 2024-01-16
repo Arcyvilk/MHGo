@@ -65,7 +65,6 @@ export const SectionPurchasable = ({
                     ...itemPrice.filter(p => p.id !== currency.id),
                     newItemPrice,
                   ];
-                  console.log(updatedItemPrice);
                   return setItemPrice(updatedItemPrice as UserAmount[]);
                 }}
               />

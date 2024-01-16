@@ -69,14 +69,18 @@ export const Item = ({
         ) : null}
       </div>
       <div className={s.item__name}>{name}</div>
-      {purchasable &&
-        price?.map(p => (
-          <div
-            key={`price-${p.id}`}
-            className={modifiers(s, 'item__price', p.id)}>
-            <CurrencyInfo price={p} small />
-          </div>
-        ))}
+
+      {purchasable && (
+        <div className={s.item__price}>
+          {price?.map(p => (
+            <div
+              key={`price-${p.id}`}
+              className={modifiers(s, 'item__price', p.id)}>
+              <CurrencyInfo price={p} small />
+            </div>
+          ))}
+        </div>
+      )}
     </button>
   );
 };

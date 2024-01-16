@@ -7,16 +7,13 @@ import {
   useUserWealthApi,
   useSettingsApi,
   CurrencyInfo,
-  useSounds,
-  SoundBG,
 } from '@mhgo/front';
 import { Currency, CurrencyType, UserAmount } from '@mhgo/types';
+
+import { ItemContextMenu } from '../../containers';
 import { useUser } from '../../hooks/useUser';
 
 import s from './ShopView.module.scss';
-import { useAppContext } from '../../utils/context';
-import { useEffect } from 'react';
-import { ItemContextMenu } from '../../containers';
 
 export const ShopView = () => {
   return (
@@ -46,18 +43,8 @@ const Wealth = () => {
 };
 
 const Shop = () => {
-  const { setMusic } = useAppContext();
-  const { changeMusic } = useSounds(setMusic);
-
   const { data: items } = useItemsApi();
   const purchasableItems = items.filter(item => item.purchasable);
-
-  useEffect(() => {
-    changeMusic(SoundBG.LOCAL_FORECAST);
-    return () => {
-      changeMusic(SoundBG.SNOW_AND_CHILDREN);
-    };
-  }, []);
 
   return (
     <div className={s.shopView__wrapper}>
