@@ -136,6 +136,13 @@ const sounds: Credit[] = [
     license: 'CC0 1.0 DEED',
   },
   {
+    usage: 'achievement fanfare',
+    title: 'Tada Fanfare G',
+    author: 'plasterbrain',
+    link: 'https://freesound.org/people/plasterbrain/sounds/397353/',
+    license: 'CC0 1.0 DEED',
+  },
+  {
     usage: 'woof',
     title: 'WoofSmall2',
     author: 'Wdomino',
