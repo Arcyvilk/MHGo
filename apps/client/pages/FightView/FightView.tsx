@@ -225,6 +225,7 @@ const useMonsterHealthChange = () => {
     const userCritDamageMultiplier = 1 + critDamage / 100;
     const isCrit = happensWithAChanceOf(critChance);
     const userFinalDamage = isCrit ? attack * userCritDamageMultiplier : attack;
+
     const newHP = monsterHP - userFinalDamage;
     createDamageNumber(userFinalDamage, isCrit);
     return { newHP, isCrit };
