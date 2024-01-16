@@ -2,13 +2,19 @@ import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 
 import 'react-circular-progressbar/dist/styles.css';
 import s from './FightView.module.scss';
+import { useMonsterMarker } from '../../hooks/useMonsterMarker';
+import { useState } from 'react';
+import { useInterval } from '@mhgo/front';
 
-type MonsterAttackTimerProps = { percentage: number };
-export const MonsterAttackTimer = ({ percentage }: MonsterAttackTimerProps) => {
+type MonsterAttackTimerProps = { isFightFinished: boolean };
+export const MonsterAttackTimer = ({
+  isFightFinished,
+}: MonsterAttackTimerProps) => {
+  const { percentageToNextHit } = useMonsterAttackTimer(isFightFinished);
   return (
     <div className={s.fightView__timer}>
       <CircularProgressbar
-        value={percentage}
+        value={percentageToNextHit}
         minValue={0}
         maxValue={100}
         strokeWidth={50}
@@ -22,4 +28,25 @@ export const MonsterAttackTimer = ({ percentage }: MonsterAttackTimerProps) => {
       />
     </div>
   );
+};
+
+const useMonsterAttackTimer = (isFightFinished: boolean) => {
+  const [percentageToNextHit, setPercentageToNextHit] = useState(0);
+  const { monster } = useMonsterMarker();
+  const { baseAttackSpeed } = monster;
+
+  const FRAME_CADENCE = 40;
+
+  useInterval(
+    () => {
+      const cooldownPerFrame = baseAttackSpeed / FRAME_CADENCE;
+      const newPercentage = percentageToNextHit + cooldownPerFrame * 100;
+
+      if (newPercentage > 100) setPercentageToNextHit(newPercentage - 100);
+      else setPercentageToNextHit(newPercentage);
+    },
+    isFightFinished ? null : 1000 / FRAME_CADENCE,
+  );
+
+  return { percentageToNextHit };
 };
