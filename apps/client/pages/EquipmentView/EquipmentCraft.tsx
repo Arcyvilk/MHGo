@@ -4,6 +4,7 @@ import { Loader, Tabs, QueryBoundary, Switch } from '@mhgo/front';
 
 import { ItemContextMenu } from '../../containers';
 import { useUserEquipment } from '../../hooks/useUserEquipment';
+import { useUser } from '../../hooks/useUser';
 
 import s from './EquipmentCraft.module.scss';
 
@@ -86,6 +87,7 @@ const EquipmentPieces = ({
   showOwned,
   showNotOwned,
 }: EquipmentPiecesProps) => {
+  const { userLevel } = useUser();
   const items = useUserEquipment();
 
   return (
@@ -101,7 +103,8 @@ const EquipmentPieces = ({
           return (
             filterByType &&
             (!showOwned ? filterByOwned : true) &&
-            (!showNotOwned ? filterByNotOwned : true)
+            (!showNotOwned ? filterByNotOwned : true) &&
+            (item.levelRequirement ?? 0) <= userLevel
           );
         })
         .map(item => (
