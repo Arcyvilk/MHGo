@@ -87,7 +87,7 @@ const Actions = ({ markerId, level = 0 }: ActionsProps) => {
     <div className={s.fightView__buttons}>
       <HealthBarSimple
         maxHP={userHealth.maxHealth}
-        currentHP={userHealth.currentHealth}
+        currentHP={userHealth.roundCurrentHealth}
       />
       <Button
         label="Fight!"

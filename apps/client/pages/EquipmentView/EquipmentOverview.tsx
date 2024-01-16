@@ -92,7 +92,7 @@ const Load = () => {
       </div>
       <HealthBarSimple
         maxHP={userHealth.maxHealth}
-        currentHP={userHealth.currentHealth}
+        currentHP={userHealth.roundCurrentHealth}
       />
     </div>
   );

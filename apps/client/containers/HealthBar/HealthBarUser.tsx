@@ -23,17 +23,17 @@ const Load = ({ isUserHit }: HealthBarUserProps) => {
   const { data: userHealth } = useUserHealthApi(userId);
 
   return (
-    <div className={s.wrapper}>
+    <div className={s.wrapper} id="user_health_bar">
       <Flash type="red" isActivated={isUserHit} />
       <div className={modifiers(s, 'healthBar', { isUser: true })}>
         <div className={modifiers(s, 'healthBar__text', { isUser: true })}>
-          {userHealth.currentHealth} / {userHealth.maxHealth}
+          {userHealth.roundCurrentHealth} / {userHealth.maxHealth}
         </div>
         <div
           className={modifiers(s, 'healthBar__fg', { isUser: true })}
           style={{
             width: `${
-              (100 * userHealth.currentHealth) / userHealth.maxHealth
+              (100 * userHealth.roundCurrentHealth) / userHealth.maxHealth
             }%`,
           }}
         />

@@ -113,13 +113,21 @@
   @include text-outline;
   display: flex;
   position: absolute;
-  font-size: $size-24;
   left: 50%;
   top: 50%;
   transform: translateY(0);
   opacity: 1;
   animation: fall 1s ease-out forwards;
-  color: $color-white;
+
+  &--playerDmg {
+    font-size: $size-18;
+    color: $color-action;
+  }
+
+  &--monsterDmg {
+    font-size: $size-24;
+    color: $color-white;
+  }
 
   &--isCrit {
     font-size: $size-32;
@@ -132,7 +140,7 @@
 
 @keyframes fall {
   to {
-    transform: translateY(-$size-128);
+    transform: translateY(-$size-100);
     opacity: 0;
   }
 }

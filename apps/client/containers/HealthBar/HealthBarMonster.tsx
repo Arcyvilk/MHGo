@@ -12,7 +12,7 @@ export const HealthBarMonster = ({ maxHP, currentHP }: HealthBarMonster) => {
       </div>
       <div
         className={s.healthBar__fg}
-        style={{ width: `${(100 * currentHP) / maxHP}%` }}
+        style={{ width: `${(100 * Math.round(currentHP)) / maxHP}%` }}
       />
       <div className={s.healthBar__bg} />
     </div>

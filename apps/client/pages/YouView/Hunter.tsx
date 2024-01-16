@@ -49,7 +49,7 @@ export const Hunter = () => {
             <div className={s.hunter__level}>HR {userLevel}</div>
             <HealthBarSimple
               maxHP={userHealth.maxHealth}
-              currentHP={userHealth.currentHealth}
+              currentHP={userHealth.roundCurrentHealth}
             />
           </div>
           <img

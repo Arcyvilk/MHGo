@@ -192,8 +192,25 @@ const usePlayerHealthChange = () => {
 
   const getPlayerHealthChange = () => {
     const monsterDamage = baseDamage * level;
-    const damageAfterMitigation = (monsterDamage * 100) / (100 + defense);
+    const damageAfterMitigation = Number(
+      ((monsterDamage * 100) / (100 + defense)).toFixed(2),
+    );
+    createDamageNumber(damageAfterMitigation);
     return damageAfterMitigation * -1;
+  };
+
+  const createDamageNumber = (damage: number) => {
+    const particle = document.createElement('div');
+    const classNames = modifiers(s, 'particle', 'playerDmg').split(' ');
+    particle.classList.add(...classNames);
+    particle.innerText = String(damage);
+    const wrapper = document.getElementById('user_health_bar');
+    if (wrapper) {
+      wrapper.appendChild(particle);
+      setTimeout(() => {
+        particle.remove();
+      }, 1000);
+    }
   };
 
   return { getPlayerHealthChange };
@@ -209,13 +226,15 @@ const useMonsterHealthChange = () => {
     const isCrit = happensWithAChanceOf(critChance);
     const userFinalDamage = isCrit ? attack * userCritDamageMultiplier : attack;
     const newHP = monsterHP - userFinalDamage;
-    createParticle(userFinalDamage, isCrit);
+    createDamageNumber(userFinalDamage, isCrit);
     return { newHP, isCrit };
   };
 
-  const createParticle = (damage: number, isCrit: boolean) => {
+  const createDamageNumber = (damage: number, isCrit: boolean) => {
     const particle = document.createElement('div');
-    const classNames = modifiers(s, 'particle', { isCrit }).split(' ');
+    const classNames = modifiers(s, 'particle', 'monsterDmg', { isCrit }).split(
+      ' ',
+    );
     particle.classList.add(...classNames);
     particle.innerText = String(damage);
     const wrapper = document.getElementById('monster_wrapper');

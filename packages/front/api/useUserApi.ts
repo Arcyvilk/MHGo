@@ -141,7 +141,7 @@ export const useUserHealthApi = (userId: string) => {
   };
 
   const {
-    data = { currentHealth: 1, maxHealth: 1 },
+    data: health = { currentHealth: 1, maxHealth: 1 },
     isLoading,
     isFetched,
     isError,
@@ -150,6 +150,11 @@ export const useUserHealthApi = (userId: string) => {
     queryFn: getUserHealth,
     enabled: Boolean(userId),
   });
+
+  const data = {
+    ...health,
+    roundCurrentHealth: Math.round(health.currentHealth),
+  };
 
   return { data, isLoading, isFetched, isError };
 };
