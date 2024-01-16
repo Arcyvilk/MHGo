@@ -45,7 +45,7 @@ const Load = () => {
     home: [0, 0],
   });
 
-  const { playSound } = useSounds(undefined);
+  const { playSound, playRandomSound } = useSounds(undefined);
   const [companionTip, setCompanionTip] = useState('Hello!');
   const [isSpeechBubbleOpen, setIsSpeechBubbleOpen] = useState(false);
   const [isRaining, setIsRaining] = useState(false);
@@ -72,7 +72,17 @@ const Load = () => {
   }, [isRaining]);
 
   const onPet = () => {
-    playSound(SoundSE.WOOF);
+    playRandomSound([
+      SoundSE.BARK01,
+      SoundSE.BARK02,
+      SoundSE.BARK03,
+      SoundSE.BARK04,
+      SoundSE.BARK05,
+      SoundSE.BARK06,
+      SoundSE.BARK07,
+      SoundSE.BARK08,
+      SoundSE.BARK09,
+    ]);
     setCompanionTip('I love you <3');
     setIsSpeechBubbleOpen(true);
     setIsRaining(true);
