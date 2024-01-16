@@ -1,17 +1,37 @@
 import { useState } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
-import { Button, Icon, Input, Size } from '@mhgo/front';
+import {
+  Button,
+  Icon,
+  Input,
+  LSKeys,
+  Size,
+  useLocalStorage,
+} from '@mhgo/front';
 import { useMe } from '../../hooks/useAuth';
 
 import s from './AuthView.module.scss';
+import { toast } from 'react-toastify';
 
 export const SignInView = () => {
   const navigate = useNavigate();
   const { isLoggedIn, signinUser, isSigninPending } = useMe();
   const [userName, setUserName] = useState('');
   const [pwd, setPwd] = useState('');
+  const [pwdRepeat, setPwdRepeat] = useState('');
+  // We want to clear the home position for the newly signed in user
+  const [_, setHomePosition] = useLocalStorage<{
+    home: number[];
+  }>(LSKeys.MHGO_HOME_POSITION, {
+    home: [0, 0],
+  });
 
   const onSignIn = () => {
+    if (pwd !== pwdRepeat) {
+      toast.error('The password does not match!');
+      return;
+    }
+    setHomePosition(null);
     signinUser({ userName, pwd, email: 'test@test.com' });
   };
 
@@ -40,9 +60,18 @@ export const SignInView = () => {
           />
           <Input
             name="login_pwd"
-            label="Password"
+            label="New password"
             value={pwd}
             setValue={setPwd}
+            type="password"
+            onKeyDown={event => event.key === 'Enter' && onSignIn()}
+            style={{ width: '275px', maxWidth: '100%' }}
+          />
+          <Input
+            name="login_pwd"
+            label="Repeat password"
+            value={pwdRepeat}
+            setValue={setPwdRepeat}
             type="password"
             onKeyDown={event => event.key === 'Enter' && onSignIn()}
             style={{ width: '275px', maxWidth: '100%' }}

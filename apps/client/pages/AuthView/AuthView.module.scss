@@ -10,6 +10,7 @@
   background-color: $admin-color-primary-bg;
   color: $admin-color-primary-text;
   overflow: hidden;
+  padding-bottom: 0;
 
   &__wrapper {
     @include page-section-admin;
@@ -18,7 +19,7 @@
     align-items: center;
     justify-content: center;
     padding: $size-16;
-    gap: $size-32;
+    gap: $size-24;
     width: 300px;
     max-width: 100%;
   }
