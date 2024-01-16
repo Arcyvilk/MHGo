@@ -65,11 +65,29 @@ const Load = () => {
         <div className={s.stats}>
           <Tooltip content="Percentage chance of dealing double physical damage">
             <span>
-              <Icon icon="Burst" size={Size.MICRO} />
+              <Icon icon="Dice" size={Size.MICRO} />
               Crit chance
             </span>
           </Tooltip>
           <span>{userStats?.critChance ?? '?'}%</span>
+        </div>
+        <div className={s.stats}>
+          <Tooltip content="Additional damage dealt by critical hits">
+            <span>
+              <Icon icon="Burst" size={Size.MICRO} />
+              Crit damage
+            </span>
+          </Tooltip>
+          <span>{userStats?.critDamage ?? '?'}%</span>
+        </div>
+        <div className={s.stats}>
+          <Tooltip content="Percentage chance of dropping additional rewards from monsters">
+            <span>
+              <Icon icon="Luck" size={Size.MICRO} />
+              Luck
+            </span>
+          </Tooltip>
+          <span>{userStats?.luck ?? '?'}%</span>
         </div>
       </div>
       <HealthBarSimple
