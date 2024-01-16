@@ -108,3 +108,31 @@
     color: $color-white;
   }
 }
+
+.particle {
+  @include text-outline;
+  display: flex;
+  position: absolute;
+  font-size: $size-24;
+  left: 50%;
+  top: 50%;
+  transform: translateY(0);
+  opacity: 1;
+  animation: fall 1s ease-out forwards;
+  color: $color-white;
+
+  &--isCrit {
+    font-size: $size-32;
+    color: $color-danger;
+    &:after {
+      content: "!"
+    }
+  }
+}
+
+@keyframes fall {
+  to {
+    transform: translateY(-$size-128);
+    opacity: 0;
+  }
+}

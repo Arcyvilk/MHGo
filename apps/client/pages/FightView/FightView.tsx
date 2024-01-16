@@ -18,6 +18,7 @@ import {
   useUserHealthApi,
   useUserStatsApi,
 } from '@mhgo/front';
+import { happensWithAChanceOf } from '@mhgo/utils';
 
 import { useAppContext } from '../../utils/context';
 import { useMonsterMarker } from '../../hooks/useMonsterMarker';
@@ -40,8 +41,6 @@ const Load = () => {
   const { setMusic } = useAppContext();
   const { changeMusic, playSound } = useSounds(setMusic);
   const navigate = useNavigate();
-  const { userId } = useUser();
-  const { data: userStats } = useUserStatsApi(userId);
   const { isFinishedTutorialPartOne } = useTutorialProgress();
 
   const { monster } = useMonsterMarker();
@@ -58,6 +57,7 @@ const Load = () => {
   );
 
   const { isUserHit } = useMonsterAttack(isFightFinished, setIsPlayerAlive);
+  const { getMonsterNewHP } = useMonsterHealthChange();
 
   useEffect(() => {
     changeMusic(SoundBG.EDGE_OF_THE_GALAXY);
@@ -68,7 +68,8 @@ const Load = () => {
 
   const onMonsterHit = () => {
     if (!isMonsterAlive || !isPlayerAlive) return;
-    const newHP = monsterHP - (userStats?.attack ?? 1);
+
+    const { newHP } = getMonsterNewHP(monsterHP);
 
     if (newHP > 0) {
       playSound(SoundSE.PUNCH);
@@ -111,8 +112,8 @@ const Load = () => {
       )}
       {!isMonsterAlive && <Nuke />}
       {!isPlayerAlive && <Death />}
-      <div className={s.fightView__wrapper}>
-        {isMonsterAlive && <Rays />}
+      {isMonsterAlive && <Rays />}
+      <div className={s.fightView__wrapper} id="monster_wrapper">
         <img
           className={modifiers(
             s,
@@ -156,17 +157,17 @@ const useMonsterAttack = (
   const { mutate, isSuccess: isUserHit } = useUpdateUserHealthApi(userId);
   const { data: userHealth } = useUserHealthApi(userId);
   const { monster } = useMonsterMarker();
+  const { getPlayerHealthChange } = usePlayerHealthChange();
 
-  const { level, baseAttackSpeed, baseDamage } = monster;
+  const { baseAttackSpeed } = monster;
 
   const attackSpeed = 1000 / baseAttackSpeed;
 
   useInterval(
     () => {
       playSound(SoundSE.OUCH);
-      mutate({
-        healthChange: baseDamage * level * -1,
-      });
+      const healthChange = getPlayerHealthChange();
+      mutate({ healthChange });
     },
     isFightFinished ? null : attackSpeed,
   );
@@ -179,4 +180,52 @@ const useMonsterAttack = (
   }, [userHealth.currentHealth]);
 
   return { isUserHit };
+};
+
+const usePlayerHealthChange = () => {
+  const { userId } = useUser();
+  const { monster } = useMonsterMarker();
+  const { data: userStats } = useUserStatsApi(userId);
+
+  const { level, baseDamage } = monster;
+  const { defense = 0 } = userStats ?? {};
+
+  const getPlayerHealthChange = () => {
+    const monsterDamage = baseDamage * level;
+    const damageAfterMitigation = (monsterDamage * 100) / (100 + defense);
+    return damageAfterMitigation * -1;
+  };
+
+  return { getPlayerHealthChange };
+};
+
+const useMonsterHealthChange = () => {
+  const { userId } = useUser();
+  const { data: userStats } = useUserStatsApi(userId);
+  const { attack = 1, critChance = 0, critDamage = 100 } = userStats ?? {};
+
+  const getMonsterNewHP = (monsterHP: number) => {
+    const userCritDamageMultiplier = 1 + critDamage / 100;
+    const isCrit = happensWithAChanceOf(critChance);
+    const userFinalDamage = isCrit ? attack * userCritDamageMultiplier : attack;
+    const newHP = monsterHP - userFinalDamage;
+    createParticle(userFinalDamage, isCrit);
+    return { newHP, isCrit };
+  };
+
+  const createParticle = (damage: number, isCrit: boolean) => {
+    const particle = document.createElement('div');
+    const classNames = modifiers(s, 'particle', { isCrit }).split(' ');
+    particle.classList.add(...classNames);
+    particle.innerText = String(damage);
+    const wrapper = document.getElementById('monster_wrapper');
+    if (wrapper) {
+      wrapper.appendChild(particle);
+      setTimeout(() => {
+        particle.remove();
+      }, 1000);
+    }
+  };
+
+  return { getMonsterNewHP };
 };
