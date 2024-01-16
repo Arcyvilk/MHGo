@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-import { SoundSE, useSounds } from '../../../hooks/useSounds';
+import { useSounds, SoundSE } from '../../../hooks';
 import s from './Death.module.scss';
 
 export const Death = () => {
