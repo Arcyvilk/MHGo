@@ -1,8 +1,11 @@
 import { Request, Response } from 'express';
-import { log } from '@mhgo/utils';
+import { happensWithAChanceOf, log } from '@mhgo/utils';
 import { Currency, CurrencyType, Setting, UserWealth } from '@mhgo/types';
 
+import { getUserLuck } from '../../helpers/getUserLuck';
 import { mongoInstance } from '../../../api';
+
+const LUCKY_MONEY = 500;
 
 export const updateUserWealth = async (
   req: Request,
@@ -12,6 +15,12 @@ export const updateUserWealth = async (
     const { db } = mongoInstance.getDb();
     const { userId } = req.params;
     const newWealth: { [key in CurrencyType]?: number } = req.body;
+
+    // Get user's luck value
+    const { luck } = await getUserLuck(userId, db);
+
+    // Get a lucky drop
+    const luckyDrop = happensWithAChanceOf(luck);
 
     // Get base wealth
     const collectionSettings = db.collection<Setting<Currency[]>>('settings');
@@ -33,10 +42,11 @@ export const updateUserWealth = async (
       const newUserAmount = newWealth[currency.id] ?? 0;
       const oldUserAmount =
         userWealth?.find(u => u.id === currency.id)?.amount ?? 0;
+      const luckyMoney = currency.id === 'base' && luckyDrop ? LUCKY_MONEY : 0;
 
       return {
         id: currency.id,
-        amount: oldUserAmount + newUserAmount,
+        amount: oldUserAmount + newUserAmount + luckyMoney,
       };
     });
 
@@ -49,7 +59,9 @@ export const updateUserWealth = async (
     if (!response.acknowledged) {
       res.status(400).send({ error: 'Could not update users wealth.' });
     } else {
-      res.sendStatus(200);
+      res.status(200).send({
+        luckyDrop: luckyDrop ? LUCKY_MONEY : null,
+      });
     }
   } catch (err: any) {
     log.WARN(err);

@@ -11,6 +11,8 @@ import {
   useMonsterMarkerDropsApi,
   useUpdateUserWealthApi,
   useUserLoadoutApi,
+  Icon,
+  Size,
 } from '@mhgo/front';
 
 import { ModalLevelUp } from './ModalLevelUp';
@@ -58,7 +60,10 @@ const Load = ({ onClose }: { onClose: () => void }) => {
     isSuccess,
   } = useMonsterMarkerDropsApi(userId);
   const { mutate: mutateUserExp, didLevelUp, levels } = useUserLevelUp(userId);
-  const { mutate: mutateUserWealth } = useUpdateUserWealthApi(userId);
+  const {
+    data: { luckyDrop },
+    mutate: mutateUserWealth,
+  } = useUpdateUserWealthApi(userId);
 
   const {
     achievementId,
@@ -125,11 +130,28 @@ const Load = ({ onClose }: { onClose: () => void }) => {
             <div>
               <span style={{ fontWeight: 900 }}>EXP:</span> +{expChange}
             </div>
-            {/* TODO display money properly */}
-            <div>
+            <div className={s.result__payment}>
               <span style={{ fontWeight: 900 }}>Money:</span>
-              {JSON.stringify(wealthChange)}
+              {Object.entries(wealthChange)
+                .filter(([_, value]) => value > 0)
+                .map(([key, value]) => (
+                  <>
+                    <span>+{value}</span>
+                    <Icon
+                      icon={key == 'base' ? 'Coin' : 'Paw'}
+                      size={Size.MICRO}
+                    />
+                  </>
+                ))}
             </div>
+            {luckyDrop && (
+              <div className={s.result__lucky}>
+                <Icon icon="Luck" size={Size.MICRO} />
+                <span style={{ fontWeight: 900 }}>You got lucky!</span>
+                <span>+{luckyDrop}</span>
+                <Icon icon="Coin" size={Size.MICRO} />
+              </div>
+            )}
           </div>
           <p className={s.result__desc}>Monster dropped the following items:</p>
           <div className={s.result__drops}>

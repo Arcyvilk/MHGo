@@ -81,7 +81,7 @@ const Load = () => {
           <span>{userStats?.critDamage ?? '?'}%</span>
         </div>
         <div className={s.stats}>
-          <Tooltip content="Percentage chance of dropping additional rewards from monsters">
+          <Tooltip content="Percentage chance of dropping additional reward from monsters">
             <span>
               <Icon icon="Luck" size={Size.MICRO} />
               Luck

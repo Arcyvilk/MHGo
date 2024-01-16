@@ -234,8 +234,8 @@ export const useUpdateUserWealthApi = (userId: string) => {
 
   const updateUserWealth = async (variables: {
     [key in CurrencyType]?: number;
-  }): Promise<void> => {
-    await fetcher(`${API_URL}/users/user/${userId}/wealth`, {
+  }): Promise<{ luckyDrop: number | null }> => {
+    const response = await fetcher(`${API_URL}/users/user/${userId}/wealth`, {
       method: 'PUT',
       body: JSON.stringify(variables),
       headers: {
@@ -246,14 +246,24 @@ export const useUpdateUserWealthApi = (userId: string) => {
     queryClient.invalidateQueries({
       queryKey: ['user', userId, 'wealth'],
     });
+
+    return response.json();
   };
 
-  const { mutate, error, status, isPending, isSuccess, isError } = useMutation({
+  const {
+    data = { luckyDrop: null },
+    mutate,
+    error,
+    status,
+    isPending,
+    isSuccess,
+    isError,
+  } = useMutation({
     mutationKey: ['user', userId, 'wealth', 'update'],
     mutationFn: updateUserWealth,
   });
 
-  return { mutate, error, status, isPending, isSuccess, isError };
+  return { data, mutate, error, status, isPending, isSuccess, isError };
 };
 
 export const useUserConsumeItemsApi = (userId: string) => {
