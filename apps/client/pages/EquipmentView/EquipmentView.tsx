@@ -30,7 +30,7 @@ export const EquipmentView = () => {
         <EquipmentLoadout />
         <EquipmentCraft />
       </div>
-      <CloseButton />
+      <CloseButton backToHome />
     </div>
   );
 };

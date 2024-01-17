@@ -5,7 +5,6 @@ import {
   Tabs,
   QueryBoundary,
   Switch,
-  useContextualRouting,
   useLocalStorage,
   LSKeys,
 } from '@mhgo/front';
@@ -34,15 +33,6 @@ const Load = () => {
     LSKeys.MHGO_EQUIPMENT_FILTERS,
     { showOwned: true, showNotOwned: true, categoryView: false },
   );
-
-  const { navigateToRoute, route: activeTab } = useContextualRouting<string>({
-    key: 'tab',
-    value: TABS.WEAPONS,
-  });
-
-  const handleTabChange = (newTab: string) => {
-    navigateToRoute({ tab: newTab });
-  };
 
   return (
     <div className={s.equipmentView__craft}>
@@ -80,37 +70,50 @@ const Load = () => {
       </div>
       <Tabs
         allTabs={TABS}
-        activeTab={activeTab}
-        setActiveTab={handleTabChange}
+        defaultTab={TABS.WEAPONS}
+        content={[
+          {
+            tab: TABS.WEAPONS,
+            component: (
+              <EquipmentPieces
+                key="tab_weapon"
+                itemType="weapon"
+                {...equipmentFilters}
+              />
+            ),
+          },
+          {
+            tab: TABS.ARMOR,
+            component: (
+              <EquipmentPieces
+                key="tab_armor"
+                itemType="armor"
+                {...equipmentFilters}
+              />
+            ),
+          },
+          {
+            tab: TABS.UTILITY,
+            component: (
+              <EquipmentPieces
+                key="tab_other"
+                itemType="other"
+                {...equipmentFilters}
+              />
+            ),
+          },
+          {
+            tab: TABS.QUEST,
+            component: (
+              <EquipmentPieces
+                key="tab_quest"
+                itemType="quest"
+                {...equipmentFilters}
+              />
+            ),
+          },
+        ]}
       />
-      {activeTab === TABS.WEAPONS && (
-        <EquipmentPieces
-          key="tab_weapon"
-          itemType="weapon"
-          {...equipmentFilters}
-        />
-      )}
-      {activeTab === TABS.ARMOR && (
-        <EquipmentPieces
-          key="tab_armor"
-          itemType="armor"
-          {...equipmentFilters}
-        />
-      )}
-      {activeTab === TABS.UTILITY && (
-        <EquipmentPieces
-          key="tab_other"
-          itemType="other"
-          {...equipmentFilters}
-        />
-      )}
-      {activeTab === TABS.QUEST && (
-        <EquipmentPieces
-          key="tab_quest"
-          itemType="quest"
-          {...equipmentFilters}
-        />
-      )}
     </div>
   );
 };

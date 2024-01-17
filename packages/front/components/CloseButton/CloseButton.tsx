@@ -4,13 +4,14 @@ import { Icon } from '../Icon';
 import s from './CloseButton.module.scss';
 import { Size, SoundSE, useSounds } from '@mhgo/front';
 
-export const CloseButton = () => {
+type CloseButtonProps = { backToHome?: boolean };
+export const CloseButton = ({ backToHome = false }: CloseButtonProps) => {
   const navigate = useNavigate();
   const { playSound } = useSounds(undefined);
 
   const onClickClose = () => {
     playSound(SoundSE.CLICK);
-    navigate(-1);
+    backToHome ? navigate('/') : navigate(-1);
   };
 
   return (

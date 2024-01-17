@@ -57,7 +57,7 @@ export const AchievementsView = () => {
             />
           ))}
       </div>
-      <CloseButton />
+      <CloseButton backToHome />
     </div>
   );
 };

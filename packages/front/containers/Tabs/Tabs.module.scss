@@ -1,12 +1,16 @@
 @import '@mhgo/front/styles/index.scss';
 
 .tabs {
-  width: 100%;
+  max-width: 100%;
   display: flex;
+  box-sizing: border-box;
   border: 1px solid $color-header-bg;
   padding: 2px;
 
   &__tab {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
     padding: $size-6;
     flex: 1 1 100%;
@@ -24,5 +28,11 @@
     &--isActive {
       background-color: $color-white;
     }
+  }
+}
+
+.tab {
+  &__link {
+    all: unset;
   }
 }

@@ -25,7 +25,7 @@ export const ShopView = () => {
       <QueryBoundary fallback={<Loader />}>
         <Shop />
       </QueryBoundary>
-      <CloseButton />
+      <CloseButton backToHome />
     </div>
   );
 };

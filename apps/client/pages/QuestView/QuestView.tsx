@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { CloseButton, Loader, QueryBoundary, Tabs } from '@mhgo/front';
 
 import { QuestDailyView } from './QuestDailyView';
@@ -12,28 +11,33 @@ export const TABS = {
 };
 
 export const QuestView = () => {
-  const [activeTab, setActiveTab] = useState(TABS.STORY);
-
   return (
     <div className={s.questView}>
-      <div className={s.questView__header}>
-        <Tabs
-          allTabs={TABS}
-          activeTab={activeTab}
-          setActiveTab={setActiveTab}
-        />
-      </div>
-      {activeTab === TABS.STORY && (
-        <QueryBoundary key={`tab-${TABS.STORY}`} fallback={<Loader />}>
-          <QuestStoryView />
-        </QueryBoundary>
-      )}
-      {activeTab === TABS.DAILY && (
-        <QueryBoundary key={`tab-${TABS.DAILY}`} fallback={<Loader />}>
-          <QuestDailyView />
-        </QueryBoundary>
-      )}
-      <CloseButton />
+      <Tabs
+        allTabs={TABS}
+        defaultTab={TABS.STORY}
+        headerStyle={{ margin: '16px 16px 0 16px' }}
+        content={[
+          {
+            tab: TABS.STORY,
+            component: (
+              <QueryBoundary key={`tab-${TABS.STORY}`} fallback={<Loader />}>
+                <QuestStoryView />
+              </QueryBoundary>
+            ),
+          },
+          {
+            tab: TABS.DAILY,
+            component: (
+              <QueryBoundary key={`tab-${TABS.DAILY}`} fallback={<Loader />}>
+                <QuestDailyView />
+              </QueryBoundary>
+            ),
+          },
+        ]}
+      />
+
+      <CloseButton backToHome />
     </div>
   );
 };
