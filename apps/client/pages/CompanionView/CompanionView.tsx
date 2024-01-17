@@ -141,7 +141,7 @@ const Load = () => {
               onClick={onPet}
             />
             {isSpeechBubbleOpen && <SpeechBubble tip={companionTip} />}
-            <Rain isRaining={isRaining} setIsRaining={setIsRaining} />
+            <Rain type="HEART" isRaining={isRaining} />
           </div>
         )}
         <div className={s.companionView__actionBar}>

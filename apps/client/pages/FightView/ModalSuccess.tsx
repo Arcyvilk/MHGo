@@ -13,10 +13,12 @@ import {
   useUserLoadoutApi,
   Icon,
   Size,
+  Rain,
 } from '@mhgo/front';
 
 import { ModalLevelUp } from './ModalLevelUp';
 import { ModalAchievement } from '../../containers';
+import { useAppContext } from '../../utils/context';
 import { useUser } from '../../hooks/useUser';
 import { useUserLevelUp } from '../../hooks/useUserLevelUp';
 import {
@@ -26,7 +28,6 @@ import {
 import { useMonsterMarker } from '../../hooks/useMonsterMarker';
 
 import s from './ModalResult.module.scss';
-import { useAppContext } from '../../utils/context';
 
 type ModalProps = {
   isOpen: boolean;
@@ -110,6 +111,7 @@ const Load = ({ onClose }: { onClose: () => void }) => {
 
   return (
     <div className={s.modalSuccess}>
+      {luckyDrop && <Rain type="COIN" isRaining={true} />}
       {didLevelUp && (
         <ModalLevelUp
           levels={levels}

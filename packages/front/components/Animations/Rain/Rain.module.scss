@@ -1,3 +1,5 @@
+@import '../../../styles/index.scss';
+
 .rain {
   position: absolute;
   width: 100%;
@@ -9,6 +11,7 @@
   margin: 0;
   justify-content: center;
   pointer-events: none;
+  z-index: $zindex-modal;
 }
 
 .particle {
@@ -17,12 +20,16 @@
   width: 25px;
   height: auto;
   /* font-size: 40px; */
-  transform: translateY(0);
+  transform: translateY(-$size-32);
   animation: fall 3s linear forwards;
+  filter: drop-shadow(0 0 20px $color-black);
 }
 
 @keyframes fall {
+  from {
+    transform: translateY(-$size-32) rotate(0deg);
+  }
   to {
-    transform: translateY(101vh);
+    transform: translateY(101vh) rotate(359deg);
   }
 }
