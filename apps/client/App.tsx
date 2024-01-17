@@ -22,7 +22,7 @@ export const App = () => {
       <div className={s.app}>
         <ScrollRestoration
           getKey={location => {
-            const paths = ['/equipment', '/you'];
+            const paths = ['/equipment'];
             // Restore scroll if query params are present and it's one of the
             // specified paths
             const shouldRestoreScroll =

@@ -33,7 +33,7 @@ const BUTTONS: {
 export const Buttons = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeModal, setActiveModal] = useState<React.ReactNode>();
-  const { navigateWithScroll } = useNavigateWithScroll();
+  const { navigateWithoutScroll } = useNavigateWithScroll();
 
   const onButtonClick = (link: string | null, modal?: React.ReactNode) => {
     if (modal) {
@@ -43,7 +43,7 @@ export const Buttons = () => {
     }
 
     if (typeof link === 'string') {
-      navigateWithScroll(link);
+      navigateWithoutScroll(link);
       return;
     }
 
