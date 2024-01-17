@@ -57,6 +57,11 @@ export const AchievementsView = () => {
             />
           ))}
       </div>
+      {/* This fixes an annoying bug - when you click achievement
+      icon on the end of the flight screen, and then close button, 
+      you go back to the fight and can claim the rewards twice.
+      So for now close button from achievement view always redirects
+      to home page. */}
       <CloseButton backToHome />
     </div>
   );

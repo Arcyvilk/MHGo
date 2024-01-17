@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, Fragment } from 'react';
 import { ItemType } from '@mhgo/types';
 import {
   Loader,
@@ -153,7 +153,7 @@ const EquipmentPieces = ({
   if (categoryView) {
     const categories = new Set(filtereditems.map(item => item.category));
     return Array.from(categories).map(category => (
-      <>
+      <Fragment key={`category-${category}`}>
         <div className={s.equipmentView__categoryTitle}>
           {category ?? 'Other'}
         </div>
@@ -168,7 +168,7 @@ const EquipmentPieces = ({
               />
             ))}
         </div>
-      </>
+      </Fragment>
     ));
   } else
     return (
