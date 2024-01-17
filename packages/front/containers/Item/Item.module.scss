@@ -6,9 +6,9 @@
   display: flex;
   flex-direction: column;
   gap: $size-4;
-  min-width: $size-72;
-  width: $size-72;
-  max-width: 23%;
+  min-width: $size-68;
+  width: $size-68;
+  max-width: 20%;
   flex: 1;
 
   &--isNotOwned {
@@ -32,7 +32,7 @@
   &__primary {
     display: flex;
     flex-direction: column;
-    gap: $size-12;
+    gap: $size-6;
   }
 
   &__tile {
@@ -65,11 +65,11 @@
 
   &__name {
     width: 100%;
-    font-size: $size-12;
+    font-size: $size-11;
     color: $color-primary-text;
     text-align: center;
     line-height: $size-12;
-    letter-spacing: -0.001rem;
+    letter-spacing: -0.01rem;
   }
 
   &__price {
