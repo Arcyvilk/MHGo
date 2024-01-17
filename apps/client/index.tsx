@@ -3,11 +3,11 @@ import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import { registerSW } from 'virtual:pwa-register';
 
 import { AppContextProvider } from './utils/context';
+import { Router } from './Router';
 
 import 'tippy.js/dist/tippy.css';
 import 'react-toastify/dist/ReactToastify.css';
 import './index.scss';
-import { Router } from './router.tsx';
 
 if ('serviceWorker' in navigator) {
   registerSW({
