@@ -54,7 +54,7 @@
 
   &__title {
     @include page-title;
-    @include text-outline; 
+    @include text-outline-thin; 
     width: 100%;
     text-align:center;
     padding-bottom: $size-12;

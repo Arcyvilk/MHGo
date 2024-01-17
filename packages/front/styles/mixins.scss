@@ -41,6 +41,14 @@
     2px -2px 0 $color-black;
 }
 
+@mixin text-outline-thin {
+  text-shadow:
+    1px 1px 0 $color-black,
+    -1px 1px 0 $color-black,
+    -1px -1px 0 $color-black,
+    1px -1px 0 $color-black;
+}
+
 @mixin svg-outline {
   filter: dropShadow(
     2px 2px 0 $color-black,

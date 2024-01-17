@@ -39,7 +39,11 @@
 
   &__image  {
     max-width: 90%;
-    object-fit: contain;  
+    object-fit: contain;
+    &:active{
+    @include anim-bounce;
+        animation: bounce 0.5s linear;
+    }
   }
 
   &__speechBubble {

@@ -28,6 +28,7 @@ import { useUser } from '../../hooks/useUser';
 import { ModalSuccess } from './ModalSuccess';
 import { ModalFailure } from './ModalFailure';
 import { MonsterAttackTimer } from './MonsterAttackTimer';
+import { PlayerDPS, DmgValue } from './PlayerDPS';
 
 import s from './FightView.module.scss';
 
@@ -43,9 +44,10 @@ const Load = () => {
   const navigate = useNavigate();
   const { isFinishedTutorialPartOne } = useTutorialProgress();
 
-  const { monster } = useMonsterMarker();
+  const { monster, isDummy } = useMonsterMarker();
   const { habitat, level, baseHP = 0, name, img } = monster;
 
+  const [dmgValues, setDmgValues] = useState<DmgValue[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMonsterAlive, setIsMonsterAlive] = useState<boolean>(true);
   const [isPlayerAlive, setIsPlayerAlive] = useState<boolean>(true);
@@ -69,7 +71,7 @@ const Load = () => {
   const onMonsterHit = () => {
     if (!isMonsterAlive || !isPlayerAlive) return;
 
-    const { newHP } = getMonsterNewHP(monsterHP);
+    const { newHP } = getMonsterNewHP(monsterHP, dmgValues, setDmgValues);
 
     if (newHP > 0) {
       playSound(SoundSE.PUNCH);
@@ -110,6 +112,7 @@ const Load = () => {
       {!isFightFinished && (
         <MonsterAttackTimer isFightFinished={isFightFinished} />
       )}
+      {isDummy && <PlayerDPS dmgValues={dmgValues} />}
       {!isMonsterAlive && <Nuke />}
       {!isPlayerAlive && <Death />}
       {isMonsterAlive && <Rays />}
@@ -221,13 +224,21 @@ const useMonsterHealthChange = () => {
   const { data: userStats } = useUserStatsApi(userId);
   const { attack = 1, critChance = 0, critDamage = 100 } = userStats ?? {};
 
-  const getMonsterNewHP = (monsterHP: number) => {
+  const getMonsterNewHP = (
+    monsterHP: number,
+    dmgValues: DmgValue[],
+    setDmgValues: (dmgValues: DmgValue[]) => void,
+  ) => {
     const userCritDamageMultiplier = 1 + critDamage / 100;
     const isCrit = happensWithAChanceOf(critChance);
     const userFinalDamage = isCrit ? attack * userCritDamageMultiplier : attack;
 
     const newHP = monsterHP - userFinalDamage;
     createDamageNumber(userFinalDamage, isCrit);
+    setDmgValues([
+      ...dmgValues,
+      { timestamp: Date.now(), dmg: userFinalDamage },
+    ]);
     return { newHP, isCrit };
   };
 
@@ -236,6 +247,8 @@ const useMonsterHealthChange = () => {
     const classNames = modifiers(s, 'particle', 'monsterDmg', { isCrit }).split(
       ' ',
     );
+    // I tried making it do the numbers always follow the cursor,
+    // but for some reason it greatly choked the DPS
     particle.classList.add(...classNames);
     particle.innerText = String(damage);
     const wrapper = document.getElementById('monster_wrapper');

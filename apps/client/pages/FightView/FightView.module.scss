@@ -60,6 +60,15 @@
     max-height: $size-32;
   }
 
+  &__dps {
+    @include text-outline-thin;
+    position: absolute;
+    top: $size-22;
+    right: $size-16;
+    font-size: $size-16;
+    color: $color-action;
+  }
+
   &__monster {
     position: relative;
     max-width: 90%;
@@ -100,7 +109,7 @@
 
   &__title {
     @include page-title;
-    @include text-outline; 
+    @include text-outline-thin; 
     width: 100%;
     text-align:center;
     padding-bottom: $size-12;
@@ -110,7 +119,7 @@
 }
 
 .particle {
-  @include text-outline;
+  @include text-outline-thin;
   display: flex;
   position: absolute;
   left: 50%;
