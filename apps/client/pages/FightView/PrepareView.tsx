@@ -1,5 +1,3 @@
-import { useNavigate } from 'react-router-dom';
-
 import {
   Button,
   CloseButton,
@@ -9,6 +7,7 @@ import {
   QueryBoundary,
   Size,
   modifiers,
+  useNavigateWithScroll,
   useUserHealthApi,
 } from '@mhgo/front';
 import { HealthBarSimple, Tutorial } from '../../containers';
@@ -71,16 +70,16 @@ const Header = ({ name = '?', level = 0 }: HeaderProps) => {
 
 type ActionsProps = { markerId: string | null; level?: number };
 const Actions = ({ markerId, level = 0 }: ActionsProps) => {
-  const navigate = useNavigate();
+  const { navigateWithoutScroll } = useNavigateWithScroll();
   const { userId } = useUser();
   const { data: userHealth } = useUserHealthApi(userId);
   const isUserAlive = userHealth.currentHealth > 0;
 
   const onFight = () => {
-    navigate(`/fight?id=${markerId}&level=${level}`);
+    navigateWithoutScroll(`/fight?id=${markerId}&level=${level}`);
   };
   const onFlee = () => {
-    navigate('/');
+    navigateWithoutScroll('/');
   };
 
   return (

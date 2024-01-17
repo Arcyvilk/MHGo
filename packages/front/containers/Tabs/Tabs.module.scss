@@ -8,6 +8,7 @@
   padding: 2px;
 
   &__tab {
+    all: unset;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -21,6 +22,7 @@
     border-right: 0;
     outline: none;
 
+
     &:is(:last-child) {
       border-right: 1px solid $color-header-bg;
     }
@@ -28,11 +30,5 @@
     &--isActive {
       background-color: $color-white;
     }
-  }
-}
-
-.tab {
-  &__link {
-    all: unset;
   }
 }

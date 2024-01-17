@@ -38,3 +38,7 @@ html:not(#close) {
   box-sizing: border-box;
   font-family: $font-open-sans;
 }
+
+.router_link {
+  all: unset; 
+}

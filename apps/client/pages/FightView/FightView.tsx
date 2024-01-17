@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 import { HealthBarMonster, HealthBarUser, Tutorial } from '../../containers';
 import {
@@ -17,6 +16,7 @@ import {
   useUpdateUserHealthApi,
   useUserHealthApi,
   useUserStatsApi,
+  useNavigateWithScroll,
 } from '@mhgo/front';
 import { happensWithAChanceOf } from '@mhgo/utils';
 
@@ -41,7 +41,7 @@ export const FightView = () => (
 const Load = () => {
   const { setMusic } = useAppContext();
   const { changeMusic, playSound } = useSounds(setMusic);
-  const navigate = useNavigate();
+  const { navigateWithoutScroll } = useNavigateWithScroll();
   const { isFinishedTutorialPartOne } = useTutorialProgress();
 
   const { monster, isDummy } = useMonsterMarker();
@@ -84,7 +84,7 @@ const Load = () => {
 
   const onFightEnd = () => {
     setIsModalOpen(false);
-    navigate('/');
+    navigateWithoutScroll('/');
   };
 
   useEffect(() => {

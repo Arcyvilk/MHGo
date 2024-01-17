@@ -1,10 +1,5 @@
-import { Link, createSearchParams, useSearchParams } from 'react-router-dom';
-import {
-  SoundSE,
-  modifiers,
-  useContextualRouting,
-  useSounds,
-} from '@mhgo/front';
+import { Link, useSearchParams } from 'react-router-dom';
+import { SoundSE, modifiers, useSounds } from '@mhgo/front';
 import s from './Tabs.module.scss';
 import { useMemo } from 'react';
 
@@ -34,19 +29,16 @@ export const Tabs = <T extends string>({
         {Object.entries(allTabs).map(tab => {
           const [tabKey, tabValue] = tab as [T, string];
           return (
-            <div
-              className={modifiers(s, 'tabs__tab', {
+            <Link
+              className={modifiers(s, 'tabs__tab', 'router_link', {
                 isActive: activeTab === tabValue,
               })}
+              to={`?tab=${tabValue}`}
               onClick={() => playSound(SoundSE.CLICK)}
+              preventScrollReset={true}
               key={tabKey}>
-              <Link
-                className={s.tab__link}
-                to={`?tab=${tabValue}`}
-                preventScrollReset={true}>
-                {tabValue}
-              </Link>
-            </div>
+              {tabValue}
+            </Link>
           );
         })}
       </div>

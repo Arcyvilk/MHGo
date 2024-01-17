@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 import {
   Icon,
@@ -9,6 +8,7 @@ import {
   SoundSE,
   addCdnUrl,
   modifiers,
+  useNavigateWithScroll,
   useSounds,
 } from '@mhgo/front';
 import { Size } from '@mhgo/front';
@@ -25,16 +25,16 @@ import s from './HomeView.module.scss';
 export const HomeView = () => {
   const { isTutorialDummyKilled } = useAppContext();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const navigate = useNavigate();
+  const { navigateWithoutScroll, navigateWithScroll } = useNavigateWithScroll();
 
   const { isFinishedTutorialPartOne } = useTutorialProgress();
 
-  const onEquipmentClick = () => navigate('/equipment');
   const onItemsClick = () => setIsModalOpen(true);
-  const onPaintballClick = () => navigate('/paintball');
-  const onYouClick = () => navigate('/you');
-  const onShopClick = () => navigate('/shop');
-  const onQuestClick = () => navigate('/quest');
+  const onYouClick = () => navigateWithoutScroll('/you');
+  const onShopClick = () => navigateWithoutScroll('/shop');
+  const onQuestClick = () => navigateWithoutScroll('/quest');
+  const onEquipmentClick = () => navigateWithScroll('/equipment');
+  const onPaintballClick = () => navigateWithoutScroll('/paintball');
 
   return (
     <div className={s.homeView}>

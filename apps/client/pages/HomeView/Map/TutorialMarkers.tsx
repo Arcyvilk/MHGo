@@ -1,7 +1,12 @@
-import { useNavigate } from 'react-router-dom';
 import { Marker } from 'react-leaflet';
 import L from 'leaflet';
-import { QueryBoundary, SoundSE, useMonstersApi, useSounds } from '@mhgo/front';
+import {
+  QueryBoundary,
+  SoundSE,
+  useMonstersApi,
+  useNavigateWithScroll,
+  useSounds,
+} from '@mhgo/front';
 
 import s from './Marker.module.scss';
 
@@ -13,7 +18,7 @@ export const TutorialMarkers = (props: TutorialMarkersProps) => (
 );
 
 const Load = ({ coords }: TutorialMarkersProps) => {
-  const navigate = useNavigate();
+  const { navigateWithoutScroll } = useNavigateWithScroll();
   const { playSound } = useSounds(undefined);
   const { data: monsters } = useMonstersApi();
   const tutorialMonster = monsters.find(m => m.id === 'tutorial');
@@ -23,7 +28,7 @@ const Load = ({ coords }: TutorialMarkersProps) => {
   const position = L.latLng(coords[0], coords[1]);
   const onClick = () => {
     playSound(SoundSE.CLICK);
-    navigate(`/prepare?id=tutorial&level=1`);
+    navigateWithoutScroll(`/prepare?id=tutorial&level=1`);
   };
 
   return (

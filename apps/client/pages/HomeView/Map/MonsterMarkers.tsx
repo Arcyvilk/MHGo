@@ -1,5 +1,4 @@
 import { Fragment, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { Marker } from 'react-leaflet';
 import L from 'leaflet';
 import {
@@ -7,6 +6,7 @@ import {
   SoundSE,
   useMonsterMarkersApi,
   useMonstersApi,
+  useNavigateWithScroll,
   useSounds,
 } from '@mhgo/front';
 import StarYellow from '@mhgo/front/assets/icons/StarYellow.svg';
@@ -22,7 +22,7 @@ export const MonsterMarkers = (props: MonsterMarkersProps) => (
 );
 
 const Load = ({ coords }: MonsterMarkersProps) => {
-  const navigate = useNavigate();
+  const { navigateWithoutScroll } = useNavigateWithScroll();
   const { playSound } = useSounds(undefined);
 
   // We make coords less precise so we don't refetch every second
@@ -38,7 +38,7 @@ const Load = ({ coords }: MonsterMarkersProps) => {
         const position = L.latLng(m.coords[0], m.coords[1]);
         const onClick = () => {
           playSound(SoundSE.CLICK);
-          navigate(`/prepare?id=${m.id}&level=${m.level}`);
+          navigateWithoutScroll(`/prepare?id=${m.id}&level=${m.level}`);
         };
 
         return (

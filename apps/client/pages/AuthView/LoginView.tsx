@@ -1,12 +1,12 @@
 import { useState } from 'react';
-import { Navigate, useNavigate } from 'react-router-dom';
-import { Button, Icon, Input, Size } from '@mhgo/front';
+import { Navigate } from 'react-router-dom';
+import { Button, Icon, Input, Size, useNavigateWithScroll } from '@mhgo/front';
 import { useMe } from '../../hooks/useAuth';
 
 import s from './AuthView.module.scss';
 
 export const LoginView = () => {
-  const navigate = useNavigate();
+  const { navigateWithoutScroll } = useNavigateWithScroll();
   const { isLoggedIn, loginUser, isLoginPending } = useMe();
   const [userName, setUserName] = useState('');
   const [pwd, setPwd] = useState('');
@@ -16,7 +16,7 @@ export const LoginView = () => {
   };
 
   const onSignIn = () => {
-    navigate('/signin');
+    navigateWithoutScroll('/signin');
   };
 
   if (isLoggedIn) return <Navigate to="/" replace={true} />;

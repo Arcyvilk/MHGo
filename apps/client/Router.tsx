@@ -1,4 +1,8 @@
+import { useEffect } from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { Loader, SoundBG, useSounds } from '@mhgo/front';
+
+import { useAppContext } from './utils/context';
 import {
   AchievementsView,
   AwaitingApprovalView,
@@ -21,10 +25,28 @@ import {
 import { PaintballView } from './pages/PaintballView';
 import { FightView, PrepareView } from './pages/FightView';
 import { MonsterGuideView } from './pages/MonsterGuideView';
+
 import { App } from './App';
-import { Loader } from '@mhgo/front';
+import ReactHowler from 'react-howler';
 
 export const Router = () => {
+  const { music, setMusic, musicVolume } = useAppContext();
+  const { changeMusic } = useSounds(setMusic);
+
+  useEffect(() => {
+    const isInsideInstalledApp =
+      window.matchMedia('(display-mode: standalone)').matches || // @ts-ignore
+      window.navigator.standalone === true;
+    if (isInsideInstalledApp) {
+      // Size window after open the app
+      window.resizeTo(400, 800);
+    }
+  }, []);
+
+  useEffect(() => {
+    changeMusic(SoundBG.SNOW_AND_CHILDREN);
+  }, []);
+
   const router = createBrowserRouter([
     {
       path: '/auth',
@@ -111,5 +133,10 @@ export const Router = () => {
     },
   ]);
 
-  return <RouterProvider router={router} fallbackElement={<Loader />} />;
+  return (
+    <>
+      {music && <ReactHowler src={music} playing loop volume={musicVolume} />}
+      <RouterProvider router={router} fallbackElement={<Loader />} />
+    </>
+  );
 };

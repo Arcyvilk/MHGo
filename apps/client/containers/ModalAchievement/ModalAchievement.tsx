@@ -1,15 +1,15 @@
+import { useEffect } from 'react';
 import {
   Button,
   Modal,
   Rays,
   SoundSE,
   useAchievementsApi,
+  useNavigateWithScroll,
   useSounds,
 } from '@mhgo/front';
 
 import s from './ModalAchievement.module.scss';
-import { useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
 
 type ModalProps = {
   achievementId?: string | null;
@@ -21,7 +21,7 @@ export const ModalAchievement = ({
   isOpen,
   setIsOpen,
 }: ModalProps) => {
-  const navigate = useNavigate();
+  const { navigateWithoutScroll } = useNavigateWithScroll();
   const { playSound } = useSounds(undefined);
   const { data: achievements } = useAchievementsApi();
   const achievement = achievements.find(a => a.id === achievementId);
@@ -31,7 +31,7 @@ export const ModalAchievement = ({
   }, [isOpen, achievement]);
 
   const onAchievementClick = () => {
-    navigate('/achievements');
+    navigateWithoutScroll('/achievements');
   };
 
   if (!achievement) return null;

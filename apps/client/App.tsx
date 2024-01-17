@@ -1,14 +1,12 @@
-import { FC, PropsWithChildren, useEffect } from 'react';
-import ReactHowler from 'react-howler';
+import { FC, PropsWithChildren } from 'react';
 import { Navigate, Outlet, ScrollRestoration } from 'react-router-dom';
 import { ToastContainer, ToastContainerProps } from 'react-toastify';
 
-import { Loader, QueryBoundary, SoundBG, useSounds } from '@mhgo/front';
-import { useAppContext } from './utils/context';
+import { Loader, QueryBoundary } from '@mhgo/front';
+import { useMe } from './hooks/useAuth';
 import { GlobalAchievements } from './containers';
 
 import s from './App.module.scss';
-import { useMe } from './hooks/useAuth';
 
 const toastOptions: ToastContainerProps = {
   closeOnClick: true,
@@ -19,23 +17,6 @@ const toastOptions: ToastContainerProps = {
 };
 
 export const App = () => {
-  const { music, setMusic, musicVolume } = useAppContext();
-  const { changeMusic } = useSounds(setMusic);
-
-  useEffect(() => {
-    const isInsideInstalledApp =
-      window.matchMedia('(display-mode: standalone)').matches || // @ts-ignore
-      window.navigator.standalone === true;
-    if (isInsideInstalledApp) {
-      // Size window after open the app
-      window.resizeTo(400, 800);
-    }
-  }, []);
-
-  useEffect(() => {
-    changeMusic(SoundBG.SNOW_AND_CHILDREN);
-  }, []);
-
   return (
     <RequireAuth>
       <div className={s.app}>
@@ -53,7 +34,7 @@ export const App = () => {
             return scrollRestoration;
           }}
         />
-        {music && <ReactHowler src={music} playing loop volume={musicVolume} />}
+
         <GlobalAchievements />
         <ToastContainer {...toastOptions} />
         <Outlet />

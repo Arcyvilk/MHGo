@@ -1,6 +1,10 @@
-import { useNavigate } from 'react-router-dom';
-
-import { addCdnUrl, Button, CloseButton, Icon } from '@mhgo/front';
+import {
+  addCdnUrl,
+  Button,
+  CloseButton,
+  Icon,
+  useNavigateWithScroll,
+} from '@mhgo/front';
 import { Size } from '@mhgo/front';
 import { usePaintballs } from '../../hooks/usePaintballs';
 import { useUser } from '../../hooks/useUser';
@@ -34,9 +38,9 @@ const Paintballs = ({ amount }: PaintballsProps) => {
 };
 
 const NoPaintballs = () => {
-  const navigate = useNavigate();
+  const { navigateWithoutScroll } = useNavigateWithScroll();
   const onShopClick = () => {
-    navigate('/shop');
+    navigateWithoutScroll('/shop');
   };
 
   return (

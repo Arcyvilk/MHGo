@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import {
   Button,
   Icon,
@@ -7,14 +8,14 @@ import {
   LSKeys,
   Size,
   useLocalStorage,
+  useNavigateWithScroll,
 } from '@mhgo/front';
 import { useMe } from '../../hooks/useAuth';
 
 import s from './AuthView.module.scss';
-import { toast } from 'react-toastify';
 
 export const SignInView = () => {
-  const navigate = useNavigate();
+  const { navigateWithoutScroll } = useNavigateWithScroll();
   const { isLoggedIn, signinUser, isSigninPending } = useMe();
   const [userName, setUserName] = useState('');
   const [pwd, setPwd] = useState('');
@@ -36,7 +37,7 @@ export const SignInView = () => {
   };
 
   const onLogin = () => {
-    navigate('/login');
+    navigateWithoutScroll('/login');
   };
 
   if (isLoggedIn) return <Navigate to="/" replace={true} />;

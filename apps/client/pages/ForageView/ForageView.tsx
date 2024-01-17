@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import L from 'leaflet';
 import {
   CloseButton,
@@ -16,6 +15,7 @@ import {
   SoundSE,
   useLocalStorage,
   useSounds,
+  useNavigateWithScroll,
 } from '@mhgo/front';
 
 import { DEFAULT_COORDS, DEFAULT_MAP_RADIUS } from '../../utils/consts';
@@ -30,7 +30,7 @@ export const ForageView = () => (
 );
 
 const Load = () => {
-  const navigate = useNavigate();
+  const { navigateWithoutScroll } = useNavigateWithScroll();
   const { setMusic } = useAppContext();
   const { playSound } = useSounds(setMusic);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -49,7 +49,7 @@ const Load = () => {
 
   const onFinish = () => {
     setIsModalOpen(false);
-    navigate('/');
+    navigateWithoutScroll('/');
   };
 
   useEffect(() => {

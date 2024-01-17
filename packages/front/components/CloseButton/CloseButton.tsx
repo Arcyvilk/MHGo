@@ -1,17 +1,16 @@
-import { useNavigate } from 'react-router-dom';
+import { Size, SoundSE, useNavigateWithScroll, useSounds } from '@mhgo/front';
 import { Icon } from '../Icon';
 
 import s from './CloseButton.module.scss';
-import { Size, SoundSE, useSounds } from '@mhgo/front';
 
 type CloseButtonProps = { backToHome?: boolean };
 export const CloseButton = ({ backToHome = false }: CloseButtonProps) => {
-  const navigate = useNavigate();
+  const { navigateWithScroll } = useNavigateWithScroll();
   const { playSound } = useSounds(undefined);
 
   const onClickClose = () => {
     playSound(SoundSE.CLICK);
-    backToHome ? navigate('/') : navigate(-1);
+    backToHome ? navigateWithScroll('/') : navigateWithScroll(-1);
   };
 
   return (

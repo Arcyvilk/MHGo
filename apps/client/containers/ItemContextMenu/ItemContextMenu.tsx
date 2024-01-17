@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
 import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
 import { Instance } from 'tippy.js';
 
 import { ItemActions, Item as TItem } from '@mhgo/types';
@@ -8,6 +7,7 @@ import {
   Button,
   Item,
   SoundSE,
+  useNavigateWithScroll,
   useSounds,
   useUserHealthApi,
 } from '@mhgo/front';
@@ -45,7 +45,7 @@ export const ItemContextMenu = ({
   purchaseOnly?: boolean;
   isItemOwned?: boolean;
 }) => {
-  const navigate = useNavigate();
+  const { navigateWithoutScroll } = useNavigateWithScroll();
   const { setMusic } = useAppContext();
   const { playSound } = useSounds(setMusic);
   const [action, setAction] = useState<Action>('craft');
@@ -79,7 +79,7 @@ export const ItemContextMenu = ({
 
   const onItemPurchase = () => {
     const shopPath = '/shop';
-    if (location.pathname !== shopPath) navigate('/shop');
+    if (location.pathname !== shopPath) navigateWithoutScroll('/shop');
     else {
       setAction('purchase');
       setIsModalOpen(true);

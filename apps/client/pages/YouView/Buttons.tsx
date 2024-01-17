@@ -1,9 +1,8 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import { IconType } from '@mhgo/front/assets/icons';
-import { Button, Icon, Modal } from '@mhgo/front';
+import { Button, Icon, Modal, useNavigateWithScroll } from '@mhgo/front';
 
 import { Size } from '@mhgo/front';
 import { AppearanceModal, NewsModal, PartyModal } from '../ModalView';
@@ -34,7 +33,7 @@ const BUTTONS: {
 export const Buttons = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeModal, setActiveModal] = useState<React.ReactNode>();
-  const navigate = useNavigate();
+  const { navigateWithScroll } = useNavigateWithScroll();
 
   const onButtonClick = (link: string | null, modal?: React.ReactNode) => {
     if (modal) {
@@ -44,7 +43,7 @@ export const Buttons = () => {
     }
 
     if (typeof link === 'string') {
-      navigate(link);
+      navigateWithScroll(link);
       return;
     }
 

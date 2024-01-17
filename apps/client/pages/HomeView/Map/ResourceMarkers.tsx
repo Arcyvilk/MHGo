@@ -1,10 +1,10 @@
 import { Fragment, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { Marker } from 'react-leaflet';
 import L from 'leaflet';
 import {
   QueryBoundary,
   SoundSE,
+  useNavigateWithScroll,
   useResourceMarkersApi,
   useResourcesApi,
   useSounds,
@@ -21,7 +21,7 @@ export const ResourceMarkers = (props: ResourceMarkerProps) => (
 );
 
 const Load = ({ coords }: ResourceMarkerProps) => {
-  const navigate = useNavigate();
+  const { navigateWithoutScroll } = useNavigateWithScroll();
   const { playSound } = useSounds(undefined);
 
   // We make coords less precise so we don't refetch every second
@@ -38,7 +38,7 @@ const Load = ({ coords }: ResourceMarkerProps) => {
         const onClick = () => {
           playSound(SoundSE.CLICK);
           // @ts-expect-error _id in fact exists
-          navigate(`/forage?id=${String(r._id)}`);
+          navigateWithoutScroll(`/forage?id=${String(r._id)}`);
         };
 
         return (

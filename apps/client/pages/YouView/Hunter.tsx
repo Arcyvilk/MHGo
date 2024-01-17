@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 import {
   Button,
@@ -8,6 +7,7 @@ import {
   addCdnUrl,
   Size,
   useUserHealthApi,
+  useNavigateWithScroll,
 } from '@mhgo/front';
 import qr from '@mhgo/front/assets/qr.png';
 
@@ -17,7 +17,7 @@ import { HealthBarSimple } from '../../containers';
 import s from './Hunter.module.scss';
 
 export const Hunter = () => {
-  const navigate = useNavigate();
+  const { navigateWithScroll } = useNavigateWithScroll();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { userName, userId, userLevel } = useUser();
   const { data: userHealth } = useUserHealthApi(userId);
@@ -27,7 +27,7 @@ export const Hunter = () => {
   };
 
   const onCompanionView = () => {
-    navigate('/companion');
+    navigateWithScroll('/companion');
   };
 
   return (
