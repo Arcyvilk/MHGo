@@ -20,6 +20,10 @@
   &--isTransparent {
     background-color: transparent;
   }
+
+  &--isOpaque {
+    background-color: black;
+  }
   
   &--isOpen {
     display: flex;

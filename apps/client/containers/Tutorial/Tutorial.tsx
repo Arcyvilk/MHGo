@@ -70,11 +70,12 @@ const Load = ({ stepFrom, stepTo, requirement }: TutorialProps) => {
           <Modal
             isTransparent
             isHighModal
+            isOpaque={currentStep.effects?.includes('darkness')}
             isOpen={isOpen}
             setIsOpen={setIsOpen}
             onClose={nextStep}>
             <div className={modifiers(s, 'tutorial', { isCentered })}>
-              {currentStep.effects === 'rays' && <Rays />}
+              {currentStep.effects?.includes('rays') && <Rays />}
               <Spotlight currentStep={currentStep} />
               <Companion currentStep={currentStep} />
               <InfoDialog currentStep={currentStep} />
