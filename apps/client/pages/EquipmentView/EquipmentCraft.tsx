@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { ItemType } from '@mhgo/types';
 import {
   Loader,
@@ -6,6 +6,8 @@ import {
   QueryBoundary,
   Switch,
   useContextualRouting,
+  useLocalStorage,
+  LSKeys,
 } from '@mhgo/front';
 
 import { ItemContextMenu } from '../../containers';
@@ -28,9 +30,10 @@ export const EquipmentCraft = () => (
 );
 
 const Load = () => {
-  const [showOwned, setShowOwned] = useState(true);
-  const [showNotOwned, setShowNotOwned] = useState(true);
-  const [categoryView, setCategoryView] = useState(false);
+  const [equipmentFilters, setEquipmentFilters] = useLocalStorage(
+    LSKeys.MHGO_EQUIPMENT_FILTERS,
+    { showOwned: true, showNotOwned: true, categoryView: false },
+  );
 
   const { navigateToRoute, route: activeTab } = useContextualRouting<string>({
     key: 'tab',
@@ -46,18 +49,33 @@ const Load = () => {
       <div className={s.equipmentView__actions}>
         <Switch
           label="Show owned"
-          checked={showOwned}
-          setChecked={setShowOwned}
+          checked={equipmentFilters.showOwned}
+          setChecked={showOwned => {
+            setEquipmentFilters({
+              ...equipmentFilters,
+              showOwned,
+            });
+          }}
         />
         <Switch
           label="Show not owned"
-          checked={showNotOwned}
-          setChecked={setShowNotOwned}
+          checked={equipmentFilters.showNotOwned}
+          setChecked={showNotOwned => {
+            setEquipmentFilters({
+              ...equipmentFilters,
+              showNotOwned,
+            });
+          }}
         />
         <Switch
           label="Category view"
-          checked={categoryView}
-          setChecked={setCategoryView}
+          checked={equipmentFilters.categoryView}
+          setChecked={categoryView => {
+            setEquipmentFilters({
+              ...equipmentFilters,
+              categoryView,
+            });
+          }}
         />
       </div>
       <Tabs
@@ -69,36 +87,28 @@ const Load = () => {
         <EquipmentPieces
           key="tab_weapon"
           itemType="weapon"
-          showOwned={showOwned}
-          showNotOwned={showNotOwned}
-          categoryView={categoryView}
+          {...equipmentFilters}
         />
       )}
       {activeTab === TABS.ARMOR && (
         <EquipmentPieces
           key="tab_armor"
           itemType="armor"
-          showOwned={showOwned}
-          showNotOwned={showNotOwned}
-          categoryView={categoryView}
+          {...equipmentFilters}
         />
       )}
       {activeTab === TABS.UTILITY && (
         <EquipmentPieces
           key="tab_other"
           itemType="other"
-          showOwned={showOwned}
-          showNotOwned={showNotOwned}
-          categoryView={categoryView}
+          {...equipmentFilters}
         />
       )}
       {activeTab === TABS.QUEST && (
         <EquipmentPieces
           key="tab_quest"
           itemType="quest"
-          showOwned={showOwned}
-          showNotOwned={showNotOwned}
-          categoryView={categoryView}
+          {...equipmentFilters}
         />
       )}
     </div>
