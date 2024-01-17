@@ -21,7 +21,7 @@ const tableHeaders = [
   'Base DPS',
   'Base EXP',
   'Base payment',
-  'Level requirement',
+  'LVL req.',
   'Actions',
 ];
 

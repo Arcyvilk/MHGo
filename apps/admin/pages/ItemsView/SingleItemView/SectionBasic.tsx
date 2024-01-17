@@ -96,6 +96,18 @@ export const SectionBasic = ({
           }
         />
         <Input
+          name="item_category"
+          label="Category of the item"
+          value={item?.category ?? ''}
+          setValue={category =>
+            item &&
+            setItem({
+              ...item,
+              category: category ?? '',
+            })
+          }
+        />
+        <Input
           name="item_obtainedAt"
           label="Where item can be obtained?"
           value={item?.obtainedAt ?? ''}

@@ -24,6 +24,7 @@ export type Item = {
   consumable: boolean; // Does the item disappear upon use
   quickUse: boolean; // Is the item present in the "quick use" menu
   levelRequirement: number | null; // From which level item appears in crafting menu
+  category: string | null; // Category of item for better sorting
 };
 
 export type ItemActions = {

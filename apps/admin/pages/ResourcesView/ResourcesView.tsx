@@ -13,7 +13,7 @@ import { ActionBar, Table } from '../../containers';
 
 import s from './ResourcesView.module.scss';
 
-const tableHeaders = ['Name', 'Description', 'Level requirement', 'Actions'];
+const tableHeaders = ['Name', 'Description', 'LVL req.', 'Actions'];
 
 export const ResourcesView = () => (
   <QueryBoundary fallback={<Loader />}>

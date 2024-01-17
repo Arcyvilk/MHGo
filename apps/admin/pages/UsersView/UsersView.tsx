@@ -19,10 +19,10 @@ const tableHeaders = [
   'Name',
   'ID',
   'Exp',
-  'Is Admin?',
-  'Is awaiting approval?',
-  'Is approved?',
-  'Is banned?',
+  'Admin',
+  'Awaiting approval',
+  'Approved',
+  'Banned',
   'Actions',
 ];
 export const UsersView = () => (

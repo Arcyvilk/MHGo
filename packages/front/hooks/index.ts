@@ -1,3 +1,4 @@
+export * from './useContextualRouting';
 export * from './useInterval';
 export * from './useLocalStorage';
 export * from './usePrefetch';

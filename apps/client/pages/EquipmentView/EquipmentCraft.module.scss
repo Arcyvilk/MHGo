@@ -18,13 +18,15 @@
 
   &__actions {
     display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    flex-wrap: wrap;
     gap: $size-8;
+  }
 
-    @media (max-width: $media-mobile-tiny) {
-      display: flex;
-      align-items: flex-start;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
+  &__categoryTitle {
+    font-size: $size-16;
+    font-weight: 900;
+    text-transform: uppercase;
   }
 }

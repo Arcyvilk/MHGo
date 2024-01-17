@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { FormControlLabel, Switch } from '@mui/material';
@@ -10,6 +10,7 @@ import {
   QueryBoundary,
   Size,
   useAdminUpdateItemApi,
+  useContextualRouting,
   useItemsApi,
 } from '@mhgo/front';
 
@@ -21,15 +22,18 @@ const tableHeaders = [
   'Name',
   'Type',
   'Rarity',
-  'Purchasable?',
-  'Craftable?',
-  'Usable?',
-  'Equippable?',
-  'Consumable?',
-  'Quick use?',
-  'Level requirement',
+  'Category',
+  'Purchasable',
+  'Craftable',
+  'Usable',
+  'Equippable',
+  'Consumable',
+  'Quick use',
+  'LVL req.',
   'Actions',
 ];
+
+const itemFilters: ItemType[] = ['quest', 'other', 'weapon', 'armor'];
 
 export const ItemsView = () => (
   <QueryBoundary fallback={<Loader />}>
@@ -41,15 +45,19 @@ const Load = () => {
   const navigate = useNavigate();
   const { data: items } = useItemsApi();
   const { mutate, isSuccess, isError } = useAdminUpdateItemApi();
-  const [itemFilters, setItemFilters] = useState<ItemType[]>([
-    'quest',
-    'other',
-    'weapon',
-    'armor',
-  ]);
+
+  const { setRoute, route: filter } = useContextualRouting<string>({
+    key: 'filter',
+    value: itemFilters.join(','),
+  });
+
+  const setVisibleItems = (newFilters: ItemType[]) => {
+    if (newFilters.length > 0) setRoute(newFilters.join(','));
+    else setRoute('');
+  };
 
   const filteredItems = useMemo(() => {
-    return items.filter(item => itemFilters.includes(item.type));
+    return items.filter(item => filter.split(',').includes(item.type));
   }, [itemFilters, items]);
 
   const onSwitch = (checked: boolean, item: TItem, property: keyof TItem) => {
@@ -78,6 +86,7 @@ const Load = () => {
     <ItemCell item={item} />,
     item.type,
     item.rarity,
+    item.category,
     <Switch
       color="default"
       checked={item.purchasable}
@@ -124,24 +133,27 @@ const Load = () => {
       <ActionBar
         buttons={
           <>
-            {(['weapon', 'armor', 'quest', 'other'] as ItemType[]).map(
-              iType => (
+            {itemFilters.map(iType => {
+              const currentFilter = filter.split(',') as ItemType[];
+              return (
                 <FormControlLabel
                   label={iType.toLocaleUpperCase()}
                   control={
                     <Switch
                       color="default"
-                      checked={itemFilters.includes(iType)}
+                      checked={currentFilter.includes(iType)}
                       onChange={(_, checked) =>
                         checked
-                          ? setItemFilters([...itemFilters, iType])
-                          : setItemFilters(itemFilters.filter(i => i !== iType))
+                          ? setVisibleItems([...currentFilter, iType])
+                          : setVisibleItems(
+                              currentFilter.filter(i => i !== iType),
+                            )
                       }
                     />
                   }
                 />
-              ),
-            )}
+              );
+            })}
             <Button
               label="Create new item"
               onClick={() => navigate('create')}

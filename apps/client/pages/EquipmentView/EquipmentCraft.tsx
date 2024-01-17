@@ -1,6 +1,12 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { ItemType } from '@mhgo/types';
-import { Loader, Tabs, QueryBoundary, Switch } from '@mhgo/front';
+import {
+  Loader,
+  Tabs,
+  QueryBoundary,
+  Switch,
+  useContextualRouting,
+} from '@mhgo/front';
 
 import { ItemContextMenu } from '../../containers';
 import { useUserEquipment } from '../../hooks/useUserEquipment';
@@ -22,9 +28,18 @@ export const EquipmentCraft = () => (
 );
 
 const Load = () => {
-  const [activeTab, setActiveTab] = useState(TABS.WEAPONS);
   const [showOwned, setShowOwned] = useState(true);
   const [showNotOwned, setShowNotOwned] = useState(true);
+  const [categoryView, setCategoryView] = useState(false);
+
+  const { navigateToRoute, route: activeTab } = useContextualRouting<string>({
+    key: 'tab',
+    value: TABS.WEAPONS,
+  });
+
+  const handleTabChange = (newTab: string) => {
+    navigateToRoute({ tab: newTab });
+  };
 
   return (
     <div className={s.equipmentView__craft}>
@@ -39,14 +54,24 @@ const Load = () => {
           checked={showNotOwned}
           setChecked={setShowNotOwned}
         />
+        <Switch
+          label="Category view"
+          checked={categoryView}
+          setChecked={setCategoryView}
+        />
       </div>
-      <Tabs allTabs={TABS} activeTab={activeTab} setActiveTab={setActiveTab} />
+      <Tabs
+        allTabs={TABS}
+        activeTab={activeTab}
+        setActiveTab={handleTabChange}
+      />
       {activeTab === TABS.WEAPONS && (
         <EquipmentPieces
           key="tab_weapon"
           itemType="weapon"
           showOwned={showOwned}
           showNotOwned={showNotOwned}
+          categoryView={categoryView}
         />
       )}
       {activeTab === TABS.ARMOR && (
@@ -55,6 +80,7 @@ const Load = () => {
           itemType="armor"
           showOwned={showOwned}
           showNotOwned={showNotOwned}
+          categoryView={categoryView}
         />
       )}
       {activeTab === TABS.UTILITY && (
@@ -63,6 +89,7 @@ const Load = () => {
           itemType="other"
           showOwned={showOwned}
           showNotOwned={showNotOwned}
+          categoryView={categoryView}
         />
       )}
       {activeTab === TABS.QUEST && (
@@ -71,6 +98,7 @@ const Load = () => {
           itemType="quest"
           showOwned={showOwned}
           showNotOwned={showNotOwned}
+          categoryView={categoryView}
         />
       )}
     </div>
@@ -81,39 +109,64 @@ type EquipmentPiecesProps = {
   itemType: ItemType;
   showOwned: boolean;
   showNotOwned: boolean;
+  categoryView: boolean;
 };
 const EquipmentPieces = ({
   itemType,
   showOwned,
   showNotOwned,
+  categoryView,
 }: EquipmentPiecesProps) => {
   const { userLevel } = useUser();
   const items = useUserEquipment();
 
-  return (
-    <div className={s.equipmentView__items}>
-      {items
-        .filter(item => {
-          const filterByType = item.type === itemType;
-          const filterByOwned = item.isOwned !== true;
-          const filterByNotOwned = item.isOwned !== false;
+  const filtereditems = useMemo(() => {
+    return items.filter(item => {
+      const filterByType = item.type === itemType;
+      const filterByOwned = item.isOwned !== true;
+      const filterByNotOwned = item.isOwned !== false;
 
-          // This filter by ownership is convoluted and hacky with all those double negations
-          // but tbh im too tired to think of anything smarter
-          return (
-            filterByType &&
-            (!showOwned ? filterByOwned : true) &&
-            (!showNotOwned ? filterByNotOwned : true) &&
-            (item.levelRequirement ?? 0) <= userLevel
-          );
-        })
-        .map(item => (
+      // This filter by ownership is convoluted and hacky with all those double negations
+      // but tbh im too tired to think of anything smarter
+      return (
+        filterByType &&
+        (!showOwned ? filterByOwned : true) &&
+        (!showNotOwned ? filterByNotOwned : true) &&
+        (item.levelRequirement ?? 0) <= userLevel
+      );
+    });
+  }, [items, itemType, showOwned, showNotOwned, userLevel]);
+
+  if (categoryView) {
+    const categories = new Set(filtereditems.map(item => item.category));
+    return Array.from(categories).map(category => (
+      <>
+        <div className={s.equipmentView__categoryTitle}>
+          {category ?? 'Other'}
+        </div>
+        <div className={s.equipmentView__items}>
+          {filtereditems
+            .filter(item => item.category === category)
+            .map(item => (
+              <ItemContextMenu
+                key={`context_menu_${item.id}`}
+                item={item}
+                isItemOwned={item.isOwned}
+              />
+            ))}
+        </div>
+      </>
+    ));
+  } else
+    return (
+      <div className={s.equipmentView__items}>
+        {filtereditems.map(item => (
           <ItemContextMenu
             key={`context_menu_${item.id}`}
             item={item}
             isItemOwned={item.isOwned}
           />
         ))}
-    </div>
-  );
+      </div>
+    );
 };
