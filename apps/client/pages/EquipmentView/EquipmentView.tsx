@@ -10,8 +10,6 @@ import { useTutorialProgress } from '../../hooks/useTutorial';
 export const EquipmentView = () => {
   const { isFinishedTutorialPartTwo } = useTutorialProgress();
 
-  alert(`${window.screenX} ${window.screenY}`);
-
   return (
     <div
       className={s.equipmentView}
