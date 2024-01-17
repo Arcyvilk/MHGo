@@ -6,8 +6,8 @@
   display: flex;
   flex-direction: column;
   gap: $size-4;
-  min-width: $size-68;
-  width: $size-68;
+  min-width: $size-64;
+  width: $size-64;
   max-width: 20%;
   flex: 1;
 
@@ -94,7 +94,7 @@
 .tile {
   &__image {
     display: flex;
-    height: $size-64;
+    height: $size-60;
     flex-grow: 1;
     object-fit: contain;
     padding: $size-6;

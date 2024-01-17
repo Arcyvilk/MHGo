@@ -1,37 +1,14 @@
-import { FC, PropsWithChildren, useEffect } from 'react';
+import { useEffect } from 'react';
 import ReactHowler from 'react-howler';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
 import { ToastContainer, ToastContainerProps } from 'react-toastify';
-import { Loader, QueryBoundary, SoundBG, useSounds } from '@mhgo/front';
+import { SoundBG, useSounds } from '@mhgo/front';
 
-import {
-  AchievementsView,
-  AwaitingApprovalView,
-  BannedView,
-  CompanionView,
-  CreditsView,
-  EquipmentView,
-  ForageView,
-  HomeView,
-  ItemBoxView,
-  LoadingView,
-  LoginView,
-  NotImplementedView,
-  QuestView,
-  SettingsView,
-  ShopView,
-  SignInView,
-  YouView,
-} from './pages';
-import { PaintballView } from './pages/PaintballView';
-import { FightView, PrepareView } from './pages/FightView';
-import { MonsterGuideView } from './pages/MonsterGuideView';
 import { useAppContext } from './utils/context';
 import { GlobalAchievements } from './containers';
-import { useMe } from './hooks/useAuth';
 
 import s from './App.module.scss';
+import { Router } from './router';
 
 const toastOptions: ToastContainerProps = {
   closeOnClick: true,
@@ -62,191 +39,10 @@ export const App = () => {
   return (
     <div className={s.app}>
       {music && <ReactHowler src={music} playing loop volume={musicVolume} />}
-      <BrowserRouter>
-        <GlobalAchievements />
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <RequireAuth>
-                <HomeView />
-              </RequireAuth>
-            }
-          />
 
-          {/* INTERACTIVE PATHS */}
-          <Route
-            path="/prepare"
-            element={
-              <RequireAuth>
-                <PrepareView />
-              </RequireAuth>
-            }
-          />
-          <Route
-            path="/fight"
-            element={
-              <RequireAuth>
-                <FightView />
-              </RequireAuth>
-            }
-          />
-          <Route
-            path="/forage"
-            element={
-              <RequireAuth>
-                <ForageView />
-              </RequireAuth>
-            }
-          />
-
-          {/* STATIC PATHS */}
-          <Route
-            path="/achievements"
-            element={
-              <RequireAuth>
-                <AchievementsView />
-              </RequireAuth>
-            }
-          />
-          <Route
-            path="/guide"
-            element={
-              <RequireAuth>
-                <MonsterGuideView />
-              </RequireAuth>
-            }
-          />
-          <Route
-            path="/equipment"
-            element={
-              <RequireAuth>
-                <EquipmentView />
-              </RequireAuth>
-            }
-          />
-          <Route
-            path="/items"
-            element={
-              <RequireAuth>
-                <ItemBoxView />
-              </RequireAuth>
-            }
-          />
-          <Route
-            path="/paintball"
-            element={
-              <RequireAuth>
-                <PaintballView />
-              </RequireAuth>
-            }
-          />
-          <Route
-            path="/settings"
-            element={
-              <RequireAuth>
-                <SettingsView />
-              </RequireAuth>
-            }
-          />
-          <Route
-            path="/shop"
-            element={
-              <RequireAuth>
-                <ShopView />
-              </RequireAuth>
-            }
-          />
-          <Route
-            path="/quest"
-            element={
-              <RequireAuth>
-                <QuestView />
-              </RequireAuth>
-            }
-          />
-          <Route
-            path="/you"
-            element={
-              <RequireAuth>
-                <YouView />
-              </RequireAuth>
-            }
-          />
-          <Route
-            path="/companion"
-            element={
-              <RequireAuth>
-                <CompanionView />
-              </RequireAuth>
-            }
-          />
-          <Route
-            path="/credits"
-            element={
-              <RequireAuth>
-                <CreditsView />
-              </RequireAuth>
-            }
-          />
-          <Route
-            path="/404"
-            element={
-              <RequireAuth>
-                <NotImplementedView />
-              </RequireAuth>
-            }
-          />
-
-          {/* AUTH */}
-          <Route path="/loading" element={<LoadingView />} />
-          <Route path="/login" element={<LoginView />} />
-          <Route path="/signin" element={<SignInView />} />
-          <Route path="/ban" element={<BannedView />} />
-          <Route path="/awaiting" element={<AwaitingApprovalView />} />
-        </Routes>
-      </BrowserRouter>
+      <GlobalAchievements />
+      <Router />
       <ToastContainer {...toastOptions} />
     </div>
   );
-};
-
-const RequireAuth: FC<{ children: React.ReactNode }> = ({
-  children,
-}: PropsWithChildren) => {
-  return (
-    <QueryBoundary fallback={<Loader />}>
-      <LoadAuth>{children}</LoadAuth>
-    </QueryBoundary>
-  );
-};
-
-const LoadAuth = ({ children }: PropsWithChildren) => {
-  const {
-    isAwaitingModApproval,
-    isModApproved,
-    isBanned,
-    isLoggedIn,
-    isPending,
-  } = useMe();
-
-  // const isDev = ENV === 'development';
-  // if (isDev) return children;
-
-  if (isPending === true) {
-    return <Navigate to="/loading" replace={true} />;
-  }
-  if (isBanned === true) {
-    return <Navigate to="/ban" replace={true} />;
-  }
-  if (isAwaitingModApproval === true || isModApproved === false) {
-    return <Navigate to="/awaiting" replace={true} />;
-  }
-  if (isLoggedIn === false) {
-    return <Navigate to="/login" replace={true} />;
-  }
-  if (isAwaitingModApproval === false || isModApproved === true) {
-    return children;
-  }
-  return;
 };
