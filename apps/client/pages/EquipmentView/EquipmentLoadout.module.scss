@@ -17,11 +17,21 @@
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
     gap: $size-8;
+
+    @media (max-width: $media-mobile-tiny) {
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: $size-4;
+    }
   }
   &__item {
     display: flex;
     align-items: center;
     justify-content: center;
+    min-width: $size-42;
+    min-height: $size-42;
     border: 3px solid $color-black;
     border-radius: $size-8;
     background-color: $color-white;

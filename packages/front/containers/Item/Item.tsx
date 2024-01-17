@@ -57,19 +57,6 @@ export const Item = ({
       id={data.id}
       className={modifiers(s, 'item', { isNotOwned })}
       onClick={onButtonClick}>
-      <div className={modifiers(s, 'item__tile', `rarity-${rarity}`)}>
-        <img src={img} style={{ filter }} className={s.tile__image} />
-        <div className={modifiers(s, 'tile__rarity', `rarity-${rarity}`)}>
-          Rarity {rarity}
-        </div>
-        {amount ? (
-          <div className={modifiers(s, 'tile__amount', { isNotOwned })}>
-            {amount}
-          </div>
-        ) : null}
-      </div>
-      <div className={s.item__name}>{name}</div>
-
       {purchasable && (
         <div className={s.item__price}>
           {price?.map(p => (
@@ -81,6 +68,20 @@ export const Item = ({
           ))}
         </div>
       )}
+      <div className={s.item__primary}>
+        <div className={modifiers(s, 'item__tile', `rarity-${rarity}`)}>
+          <img src={img} style={{ filter }} className={s.tile__image} />
+          <div className={modifiers(s, 'tile__rarity', `rarity-${rarity}`)}>
+            Rarity {rarity}
+          </div>
+          {amount ? (
+            <div className={modifiers(s, 'tile__amount', { isNotOwned })}>
+              {amount}
+            </div>
+          ) : null}
+        </div>
+        <div className={s.item__name}>{name}</div>
+      </div>
     </button>
   );
 };

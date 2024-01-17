@@ -19,5 +19,12 @@
   &__actions {
     display: flex;
     gap: $size-8;
+
+    @media (max-width: $media-mobile-tiny) {
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
   }
 }

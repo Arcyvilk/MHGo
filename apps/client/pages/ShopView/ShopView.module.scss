@@ -15,9 +15,6 @@
 
   &__itemWrapper {
     @include item-grid-wrapper;
-    & > * {
-      height: 100%;
-    }
   }
 }
 

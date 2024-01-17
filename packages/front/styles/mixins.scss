@@ -52,9 +52,20 @@
 
 @mixin item-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
   vertical-align: baseline;
-  gap: $size-16 $size-8;
+  gap: $size-8 $size-4;
+
+  @media (max-width: $media-mobile-small) {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+  }
+
+  @media (max-width: $media-mobile-tiny) {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
 }
 
 @mixin item-grid-wrapper {
@@ -94,7 +105,7 @@
   flex-direction: column;
   gap: $size-16;
   min-width: 250px;
-  max-width: 400px;
+  max-width: $media-mobile-small;
   flex: 1 1 auto;
 
   &--hidden {

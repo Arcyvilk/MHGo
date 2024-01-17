@@ -5,7 +5,7 @@
   cursor: pointer;
   display: flex;
   flex-direction: column;
-  gap: $size-12;
+  gap: $size-4;
   min-width: $size-72;
   width: $size-72;
   max-width: 23%;
@@ -27,6 +27,12 @@
         color: $color-danger;
       }
     }
+  }
+
+  &__primary {
+    display: flex;
+    flex-direction: column;
+    gap: $size-12;
   }
 
   &__tile {
@@ -59,10 +65,11 @@
 
   &__name {
     width: 100%;
-    font-size: $size-14;
+    font-size: $size-12;
     color: $color-primary-text;
     text-align: center;
     line-height: $size-12;
+    letter-spacing: -0.001rem;
   }
 
   &__price {
@@ -87,7 +94,7 @@
 .tile {
   &__image {
     display: flex;
-    height: $size-72;
+    height: $size-64;
     flex-grow: 1;
     object-fit: contain;
     padding: $size-6;

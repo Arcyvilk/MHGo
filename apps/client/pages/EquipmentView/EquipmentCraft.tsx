@@ -9,10 +9,10 @@ import { useUser } from '../../hooks/useUser';
 import s from './EquipmentCraft.module.scss';
 
 export const TABS = {
-  QUEST: 'Quest',
   WEAPONS: 'Weapons',
   ARMOR: 'Armor',
   UTILITY: 'Utility',
+  QUEST: 'Quest',
 };
 
 export const EquipmentCraft = () => (
@@ -22,7 +22,7 @@ export const EquipmentCraft = () => (
 );
 
 const Load = () => {
-  const [activeTab, setActiveTab] = useState(TABS.QUEST);
+  const [activeTab, setActiveTab] = useState(TABS.WEAPONS);
   const [showOwned, setShowOwned] = useState(true);
   const [showNotOwned, setShowNotOwned] = useState(true);
 
@@ -41,14 +41,6 @@ const Load = () => {
         />
       </div>
       <Tabs allTabs={TABS} activeTab={activeTab} setActiveTab={setActiveTab} />
-      {activeTab === TABS.QUEST && (
-        <EquipmentPieces
-          key="tab_quest"
-          itemType="quest"
-          showOwned={showOwned}
-          showNotOwned={showNotOwned}
-        />
-      )}
       {activeTab === TABS.WEAPONS && (
         <EquipmentPieces
           key="tab_weapon"
@@ -69,6 +61,14 @@ const Load = () => {
         <EquipmentPieces
           key="tab_other"
           itemType="other"
+          showOwned={showOwned}
+          showNotOwned={showNotOwned}
+        />
+      )}
+      {activeTab === TABS.QUEST && (
+        <EquipmentPieces
+          key="tab_quest"
+          itemType="quest"
           showOwned={showOwned}
           showNotOwned={showNotOwned}
         />
