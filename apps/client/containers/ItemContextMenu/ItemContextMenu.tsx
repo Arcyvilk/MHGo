@@ -63,11 +63,16 @@ export const ItemContextMenu = ({
   const { isModalAchievementOpen, setIsModalAchievementOpen, achievementId } =
     useItemActionAchievements(item as TItem, isHealedSuccessfully);
 
-  const onItemCraft = () => {
-    if (!item.craftable) return;
-    setAction('craft');
+  const openActionModal = (selectedAction: Action) => {
+    // Open additional action modal and close tippy dropdown
+    setAction(selectedAction);
     setIsModalOpen(true);
     tippyInstance?.hide();
+  };
+
+  const onItemCraft = () => {
+    if (!item.craftable) return;
+    openActionModal('craft');
   };
 
   const onItemEquip = () => {
@@ -80,10 +85,7 @@ export const ItemContextMenu = ({
   const onItemPurchase = () => {
     const shopPath = '/shop';
     if (location.pathname !== shopPath) navigateWithoutScroll('/shop');
-    else {
-      setAction('purchase');
-      setIsModalOpen(true);
-    }
+    else openActionModal('purchase');
   };
 
   const onItemUse = () => {
@@ -92,12 +94,10 @@ export const ItemContextMenu = ({
       return;
     }
     if (itemAction.text) {
-      setAction('text');
-      setIsModalOpen(true);
+      openActionModal('text');
     }
     if (itemAction.img) {
-      setAction('img');
-      setIsModalOpen(true);
+      openActionModal('img');
     }
     if (itemAction.redirect) {
       window.open(itemAction.redirect);
