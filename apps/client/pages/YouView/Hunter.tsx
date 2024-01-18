@@ -9,7 +9,6 @@ import {
   useUserHealthApi,
   useNavigateWithScroll,
 } from '@mhgo/front';
-import qr from '@mhgo/front/assets/qr.png';
 
 import { useUser } from '../../hooks/useUser';
 import { HealthBarSimple } from '../../containers';
@@ -33,7 +32,7 @@ export const Hunter = () => {
   return (
     <>
       <Modal isOpen={isModalOpen} setIsOpen={setIsModalOpen}>
-        <img className={s.qr} src={qr} />
+        <img className={s.qr} src={addCdnUrl('/misc/qr.jpg')} />
       </Modal>
       <div className={s.hunter}>
         <div className={s.hunter__companion}>
