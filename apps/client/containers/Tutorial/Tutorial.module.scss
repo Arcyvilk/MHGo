@@ -61,6 +61,15 @@
     padding: $size-16;
     border-radius: $size-16;
     background-color: $color-white;
+    max-width: 100%;
     filter: drop-shadow(0 0 10px $color-black);
+
+    &--isTransparent {
+      background-color: transparent;
+    };
+  }
+
+  &__infoImg {
+    max-width: 90%;
   }
 }

@@ -87,9 +87,10 @@ const Load = ({ stepFrom, stepTo, requirement }: TutorialProps) => {
 };
 
 const InfoDialog = ({ currentStep }: { currentStep: TutorialStep }) => {
+  const isTransparent = !currentStep.text;
   if (!currentStep.img && !currentStep.text) return null;
   return (
-    <div className={s.tutorial__infoDialog}>
+    <div className={modifiers(s, 'tutorial__infoDialog', { isTransparent })}>
       {currentStep.img && (
         <img className={s.tutorial__infoImg} src={currentStep.img} />
       )}
