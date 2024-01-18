@@ -16,7 +16,7 @@ export const LoginView = () => {
   };
 
   const onSignIn = () => {
-    navigateWithoutScroll('/signin');
+    navigateWithoutScroll('/auth/signin');
   };
 
   if (isLoggedIn) return <Navigate to="/" replace={true} />;

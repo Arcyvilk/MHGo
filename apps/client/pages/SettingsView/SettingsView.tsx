@@ -50,7 +50,7 @@ export const SettingsView = () => {
     setInstallPrompt(null);
   };
 
-  if (!isLoggedIn) return <Navigate to="/login" replace={true} />;
+  if (!isLoggedIn) return <Navigate to="/auth/login" replace={true} />;
   return (
     <div className={s.settingsView}>
       <div className={s.header}>
