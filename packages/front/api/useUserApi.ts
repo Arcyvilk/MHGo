@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   CurrencyType,
   ItemToUse,
+  Reward,
   Stats,
   User,
   UserAchievement,
@@ -269,9 +270,7 @@ export const useUpdateUserWealthApi = (userId: string) => {
 export const useUpdateUserItemsApi = (userId: string) => {
   const queryClient = useQueryClient();
 
-  const updateUserItems = async (
-    variables: { itemId: string; amount: number }[],
-  ): Promise<void> => {
+  const updateUserItems = async (variables: Reward[]): Promise<void> => {
     await fetcher(`${API_URL}/users/user/${userId}/items`, {
       method: 'PUT',
       body: JSON.stringify(variables),
@@ -281,6 +280,7 @@ export const useUpdateUserItemsApi = (userId: string) => {
       },
     });
     queryClient.invalidateQueries({ queryKey: ['user', userId, 'items'] });
+    queryClient.invalidateQueries({ queryKey: ['user', userId, 'materials'] });
   };
 
   const { mutate, error, status, isPending, isSuccess, isError } = useMutation({

@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { log } from '@mhgo/utils';
-import { UserItems } from '@mhgo/types';
+import { Reward, UserItems, UserMaterials } from '@mhgo/types';
 
 import { mongoInstance } from '../../../api';
 
@@ -11,7 +11,12 @@ export const updateUserItems = async (
   try {
     const { db } = mongoInstance.getDb();
     const { userId } = req.params;
-    const itemsToAdd = req.body as { itemId: string; amount: number }[];
+    const rewardsToAdd = req.body as Reward[];
+
+    const itemsToAdd = rewardsToAdd.filter(reward => reward.type === 'item');
+    const materialsToAdd = rewardsToAdd.filter(
+      reward => reward.type === 'material',
+    );
 
     // Get user items
     const collectionUserItems = db.collection<UserItems>('userItems');
@@ -22,29 +27,60 @@ export const updateUserItems = async (
         })
       )?.items ?? [];
 
-    // Add newly crafted item to user's inventory
+    // Get user materials
+    const collectionUserMaterials =
+      db.collection<UserMaterials>('userMaterials');
+    const userMaterials =
+      (
+        await collectionUserMaterials.findOne({
+          userId,
+        })
+      )?.materials ?? [];
+
+    // Add newly acquired item to user's inventory
     let updatedUserItems = userItems;
 
     itemsToAdd.forEach(item => {
-      const userHasItem = userItems.find(
-        userItem => userItem.id === item.itemId,
-      );
-
+      const userHasItem = userItems.find(userItem => userItem.id === item.id);
       // User already has item, bump its amount
       if (userHasItem) {
         updatedUserItems = userItems.map(userItem => {
-          if (userItem.id === item.itemId)
+          if (userItem.id === item.id)
             return { ...userItem, amount: userItem.amount + item.amount };
           else return userItem;
         });
       }
       // User does not have item, add it
       else {
-        updatedUserItems.push({ id: item.itemId, amount: item.amount });
+        updatedUserItems.push({ id: item.id, amount: item.amount });
       }
     });
 
-    // Save everything to database
+    // Add newly acquired material to user's inventory
+    let updatedUserMaterials = userMaterials;
+
+    materialsToAdd.forEach(material => {
+      const userHasMaterial = userMaterials.find(
+        userMat => userMat.id === material.id,
+      );
+      // User already has material, bump its amount
+      if (userHasMaterial) {
+        updatedUserMaterials = userMaterials.map(userMaterial => {
+          if (userMaterial.id === material.id)
+            return {
+              ...userMaterial,
+              amount: userMaterial.amount + material.amount,
+            };
+          else return userMaterial;
+        });
+      }
+      // User does not have material, add it
+      else {
+        updatedUserMaterials.push({ id: material.id, amount: material.amount });
+      }
+    });
+
+    // Save items to database
     const responseItems = await collectionUserItems.updateOne(
       { userId },
       { $set: { items: updatedUserItems } },
@@ -53,6 +89,16 @@ export const updateUserItems = async (
 
     if (!responseItems.acknowledged)
       throw new Error('Could not update user items.');
+
+    // Save materials to database
+    const responseMaterials = await collectionUserMaterials.updateOne(
+      { userId },
+      { $set: { materials: updatedUserMaterials } },
+      { upsert: true },
+    );
+
+    if (!responseMaterials.acknowledged)
+      throw new Error('Could not update user materials.');
 
     // Fin!
     res.sendStatus(200);

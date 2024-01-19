@@ -6,9 +6,11 @@ import {
   Modal,
   Rays,
   useItemsApi,
+  useMaterialsApi,
+  useSettingsApi,
   useUpdateUserItemsApi,
 } from '@mhgo/front';
-import { Item as TItem } from '@mhgo/types';
+import { LevelUpReward, Item as TItem } from '@mhgo/types';
 
 import { useUser } from '../../hooks/useUser';
 import s from './ModalResult.module.scss';
@@ -32,17 +34,24 @@ export const ModalLevelUp = ({ levels, isOpen, setIsOpen }: ModalProps) => (
 const Load = ({ levels, setIsOpen }: Omit<ModalProps, 'isOpen'>) => {
   const { userId } = useUser();
   const { data: items } = useItemsApi();
+  const { data: materials } = useMaterialsApi();
   const { mutate: mutateLevelUpRewards, isSuccess } =
     useUpdateUserItemsApi(userId);
+  const { setting = [], isFetched } =
+    useSettingsApi<LevelUpReward[]>('level_up_rewards');
 
-  const rewardsRaw = [{ itemId: 'potion', amount: 5 }];
-  const rewards = useMemo(
+  const rewardsRaw =
+    setting.find(level => level.level === levels?.newLevel)?.rewards ?? [];
+  const allRewards = useMemo(
     () =>
-      rewardsRaw.map(reward => {
-        const item = items.find(i => i.id === reward.itemId) ?? {};
-        return { ...item, amount: reward.amount } as TItem & { amount: number };
+      rewardsRaw.map(r => {
+        let reward;
+        if (r.type === 'item') reward = items.find(i => i.id === r.id) ?? {};
+        if (r.type === 'material')
+          reward = materials.find(i => i.id === r.id) ?? {};
+        return { ...reward, amount: r.amount } as TItem & { amount: number };
       }),
-    [items, isSuccess],
+    [items, materials, isSuccess, isFetched],
   );
 
   useEffect(() => {
@@ -56,12 +65,14 @@ const Load = ({ levels, setIsOpen }: Omit<ModalProps, 'isOpen'>) => {
         <span className={s.result__level}>→</span>
         <span className={s.result__level}>{levels?.newLevel ?? '-'}</span>
       </div>
-      {isSuccess && rewards?.length > 0 ? (
+      {isSuccess && allRewards?.length > 0 ? (
         <>
           <div className={s.result__content}>Your rewards:</div>
-          {rewards.map(reward => (
-            <Item data={{ ...reward, purchasable: false }} />
-          ))}
+          <div className={s.result__drops}>
+            {allRewards.map(reward => (
+              <Item data={{ ...reward, purchasable: false }} />
+            ))}
+          </div>
         </>
       ) : null}
       <Button label="Yay!" onClick={() => setIsOpen(false)} simple />

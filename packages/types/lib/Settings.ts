@@ -15,3 +15,10 @@ export type RarityFilter = {
   rarity: number;
   filter: string;
 };
+
+export type LevelUpReward = {
+  level: number;
+  rewards: Reward[];
+};
+
+export type Reward = { type: 'item' | 'material'; id: string; amount: number };
