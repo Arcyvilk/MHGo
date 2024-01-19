@@ -2,6 +2,7 @@
 export { adminGetAllUsers } from './adminGetAllUsers';
 export { adminUpdateUser } from './adminUpdateUser';
 export { adminResetUser, adminUserEnableGodmode } from './adminResetUser';
+export { adminDeleteUser } from './adminDeleteUser';
 
 // CREATION
 export { adminCreateItem } from './adminCreateItem';

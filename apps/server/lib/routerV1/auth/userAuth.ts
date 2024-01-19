@@ -10,12 +10,18 @@ export const getMe = async (req: Request, res: Response): Promise<void> => {
     // @ts-expect-error req.user IS defined
     const { userId } = req.user;
 
-    if (!userId) throw new Error('Incorrect user requested');
+    if (!userId) {
+      res.status(404).send('Incorrect user requested');
+      return;
+    }
 
     const collectionUserAuth = db.collection<UserAuth>('userAuth');
     const userAuth = await collectionUserAuth.findOne({ userId });
 
-    if (!userAuth) throw new Error('Incorrect user requested');
+    if (!userAuth) {
+      res.status(404).send('Incorrect user requested');
+      return;
+    }
 
     const collectionUserBan = db.collection<UserBan>('userBans');
     const userBan = (await collectionUserBan.findOne({ userId })) ?? {};

@@ -1,20 +1,11 @@
 import { FC, PropsWithChildren } from 'react';
 import { Navigate, Outlet, ScrollRestoration } from 'react-router-dom';
-import { ToastContainer, ToastContainerProps } from 'react-toastify';
 
 import { Loader, QueryBoundary } from '@mhgo/front';
 import { useMe } from './hooks/useAuth';
 import { GlobalAchievements } from './containers';
 
 import s from './App.module.scss';
-
-const toastOptions: ToastContainerProps = {
-  closeOnClick: true,
-  theme: 'dark',
-  autoClose: 2500,
-  limit: 3,
-  style: { fontSize: '16px', fontWeight: 400 },
-};
 
 export const App = () => {
   return (
@@ -34,9 +25,8 @@ export const App = () => {
             return scrollRestoration;
           }}
         />
-
         <GlobalAchievements />
-        <ToastContainer {...toastOptions} />
+
         <Outlet />
       </div>
     </RequireAuth>

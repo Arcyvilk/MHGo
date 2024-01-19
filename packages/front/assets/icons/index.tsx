@@ -40,6 +40,7 @@ import Spin from './Spin.svg?react';
 import Star from './Star.svg?react';
 import StarYellow from './StarYellow.svg?react';
 import Sword from './Sword.svg?react';
+import Trash from './Trash.svg?react';
 import X from './X.svg?react';
 
 const icons = {
@@ -83,6 +84,7 @@ const icons = {
   Star,
   StarYellow,
   Sword,
+  Trash,
   X,
 };
 

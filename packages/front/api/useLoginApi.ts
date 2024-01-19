@@ -9,13 +9,18 @@ type UserAuthInfo = Pick<
   UserAuth,
   'isAdmin' | 'isAwaitingModApproval' | 'isModApproved'
 > &
-  UserBan;
+  UserBan & { status: number };
 export const useMeApi = (enabled: boolean = true) => {
   const getMe = async (): Promise<UserAuthInfo | null> => {
     const bearer = JSON.parse(localStorage.MHGO_AUTH ?? {})?.bearer;
     if (!bearer) return null;
     const res = await fetcher(`${API_URL}/auth/me`);
-    return res.json();
+    const response = await res.json();
+    const responseWithStatusCode = {
+      ...response,
+      status: res.status,
+    };
+    return responseWithStatusCode;
   };
 
   const { data, isLoading, isFetched, isError } = useQuery<

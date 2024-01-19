@@ -4,11 +4,19 @@ import { useEffect } from 'react';
 
 export const useMe = () => {
   const { isLoggedIn, bearerToken, setBearerToken } = useAppContext();
-  const { mutate: mutateLogin, isPending: isLoginPending } =
-    useLoginApi(setBearerToken);
+  const {
+    mutate: mutateLogin,
+    isPending: isLoginPending,
+    isError: isLoginError,
+    error: loginError,
+  } = useLoginApi(setBearerToken);
   const { mutate: mutateLogout } = useLogoutApi(setBearerToken);
-  const { mutate: mutateSignIn, isPending: isSigninPending } =
-    useSignInApi(setBearerToken);
+  const {
+    mutate: mutateSignIn,
+    isPending: isSigninPending,
+    isError: isSigninError,
+    error: singinError,
+  } = useSignInApi(setBearerToken);
 
   const {
     data: userAuthData,
@@ -46,6 +54,10 @@ export const useMe = () => {
     isLoginPending,
     isSigninPending,
     isPending: isLoginPending || isSigninPending,
+    isLoginError,
+    isSigninError,
+    loginError,
+    singinError,
     isLoggedIn,
   };
 };

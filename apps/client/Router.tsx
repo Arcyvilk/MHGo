@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { ToastContainer, ToastContainerProps } from 'react-toastify';
 import { Loader, SoundBG, useSounds } from '@mhgo/front';
 
 import { useAppContext } from './utils/context';
@@ -136,7 +137,16 @@ export const Router = () => {
   return (
     <>
       {music && <ReactHowler src={music} playing loop volume={musicVolume} />}
+      <ToastContainer {...toastOptions} />
       <RouterProvider router={router} fallbackElement={<Loader />} />
     </>
   );
+};
+
+const toastOptions: ToastContainerProps = {
+  closeOnClick: true,
+  theme: 'dark',
+  autoClose: 2500,
+  limit: 3,
+  style: { fontSize: '16px', fontWeight: 400 },
 };

@@ -31,6 +31,12 @@ export const useMe = () => {
     }
   }, [isError, isFetched]);
 
+  useEffect(() => {
+    if (userAuthData?.status === 404) {
+      setBearerToken({ bearer: null });
+    }
+  }, [userAuthData]);
+
   const signinUser = (signinData: {
     userName: string;
     email: string;

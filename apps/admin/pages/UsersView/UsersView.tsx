@@ -1,4 +1,9 @@
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+
+import { User } from '@mhgo/types';
+import { Switch } from '@mui/material';
+import { CDN_URL } from '@mhgo/front/env';
 import {
   Button,
   Icon,
@@ -6,14 +11,13 @@ import {
   QueryBoundary,
   Size,
   useAdminAllUsersApi,
+  useAdminDeleteUserApi,
   useAdminUpdateUserApi,
 } from '@mhgo/front';
 import { ActionBar, HeaderEdit, Table } from '../../containers';
 
 import s from './UsersView.module.scss';
-import { User } from '@mhgo/types';
-import { Switch } from '@mui/material';
-import { CDN_URL } from '@mhgo/front/env';
+import { useEffect } from 'react';
 
 const tableHeaders = [
   'Name',
@@ -34,7 +38,22 @@ export const UsersView = () => (
 const Load = () => {
   const navigate = useNavigate();
   const { data: users } = useAdminAllUsersApi();
-  const { mutate, isSuccess, isError, isPending } = useAdminUpdateUserApi();
+  const {
+    mutate: mutateUpdate,
+    isSuccess,
+    isError,
+    isPending,
+  } = useAdminUpdateUserApi();
+  const {
+    mutate: mutateDelete,
+    isSuccess: isDeleteSuccess,
+    isError: isDeleteError,
+  } = useAdminDeleteUserApi();
+
+  useEffect(() => {
+    if (isDeleteError === true) toast.error('Could not delete user!');
+    if (isDeleteSuccess === true) toast.success('User deleted successfully!');
+  }, [isDeleteSuccess, isDeleteError]);
 
   const onUserCreate = () => {
     navigate('/users/create');
@@ -42,6 +61,12 @@ const Load = () => {
 
   const onUserEdit = (user: User) => {
     navigate(`/users/edit?id=${user.id}`);
+  };
+  const onUserDelete = (user: User) => {
+    const shouldDeleteUser = confirm(
+      `Are you REALLY sure you want to delete user ${user.name}? THIS CANNOT BE UNDONE! `,
+    );
+    if (shouldDeleteUser) mutateDelete(user.id);
   };
 
   const tableRows = users.map(user => [
@@ -52,14 +77,14 @@ const Load = () => {
       color="default"
       checked={user.isAdmin}
       onChange={(_, checked) =>
-        mutate({ userId: user.id, userAuth: { isAdmin: checked } })
+        mutateUpdate({ userId: user.id, userAuth: { isAdmin: checked } })
       }
     />,
     <Switch
       color="default"
       checked={user.isAwaitingModApproval}
       onChange={(_, checked) =>
-        mutate({
+        mutateUpdate({
           userId: user.id,
           userAuth: { isAwaitingModApproval: checked },
         })
@@ -69,23 +94,33 @@ const Load = () => {
       color="default"
       checked={user.isModApproved}
       onChange={(_, checked) =>
-        mutate({ userId: user.id, userAuth: { isModApproved: checked } })
+        mutateUpdate({ userId: user.id, userAuth: { isModApproved: checked } })
       }
     />,
     <Switch
       color="default"
       checked={user.isBanned}
       onChange={(_, checked) =>
-        mutate({ userId: user.id, userBan: { isBanned: checked } })
+        mutateUpdate({ userId: user.id, userBan: { isBanned: checked } })
       }
     />,
-    <Button
-      label={<Icon icon="Edit" size={Size.MICRO} />}
-      onClick={() => {
-        onUserEdit(user);
-      }}
-      style={{ width: '40px' }}
-    />,
+    <div style={{ display: 'flex', gap: '4px' }}>
+      <Button
+        label={<Icon icon="Edit" size={Size.MICRO} />}
+        onClick={() => {
+          onUserEdit(user);
+        }}
+        style={{ width: '40px' }}
+      />
+      <Button
+        label={<Icon icon="Trash" size={Size.MICRO} />}
+        onClick={() => {
+          onUserDelete(user);
+        }}
+        variant={Button.Variant.DANGER}
+        style={{ width: '40px' }}
+      />
+    </div>,
   ]);
 
   return (

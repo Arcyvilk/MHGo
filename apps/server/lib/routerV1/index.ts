@@ -31,6 +31,7 @@ import {
   adminGetAllUsers,
   adminUpdateUser,
   adminResetUser,
+  adminDeleteUser,
   adminUserEnableGodmode,
   adminCreateItem,
   adminCreateMaterial,
@@ -66,6 +67,7 @@ routerV1.post(
   verifyAdminToken,
   adminUserEnableGodmode,
 );
+routerV1.delete('/admin/users/user/:userId', verifyAdminToken, adminDeleteUser);
 
 routerV1.post('/admin/items/create', verifyAdminToken, adminCreateItem);
 routerV1.post('/admin/materials/create', verifyAdminToken, adminCreateMaterial);

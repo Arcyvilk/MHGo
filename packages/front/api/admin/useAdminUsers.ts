@@ -107,7 +107,7 @@ export const useAdminResetUserApi = () => {
 export const useAdminUserGodmodeApi = () => {
   const queryClient = useQueryClient();
 
-  const adminUpdateResource = async (userId: string): Promise<void> => {
+  const adminActivateGodmode = async (userId: string): Promise<void> => {
     const response = await fetcher(
       `${API_URL}/admin/users/user/${userId}/godmode`,
       {
@@ -127,7 +127,34 @@ export const useAdminUserGodmodeApi = () => {
 
   const { mutate, error, status, isPending, isSuccess, isError } = useMutation({
     mutationKey: ['admin', 'users', 'godmode'],
-    mutationFn: adminUpdateResource,
+    mutationFn: adminActivateGodmode,
+  });
+
+  return { mutate, error, status, isPending, isSuccess, isError };
+};
+
+export const useAdminDeleteUserApi = () => {
+  const queryClient = useQueryClient();
+
+  const adminDeleteUser = async (userId: string): Promise<void> => {
+    const response = await fetcher(`${API_URL}/admin/users/user/${userId}`, {
+      method: 'DELETE',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (response.status !== 200)
+      throw new Error((await response.json()).error ?? 'Did not work!');
+
+    queryClient.invalidateQueries({ queryKey: ['admin', 'users', 'all'] });
+    queryClient.invalidateQueries({ queryKey: ['user'], exact: false });
+  };
+
+  const { mutate, error, status, isPending, isSuccess, isError } = useMutation({
+    mutationKey: ['admin', 'users', 'delete'],
+    mutationFn: adminDeleteUser,
   });
 
   return { mutate, error, status, isPending, isSuccess, isError };
