@@ -242,6 +242,7 @@ import {
   updateUserWealth,
   updateUserAchievement,
   updateUserDailyQuests,
+  updateUserItems,
   updateUserItemCraft,
   updateUserItemsConsume,
   updateUserItemPurchase,
@@ -294,6 +295,7 @@ routerV1.put(
 
 routerV1.put('/users/user/:userId/wealth', verifyToken, updateUserWealth);
 routerV1.put('/users/user/:userId/exp', verifyToken, updateUserExp);
+routerV1.put('/users/user/:userId/items', verifyToken, updateUserItems);
 routerV1.put(
   '/users/user/:userId/consume',
   verifyToken,

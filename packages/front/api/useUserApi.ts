@@ -266,6 +266,31 @@ export const useUpdateUserWealthApi = (userId: string) => {
   return { data, mutate, error, status, isPending, isSuccess, isError };
 };
 
+export const useUpdateUserItemsApi = (userId: string) => {
+  const queryClient = useQueryClient();
+
+  const updateUserItems = async (
+    variables: { itemId: string; amount: number }[],
+  ): Promise<void> => {
+    await fetcher(`${API_URL}/users/user/${userId}/items`, {
+      method: 'PUT',
+      body: JSON.stringify(variables),
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+    });
+    queryClient.invalidateQueries({ queryKey: ['user', userId, 'items'] });
+  };
+
+  const { mutate, error, status, isPending, isSuccess, isError } = useMutation({
+    mutationKey: ['user', userId, 'items', 'update'],
+    mutationFn: updateUserItems,
+  });
+
+  return { mutate, error, status, isPending, isSuccess, isError };
+};
+
 export const useUserConsumeItemsApi = (userId: string) => {
   const queryClient = useQueryClient();
 

@@ -88,7 +88,7 @@ export const adminResetUser = async (
       await collectionRespawn.deleteMany({ userId });
     }
 
-    // Reset user's respawn points
+    // Reset user's achievements
     if (toReset.achievements) {
       const collectionAchievements =
         db.collection<UserAchievement>('userAchievements');

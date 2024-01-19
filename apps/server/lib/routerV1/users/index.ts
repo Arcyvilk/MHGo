@@ -17,6 +17,7 @@ export { updateUserWealth } from './updateUserWealth';
 export { updateUserAchievement } from './updateUserAchievement';
 export { updateUserDailyQuests } from './updateUserDailyQuests';
 
+export { updateUserItems } from './updateUserItems';
 export { updateUserItemsConsume } from './updateUserItemsConsume';
 export { updateUserItemCraft } from './updateUserItemCraft';
 export { updateUserItemPurchase } from './updateUserItemPurchase';
