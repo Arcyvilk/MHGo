@@ -102,8 +102,7 @@ const Load = () => {
         <MapContainer
           center={L.latLng(coords[0], coords[1])}
           className={s.mapContainer}
-          zoom={16}
-          style={{ height: '400px' }}>
+          zoom={16}>
           <MapLayer
             selectedMarker={selectedMarker}
             setSelectedMarker={setSelectedMarker}
