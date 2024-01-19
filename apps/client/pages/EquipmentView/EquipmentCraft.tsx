@@ -151,11 +151,19 @@ const EquipmentPieces = ({
   }, [items, itemType, showOwned, showNotOwned, userLevel]);
 
   if (categoryView) {
-    const categories = new Set(filtereditems.map(item => item.category));
+    const categories = [
+      ...new Set(
+        filtereditems
+          .map(item => item.category)
+          .sort()
+          .filter(Boolean),
+      ),
+      '',
+    ];
     return Array.from(categories).map(category => (
       <Fragment key={`category-${category}`}>
         <div className={s.equipmentView__categoryTitle}>
-          {category ?? 'Other'}
+          {category ? category : 'Other'}
         </div>
         <div className={s.equipmentView__items}>
           {filtereditems

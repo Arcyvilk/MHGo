@@ -66,6 +66,7 @@ export const DEFAULT_ITEM: TItem = {
   consumable: false,
   quickUse: false,
   levelRequirement: 0,
+  category: null,
 };
 
 export const DEFAULT_MATERIAL: Material = {
