@@ -12,7 +12,9 @@ import {
 } from '@mhgo/front';
 import { LevelUpReward, Item as TItem } from '@mhgo/types';
 
+import { DEFAULT_LEVEL_UP_REWARDS } from '../../utils/consts';
 import { useUser } from '../../hooks/useUser';
+
 import s from './ModalResult.module.scss';
 
 type ModalProps = {
@@ -40,8 +42,18 @@ const Load = ({ levels, setIsOpen }: Omit<ModalProps, 'isOpen'>) => {
   const { setting = [], isFetched } =
     useSettingsApi<LevelUpReward[]>('level_up_rewards');
 
-  const rewardsRaw =
-    setting.find(level => level.level === levels?.newLevel)?.rewards ?? [];
+  const getRewardsRaw = () => {
+    const userLevelIsMultipleOfFive = (levels?.newLevel ?? 0) % 5 === 0;
+    const levelUpReward =
+      setting.find(level => level.level === levels?.newLevel)?.rewards ?? [];
+    // If user's level has no rewards coded, just give 'em default rewards every 5 levels
+    if (!levelUpReward.length && userLevelIsMultipleOfFive)
+      return DEFAULT_LEVEL_UP_REWARDS;
+    return levelUpReward;
+  };
+
+  const rewardsRaw = getRewardsRaw();
+
   const allRewards = useMemo(
     () =>
       rewardsRaw.map(r => {

@@ -1,4 +1,4 @@
-import { Monster, MonsterMarker, Stats } from '@mhgo/types';
+import { Monster, MonsterMarker, Reward, Stats } from '@mhgo/types';
 
 export { API_URL, CDN_URL } from '../env';
 
@@ -8,6 +8,9 @@ export const APP_VERSION = 'v0.42.67-beta'; // moved to database
 export const DEFAULT_COORDS = [0, 0];
 export const DEFAULT_ZOOM = { current: 16 };
 export const DEFAULT_MAP_RADIUS = 0;
+export const DEFAULT_LEVEL_UP_REWARDS: Reward[] = [
+  { type: 'item', id: 'potion', amount: 5 },
+];
 
 export const MONSTER_MISSING: Monster = {
   id: '-1',
