@@ -81,7 +81,7 @@ const effectTooltips = [
   {
     effect: 'retaliate',
     tooltip:
-      "Every point in retaliate reflects 5% of monster's damage to you back into them",
+      "Every point in retaliate gives you a 5% chance to reflect monster's damage back into them (before mitigation)",
   },
   {
     effect: 'fear',
