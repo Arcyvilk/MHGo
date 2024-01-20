@@ -1,9 +1,13 @@
 import { v4 as uuid } from 'uuid';
 import { FormControlLabel, Switch } from '@mui/material';
-import { ItemSlot, Stats, Item as TItem } from '@mhgo/types';
+import { ItemEffect, ItemSlot, Stats, Item as TItem } from '@mhgo/types';
 import { Input, Select, modifiers, useSettingsApi } from '@mhgo/front';
 
-import { DEFAULT_SLOTS, DEFAULT_STATS } from '../../../utils/defaults';
+import {
+  DEFAULT_SLOTS,
+  DEFAULT_STATS,
+  DEFAULT_SPECIAL_EFFECT_TYPES,
+} from '../../../utils/defaults';
 import s from './SingleItemView.module.scss';
 
 type EquippableProps = {
@@ -23,10 +27,21 @@ export const SectionEquippable = ({
     'equipment_slots',
     DEFAULT_SLOTS,
   );
+  const { setting: specialEffects = [] } = useSettingsApi(
+    'special_effect_types',
+    DEFAULT_SPECIAL_EFFECT_TYPES,
+  );
 
   const slotOptions = (equipmentSlots as ItemSlot[]).map(slot => ({
     id: slot,
     name: slot.toUpperCase(),
+  }));
+
+  const specialEffectOptions = (
+    ['none', ...specialEffects] as (ItemEffect & 'none')[]
+  ).map((effect: string) => ({
+    id: effect,
+    name: effect.toUpperCase(),
   }));
 
   const stats = Object.keys(baseStats!);
@@ -72,20 +87,38 @@ export const SectionEquippable = ({
             return (
               <div className={s.singleItemView__stat}>
                 <span className={s.singleItemView__statKey}>{stat}</span>
-                <Input
-                  key={stat}
-                  name="equipment_stat"
-                  type={typeof oldStat === 'number' ? 'number' : 'text'}
-                  value={String(oldStat)}
-                  style={{ maxWidth: '100px' }}
-                  setValue={newStat => {
-                    const updatedEntries = {
-                      ...itemStats,
-                      [stat]: stat === 'element' ? stat : Number(newStat),
-                    };
-                    return setItemStats(updatedEntries);
-                  }}
-                />
+                {stat === 'specialEffects' ? (
+                  <Select
+                    defaultSelected={
+                      Object.values(oldStat ?? {})?.[0] as ItemEffect
+                    }
+                    data={specialEffectOptions}
+                    key={uuid()}
+                    name="equipment_stat"
+                    setValue={specialEffect => {
+                      const updatedEntries = {
+                        ...itemStats,
+                        [stat]: [specialEffect] as ItemEffect[],
+                      };
+                      return setItemStats(updatedEntries);
+                    }}
+                  />
+                ) : (
+                  <Input
+                    key={stat}
+                    name="equipment_stat"
+                    type={typeof oldStat === 'number' ? 'number' : 'text'}
+                    value={String(oldStat)}
+                    style={{ maxWidth: '100px' }}
+                    setValue={newStat => {
+                      const updatedEntries = {
+                        ...itemStats,
+                        [stat]: stat === 'element' ? stat : Number(newStat),
+                      };
+                      return setItemStats(updatedEntries);
+                    }}
+                  />
+                )}
               </div>
             );
           })}

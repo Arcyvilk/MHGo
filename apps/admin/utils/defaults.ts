@@ -9,6 +9,7 @@ import {
   Resource,
   ResourceMarker,
   Stats,
+  ItemEffect,
 } from '@mhgo/types';
 
 export const DEFAULT_COORDS = [0, 0];
@@ -117,4 +118,10 @@ export const DEFAULT_SLOTS: ItemSlot[] = [
   'arm',
   'waist',
   'leg',
+];
+
+export const DEFAULT_SPECIAL_EFFECT_TYPES: ItemEffect[] = [
+  'retaliate',
+  'fear',
+  'dodge',
 ];

@@ -177,11 +177,23 @@ export const useAdminUpdateItemStatsApi = () => {
     stats: Stats;
   }): Promise<void> => {
     const { itemId, stats } = variables;
+    const { specialEffects = [], ...otherStats } = stats;
+
+    const fixedSpecialEffects =
+      specialEffects.length === 1 && specialEffects?.[0] === 'none'
+        ? []
+        : specialEffects;
+
+    const fixedStats = {
+      ...otherStats,
+      specialEffects: fixedSpecialEffects,
+    };
+
     const response = await fetcher(
       `${API_URL}/admin/items/item/${itemId}/stats`,
       {
         method: 'PUT',
-        body: JSON.stringify(stats),
+        body: JSON.stringify(fixedStats),
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
