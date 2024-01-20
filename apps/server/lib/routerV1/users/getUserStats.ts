@@ -2,10 +2,10 @@ import { Request, Response } from 'express';
 import { log } from '@mhgo/utils';
 import {
   BaseStats,
-  ItemEffect,
   ItemStat,
   Setting,
   Stats,
+  StatsWithSpecialEffect,
   UserLoadout,
 } from '@mhgo/types';
 
@@ -24,10 +24,14 @@ export const getUserStats = async (
     const { db } = mongoInstance.getDb();
 
     // Get base stats of every user
-    const collectionSettings = db.collection<Setting<BaseStats>>('settings');
-    const { value: baseStats } = await collectionSettings.findOne({
+    const collectionSettings = db.collection<Setting<unknown>>('settings');
+    const { value: baseStats } = (await collectionSettings.findOne({
       key: 'base_stats',
-    });
+    })) as { value: BaseStats };
+    const { value: specialEffectMaxPoints = 5 } =
+      (await collectionSettings.findOne({
+        key: 'special_effect_max_points',
+      })) as { value: number };
 
     // Get requested user's loadout
     const collectionUserLoadouts = db.collection<UserLoadout>('userLoadout');
@@ -45,16 +49,18 @@ export const getUserStats = async (
     }
 
     // Sum all of the stats from all of the items
-    const userStats: Omit<Stats, 'specialEffects'> & {
-      specialEffects: Record<ItemEffect, number>;
-    } = {
+    const userStats: StatsWithSpecialEffect = {
       attack: getSumOfStat(baseStats, itemStats, 'attack'),
       defense: getSumOfStat(baseStats, itemStats, 'defense'),
       health: getSumOfStat(baseStats, itemStats, 'health'),
       luck: getSumOfStat(baseStats, itemStats, 'luck'),
       critChance: getSumOfStat(baseStats, itemStats, 'critChance'),
       critDamage: getSumOfStat(baseStats, itemStats, 'critDamage'),
-      specialEffects: getSumOfSpecialEffects(itemStats, 'specialEffects'),
+      specialEffects: getSumOfSpecialEffects(
+        specialEffectMaxPoints,
+        itemStats,
+        'specialEffects',
+      ),
       element: 'none', // TODO implement element
     };
 

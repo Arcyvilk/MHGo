@@ -3,7 +3,7 @@ import {
   CurrencyType,
   ItemToUse,
   Reward,
-  Stats,
+  StatsWithSpecialEffect,
   User,
   UserAchievement,
   UserAmount,
@@ -115,15 +115,15 @@ export const useUserWealthApi = (userId: string) => {
 };
 
 export const useUserStatsApi = (userId: string) => {
-  const getUserStats = async (): Promise<Stats> => {
+  const getUserStats = async (): Promise<StatsWithSpecialEffect> => {
     const res = await fetcher(`${API_URL}/users/user/${userId}/stats`);
     return res.json();
   };
 
   const { data, isLoading, isFetched, isError } = useQuery<
-    Stats,
+    StatsWithSpecialEffect,
     unknown,
-    Stats,
+    StatsWithSpecialEffect,
     string[]
   >({
     queryKey: ['user', userId, 'stats'],

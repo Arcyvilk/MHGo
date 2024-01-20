@@ -11,6 +11,7 @@ export const getSumOfStat = (
 };
 
 export const getSumOfSpecialEffects = (
+  specialEffectMaxPoints: number,
   itemStats: Stats[],
   statType: keyof Pick<Stats, 'specialEffects'>,
 ) => {
@@ -28,7 +29,10 @@ export const getSumOfSpecialEffects = (
       // and also to prevent more OP builds that I haven't anticipated because to be fair, balance
       // is harder work for me than coding all that shit)
       .reduce((sum, curr) => {
-        const pointsIntoEffect = getPointsOfEffect(sum[curr]);
+        const pointsIntoEffect = getPointsOfEffect(
+          specialEffectMaxPoints,
+          sum[curr],
+        );
         return {
           ...sum,
           [curr]: pointsIntoEffect,
@@ -37,11 +41,14 @@ export const getSumOfSpecialEffects = (
   );
 };
 
-const getPointsOfEffect = (prevPoints: number) => {
+const getPointsOfEffect = (
+  specialEffectMaxPoints: number,
+  prevPoints: number,
+) => {
   // If another item gave this exact effect before...
   if (prevPoints) {
     // ...we either cap it at 5...
-    if (prevPoints >= 5) return 5;
+    if (prevPoints >= specialEffectMaxPoints) return specialEffectMaxPoints;
     // ...or if it's less than 5, we just increment by 1
     else return prevPoints + 1;
   }

@@ -1,0 +1,1 @@
+export { ModalUserStats } from './ModalUserStats';

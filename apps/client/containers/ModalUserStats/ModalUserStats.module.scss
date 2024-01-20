@@ -1,0 +1,52 @@
+@import '@mhgo/front/styles/index.scss';
+
+.modalUserStats {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: $size-16;
+  z-index: $zindex-modal;
+
+  &__title {
+    @include page-title;
+    font-size: $size-16;
+    text-align: center;
+  }
+
+  &__noStats {
+    text-align: center;
+    font-size: $size-12;
+    font-weight: 400;
+  }
+}
+
+.specialEffect {
+  display: flex;
+  gap: $size-8;
+  align-items: center;
+  justify-content: space-between;
+  min-width: 50vw;
+
+  &__name {
+    text-transform: capitalize;
+    font-size: $size-12;
+  }
+
+  &__points {
+    display: flex;
+    gap: $size-4;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__point {
+    width: $size-24;
+    height: $size-6;
+    background-color: $color-tertiary-bg;
+
+    &--isFilled {
+      background-color: $color-action;
+    }
+  }
+}

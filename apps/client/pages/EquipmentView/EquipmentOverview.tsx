@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
   Icon,
   Loader,
@@ -6,8 +7,9 @@ import {
   Size,
   useUserHealthApi,
   useUserStatsApi,
+  Button,
 } from '@mhgo/front';
-import { HealthBarSimple } from '../../containers';
+import { HealthBarSimple, ModalUserStats } from '../../containers';
 import { useUser } from '../../hooks/useUser';
 
 import s from './EquipmentOverview.module.scss';
@@ -20,11 +22,24 @@ export const EquipmentOverview = () => (
 
 const Load = () => {
   const { userId } = useUser();
-  const { data: userStats } = useUserStatsApi(userId);
+  const { data: userStats, isFetched } = useUserStatsApi(userId);
   const { data: userHealth } = useUserHealthApi(userId);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const onStatsModalOpen = () => {
+    setIsModalOpen(true);
+  };
 
   return (
     <div className={s.equipmentView__overview}>
+      {isFetched && userStats && (
+        <ModalUserStats
+          isOpen={isModalOpen}
+          setIsOpen={setIsModalOpen}
+          userStats={userStats}
+        />
+      )}
       <div className={s.equipmentView__stats}>
         <div className={s.stats}>
           <Tooltip content="How much raw damage you deal per hit">
@@ -88,6 +103,9 @@ const Load = () => {
             </span>
           </Tooltip>
           <span>{userStats?.luck ?? '?'}%</span>
+        </div>
+        <div className={s.stats} style={{ marginTop: '16px' }}>
+          <Button label="See more" onClick={onStatsModalOpen} small />
         </div>
       </div>
       <HealthBarSimple

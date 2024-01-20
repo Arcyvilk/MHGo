@@ -16,6 +16,7 @@ type Props = {
   disabled?: boolean;
   simple?: boolean;
   inverted?: boolean;
+  small?: boolean;
   title?: string | null;
   style?: CSSProperties;
   onClick: () => void;
@@ -26,6 +27,7 @@ export const Button = ({
   disabled = false,
   simple = false,
   inverted = false,
+  small = false,
   title,
   style = {},
   onClick,
@@ -43,6 +45,7 @@ export const Button = ({
         simple,
         inverted,
         disabled,
+        small,
       })}
       onClick={onButtonClick}
       disabled={disabled}

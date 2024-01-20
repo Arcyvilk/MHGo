@@ -15,3 +15,7 @@ export type Stats = {
 };
 
 export type ItemEffect = 'retaliate' | 'fear' | 'dodge';
+
+export type StatsWithSpecialEffect = Omit<Stats, 'specialEffects'> & {
+  specialEffects: Record<ItemEffect, number>;
+};
