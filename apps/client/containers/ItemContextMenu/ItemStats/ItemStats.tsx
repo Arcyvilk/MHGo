@@ -40,10 +40,19 @@ export const ItemStats = ({
 
   const statsToCompare = Object.keys(DEFAULT_STATS)
     .map(key => {
-      const prev = slottedItemStats[key as keyof Stats] ?? 0;
-      const next = itemStats[key as keyof Stats] ?? 0;
+      const isSpecialEffects = key === 'specialEffects';
+      const specialEffectsPrev = getSpecialEffectValue(slottedItemStats);
+      const specialEffectsNext = getSpecialEffectValue(itemStats);
+
+      const prev = isSpecialEffects
+        ? specialEffectsPrev
+        : slottedItemStats[key as keyof Stats] ?? 0;
+      const next = isSpecialEffects
+        ? specialEffectsNext
+        : itemStats[key as keyof Stats] ?? 0;
+
       return {
-        key,
+        key: isSpecialEffects ? 'effect' : key,
         prev,
         next,
       };
@@ -82,4 +91,10 @@ export const ItemStats = ({
           ))}
     </div>
   );
+};
+
+const getSpecialEffectValue = (itemStats: Stats) => {
+  const specialEffects = itemStats.specialEffects ?? [];
+  if (specialEffects.length) return specialEffects.join(',');
+  else return 'none';
 };

@@ -54,4 +54,5 @@ export const DEFAULT_STATS: Stats = {
   luck: 0,
   critChance: 0,
   critDamage: 0,
+  specialEffects: [],
 };
