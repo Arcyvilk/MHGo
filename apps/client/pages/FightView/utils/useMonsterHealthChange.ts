@@ -1,24 +1,20 @@
 import { modifiers, useUserStatsApi } from '@mhgo/front';
 import { happensWithAChanceOf } from '@mhgo/utils';
-import { ItemEffect } from '@mhgo/types';
 
 import { useUser } from '../../../hooks/useUser';
+import { useMonsterMarker } from '../../../hooks/useMonsterMarker';
 import { DmgValue } from '../PlayerDPS';
+import { useSpecialEffects } from '.';
 
 import s from '../FightView.module.scss';
-import { DEFAULT_SPECIAL_EFFECT_MULTIPLIER_PER_POINT } from '../../../utils/consts';
-import { useMonsterMarker } from '../../../hooks/useMonsterMarker';
 
 export const useMonsterHealthChange = () => {
   const { userId } = useUser();
   const { data: userStats } = useUserStatsApi(userId);
+  const { didPlayerRetaliate } = useSpecialEffects();
   const { monster } = useMonsterMarker();
   const { level, baseDamage } = monster;
   const { attack = 1, critChance = 0, critDamage = 100 } = userStats ?? {};
-  const { retaliate = 0 } = (userStats?.specialEffects ?? {}) as Record<
-    ItemEffect,
-    number
-  >;
 
   const getMonsterNewHP = (
     monsterHP: number,
@@ -39,7 +35,7 @@ export const useMonsterHealthChange = () => {
   };
 
   const getMonsterRetaliate = (monsterHP: number) => {
-    const isRetaliate = didPlayerRetaliate(retaliate);
+    const isRetaliate = didPlayerRetaliate();
     if (!isRetaliate) return null;
     const retaliateDamage = baseDamage * level;
     const newHP = monsterHP - retaliateDamage;
@@ -71,10 +67,4 @@ export const useMonsterHealthChange = () => {
   };
 
   return { getMonsterNewHP, getMonsterRetaliate };
-};
-
-const didPlayerRetaliate = (retaliate: number) => {
-  const retaliatePercentage = DEFAULT_SPECIAL_EFFECT_MULTIPLIER_PER_POINT;
-  const isRetaliate = happensWithAChanceOf(retaliate * retaliatePercentage);
-  return isRetaliate;
 };

@@ -7,19 +7,17 @@ import {
   useInterval,
   useUpdateUserHealthApi,
   useUserHealthApi,
-  useUserStatsApi,
 } from '@mhgo/front';
 
 import { useAppContext } from '../../../utils/context';
 import { useMonsterMarker } from '../../../hooks/useMonsterMarker';
 import { useUser } from '../../../hooks/useUser';
 import { usePlayerHealthChange } from './usePlayerHealthChange';
-import { ItemEffect } from '@mhgo/types';
+import { useSpecialEffects } from '.';
 
 export const useMonsterAttack = (
   isFightFinished: boolean,
   setIsPlayerAlive: (isAlive: boolean) => void,
-  getFearMultiplier: (fear: number) => number,
   onRetaliate?: () => void,
 ) => {
   const { setMusic } = useAppContext();
@@ -27,18 +25,15 @@ export const useMonsterAttack = (
 
   const { userId } = useUser();
   const { mutate, isSuccess: isUserHit } = useUpdateUserHealthApi(userId);
+  const { getFearMultiplier } = useSpecialEffects();
   const { data: userHealth } = useUserHealthApi(userId);
-  const { data: userStats } = useUserStatsApi(userId);
-  const { fear = 0 } = (userStats?.specialEffects ?? {}) as Record<
-    ItemEffect,
-    number
-  >;
+
   const { monster } = useMonsterMarker();
   const { getPlayerHealthChange } = usePlayerHealthChange();
 
   const { baseAttackSpeed } = monster;
 
-  const attackSpeed = 1000 / (getFearMultiplier(fear) * baseAttackSpeed);
+  const attackSpeed = 1000 / (getFearMultiplier() * baseAttackSpeed);
 
   useInterval(
     () => {

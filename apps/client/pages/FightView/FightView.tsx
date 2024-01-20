@@ -67,7 +67,6 @@ const Load = () => {
   const { isUserHit } = useMonsterAttack(
     isFightFinished,
     setIsPlayerAlive,
-    getFearMultiplier,
     onRetaliate,
   );
 
@@ -122,10 +121,7 @@ const Load = () => {
       )}
       <Header name={name} maxHP={level * baseHP} currentHP={monsterHP} />
       {!isFightFinished && (
-        <MonsterAttackTimer
-          isFightFinished={isFightFinished}
-          getFearMultiplier={getFearMultiplier}
-        />
+        <MonsterAttackTimer isFightFinished={isFightFinished} />
       )}
       {isDummy && <PlayerDPS dmgValues={dmgValues} />}
       {!isMonsterAlive && <Nuke />}
@@ -162,10 +158,4 @@ const Header = ({ name = '?', maxHP, currentHP }: HeaderProps) => {
       <HealthBarMonster maxHP={maxHP} currentHP={currentHP} />
     </div>
   );
-};
-
-const getFearMultiplier = (fear: number) => {
-  const fearMultiplier =
-    (100 - DEFAULT_SPECIAL_EFFECT_MULTIPLIER_PER_POINT * fear) / 100;
-  return fearMultiplier;
 };

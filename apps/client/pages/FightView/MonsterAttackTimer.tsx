@@ -4,26 +4,17 @@ import 'react-circular-progressbar/dist/styles.css';
 import s from './FightView.module.scss';
 import { useMonsterMarker } from '../../hooks/useMonsterMarker';
 import { useState } from 'react';
-import { useInterval, useUserStatsApi } from '@mhgo/front';
-import { useUser } from '../../hooks/useUser';
-import { ItemEffect } from '@mhgo/types';
+import { useInterval } from '@mhgo/front';
+import { useSpecialEffects } from './utils';
 
 type MonsterAttackTimerProps = {
   isFightFinished: boolean;
-  getFearMultiplier: (fear: number) => number;
 };
 export const MonsterAttackTimer = ({
   isFightFinished,
-  getFearMultiplier,
 }: MonsterAttackTimerProps) => {
-  const { userId } = useUser();
-  const { data: userStats } = useUserStatsApi(userId);
-  const { fear = 0 } = (userStats?.specialEffects ?? {}) as Record<
-    ItemEffect,
-    number
-  >;
-
-  const fearMultiplier = getFearMultiplier(fear);
+  const { getFearMultiplier } = useSpecialEffects();
+  const fearMultiplier = getFearMultiplier();
 
   const { percentageToNextHit } = useMonsterAttackTimer(
     isFightFinished,

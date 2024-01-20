@@ -1,10 +1,8 @@
 import { modifiers, useUserStatsApi } from '@mhgo/front';
-import { happensWithAChanceOf } from '@mhgo/utils';
-import { ItemEffect } from '@mhgo/types';
 
 import { useMonsterMarker } from '../../../hooks/useMonsterMarker';
 import { useUser } from '../../../hooks/useUser';
-import { DEFAULT_SPECIAL_EFFECT_MULTIPLIER_PER_POINT } from '../../../utils/consts';
+import { useSpecialEffects } from '.';
 
 import s from '../FightView.module.scss';
 
@@ -12,16 +10,13 @@ export const usePlayerHealthChange = () => {
   const { userId } = useUser();
   const { monster } = useMonsterMarker();
   const { data: userStats } = useUserStatsApi(userId);
-  const { dodge = 0 } = (userStats?.specialEffects ?? {}) as Record<
-    ItemEffect,
-    number
-  >;
+  const { didPlayerDodge } = useSpecialEffects();
 
   const { level, baseDamage } = monster;
   const { defense = 0 } = userStats ?? {};
 
   const getPlayerHealthChange = () => {
-    const isDodge = didPlayerDodge(dodge);
+    const isDodge = didPlayerDodge();
     const monsterDamage = baseDamage * level;
     const damageAfterMitigation = Number(
       ((monsterDamage * 100) / (100 + defense)).toFixed(2),
@@ -50,10 +45,4 @@ export const usePlayerHealthChange = () => {
   };
 
   return { getPlayerHealthChange };
-};
-
-const didPlayerDodge = (dodge: number) => {
-  const dodgePercentage = DEFAULT_SPECIAL_EFFECT_MULTIPLIER_PER_POINT;
-  const isDodge = happensWithAChanceOf(dodge * dodgePercentage);
-  return isDodge;
 };
