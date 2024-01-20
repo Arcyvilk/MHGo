@@ -2,7 +2,7 @@ import ReactDOM from 'react-dom/client';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 
 import { AppContextProvider } from './utils/context';
-import { App } from './App.tsx';
+import { Router } from './Router.tsx';
 
 import 'tippy.js/dist/tippy.css';
 import 'react-toastify/dist/ReactToastify.css';
@@ -22,9 +22,9 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
   // <React.StrictMode>
   //   <App />
   // </React.StrictMode>,
-  <QueryClientProvider client={queryClient}>
-    <AppContextProvider>
-      <App />
-    </AppContextProvider>
-  </QueryClientProvider>,
+  <AppContextProvider>
+    <QueryClientProvider client={queryClient}>
+      <Router />
+    </QueryClientProvider>
+  </AppContextProvider>,
 );

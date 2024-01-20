@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { MapContainer } from 'react-leaflet';
-import L from 'leaflet';
+import L, { Zoom } from 'leaflet';
 import { FormControlLabel, Switch } from '@mui/material';
 import {
   Button,
@@ -16,6 +16,15 @@ import { MapLayer } from './MapLayer';
 import { MarkerCreateView, MarkerEditView } from './SingleMarker';
 
 import s from './MapView.module.scss';
+import { toast } from 'react-toastify';
+
+const mapOptions = {
+  zoom: 16,
+  minZoom: 1,
+  maxZoom: 20,
+  scrollWheelZoom: 'center' as Zoom,
+  dragging: true,
+};
 
 export const MapView = () => (
   <QueryBoundary fallback={<Loader />}>
@@ -44,6 +53,7 @@ const Load = () => {
   const [showMonsters, setShowMonsters] = useState(true);
 
   const onCenterMapOnMe = () => {
+    toast.info('Centering on your current position...');
     geo.getCurrentPosition(
       (position: GeolocationPosition) => {
         const { latitude, longitude } = position.coords;
@@ -98,22 +108,22 @@ const Load = () => {
           </div>
         }
       />
-      <div className={s.mapView__content}>
-        <MapContainer
-          center={L.latLng(coords[0], coords[1])}
-          className={s.mapContainer}
-          zoom={16}>
-          <MapLayer
-            selectedMarker={selectedMarker}
-            setSelectedMarker={setSelectedMarker}
-            currentCoords={coords}
-            setSelectedCoords={setSelectedCoords}
-            setCreateView={setCreateView}
-            showMonsters={showMonsters}
-            showResources={showResources}
-          />
-        </MapContainer>
-      </div>
+      <MapContainer
+        center={L.latLng(coords[0], coords[1])}
+        className={s.mapContainer}
+        {...mapOptions}
+        style={{ height: '600px' }}
+        zoom={16}>
+        <MapLayer
+          selectedMarker={selectedMarker}
+          setSelectedMarker={setSelectedMarker}
+          currentCoords={coords}
+          setSelectedCoords={setSelectedCoords}
+          setCreateView={setCreateView}
+          showMonsters={showMonsters}
+          showResources={showResources}
+        />
+      </MapContainer>
       {selectedMarker && (
         <MarkerEditView
           selectedMarker={selectedMarker}

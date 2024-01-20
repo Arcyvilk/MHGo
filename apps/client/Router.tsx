@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { ToastContainer, ToastContainerProps } from 'react-toastify';
+import ReactHowler from 'react-howler';
 import { Loader, SoundBG, useSounds } from '@mhgo/front';
 
 import { useAppContext } from './utils/context';
@@ -28,7 +29,6 @@ import { FightView, PrepareView } from './pages/FightView';
 import { MonsterGuideView } from './pages/MonsterGuideView';
 
 import { App } from './App';
-import ReactHowler from 'react-howler';
 
 export const Router = () => {
   const { music, setMusic, musicVolume } = useAppContext();
