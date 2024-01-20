@@ -26,7 +26,6 @@ import { PlayerDPS, DmgValue } from './PlayerDPS';
 import { useMonsterAttack, useMonsterHealthChange } from './utils';
 
 import s from './FightView.module.scss';
-import { DEFAULT_SPECIAL_EFFECT_MULTIPLIER_PER_POINT } from '../../utils/consts';
 
 export const FightView = () => (
   <QueryBoundary fallback={<Loader />}>
