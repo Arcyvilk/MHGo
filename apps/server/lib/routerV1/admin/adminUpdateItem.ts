@@ -60,17 +60,21 @@ export const adminUpdateItemAction = async (
     const collection = db.collection<ItemAction>('itemActions');
     const action = req.body as ItemAction;
 
+    if (!Object.keys(action).length) {
+      // TODO return 202 and adjust frontend
+      res.sendStatus(200);
+      return;
+    }
+
     const response = await collection.updateOne(
       { itemId },
       { $set: { action } },
       { upsert: true },
     );
 
-    if (!response.acknowledged) {
+    if (!response.acknowledged)
       res.status(400).send({ error: 'Could not update this item action.' });
-    } else {
-      res.status(200).send(response);
-    }
+    else res.status(200).send(response);
   } catch (err: any) {
     log.WARN(err);
     res.status(500).send({ error: err.message ?? 'Internal server error' });
@@ -87,6 +91,12 @@ export const adminUpdateItemCrafts = async (
 
     const collection = db.collection<ItemCraftList>('itemCraft');
     const craftList = req.body as CraftList[];
+
+    if (!craftList.length) {
+      // TODO return 202 and adjust frontend
+      res.sendStatus(200);
+      return;
+    }
 
     // Get all items
     const collectionItems = db.collection<Item>('items');
@@ -144,6 +154,13 @@ export const adminUpdateItemStats = async (
 
     const collection = db.collection<ItemStat>('itemStats');
     const stats = req.body as Stats;
+
+    if (!Object.keys(stats).length) {
+      // TODO return 202 and adjust frontend
+      res.sendStatus(200);
+      return;
+    }
+
     const fixedStats = {
       ...stats,
       // TODO implement elements
@@ -177,6 +194,12 @@ export const adminUpdateItemPrice = async (
 
     const collection = db.collection<ItemPrice>('itemPrice');
     const price = req.body as UserAmount[];
+
+    if (!price.length) {
+      // TODO return 202 and adjust frontend
+      res.sendStatus(200);
+      return;
+    }
 
     const response = await collection.updateOne(
       { itemId },

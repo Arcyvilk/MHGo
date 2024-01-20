@@ -1,9 +1,19 @@
 import { Request, Response } from 'express';
 import { log } from '@mhgo/utils';
-import { BaseStats, ItemStat, Setting, Stats, UserLoadout } from '@mhgo/types';
+import {
+  BaseStats,
+  ItemEffect,
+  ItemStat,
+  Setting,
+  Stats,
+  UserLoadout,
+} from '@mhgo/types';
 
 import { mongoInstance } from '../../../api';
-import { getSumOfStat } from '../../helpers/getSumOfStats';
+import {
+  getSumOfSpecialEffects,
+  getSumOfStat,
+} from '../../helpers/getSumOfStats';
 
 export const getUserStats = async (
   req: Request,
@@ -35,13 +45,16 @@ export const getUserStats = async (
     }
 
     // Sum all of the stats from all of the items
-    const userStats: Stats = {
+    const userStats: Omit<Stats, 'specialEffects'> & {
+      specialEffects: Record<ItemEffect, number>;
+    } = {
       attack: getSumOfStat(baseStats, itemStats, 'attack'),
       defense: getSumOfStat(baseStats, itemStats, 'defense'),
       health: getSumOfStat(baseStats, itemStats, 'health'),
       luck: getSumOfStat(baseStats, itemStats, 'luck'),
       critChance: getSumOfStat(baseStats, itemStats, 'critChance'),
       critDamage: getSumOfStat(baseStats, itemStats, 'critDamage'),
+      specialEffects: getSumOfSpecialEffects(itemStats, 'specialEffects'),
       element: 'none', // TODO implement element
     };
 

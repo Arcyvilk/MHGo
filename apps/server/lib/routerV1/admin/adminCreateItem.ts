@@ -57,32 +57,40 @@ export const adminCreateItem = async (
     )?.id;
 
     // Create item action
-    const collectionItemActions = db.collection<ItemActions>('itemActions');
-    await collectionItemActions.insertOne({
-      itemId,
-      action: itemAction,
-    });
+    if (Object.keys(itemAction ?? {}).length) {
+      const collectionItemActions = db.collection<ItemActions>('itemActions');
+      await collectionItemActions.insertOne({
+        itemId,
+        action: itemAction,
+      });
+    }
 
     // Create item craftlist
-    const collectionItemCraftlist = db.collection<ItemCraftList>('itemCraft');
-    await collectionItemCraftlist.insertOne({
-      itemId,
-      craftList: itemCraft,
-    });
+    if (itemCraft?.length) {
+      const collectionItemCraftlist = db.collection<ItemCraftList>('itemCraft');
+      await collectionItemCraftlist.insertOne({
+        itemId,
+        craftList: itemCraft,
+      });
+    }
 
     // Create item stats
-    const collectionItemStats = db.collection<ItemStat>('itemStats');
-    await collectionItemStats.insertOne({
-      itemId,
-      stats: itemStats,
-    });
+    if (Object.keys(itemStats ?? {}).length) {
+      const collectionItemStats = db.collection<ItemStat>('itemStats');
+      await collectionItemStats.insertOne({
+        itemId,
+        stats: itemStats,
+      });
+    }
 
     // Create item price
-    const collectionItemPrice = db.collection<ItemPrice>('itemPrice');
-    await collectionItemPrice.insertOne({
-      itemId,
-      price: itemPrice,
-    });
+    if (itemPrice?.length) {
+      const collectionItemPrice = db.collection<ItemPrice>('itemPrice');
+      await collectionItemPrice.insertOne({
+        itemId,
+        price: itemPrice,
+      });
+    }
 
     // Fin!
     res.sendStatus(201);

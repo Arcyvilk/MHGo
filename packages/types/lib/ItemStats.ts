@@ -11,4 +11,7 @@ export type Stats = {
   luck?: number;
   critChance?: number;
   critDamage?: number;
+  specialEffects?: ItemEffect[];
 };
+
+export type ItemEffect = 'retaliate' | 'fear' | 'dodge';
