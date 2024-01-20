@@ -32,7 +32,7 @@ const Load = () => {
   const tableRows = materials.map(material => [
     <MaterialCell material={material} />,
     material.rarity,
-    material.description,
+    <Table.CustomCell content={material.description} />,
     <Button
       label={<Icon icon="Edit" size={Size.MICRO} />}
       onClick={() => onMaterialEdit(material)}

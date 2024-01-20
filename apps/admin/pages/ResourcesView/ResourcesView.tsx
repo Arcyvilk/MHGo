@@ -31,7 +31,7 @@ const Load = () => {
 
   const tableRows = resources.map(resource => [
     <ResourceCell resource={resource} />,
-    resource.description,
+    <Table.CustomCell content={resource.description} />,
     resource.levelRequirements,
     <Button
       label={<Icon icon="Edit" size={Size.MICRO} />}

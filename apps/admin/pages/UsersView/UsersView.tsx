@@ -71,7 +71,7 @@ const Load = () => {
 
   const tableRows = users.map(user => [
     <ItemCell user={user} />,
-    user.id,
+    <Table.CustomCell content={user.id} />,
     user.exp,
     <Switch
       color="default"

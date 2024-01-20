@@ -39,3 +39,11 @@
     }
   }
 }
+
+.customCell {
+  display: flex;
+  align-items: center;
+  gap: $size-8;
+  font-weight: 400;
+  min-width: 200px;
+}

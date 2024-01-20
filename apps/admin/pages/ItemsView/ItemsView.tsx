@@ -20,6 +20,7 @@ import s from './ItemsView.module.scss';
 
 const tableHeaders = [
   'Name',
+  'Description',
   'Type',
   'Rarity',
   'Category',
@@ -83,7 +84,8 @@ const Load = () => {
   }, [isError]);
 
   const tableRows = filteredItems.map(item => [
-    <ItemCell item={item} />,
+    <ItemNameCell item={item} />,
+    <Table.CustomCell content={item.description} />,
     item.type,
     item.rarity,
     item.category,
@@ -168,7 +170,7 @@ const Load = () => {
   );
 };
 
-const ItemCell = ({ item }: { item: TItem }) => {
+const ItemNameCell = ({ item }: { item: TItem }) => {
   return (
     <div className={s.itemsView__itemDetail}>
       <img src={item.img} className={s.itemsView__itemIcon} /> {item.name}

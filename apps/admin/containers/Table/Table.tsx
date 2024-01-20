@@ -31,3 +31,9 @@ export function Table<T extends React.ReactNode>({
     </div>
   );
 }
+
+const ItemCell = ({ content }: { content: string }) => {
+  return <div className={s.customCell}>{content}</div>;
+};
+
+Table.CustomCell = ItemCell;
