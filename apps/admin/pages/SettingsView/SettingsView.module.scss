@@ -16,3 +16,14 @@
     @include page-title;
   }
 }
+
+.complexSetting {
+  display: flex;
+  flex-direction: column;
+  gap: $size-8;
+
+  &__name {
+    font-size: $size-12;
+    font-weight: 900;
+  }
+}

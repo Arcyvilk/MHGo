@@ -3111,6 +3111,13 @@
     "@types/howler" "*"
     "@types/react" "*"
 
+"@types/react-json-editor-ajrm@^2.5.6":
+  version "2.5.6"
+  resolved "https://registry.yarnpkg.com/@types/react-json-editor-ajrm/-/react-json-editor-ajrm-2.5.6.tgz#94ea9cc7a12b8a6dc4c61f3a6bff1a1261f0816c"
+  integrity sha512-Dk8WUF0UPzHCnDfgNQ7EBtjZRsHLZPfjm/fFZOrHVO4TbD1EQpKS/i8p3EpVEnvgE5LJack35eAxFjxN1UWMnA==
+  dependencies:
+    "@types/react" "*"
+
 "@types/react-transition-group@^4.4.10":
   version "4.4.10"
   resolved "https://registry.npmjs.org/@types/react-transition-group/-/react-transition-group-4.4.10.tgz"

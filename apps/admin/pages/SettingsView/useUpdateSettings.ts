@@ -10,30 +10,40 @@ export const useUpdateSettings = (setStatus: (status: Status) => void) => {
   const [updatedSimpleSettings, setUpdatedSimpleSettings] = useState<
     Settings<string | number>
   >([]);
+  const [updatedComplexSettings, setUpdatedComplexSettings] = useState<
+    Settings<object>
+  >([]);
 
   useEffect(() => {
-    const filteredSettings = settings.filter(
+    const filteredSettingsSimple = settings.filter(
       setting => typeof setting.value !== 'object',
     ) as Settings<string | number>;
-    setUpdatedSimpleSettings(filteredSettings);
+    const filteredSettingsComplex = settings.filter(
+      setting => typeof setting.value === 'object',
+    ) as Settings<object>;
+    setUpdatedSimpleSettings(filteredSettingsSimple);
+    setUpdatedComplexSettings(filteredSettingsComplex);
   }, [isSettingsFetched]);
 
-  const { mutateSetting } = useStatus(setStatus);
+  const { mutateSettings } = useStatus(setStatus);
 
   const onSave = () => {
-    if (updatedSimpleSettings) mutateSetting(updatedSimpleSettings);
+    if (updatedSimpleSettings) mutateSettings(updatedSimpleSettings);
+    if (updatedComplexSettings) mutateSettings(updatedComplexSettings);
   };
 
   return {
     updatedSimpleSettings,
     setUpdatedSimpleSettings,
+    updatedComplexSettings,
+    setUpdatedComplexSettings,
     onSave,
   };
 };
 
 const useStatus = (setStatus: (status: Status) => void) => {
   const {
-    mutate: mutateSetting,
+    mutate: mutateSettings,
     isSuccess,
     isError,
     isPending,
@@ -47,5 +57,5 @@ const useStatus = (setStatus: (status: Status) => void) => {
     });
   }, [isSuccess, isError, isPending]);
 
-  return { mutateSetting };
+  return { mutateSettings };
 };
