@@ -145,6 +145,16 @@
       content: "!"
     }
   }
+
+  &--isRetaliate {
+    font-size: $size-32;
+    color: $color-danger;
+  }
+
+  &--isDodge {
+    font-size: $size-32;
+    color: $color-success;
+  }
 }
 
 @keyframes fall {

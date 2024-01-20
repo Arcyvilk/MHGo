@@ -4,13 +4,32 @@ import 'react-circular-progressbar/dist/styles.css';
 import s from './FightView.module.scss';
 import { useMonsterMarker } from '../../hooks/useMonsterMarker';
 import { useState } from 'react';
-import { useInterval } from '@mhgo/front';
+import { useInterval, useUserStatsApi } from '@mhgo/front';
+import { useUser } from '../../hooks/useUser';
+import { ItemEffect } from '@mhgo/types';
 
-type MonsterAttackTimerProps = { isFightFinished: boolean };
+type MonsterAttackTimerProps = {
+  isFightFinished: boolean;
+  getFearMultiplier: (fear: number) => number;
+};
 export const MonsterAttackTimer = ({
   isFightFinished,
+  getFearMultiplier,
 }: MonsterAttackTimerProps) => {
-  const { percentageToNextHit } = useMonsterAttackTimer(isFightFinished);
+  const { userId } = useUser();
+  const { data: userStats } = useUserStatsApi(userId);
+  const { fear = 0 } = (userStats?.specialEffects ?? {}) as Record<
+    ItemEffect,
+    number
+  >;
+
+  const fearMultiplier = getFearMultiplier(fear);
+
+  const { percentageToNextHit } = useMonsterAttackTimer(
+    isFightFinished,
+    fearMultiplier,
+  );
+
   return (
     <div className={s.fightView__timer}>
       <CircularProgressbar
@@ -30,7 +49,10 @@ export const MonsterAttackTimer = ({
   );
 };
 
-const useMonsterAttackTimer = (isFightFinished: boolean) => {
+const useMonsterAttackTimer = (
+  isFightFinished: boolean,
+  fearMultiplier: number,
+) => {
   const [percentageToNextHit, setPercentageToNextHit] = useState(0);
   const { monster } = useMonsterMarker();
   const { baseAttackSpeed } = monster;
@@ -39,7 +61,8 @@ const useMonsterAttackTimer = (isFightFinished: boolean) => {
 
   useInterval(
     () => {
-      const cooldownPerFrame = baseAttackSpeed / FRAME_CADENCE;
+      const attackSpeed = baseAttackSpeed * fearMultiplier;
+      const cooldownPerFrame = attackSpeed / FRAME_CADENCE;
       const newPercentage = percentageToNextHit + cooldownPerFrame * 100;
 
       if (newPercentage > 100) setPercentageToNextHit(newPercentage - 100);

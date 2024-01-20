@@ -9,6 +9,7 @@ export const DEFAULT_COORDS = [0, 0];
 export const DEFAULT_ZOOM = { current: 16 };
 export const DEFAULT_MAP_RADIUS = 0;
 export const DEFAULT_SPECIAL_EFFECT_MAX_POINTS = 5;
+export const DEFAULT_SPECIAL_EFFECT_MULTIPLIER_PER_POINT = 5;
 export const DEFAULT_SPECIAL_EFFECT_TYPES: ItemEffect[] = [
   'retaliate',
   'fear',

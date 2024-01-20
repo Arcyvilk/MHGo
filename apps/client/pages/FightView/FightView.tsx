@@ -12,25 +12,21 @@ import {
   SoundSE,
   modifiers,
   useSounds,
-  useInterval,
-  useUpdateUserHealthApi,
-  useUserHealthApi,
-  useUserStatsApi,
   useNavigateWithScroll,
 } from '@mhgo/front';
-import { happensWithAChanceOf } from '@mhgo/utils';
 
 import { useAppContext } from '../../utils/context';
 import { useMonsterMarker } from '../../hooks/useMonsterMarker';
 import { useTutorialProgress } from '../../hooks/useTutorial';
-import { useUser } from '../../hooks/useUser';
 
 import { ModalSuccess } from './ModalSuccess';
 import { ModalFailure } from './ModalFailure';
 import { MonsterAttackTimer } from './MonsterAttackTimer';
 import { PlayerDPS, DmgValue } from './PlayerDPS';
+import { useMonsterAttack, useMonsterHealthChange } from './utils';
 
 import s from './FightView.module.scss';
+import { DEFAULT_SPECIAL_EFFECT_MULTIPLIER_PER_POINT } from '../../utils/consts';
 
 export const FightView = () => (
   <QueryBoundary fallback={<Loader />}>
@@ -43,6 +39,7 @@ const Load = () => {
   const { changeMusic, playSound } = useSounds(setMusic);
   const { navigateWithoutScroll } = useNavigateWithScroll();
   const { isFinishedTutorialPartOne } = useTutorialProgress();
+  const { getMonsterNewHP, getMonsterRetaliate } = useMonsterHealthChange();
 
   const { monster, isDummy } = useMonsterMarker();
   const { habitat, level, baseHP = 0, name, img } = monster;
@@ -58,8 +55,21 @@ const Load = () => {
     [isPlayerAlive, isMonsterAlive],
   );
 
-  const { isUserHit } = useMonsterAttack(isFightFinished, setIsPlayerAlive);
-  const { getMonsterNewHP } = useMonsterHealthChange();
+  const onRetaliate = () => {
+    if (!isMonsterAlive || !isPlayerAlive) return;
+    const isRetaliate = getMonsterRetaliate(monsterHP);
+    if (isRetaliate !== null) {
+      const { newHP } = isRetaliate;
+      handleMonsterAlive(newHP);
+    }
+  };
+
+  const { isUserHit } = useMonsterAttack(
+    isFightFinished,
+    setIsPlayerAlive,
+    getFearMultiplier,
+    onRetaliate,
+  );
 
   useEffect(() => {
     changeMusic(SoundBG.EDGE_OF_THE_GALAXY);
@@ -68,11 +78,7 @@ const Load = () => {
     };
   }, []);
 
-  const onMonsterHit = () => {
-    if (!isMonsterAlive || !isPlayerAlive) return;
-
-    const { newHP } = getMonsterNewHP(monsterHP, dmgValues, setDmgValues);
-
+  const handleMonsterAlive = (newHP: number) => {
     if (newHP > 0) {
       playSound(SoundSE.PUNCH);
       setMonsterHP(newHP);
@@ -80,6 +86,12 @@ const Load = () => {
       setMonsterHP(0);
       setIsMonsterAlive(false);
     }
+  };
+
+  const onMonsterHit = () => {
+    if (!isMonsterAlive || !isPlayerAlive) return;
+    const { newHP } = getMonsterNewHP(monsterHP, dmgValues, setDmgValues);
+    handleMonsterAlive(newHP);
   };
 
   const onFightEnd = () => {
@@ -110,7 +122,10 @@ const Load = () => {
       )}
       <Header name={name} maxHP={level * baseHP} currentHP={monsterHP} />
       {!isFightFinished && (
-        <MonsterAttackTimer isFightFinished={isFightFinished} />
+        <MonsterAttackTimer
+          isFightFinished={isFightFinished}
+          getFearMultiplier={getFearMultiplier}
+        />
       )}
       {isDummy && <PlayerDPS dmgValues={dmgValues} />}
       {!isMonsterAlive && <Nuke />}
@@ -149,116 +164,8 @@ const Header = ({ name = '?', maxHP, currentHP }: HeaderProps) => {
   );
 };
 
-const useMonsterAttack = (
-  isFightFinished: boolean,
-  setIsPlayerAlive: (isAlive: boolean) => void,
-) => {
-  const { setMusic } = useAppContext();
-  const { playSound, changeMusic } = useSounds(setMusic);
-
-  const { userId } = useUser();
-  const { mutate, isSuccess: isUserHit } = useUpdateUserHealthApi(userId);
-  const { data: userHealth } = useUserHealthApi(userId);
-  const { monster } = useMonsterMarker();
-  const { getPlayerHealthChange } = usePlayerHealthChange();
-
-  const { baseAttackSpeed } = monster;
-
-  const attackSpeed = 1000 / baseAttackSpeed;
-
-  useInterval(
-    () => {
-      playSound(SoundSE.OUCH);
-      const healthChange = getPlayerHealthChange();
-      mutate({ healthChange });
-    },
-    isFightFinished ? null : attackSpeed,
-  );
-
-  useEffect(() => {
-    if (userHealth?.currentHealth <= 0) {
-      setIsPlayerAlive(false);
-      changeMusic(SoundBG.HORROR_CREEPY);
-    }
-  }, [userHealth.currentHealth]);
-
-  return { isUserHit };
-};
-
-const usePlayerHealthChange = () => {
-  const { userId } = useUser();
-  const { monster } = useMonsterMarker();
-  const { data: userStats } = useUserStatsApi(userId);
-
-  const { level, baseDamage } = monster;
-  const { defense = 0 } = userStats ?? {};
-
-  const getPlayerHealthChange = () => {
-    const monsterDamage = baseDamage * level;
-    const damageAfterMitigation = Number(
-      ((monsterDamage * 100) / (100 + defense)).toFixed(2),
-    );
-    createDamageNumber(damageAfterMitigation);
-    return damageAfterMitigation * -1;
-  };
-
-  const createDamageNumber = (damage: number) => {
-    const particle = document.createElement('div');
-    const classNames = modifiers(s, 'particle', 'playerDmg').split(' ');
-    particle.classList.add(...classNames);
-    particle.innerText = String(damage);
-    const wrapper = document.getElementById('user_health_bar');
-    if (wrapper) {
-      wrapper.appendChild(particle);
-      setTimeout(() => {
-        particle.remove();
-      }, 1000);
-    }
-  };
-
-  return { getPlayerHealthChange };
-};
-
-const useMonsterHealthChange = () => {
-  const { userId } = useUser();
-  const { data: userStats } = useUserStatsApi(userId);
-  const { attack = 1, critChance = 0, critDamage = 100 } = userStats ?? {};
-
-  const getMonsterNewHP = (
-    monsterHP: number,
-    dmgValues: DmgValue[],
-    setDmgValues: (dmgValues: DmgValue[]) => void,
-  ) => {
-    const userCritDamageMultiplier = 1 + critDamage / 100;
-    const isCrit = happensWithAChanceOf(critChance);
-    const userFinalDamage = isCrit ? attack * userCritDamageMultiplier : attack;
-
-    const newHP = monsterHP - userFinalDamage;
-    createDamageNumber(userFinalDamage, isCrit);
-    setDmgValues([
-      ...dmgValues,
-      { timestamp: Date.now(), dmg: userFinalDamage },
-    ]);
-    return { newHP, isCrit };
-  };
-
-  const createDamageNumber = (damage: number, isCrit: boolean) => {
-    const particle = document.createElement('div');
-    const classNames = modifiers(s, 'particle', 'monsterDmg', { isCrit }).split(
-      ' ',
-    );
-    // I tried making it do the numbers always follow the cursor,
-    // but for some reason it greatly choked the DPS
-    particle.classList.add(...classNames);
-    particle.innerText = String(damage);
-    const wrapper = document.getElementById('monster_wrapper');
-    if (wrapper) {
-      wrapper.appendChild(particle);
-      setTimeout(() => {
-        particle.remove();
-      }, 1000);
-    }
-  };
-
-  return { getMonsterNewHP };
+const getFearMultiplier = (fear: number) => {
+  const fearMultiplier =
+    (100 - DEFAULT_SPECIAL_EFFECT_MULTIPLIER_PER_POINT * fear) / 100;
+  return fearMultiplier;
 };
