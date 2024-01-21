@@ -49,6 +49,7 @@ export const getItems = async (_req: Request, res: Response): Promise<void> => {
 };
 
 const slotOrder: (ItemSlot | null)[] = [
+  'weapon',
   'helmet',
   'chest',
   'arm',

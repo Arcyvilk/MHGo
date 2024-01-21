@@ -20,6 +20,7 @@ export const useUserEquipment = () => {
   const craftableItems = allItems.filter(
     item => item.craftable || item.purchasable,
   );
+
   const cratableItemsNotOwned = craftableItems
     .filter(item => !userItems.find(i => item.id === i.id))
     .map(item => ({ ...item, isOwned: false, amount: 0 }));

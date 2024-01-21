@@ -7,6 +7,7 @@ import {
   Switch,
   useLocalStorage,
   LSKeys,
+  Item,
 } from '@mhgo/front';
 
 import { ItemContextMenu } from '../../containers';
@@ -22,13 +23,7 @@ export const TABS = {
   QUEST: 'Quest',
 };
 
-export const EquipmentCraft = () => (
-  <QueryBoundary fallback={<Loader />}>
-    <Load />
-  </QueryBoundary>
-);
-
-const Load = () => {
+export const EquipmentCraft = () => {
   const [equipmentFilters, setEquipmentFilters] = useLocalStorage(
     LSKeys.MHGO_EQUIPMENT_FILTERS,
     { showOwned: true, showNotOwned: true, categoryView: false },
@@ -124,7 +119,23 @@ type EquipmentPiecesProps = {
   showNotOwned: boolean;
   categoryView: boolean;
 };
-const EquipmentPieces = ({
+const EquipmentPieces = (props: EquipmentPiecesProps) => (
+  <QueryBoundary fallback={<SkeletonEquipmentPieces />}>
+    <Load {...props} />
+  </QueryBoundary>
+);
+
+const SkeletonEquipmentPieces = () => (
+  <div className={s.equipmentView__items}>
+    <Item.Skeleton />
+    <Item.Skeleton />
+    <Item.Skeleton />
+    <Item.Skeleton />
+    <Item.Skeleton />
+  </div>
+);
+
+const Load = ({
   itemType,
   showOwned,
   showNotOwned,
@@ -133,8 +144,9 @@ const EquipmentPieces = ({
   const { userLevel } = useUser();
   const items = useUserEquipment();
 
-  const filtereditems = useMemo(() => {
+  const filteredItems = useMemo(() => {
     return items.filter(item => {
+      console.log(item.type, itemType);
       const filterByType = item.type === itemType;
       const filterByOwned = item.isOwned !== true;
       const filterByNotOwned = item.isOwned !== false;
@@ -152,7 +164,7 @@ const EquipmentPieces = ({
 
   if (categoryView) {
     const categories = [
-      ...new Set(filtereditems.map(item => item.category).filter(Boolean)),
+      ...new Set(filteredItems.map(item => item.category).filter(Boolean)),
       '',
     ];
     return Array.from(categories).map(category => (
@@ -161,7 +173,7 @@ const EquipmentPieces = ({
           {category ? category : 'Other'}
         </div>
         <div className={s.equipmentView__items}>
-          {filtereditems
+          {filteredItems
             .filter(item => item.category === category)
             .map(item => (
               <ItemContextMenu
@@ -176,7 +188,7 @@ const EquipmentPieces = ({
   } else
     return (
       <div className={s.equipmentView__items}>
-        {filtereditems.map(item => (
+        {filteredItems.map(item => (
           <ItemContextMenu
             key={`context_menu_${item.id}`}
             item={item}

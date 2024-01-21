@@ -8,6 +8,7 @@ import {
   useUserHealthApi,
   useUserStatsApi,
   Button,
+  Skeleton,
 } from '@mhgo/front';
 import { HealthBarSimple, ModalUserStats } from '../../containers';
 import { useUser } from '../../hooks/useUser';
@@ -15,7 +16,24 @@ import { useUser } from '../../hooks/useUser';
 import s from './EquipmentOverview.module.scss';
 
 export const EquipmentOverview = () => (
-  <QueryBoundary fallback={<Loader />}>
+  <QueryBoundary
+    fallback={
+      <div className={s.equipmentView__overview}>
+        <div className={s.equipmentView__stats}>
+          <Skeleton width="100%" height="1.6rem" />
+          <Skeleton width="100%" height="1.6rem" />
+          <Skeleton width="100%" height="1.6rem" />
+          <Skeleton width="100%" height="1.6rem" />
+          <Skeleton width="100%" height="1.6rem" />
+          <Skeleton width="100%" height="1.6rem" />
+          <Skeleton width="100%" height="1.6rem" />
+          <div className={s.stats} style={{ marginTop: '16px' }}>
+            <Skeleton width="10rem" height="2.4rem" />
+          </div>
+        </div>
+        <Skeleton width="15rem" height="1.6rem" />
+      </div>
+    }>
     <Load />
   </QueryBoundary>
 );

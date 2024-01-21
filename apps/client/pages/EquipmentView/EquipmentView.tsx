@@ -1,13 +1,20 @@
-import { CloseButton, addCdnUrl } from '@mhgo/front';
+import { CloseButton, Loader, QueryBoundary, addCdnUrl } from '@mhgo/front';
+
+import { Tutorial } from '../../containers';
+import { useTutorialProgress } from '../../hooks/useTutorial';
 import { EquipmentCraft } from './EquipmentCraft';
 import { EquipmentLoadout } from './EquipmentLoadout';
 import { EquipmentOverview } from './EquipmentOverview';
 
 import s from './EquipmentView.module.scss';
-import { Tutorial } from '../../containers';
-import { useTutorialProgress } from '../../hooks/useTutorial';
 
-export const EquipmentView = () => {
+export const EquipmentView = () => (
+  <QueryBoundary fallback={<Loader fullScreen />}>
+    <Load />
+  </QueryBoundary>
+);
+
+const Load = () => {
   const { isFinishedTutorialPartTwo } = useTutorialProgress();
 
   return (

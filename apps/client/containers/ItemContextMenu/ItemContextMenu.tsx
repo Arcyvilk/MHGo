@@ -64,10 +64,19 @@ export const ItemContextMenu = (props: ItemContextMenuProps) => {
   );
 };
 
-const SkeletonDropdown = ({ item }: { item: TItem }) => {
+const SkeletonDropdown = ({
+  item,
+  isItemOwned,
+}: {
+  item: TItem;
+  isItemOwned?: boolean;
+}) => {
   return (
     <div className={s.itemContextMenu__dropdown}>
       <div className={s.itemContextMenu__section}>
+        {!isItemOwned && (
+          <span style={{ fontWeight: 900, color: 'red' }}>NOT OWNED</span>
+        )}
         <span style={{ fontWeight: 900 }}>{item.name}</span>
         <span style={{ fontStyle: 'italic' }}>"{item.description}"</span>
       </div>

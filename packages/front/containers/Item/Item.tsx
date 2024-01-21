@@ -96,18 +96,33 @@ const Load = ({ data, onClick, simple, isNotOwned = false }: ItemProps) => {
   );
 };
 
-const ItemSkeleton = () => (
-  <div className={modifiers(s, 'item', { isNotOwned: true })}>
-    <div className={s.item__primary}>
-      <div className={modifiers(s, 'item__tile', `rarity-1`)}>
-        <Skeleton width="60px" height="60px" />
-        <div className={modifiers(s, 'tile__rarity', `rarity-1`)}>Rarity ?</div>
+const ItemSkeleton = ({ simple = false }: { simple?: boolean }) => {
+  if (simple)
+    return (
+      <div className={modifiers(s, 'item__simple', { isNotOwned: true })}>
+        <Skeleton width="3.2rem" height="3.2rem" />
       </div>
-      <div className={s.item__name}>
-        <Skeleton width="100%" height="2rem" />
+    );
+  else
+    return (
+      <div className={modifiers(s, 'item', { isNotOwned: true })}>
+        <div className={s.item__primary}>
+          <div className={modifiers(s, 'item__tile', `rarity-1`)}>
+            <Skeleton
+              style={{ margin: '5px', boxSizing: 'border-box' }}
+              width="50px"
+              height="50px"
+            />
+            <div className={modifiers(s, 'tile__rarity', `rarity-1`)}>
+              Rarity ?
+            </div>
+          </div>
+          <div className={s.item__name}>
+            <Skeleton width="100%" height="2rem" />
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
-);
+    );
+};
 
 Item.Skeleton = ItemSkeleton;

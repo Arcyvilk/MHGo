@@ -40,7 +40,7 @@ export const Router = () => {
       window.navigator.standalone === true;
     if (isInsideInstalledApp) {
       // Size window after open the app
-      window.resizeTo(400, 800);
+      window.resizeTo(400, 1800);
     }
   }, []);
 
