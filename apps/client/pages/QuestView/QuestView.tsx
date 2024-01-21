@@ -1,4 +1,10 @@
-import { CloseButton, Loader, QueryBoundary, Tabs } from '@mhgo/front';
+import {
+  CloseButton,
+  Loader,
+  QueryBoundary,
+  Skeleton,
+  Tabs,
+} from '@mhgo/front';
 
 import { QuestDailyView } from './QuestDailyView';
 import { QuestStoryView } from './QuestStoryView';
@@ -21,7 +27,9 @@ export const QuestView = () => {
           {
             tab: TABS.STORY,
             component: (
-              <QueryBoundary key={`tab-${TABS.STORY}`} fallback={<Loader />}>
+              <QueryBoundary
+                key={`tab-${TABS.STORY}`}
+                fallback={<SkeletonQuest />}>
                 <QuestStoryView />
               </QueryBoundary>
             ),
@@ -29,7 +37,9 @@ export const QuestView = () => {
           {
             tab: TABS.DAILY,
             component: (
-              <QueryBoundary key={`tab-${TABS.DAILY}`} fallback={<Loader />}>
+              <QueryBoundary
+                key={`tab-${TABS.DAILY}`}
+                fallback={<SkeletonQuest />}>
                 <QuestDailyView />
               </QueryBoundary>
             ),
@@ -38,6 +48,16 @@ export const QuestView = () => {
       />
 
       <CloseButton backToHome />
+    </div>
+  );
+};
+
+const SkeletonQuest = () => {
+  return (
+    <div className={s.questView__list}>
+      <Skeleton width="100%" height="12rem" />
+      <Skeleton width="100%" height="12rem" />
+      <Skeleton width="100%" height="12rem" />
     </div>
   );
 };
