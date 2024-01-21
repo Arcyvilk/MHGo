@@ -22,7 +22,7 @@ type MonsterDropsProps = {
   setUpdatedDrops: (updatedDrops: MonsterDrop['drops']) => void;
 };
 export const MonsterDrops = (props: MonsterDropsProps) => (
-  <QueryBoundary fallback={<Loader />}>
+  <QueryBoundary fallback={<Loader withPadding />}>
     <Load {...props} />
   </QueryBoundary>
 );

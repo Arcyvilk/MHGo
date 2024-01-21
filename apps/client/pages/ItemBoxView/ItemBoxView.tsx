@@ -17,12 +17,12 @@ export const ItemBoxView = () => {
       <div className={s.itemBoxView__wrapper}>
         <Tabs activeTab={activeTab} setActiveTab={setActiveTab} />
         {activeTab === TABS.ITEMS && (
-          <QueryBoundary fallback={<Loader />}>
+          <QueryBoundary fallback={<Loader withPadding />}>
             <UserItems userId={userId} />
           </QueryBoundary>
         )}
         {activeTab === TABS.MATERIALS && (
-          <QueryBoundary fallback={<Loader />}>
+          <QueryBoundary fallback={<Loader withPadding />}>
             <UserMaterials userId={userId} />
           </QueryBoundary>
         )}

@@ -24,7 +24,7 @@ import { ModalForage } from './ModalForage';
 import s from './ForageView.module.scss';
 
 export const ForageView = () => (
-  <QueryBoundary fallback={<Loader />}>
+  <QueryBoundary fallback={<Loader fullScreen />}>
     <Load />
   </QueryBoundary>
 );

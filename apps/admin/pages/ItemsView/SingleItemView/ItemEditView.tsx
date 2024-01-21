@@ -30,7 +30,7 @@ import { NotExist } from './NotExist';
 import s from './SingleItemView.module.scss';
 
 export const ItemEditView = () => (
-  <QueryBoundary fallback={<Loader />}>
+  <QueryBoundary fallback={<Loader fullScreen />}>
     <Load />
   </QueryBoundary>
 );

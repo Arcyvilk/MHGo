@@ -30,7 +30,7 @@ const mapOptions = {
 };
 
 export const Map = () => (
-  <QueryBoundary fallback={<Loader />}>
+  <QueryBoundary fallback={<Loader withPadding />}>
     <Load />
   </QueryBoundary>
 );

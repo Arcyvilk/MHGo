@@ -19,7 +19,7 @@ export const ModalFailure = ({ isOpen, setIsOpen, onClose }: ModalProps) => (
   <Modal isOpen={isOpen} setIsOpen={setIsOpen} onClose={() => {}}>
     <div className={s.result}>
       <h1 className={s.result__title}>Failure!</h1>
-      <QueryBoundary fallback={<Loader />}>
+      <QueryBoundary fallback={<Loader withPadding />}>
         <Load onClose={onClose} />
       </QueryBoundary>
     </div>
@@ -50,10 +50,22 @@ const Load = ({ onClose }: { onClose: () => void }) => {
         />
       )}
       <div className={s.result__content}>
-        You're such a noob that you died in a clicker game ._. Heal yourself and
-        try again to defend your honour.
+        Maybe you want to lower the difficulty of the game a bit?
       </div>
-      <Button label="I acknowledge my noobness ;-;" onClick={onClose} simple />
+      <div className={s.result__actions}>
+        <Button
+          label="Yes please ;-;"
+          variant={Button.Variant.ACTION}
+          onClick={onClose}
+          simple
+        />
+        <Button
+          label="NEVER"
+          variant={Button.Variant.DANGER}
+          onClick={onClose}
+          simple
+        />
+      </div>
     </>
   );
 };

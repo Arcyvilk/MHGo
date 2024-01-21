@@ -23,7 +23,7 @@ export const TABS = {
 };
 
 export const EquipmentCraft = () => (
-  <QueryBoundary fallback={<Loader />}>
+  <QueryBoundary fallback={<Loader withPadding />}>
     <Load />
   </QueryBoundary>
 );
@@ -152,12 +152,7 @@ const EquipmentPieces = ({
 
   if (categoryView) {
     const categories = [
-      ...new Set(
-        filtereditems
-          .map(item => item.category)
-          .sort()
-          .filter(Boolean),
-      ),
+      ...new Set(filtereditems.map(item => item.category).filter(Boolean)),
       '',
     ];
     return Array.from(categories).map(category => (

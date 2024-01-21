@@ -34,41 +34,123 @@ import { ItemStats } from './ItemStats';
 import s from './ItemContextMenu.module.scss';
 
 type Action = keyof ItemActions['action'] | 'craft' | 'purchase';
-export const ItemContextMenu = ({
-  item,
-  useOnly = false,
-  purchaseOnly = false,
-  isItemOwned = true,
-}: {
+
+type ItemContextMenuProps = {
   item: TItem;
   useOnly?: boolean;
   purchaseOnly?: boolean;
   isItemOwned?: boolean;
-}) => {
-  const { navigateWithoutScroll } = useNavigateWithScroll();
-  const { setMusic } = useAppContext();
-  const { playSound } = useSounds(setMusic);
+};
+export const ItemContextMenu = (props: ItemContextMenuProps) => {
+  const { item, purchaseOnly = false, isItemOwned = true } = props;
+
   const [action, setAction] = useState<Action>('craft');
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalActionOpen, setIsModalActionOpen] = useState(false);
   const [tippyInstance, setTippyInstance] = useState<Instance | null>(null);
 
+  const openActionModal = (selectedAction: Action) => {
+    // Open additional action modal and close tippy dropdown
+    setAction(selectedAction);
+    setIsModalActionOpen(true);
+    tippyInstance?.hide();
+  };
+
+  return (
+    <div className={s.itemContextMenu} key={item.id}>
+      {isModalActionOpen && (
+        <LoadActionModal
+          {...props}
+          action={action}
+          isOpen={isModalActionOpen}
+          setIsOpen={setIsModalActionOpen}
+        />
+      )}
+      <Dropdown
+        setInstance={setTippyInstance}
+        content={<LoadDropdown {...props} openActionModal={openActionModal} />}>
+        <Item
+          data={{ ...item, purchasable: purchaseOnly }}
+          isNotOwned={!isItemOwned}
+        />
+      </Dropdown>
+    </div>
+  );
+};
+
+type LoadActionModalProps = {
+  action: Action;
+  isOpen: boolean;
+  setIsOpen: (isOpen: boolean) => void;
+};
+const LoadActionModal = ({
+  // ItemContextMenuProps
+  item,
+  useOnly = false,
+  purchaseOnly = false,
+  // LoadActionModalProps
+  action,
+  isOpen,
+  setIsOpen,
+}: ItemContextMenuProps & LoadActionModalProps) => {
   const { data: itemAction } = useItemActionsApi(item.id);
 
+  const hasPurchaseAction =
+    purchaseOnly && action === 'purchase' && item.purchasable;
+  const hasCraftAction = !useOnly && action === 'craft' && item.craftable;
+  const hasTextAction = action === 'text';
+  const hasImgAction = action === 'img';
+
+  return (
+    <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
+      {hasCraftAction && (
+        <CraftConfirmation itemId={item.id} setIsModalOpen={setIsOpen} />
+      )}
+      {hasPurchaseAction && (
+        <PurchaseConfirmation itemId={item.id} setIsModalOpen={setIsOpen} />
+      )}
+      {hasTextAction && (
+        <div className={s.itemContextMenu__itemDesc}>
+          {itemAction?.text ??
+            'Here should be a description of this item, but it got lost somewhere. Sorry. :c'}
+          <Button label="OK " onClick={() => setIsOpen(false)} simple />
+        </div>
+      )}
+      {hasImgAction && (
+        <div className={s.itemContextMenu__itemDesc}>
+          <img src={itemAction?.img} className={s.itemContextMenu__itemImg} />
+          <Button label="OK " onClick={() => setIsOpen(false)} simple />
+        </div>
+      )}
+    </Modal>
+  );
+};
+
+type LoadDropdownProps = {
+  openActionModal: (selectedAction: Action) => void;
+};
+const LoadDropdown = ({
+  // ItemContextMenuProps
+  item,
+  useOnly = false,
+  purchaseOnly = false,
+  isItemOwned = true,
+  // LoadDropdownProps
+  openActionModal,
+}: ItemContextMenuProps & LoadDropdownProps) => {
+  const { setMusic } = useAppContext();
+  const { playSound } = useSounds(setMusic);
+  const { navigateWithoutScroll } = useNavigateWithScroll();
+
+  const { data: itemAction } = useItemActionsApi(item.id);
   const { userId } = useUser();
-  const { mutate: mutateItemEquip } = useUserEquipItemApi(userId, item.id);
+
   const { mutate: mutateConsumeItem } = useUserConsumeItemsApi(userId);
+  const { mutate: mutateItemEquip } = useUserEquipItemApi(userId, item.id);
   const { mutate: mutateUserHealth, isSuccess: isHealedSuccessfully } =
     useUpdateUserHealthApi(userId);
 
   const { isModalAchievementOpen, setIsModalAchievementOpen, achievementId } =
     useItemActionAchievements(item as TItem, isHealedSuccessfully);
-
-  const openActionModal = (selectedAction: Action) => {
-    // Open additional action modal and close tippy dropdown
-    setAction(selectedAction);
-    setIsModalOpen(true);
-    tippyInstance?.hide();
-  };
 
   const onItemCraft = () => {
     if (!item.craftable) return;
@@ -104,6 +186,7 @@ export const ItemContextMenu = ({
     }
     if (itemAction.heal) {
       mutateUserHealth({ healthChange: itemAction.heal });
+
       if (itemAction.heal > 0) {
         playSound(SoundSE.BUBBLE);
         toast.success(`Healed for ${itemAction.heal}!`);
@@ -118,7 +201,7 @@ export const ItemContextMenu = ({
   };
 
   return (
-    <div className={s.itemContextMenu} key={item.id}>
+    <>
       <Flash
         type={(itemAction?.heal ?? 0) >= 0 ? 'green' : 'red'}
         isActivated={isHealedSuccessfully}
@@ -128,66 +211,33 @@ export const ItemContextMenu = ({
         isOpen={isModalAchievementOpen}
         setIsOpen={setIsModalAchievementOpen}
       />
-      <Modal isOpen={isModalOpen} setIsOpen={setIsModalOpen}>
-        {!useOnly && action === 'craft' && item.craftable && (
-          <CraftConfirmation itemId={item.id} setIsModalOpen={setIsModalOpen} />
-        )}
-        {purchaseOnly && action === 'purchase' && item.purchasable && (
-          <PurchaseConfirmation
-            itemId={item.id}
-            setIsModalOpen={setIsModalOpen}
-          />
-        )}
-        {action === 'text' && (
-          <div className={s.itemContextMenu__itemDesc}>
-            {itemAction?.text ??
-              'Here should be a description of this item, but it got lost somewhere. Sorry. :c'}
-            <Button label="OK " onClick={() => setIsModalOpen(false)} simple />
-          </div>
-        )}
-        {action === 'img' && (
-          <div className={s.itemContextMenu__itemDesc}>
-            <img src={itemAction?.img} className={s.itemContextMenu__itemImg} />
-            <Button label="OK " onClick={() => setIsModalOpen(false)} simple />
-          </div>
-        )}
-      </Modal>
-      <Dropdown
-        setInstance={setTippyInstance}
-        content={
-          <div className={s.itemContextMenu__dropdown}>
-            <div className={s.itemContextMenu__section}>
-              {!isItemOwned && (
-                <span style={{ fontWeight: 900, color: 'red' }}>NOT OWNED</span>
-              )}
-              <span style={{ fontWeight: 900 }}>{item.name}</span>
-              <span style={{ fontStyle: 'italic' }}>"{item.description}"</span>
-            </div>
-            <div className={s.itemContextMenu__section}>
-              <ItemStats itemId={item.id} compare />
-            </div>
-            <div className={s.itemContextMenu__section}>
-              {!useOnly && !purchaseOnly && item.craftable && (
-                <Button simple label="Craft" onClick={onItemCraft} />
-              )}
-              {!useOnly && !purchaseOnly && item.equippable && isItemOwned && (
-                <Button simple label="Equip" onClick={onItemEquip} />
-              )}
-              {item.purchasable && (
-                <Button simple label="Purchase" onClick={onItemPurchase} />
-              )}
-              {!purchaseOnly && item.usable && itemAction && isItemOwned && (
-                <Button simple label="Use" onClick={onItemUse} />
-              )}
-            </div>
-          </div>
-        }>
-        <Item
-          data={{ ...item, purchasable: purchaseOnly }}
-          isNotOwned={!isItemOwned}
-        />
-      </Dropdown>
-    </div>
+      <div className={s.itemContextMenu__dropdown}>
+        <div className={s.itemContextMenu__section}>
+          {!isItemOwned && (
+            <span style={{ fontWeight: 900, color: 'red' }}>NOT OWNED</span>
+          )}
+          <span style={{ fontWeight: 900 }}>{item.name}</span>
+          <span style={{ fontStyle: 'italic' }}>"{item.description}"</span>
+        </div>
+        <div className={s.itemContextMenu__section}>
+          <ItemStats itemId={item.id} compare />
+        </div>
+        <div className={s.itemContextMenu__section}>
+          {!useOnly && !purchaseOnly && item.craftable && (
+            <Button simple label="Craft" onClick={onItemCraft} />
+          )}
+          {!useOnly && !purchaseOnly && item.equippable && isItemOwned && (
+            <Button simple label="Equip" onClick={onItemEquip} />
+          )}
+          {item.purchasable && (
+            <Button simple label="Purchase" onClick={onItemPurchase} />
+          )}
+          {!purchaseOnly && item.usable && itemAction && isItemOwned && (
+            <Button simple label="Use" onClick={onItemUse} />
+          )}
+        </div>
+      </div>
+    </>
   );
 };
 

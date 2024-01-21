@@ -19,7 +19,7 @@ import { ActionBar, HeaderEdit } from '../../../containers';
 import s from './SingleMaterialView.module.scss';
 
 export const MaterialEditView = () => (
-  <QueryBoundary fallback={<Loader />}>
+  <QueryBoundary fallback={<Loader fullScreen />}>
     <Load />
   </QueryBoundary>
 );

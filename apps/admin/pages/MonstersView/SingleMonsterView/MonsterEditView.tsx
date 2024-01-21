@@ -21,7 +21,7 @@ import { MonsterDrops } from './MonsterDrops';
 import s from './SingleMonsterView.module.scss';
 
 export const MonsterEditView = () => (
-  <QueryBoundary fallback={<Loader />}>
+  <QueryBoundary fallback={<Loader fullScreen />}>
     <Load />
   </QueryBoundary>
 );

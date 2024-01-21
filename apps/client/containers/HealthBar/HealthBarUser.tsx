@@ -1,9 +1,9 @@
 import {
   useUserHealthApi,
   Flash,
-  Loader,
   QueryBoundary,
   modifiers,
+  Skeleton,
 } from '@mhgo/front';
 import { useUser } from '../../hooks/useUser';
 
@@ -13,7 +13,7 @@ type HealthBarUserProps = {
   isUserHit: boolean;
 };
 export const HealthBarUser = (props: HealthBarUserProps) => (
-  <QueryBoundary fallback={<Loader />}>
+  <QueryBoundary fallback={<Skeleton width="100%" height="2rem" />}>
     <Load {...props} />
   </QueryBoundary>
 );

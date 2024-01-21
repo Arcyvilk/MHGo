@@ -20,7 +20,7 @@ type ResourceDropsProps = {
   setUpdatedDrops: (updatedDrops: ResourceDrop[]) => void;
 };
 export const ResourceDrops = (props: ResourceDropsProps) => (
-  <QueryBoundary fallback={<Loader />}>
+  <QueryBoundary fallback={<Loader withPadding />}>
     <Load {...props} />
   </QueryBoundary>
 );

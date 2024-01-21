@@ -4,7 +4,7 @@ import { Button, Loader, QueryBoundary } from '@mhgo/front';
 import s from './SingleItemView.module.scss';
 
 export const NotExist = () => (
-  <QueryBoundary fallback={<Loader />}>
+  <QueryBoundary fallback={<Loader fullScreen />}>
     <Load />
   </QueryBoundary>
 );

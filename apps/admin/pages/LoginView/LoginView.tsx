@@ -6,7 +6,7 @@ import { useMe } from '../../utils/useMe';
 import s from './LoginView.module.scss';
 
 export const LoginView = () => (
-  <QueryBoundary fallback={<Loader />}>
+  <QueryBoundary fallback={<Loader fullScreen />}>
     <Load />
   </QueryBoundary>
 );

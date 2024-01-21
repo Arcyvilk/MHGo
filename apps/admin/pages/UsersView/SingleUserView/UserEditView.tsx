@@ -20,7 +20,7 @@ import { ActionBar, HeaderEdit } from '../../../containers';
 import s from './SingleUserView.module.scss';
 
 export const UserEditView = () => (
-  <QueryBoundary fallback={<Loader />}>
+  <QueryBoundary fallback={<Loader fullScreen />}>
     <Load />
   </QueryBoundary>
 );

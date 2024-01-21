@@ -17,7 +17,7 @@ export const LoadingView = () => {
           src="https://cdn.arcyvilk.com/mhgo/misc/logo.png"
           alt="logo"
         />
-        <Loader />
+        <Loader withPadding />
       </div>
     </div>
   );

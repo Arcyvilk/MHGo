@@ -13,7 +13,7 @@ import { useUpdateSettings } from './useUpdateSettings';
 import s from './SettingsView.module.scss';
 
 export const SettingsView = () => (
-  <QueryBoundary fallback={<Loader />}>
+  <QueryBoundary fallback={<Loader fullScreen />}>
     <Load />
   </QueryBoundary>
 );

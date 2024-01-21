@@ -22,7 +22,7 @@ export const ShopView = () => {
         <h1 className={s.header__title}>Shop</h1>
         <Wealth />
       </div>
-      <QueryBoundary fallback={<Loader />}>
+      <QueryBoundary fallback={<Loader withPadding />}>
         <Shop />
       </QueryBoundary>
       <CloseButton backToHome />

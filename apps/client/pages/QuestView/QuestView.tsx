@@ -21,7 +21,9 @@ export const QuestView = () => {
           {
             tab: TABS.STORY,
             component: (
-              <QueryBoundary key={`tab-${TABS.STORY}`} fallback={<Loader />}>
+              <QueryBoundary
+                key={`tab-${TABS.STORY}`}
+                fallback={<Loader withPadding />}>
                 <QuestStoryView />
               </QueryBoundary>
             ),
@@ -29,7 +31,9 @@ export const QuestView = () => {
           {
             tab: TABS.DAILY,
             component: (
-              <QueryBoundary key={`tab-${TABS.DAILY}`} fallback={<Loader />}>
+              <QueryBoundary
+                key={`tab-${TABS.DAILY}`}
+                fallback={<Loader withPadding />}>
                 <QuestDailyView />
               </QueryBoundary>
             ),

@@ -30,7 +30,7 @@ const tableHeaders = [
   'Actions',
 ];
 export const UsersView = () => (
-  <QueryBoundary fallback={<Loader />}>
+  <QueryBoundary fallback={<Loader fullScreen />}>
     <Load />
   </QueryBoundary>
 );

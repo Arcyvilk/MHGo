@@ -52,7 +52,7 @@ export const Router = () => {
   return (
     <div className={s.app}>
       <ToastContainer {...toastOptions} />
-      <RouterProvider router={router} fallbackElement={<Loader />} />
+      <RouterProvider router={router} fallbackElement={<Loader fullScreen />} />
     </div>
   );
 };

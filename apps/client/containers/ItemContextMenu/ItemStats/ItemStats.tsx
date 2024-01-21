@@ -1,4 +1,6 @@
 import {
+  Loader,
+  QueryBoundary,
   modifiers,
   useItemStatsApi,
   useItemsApi,
@@ -10,13 +12,15 @@ import { DEFAULT_STATS } from '../../../utils/consts';
 import s from './ItemStats.module.scss';
 import { Stats } from '@mhgo/types';
 
-export const ItemStats = ({
-  itemId,
-  compare = false,
-}: {
-  itemId: string;
-  compare?: boolean;
-}) => {
+type ItemStatsProps = { itemId: string; compare?: boolean };
+export const ItemStats = (props: ItemStatsProps) => (
+  // <QueryBoundary fallback={<Skeleton width="100%" height="2rem" />}>
+  <QueryBoundary fallback={<Loader withPadding />}>
+    <Load {...props} />
+  </QueryBoundary>
+);
+
+const Load = ({ itemId, compare = false }: ItemStatsProps) => {
   const { userId } = useUser();
   const { data: items } = useItemsApi();
   const { data: itemStats } = useItemStatsApi(itemId);
@@ -35,34 +39,34 @@ export const ItemStats = ({
     isEquippable,
   );
 
-  if (!itemStats) return null;
-  if (!itemSlot) return null;
+  const statsToCompare =
+    itemStats && itemSlot
+      ? Object.keys(DEFAULT_STATS)
+          .map(key => {
+            const isSpecialEffects = key === 'specialEffects';
+            const specialEffectsPrev = getSpecialEffectValue(slottedItemStats);
+            const specialEffectsNext = getSpecialEffectValue(itemStats);
 
-  const statsToCompare = Object.keys(DEFAULT_STATS)
-    .map(key => {
-      const isSpecialEffects = key === 'specialEffects';
-      const specialEffectsPrev = getSpecialEffectValue(slottedItemStats);
-      const specialEffectsNext = getSpecialEffectValue(itemStats);
+            const prev = isSpecialEffects
+              ? specialEffectsPrev
+              : slottedItemStats[key as keyof Stats] ?? 0;
+            const next = isSpecialEffects
+              ? specialEffectsNext
+              : itemStats[key as keyof Stats] ?? 0;
 
-      const prev = isSpecialEffects
-        ? specialEffectsPrev
-        : slottedItemStats[key as keyof Stats] ?? 0;
-      const next = isSpecialEffects
-        ? specialEffectsNext
-        : itemStats[key as keyof Stats] ?? 0;
-
-      return {
-        key: isSpecialEffects ? 'effect' : key,
-        prev,
-        next,
-      };
-    })
-    // Dont show stats irrelevant for the item
-    .filter(
-      stat =>
-        !(stat.prev === 0 && stat.next === 0) &&
-        !(stat.prev === 'none' && stat.next === 'none'),
-    );
+            return {
+              key: isSpecialEffects ? 'effect' : key,
+              prev,
+              next,
+            };
+          })
+          // Dont show stats irrelevant for the item
+          .filter(
+            stat =>
+              !(stat.prev === 0 && stat.next === 0) &&
+              !(stat.prev === 'none' && stat.next === 'none'),
+          )
+      : [];
 
   return (
     <div className={s.itemStats}>

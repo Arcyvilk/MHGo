@@ -16,7 +16,7 @@ import s from './ResourcesView.module.scss';
 const tableHeaders = ['Name', 'Description', 'LVL req.', 'Actions'];
 
 export const ResourcesView = () => (
-  <QueryBoundary fallback={<Loader />}>
+  <QueryBoundary fallback={<Loader fullScreen />}>
     <Load />
   </QueryBoundary>
 );

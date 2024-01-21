@@ -22,7 +22,7 @@ import s from './SingleItemView.module.scss';
 import { toast } from 'react-toastify';
 
 export const ItemCreateView = () => (
-  <QueryBoundary fallback={<Loader />}>
+  <QueryBoundary fallback={<Loader fullScreen />}>
     <Load />
   </QueryBoundary>
 );

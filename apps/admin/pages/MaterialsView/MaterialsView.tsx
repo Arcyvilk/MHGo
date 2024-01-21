@@ -16,7 +16,7 @@ import s from './MaterialsView.module.scss';
 const tableHeaders = ['Name', 'Rarity', 'Description', 'Actions'];
 
 export const MaterialsView = () => (
-  <QueryBoundary fallback={<Loader />}>
+  <QueryBoundary fallback={<Loader fullScreen />}>
     <Load />
   </QueryBoundary>
 );

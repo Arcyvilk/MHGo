@@ -18,7 +18,7 @@ import { DEFAULT_MATERIAL } from '../../../utils/defaults';
 import s from './SingleMaterialView.module.scss';
 
 export const MaterialCreateView = () => (
-  <QueryBoundary fallback={<Loader />}>
+  <QueryBoundary fallback={<Loader fullScreen />}>
     <Load />
   </QueryBoundary>
 );

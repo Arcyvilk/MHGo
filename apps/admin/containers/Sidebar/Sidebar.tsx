@@ -9,7 +9,7 @@ import { useMe } from '../../utils/useMe';
 
 type SidebarProps = { title?: React.ReactNode };
 export const Sidebar = (props: SidebarProps) => (
-  <QueryBoundary fallback={<Loader />}>
+  <QueryBoundary fallback={<Loader withPadding />}>
     <Load {...props} />
   </QueryBoundary>
 );

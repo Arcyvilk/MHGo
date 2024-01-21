@@ -33,7 +33,7 @@ const companionTips = [
 ];
 
 export const CompanionView = () => (
-  <QueryBoundary fallback={<Loader />}>
+  <QueryBoundary fallback={<Loader fullScreen />}>
     <Load />
   </QueryBoundary>
 );

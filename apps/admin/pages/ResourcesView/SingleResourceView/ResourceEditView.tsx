@@ -18,7 +18,7 @@ import { Resource } from '@mhgo/types';
 import { Status } from '../../../utils/types';
 
 export const ResourceEditView = () => (
-  <QueryBoundary fallback={<Loader />}>
+  <QueryBoundary fallback={<Loader fullScreen />}>
     <Load />
   </QueryBoundary>
 );

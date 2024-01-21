@@ -37,7 +37,7 @@ const RequireAuth: FC<{ children: React.ReactNode }> = ({
   children,
 }: PropsWithChildren) => {
   return (
-    <QueryBoundary fallback={<Loader />}>
+    <QueryBoundary fallback={<Loader fullScreen />}>
       <LoadAuth>{children}</LoadAuth>
     </QueryBoundary>
   );

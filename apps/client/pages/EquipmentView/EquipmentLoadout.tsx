@@ -1,11 +1,11 @@
 import { useUser, useUserLoadout } from '../../hooks/useUser';
-import { Loader, QueryBoundary, Tooltip } from '@mhgo/front';
+import { QueryBoundary, Skeleton, Tooltip } from '@mhgo/front';
 import { Item } from '@mhgo/front';
 
 import s from './EquipmentLoadout.module.scss';
 
 export const EquipmentLoadout = () => (
-  <QueryBoundary fallback={<Loader />}>
+  <QueryBoundary fallback={<Skeleton width="100%" height="5rem" />}>
     <Load />
   </QueryBoundary>
 );

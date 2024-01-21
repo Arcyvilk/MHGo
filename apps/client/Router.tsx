@@ -138,7 +138,7 @@ export const Router = () => {
     <>
       {music && <ReactHowler src={music} playing loop volume={musicVolume} />}
       <ToastContainer {...toastOptions} />
-      <RouterProvider router={router} fallbackElement={<Loader />} />
+      <RouterProvider router={router} fallbackElement={<Loader fullScreen />} />
     </>
   );
 };

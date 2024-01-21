@@ -26,7 +26,7 @@ const tableHeaders = [
 ];
 
 export const MonstersView = () => (
-  <QueryBoundary fallback={<Loader />}>
+  <QueryBoundary fallback={<Loader fullScreen />}>
     <Load />
   </QueryBoundary>
 );

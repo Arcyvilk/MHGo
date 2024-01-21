@@ -3,8 +3,15 @@
 .loader {
   display: flex;
   flex-direction: column;
-  gap: $size-16;
   align-items: center;
   justify-content: center;
-  padding: $size-64;
+  
+  &--withPadding {
+    padding: $size-64;
+  }
+
+  &--fullScreen {
+    width: 100vw;
+    height: 100vh;
+  }
 }

@@ -38,7 +38,7 @@ export const ModalSuccess = ({ isOpen, setIsOpen, onClose }: ModalProps) => (
   <Modal isOpen={isOpen} setIsOpen={setIsOpen} onClose={() => {}}>
     <div className={s.result}>
       <h1 className={s.result__title}>Success!</h1>
-      <QueryBoundary fallback={<Loader />}>
+      <QueryBoundary fallback={<Loader withPadding />}>
         <Load onClose={onClose} />
       </QueryBoundary>
     </div>
@@ -164,7 +164,7 @@ const Load = ({ onClose }: { onClose: () => void }) => {
                 "NOTHING! God damn it you're so unlucky ;-;"
               )
             ) : (
-              <Loader />
+              <Loader withPadding />
             )}
           </div>
         </>

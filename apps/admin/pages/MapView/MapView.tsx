@@ -27,7 +27,7 @@ const mapOptions = {
 };
 
 export const MapView = () => (
-  <QueryBoundary fallback={<Loader />}>
+  <QueryBoundary fallback={<Loader fullScreen />}>
     <Load />
   </QueryBoundary>
 );

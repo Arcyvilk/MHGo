@@ -37,7 +37,7 @@ const tableHeaders = [
 const itemFilters: ItemType[] = ['quest', 'other', 'weapon', 'armor'];
 
 export const ItemsView = () => (
-  <QueryBoundary fallback={<Loader />}>
+  <QueryBoundary fallback={<Loader fullScreen />}>
     <Load />
   </QueryBoundary>
 );

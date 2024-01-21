@@ -12,7 +12,7 @@ import s from './MonsterGuideView.module.scss';
 import { useUser } from '../../hooks/useUser';
 
 export const MonsterGuideView = () => (
-  <QueryBoundary fallback={<Loader />}>
+  <QueryBoundary fallback={<Loader fullScreen />}>
     <Load />
   </QueryBoundary>
 );

@@ -15,7 +15,7 @@ import { useUser } from '../../hooks/useUser';
 import s from './EquipmentOverview.module.scss';
 
 export const EquipmentOverview = () => (
-  <QueryBoundary fallback={<Loader />}>
+  <QueryBoundary fallback={<Loader withPadding />}>
     <Load />
   </QueryBoundary>
 );

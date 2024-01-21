@@ -20,7 +20,7 @@ import { DEFAULT_MONSTER } from '../../../utils/defaults';
 import s from './SingleMonsterView.module.scss';
 
 export const MonsterCreateView = () => (
-  <QueryBoundary fallback={<Loader />}>
+  <QueryBoundary fallback={<Loader fullScreen />}>
     <Load />
   </QueryBoundary>
 );

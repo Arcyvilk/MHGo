@@ -41,7 +41,7 @@ type MarkerProps = {
   setStatus: (status: Status) => void;
 };
 export const MarkerEditView = (props: MarkerProps) => (
-  <QueryBoundary fallback={<Loader />}>
+  <QueryBoundary fallback={<Loader withPadding />}>
     <Load {...props} />
   </QueryBoundary>
 );
