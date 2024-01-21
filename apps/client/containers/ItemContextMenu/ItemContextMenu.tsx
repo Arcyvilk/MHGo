@@ -6,7 +6,6 @@ import { ItemActions, Item as TItem } from '@mhgo/types';
 import {
   Button,
   Item,
-  Loader,
   QueryBoundary,
   SoundSE,
   useNavigateWithScroll,
@@ -48,18 +47,44 @@ export const ItemContextMenu = (props: ItemContextMenuProps) => (
   </QueryBoundary>
 );
 
-const Load = ({
-  item,
-  useOnly = false,
-  purchaseOnly = false,
-  isItemOwned = true,
-}: ItemContextMenuProps) => {
+const Load = (props: ItemContextMenuProps) => {
+  const { item, purchaseOnly = false, isItemOwned = true } = props;
+  const [tippyInstance, setTippyInstance] = useState<Instance | null>(null);
+
+  return (
+    <div className={s.itemContextMenu} key={item.id}>
+      <Dropdown
+        setInstance={setTippyInstance}
+        content={
+          <QueryBoundary fallback={<Item.Skeleton />}>
+            <LoadDropdown tippyInstance={tippyInstance} {...props} />
+          </QueryBoundary>
+        }>
+        <Item
+          data={{ ...item, purchasable: purchaseOnly }}
+          isNotOwned={!isItemOwned}
+        />
+      </Dropdown>
+    </div>
+  );
+};
+
+const LoadDropdown = (
+  props: { tippyInstance: Instance | null } & ItemContextMenuProps,
+) => {
+  const {
+    item,
+    isItemOwned = false,
+    purchaseOnly = false,
+    useOnly = false,
+    tippyInstance,
+  } = props;
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const { navigateWithoutScroll } = useNavigateWithScroll();
   const { setMusic } = useAppContext();
   const { playSound } = useSounds(setMusic);
+
   const [action, setAction] = useState<Action>('craft');
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [tippyInstance, setTippyInstance] = useState<Instance | null>(null);
 
   const { data: itemAction } = useItemActionsApi(item.id);
 
@@ -127,7 +152,33 @@ const Load = ({
   };
 
   return (
-    <div className={s.itemContextMenu} key={item.id}>
+    <>
+      <div className={s.itemContextMenu__dropdown}>
+        <div className={s.itemContextMenu__section}>
+          {!isItemOwned && (
+            <span style={{ fontWeight: 900, color: 'red' }}>NOT OWNED</span>
+          )}
+          <span style={{ fontWeight: 900 }}>{item.name}</span>
+          <span style={{ fontStyle: 'italic' }}>"{item.description}"</span>
+        </div>
+        <div className={s.itemContextMenu__section}>
+          <ItemStats itemId={item.id} compare />
+        </div>
+        <div className={s.itemContextMenu__section}>
+          {!useOnly && !purchaseOnly && item.craftable && (
+            <Button simple label="Craft" onClick={onItemCraft} />
+          )}
+          {!useOnly && !purchaseOnly && item.equippable && isItemOwned && (
+            <Button simple label="Equip" onClick={onItemEquip} />
+          )}
+          {item.purchasable && (
+            <Button simple label="Purchase" onClick={onItemPurchase} />
+          )}
+          {!purchaseOnly && item.usable && itemAction && isItemOwned && (
+            <Button simple label="Use" onClick={onItemUse} />
+          )}
+        </div>
+      </div>
       <Flash
         type={(itemAction?.heal ?? 0) >= 0 ? 'green' : 'red'}
         isActivated={isHealedSuccessfully}
@@ -161,42 +212,7 @@ const Load = ({
           </div>
         )}
       </Modal>
-      <Dropdown
-        setInstance={setTippyInstance}
-        content={
-          <div className={s.itemContextMenu__dropdown}>
-            <div className={s.itemContextMenu__section}>
-              {!isItemOwned && (
-                <span style={{ fontWeight: 900, color: 'red' }}>NOT OWNED</span>
-              )}
-              <span style={{ fontWeight: 900 }}>{item.name}</span>
-              <span style={{ fontStyle: 'italic' }}>"{item.description}"</span>
-            </div>
-            <div className={s.itemContextMenu__section}>
-              <ItemStats itemId={item.id} compare />
-            </div>
-            <div className={s.itemContextMenu__section}>
-              {!useOnly && !purchaseOnly && item.craftable && (
-                <Button simple label="Craft" onClick={onItemCraft} />
-              )}
-              {!useOnly && !purchaseOnly && item.equippable && isItemOwned && (
-                <Button simple label="Equip" onClick={onItemEquip} />
-              )}
-              {item.purchasable && (
-                <Button simple label="Purchase" onClick={onItemPurchase} />
-              )}
-              {!purchaseOnly && item.usable && itemAction && isItemOwned && (
-                <Button simple label="Use" onClick={onItemUse} />
-              )}
-            </div>
-          </div>
-        }>
-        <Item
-          data={{ ...item, purchasable: purchaseOnly }}
-          isNotOwned={!isItemOwned}
-        />
-      </Dropdown>
-    </div>
+    </>
   );
 };
 
