@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import { MonsterMarker, ResourceMarker } from '@mhgo/types';
 
 import { API_URL } from '../env';
@@ -35,7 +35,7 @@ export const useSingleMonsterMarkerApi = (
     return res.json();
   };
 
-  const { data, isLoading, isFetched, isError } = useQuery<
+  const { data, isLoading, isFetched, isError } = useSuspenseQuery<
     MonsterMarker,
     unknown,
     MonsterMarker,
@@ -43,7 +43,6 @@ export const useSingleMonsterMarkerApi = (
   >({
     queryKey: ['markers', 'monster', markerId!],
     queryFn: getMonsterMarker,
-    enabled: Boolean(markerId),
   });
 
   return { data, isLoading, isFetched, isError };
@@ -65,7 +64,7 @@ export const useMonsterMarkersApi = (userId?: string, coords?: number[]) => {
     isLoading,
     isFetched,
     isError,
-  } = useQuery({
+  } = useSuspenseQuery({
     queryKey: ['monster', 'markers', userId!, lat, lng],
     queryFn: getAllMonsterMarkers,
   });
@@ -90,7 +89,7 @@ export const useAllResourceMarkersApi = () => {
     isLoading,
     isFetched,
     isError,
-  } = useQuery<ResourceMarker[], unknown, ResourceMarker[], string[]>({
+  } = useSuspenseQuery<ResourceMarker[], unknown, ResourceMarker[], string[]>({
     queryKey: ['markers', 'resource', 'all'],
     queryFn: getResourceMarkers,
   });
@@ -114,7 +113,7 @@ export const useResourceMarkersApi = (userId?: string, coords?: number[]) => {
     isLoading,
     isFetched,
     isError,
-  } = useQuery({
+  } = useSuspenseQuery({
     queryKey: ['resource', 'markers', userId!, lat, lng],
     queryFn: getAllResourceMarkers,
   });

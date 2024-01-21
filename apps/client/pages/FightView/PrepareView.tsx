@@ -25,10 +25,8 @@ export const PrepareView = () => (
 
 const Load = () => {
   const { isFinishedTutorialPartOne } = useTutorialProgress();
-  const { markerId, monster, isFetched, inRange } = useMonsterMarker();
+  const { markerId, monster, inRange } = useMonsterMarker();
   const { habitat, level, name, img } = monster;
-
-  if (!isFetched) return <Loader fullScreen />;
 
   return (
     <div className={modifiers(s, 'fightView', habitat)}>

@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import { Monster } from '@mhgo/types';
 
 import { API_URL } from '../env';
@@ -16,7 +16,7 @@ export const useMonstersApi = () => {
     isLoading,
     isFetched,
     isError,
-  } = useQuery<Monster[], unknown, Monster[], string[]>({
+  } = useSuspenseQuery<Monster[], unknown, Monster[], string[]>({
     queryKey: ['monsters', 'list'],
     queryFn: getMonsters,
     staleTime: Infinity,
