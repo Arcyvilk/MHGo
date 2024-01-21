@@ -5,9 +5,10 @@ import { Instance } from 'tippy.js';
 import { ItemActions, Item as TItem } from '@mhgo/types';
 import {
   Button,
+  Icon,
   Item,
   QueryBoundary,
-  Skeleton,
+  Size,
   SoundSE,
   useNavigateWithScroll,
   useSounds,
@@ -51,7 +52,7 @@ export const ItemContextMenu = (props: ItemContextMenuProps) => {
       <Dropdown
         setInstance={setTippyInstance}
         content={
-          <QueryBoundary fallback={<SkeletonDropdown item={item} />}>
+          <QueryBoundary fallback={<SkeletonDropdown {...props} />}>
             <LoadDropdown tippyInstance={tippyInstance} {...props} />
           </QueryBoundary>
         }>
@@ -66,11 +67,10 @@ export const ItemContextMenu = (props: ItemContextMenuProps) => {
 
 const SkeletonDropdown = ({
   item,
-  isItemOwned,
-}: {
-  item: TItem;
-  isItemOwned?: boolean;
-}) => {
+  useOnly = false,
+  purchaseOnly = false,
+  isItemOwned = false,
+}: ItemContextMenuProps) => {
   return (
     <div className={s.itemContextMenu__dropdown}>
       <div className={s.itemContextMenu__section}>
@@ -82,6 +82,40 @@ const SkeletonDropdown = ({
       </div>
       <div className={s.itemContextMenu__section}>
         <ItemStats itemId={item.id} compare />
+      </div>
+      <div className={s.itemContextMenu__section}>
+        {!useOnly && !purchaseOnly && item.craftable && (
+          <Button
+            simple
+            disabled
+            label={<Icon icon="Spin" spin size={Size.MICRO} />}
+            onClick={() => {}}
+          />
+        )}
+        {!useOnly && !purchaseOnly && item.equippable && isItemOwned && (
+          <Button
+            simple
+            disabled
+            label={<Icon icon="Spin" spin size={Size.MICRO} />}
+            onClick={() => {}}
+          />
+        )}
+        {item.purchasable && (
+          <Button
+            simple
+            disabled
+            label={<Icon icon="Spin" spin size={Size.MICRO} />}
+            onClick={() => {}}
+          />
+        )}
+        {!purchaseOnly && item.usable && isItemOwned && (
+          <Button
+            simple
+            disabled
+            label={<Icon icon="Spin" spin size={Size.MICRO} />}
+            onClick={() => {}}
+          />
+        )}
       </div>
     </div>
   );

@@ -20,8 +20,8 @@ export const Skeleton = (props: Props) => {
 
   return (
     <MUISkeleton
-      // $color-header-bg
-      sx={{ bgcolor: 'rgb(167, 155, 127)' }}
+      // $color-tertiary-bg
+      sx={{ bgcolor: 'rgb(223,225,220)' }}
       variant={variant}
       width={width ?? `${size}rem`}
       height={height ?? `${size}rem`}

@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import {
   Icon,
-  Loader,
   QueryBoundary,
   Tooltip,
   Size,
