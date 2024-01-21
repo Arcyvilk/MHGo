@@ -1,4 +1,6 @@
 import {
+  QueryBoundary,
+  Skeleton,
   modifiers,
   useItemStatsApi,
   useItemsApi,
@@ -10,13 +12,17 @@ import { DEFAULT_STATS } from '../../../utils/consts';
 import s from './ItemStats.module.scss';
 import { Stats } from '@mhgo/types';
 
-export const ItemStats = ({
-  itemId,
-  compare = false,
-}: {
+type ItemStatsProps = {
   itemId: string;
   compare?: boolean;
-}) => {
+};
+export const ItemStats = (props: ItemStatsProps) => (
+  <QueryBoundary fallback={<Skeleton width="100%" height="2rem" />}>
+    <Load {...props} />
+  </QueryBoundary>
+);
+
+const Load = ({ itemId, compare = false }: ItemStatsProps) => {
   const { userId } = useUser();
   const { data: items } = useItemsApi();
   const { data: itemStats } = useItemStatsApi(itemId);
@@ -24,16 +30,14 @@ export const ItemStats = ({
 
   // We check which slot the item goes to
   const itemSlot = items.find(i => i.id === itemId)?.slot;
-  const isEquippable = Boolean(itemSlot);
+
   // We check the ID of item already occupying that slot
   const slottedItemId =
     userLoadout.find(loadoutSlot => loadoutSlot.slot === itemSlot)?.itemId ??
     null;
 
-  const { data: slottedItemStats = { element: 'none' } } = useItemStatsApi(
-    slottedItemId,
-    isEquippable,
-  );
+  const { data: slottedItemStats = { element: 'none' } } =
+    useItemStatsApi(slottedItemId);
 
   if (!itemStats) return null;
   if (!itemSlot) return null;
