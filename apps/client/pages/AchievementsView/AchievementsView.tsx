@@ -1,6 +1,9 @@
 import {
   CloseButton,
+  Loader,
   ProgressBar,
+  QueryBoundary,
+  Skeleton,
   Switch,
   addCdnUrl,
   modifiers,
@@ -14,14 +17,8 @@ import { useUser } from '../../hooks/useUser';
 import { useState } from 'react';
 
 export const AchievementsView = () => {
-  const achievements = useAchievementsWithUnlock();
   const [showUnlocked, setShowUnlocked] = useState(true);
   const [showLocked, setShowLocked] = useState(true);
-
-  const sortedAchievements = [
-    ...achievements.filter(a => !a.hidden),
-    ...achievements.filter(a => a.hidden),
-  ];
 
   return (
     <div className={s.achievementsView}>
@@ -41,21 +38,9 @@ export const AchievementsView = () => {
             setChecked={setShowLocked}
           />
         </div>
-        {sortedAchievements
-          .filter(achievement => {
-            const isUnlocked =
-              achievement.unlockDate &&
-              achievement.progress === achievement.maxProgress;
-            if (showUnlocked && isUnlocked) return true;
-            if (showLocked && !isUnlocked) return true;
-            return false;
-          })
-          .map(achievement => (
-            <AchievementTile
-              key={`achievement-tile-${achievement.id}`}
-              achievement={achievement}
-            />
-          ))}
+        <QueryBoundary fallback={<LoadSkeleton />}>
+          <Load showLocked={showLocked} showUnlocked={showUnlocked} />
+        </QueryBoundary>
       </div>
       {/* This fixes an annoying bug - when you click achievement
       icon on the end of the flight screen, and then close button, 
@@ -65,6 +50,48 @@ export const AchievementsView = () => {
       <CloseButton backToHome />
     </div>
   );
+};
+
+const LoadSkeleton = () => (
+  <>
+    {new Array(5).fill(
+      <div
+        className={modifiers(s, 'achievement', {
+          unlocked: false,
+        })}>
+        <Skeleton width="100%" height="6.4rem" />
+      </div>,
+    )}
+  </>
+);
+
+const Load = ({
+  showUnlocked,
+  showLocked,
+}: {
+  showUnlocked: boolean;
+  showLocked: boolean;
+}) => {
+  const achievements = useAchievementsWithUnlock();
+  const sortedAchievements = [
+    ...achievements.filter(a => !a.hidden),
+    ...achievements.filter(a => a.hidden),
+  ];
+  return sortedAchievements
+    .filter(achievement => {
+      const isUnlocked =
+        achievement.unlockDate &&
+        achievement.progress === achievement.maxProgress;
+      if (showUnlocked && isUnlocked) return true;
+      if (showLocked && !isUnlocked) return true;
+      return false;
+    })
+    .map(achievement => (
+      <AchievementTile
+        key={`achievement-tile-${achievement.id}`}
+        achievement={achievement}
+      />
+    ));
 };
 
 type AchievementTileProps = {

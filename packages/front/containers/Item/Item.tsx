@@ -1,4 +1,12 @@
-import { modifiers, CurrencyInfo, SoundSE, useSounds } from '@mhgo/front';
+import {
+  modifiers,
+  CurrencyInfo,
+  SoundSE,
+  useSounds,
+  QueryBoundary,
+  Loader,
+  Skeleton,
+} from '@mhgo/front';
 
 import s from './Item.module.scss';
 import { UserAmount } from '@mhgo/types';
@@ -19,12 +27,14 @@ type ItemProps = {
   simple?: boolean;
   isNotOwned?: boolean;
 };
-export const Item = ({
-  data,
-  onClick,
-  simple,
-  isNotOwned = false,
-}: ItemProps) => {
+
+export const Item = (props: ItemProps) => (
+  <QueryBoundary fallback={<Loader noPadding />}>
+    <Load {...props} />
+  </QueryBoundary>
+);
+
+const Load = ({ data, onClick, simple, isNotOwned = false }: ItemProps) => {
   const { img, filter, amount, rarity, name, purchasable, price = [] } = data;
   const { playSound } = useSounds(undefined);
 
@@ -85,3 +95,19 @@ export const Item = ({
     </button>
   );
 };
+
+const ItemSkeleton = () => (
+  <div className={modifiers(s, 'item', { isNotOwned: true })}>
+    <div className={s.item__primary}>
+      <div className={modifiers(s, 'item__tile', `rarity-1`)}>
+        <Skeleton width="60px" height="60px" />
+        <div className={modifiers(s, 'tile__rarity', `rarity-1`)}>Rarity ?</div>
+      </div>
+      <div className={s.item__name}>
+        <Skeleton width="100%" height="2rem" />
+      </div>
+    </div>
+  </div>
+);
+
+Item.Skeleton = ItemSkeleton;

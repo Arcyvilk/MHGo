@@ -3,6 +3,7 @@ import { useState } from 'react';
 import {
   Icon,
   IconType,
+  Loader,
   Modal,
   QueryBoundary,
   Skeleton,
@@ -23,7 +24,13 @@ import { Map } from './Map';
 
 import s from './HomeView.module.scss';
 
-export const HomeView = () => {
+export const HomeView = () => (
+  <QueryBoundary fallback={<Loader fullScreen />}>
+    <Load />
+  </QueryBoundary>
+);
+
+const Load = () => {
   const { isTutorialDummyKilled } = useAppContext();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { navigateWithoutScroll, navigateWithScroll } = useNavigateWithScroll();

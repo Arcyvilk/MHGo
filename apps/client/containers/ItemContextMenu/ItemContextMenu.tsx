@@ -6,6 +6,8 @@ import { ItemActions, Item as TItem } from '@mhgo/types';
 import {
   Button,
   Item,
+  Loader,
+  QueryBoundary,
   SoundSE,
   useNavigateWithScroll,
   useSounds,
@@ -34,17 +36,24 @@ import { ItemStats } from './ItemStats';
 import s from './ItemContextMenu.module.scss';
 
 type Action = keyof ItemActions['action'] | 'craft' | 'purchase';
-export const ItemContextMenu = ({
-  item,
-  useOnly = false,
-  purchaseOnly = false,
-  isItemOwned = true,
-}: {
+type ItemContextMenuProps = {
   item: TItem;
   useOnly?: boolean;
   purchaseOnly?: boolean;
   isItemOwned?: boolean;
-}) => {
+};
+export const ItemContextMenu = (props: ItemContextMenuProps) => (
+  <QueryBoundary fallback={<Item.Skeleton />}>
+    <Load {...props} />
+  </QueryBoundary>
+);
+
+const Load = ({
+  item,
+  useOnly = false,
+  purchaseOnly = false,
+  isItemOwned = true,
+}: ItemContextMenuProps) => {
   const { navigateWithoutScroll } = useNavigateWithScroll();
   const { setMusic } = useAppContext();
   const { playSound } = useSounds(setMusic);

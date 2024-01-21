@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { CloseButton, Loader, QueryBoundary } from '@mhgo/front';
+import { CloseButton, Item, QueryBoundary } from '@mhgo/front';
 import { ItemContextMenuSimple } from '../../containers';
 import { useUser, useUserItems, useUserMaterials } from '../../hooks/useUser';
 import { TABS, Tabs } from './Tabs';
@@ -17,12 +17,12 @@ export const ItemBoxView = () => {
       <div className={s.itemBoxView__wrapper}>
         <Tabs activeTab={activeTab} setActiveTab={setActiveTab} />
         {activeTab === TABS.ITEMS && (
-          <QueryBoundary fallback={<Loader />}>
+          <QueryBoundary fallback={<SkeletonItemBox />}>
             <UserItems userId={userId} />
           </QueryBoundary>
         )}
         {activeTab === TABS.MATERIALS && (
-          <QueryBoundary fallback={<Loader />}>
+          <QueryBoundary fallback={<SkeletonItemBox />}>
             <UserMaterials userId={userId} />
           </QueryBoundary>
         )}
@@ -31,6 +31,12 @@ export const ItemBoxView = () => {
     </div>
   );
 };
+
+const SkeletonItemBox = () => (
+  <div className={s.itemBoxView__container}>
+    {new Array(12).fill(<Item.Skeleton />)}
+  </div>
+);
 
 type UserItemBoxProps = { userId: string };
 const UserItems = ({ userId }: UserItemBoxProps) => {

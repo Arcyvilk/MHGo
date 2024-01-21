@@ -1,17 +1,15 @@
-import { Icon } from '@mhgo/front';
+import { Icon, Loader, QueryBoundary } from '@mhgo/front';
 import { useNewsApi } from '@mhgo/front';
 import { useUser } from '../../hooks/useUser';
 import s from './ModalView.module.scss';
 
-export const PartyModal = () => {
-  return (
-    <div className={s.modalView__party}>
-      <Icon icon="Spin" spin />
-    </div>
-  );
-};
+export const NewsModal = () => (
+  <QueryBoundary fallback={<Loader />}>
+    <LoadNewsModal />
+  </QueryBoundary>
+);
 
-export const NewsModal = () => {
+const LoadNewsModal = () => {
   const { userName } = useUser();
   const { data: news } = useNewsApi();
 
@@ -38,6 +36,14 @@ export const AppearanceModal = () => {
   return (
     <div className={s.modalView__appearance}>
       You're already beautiful &lt;3
+    </div>
+  );
+};
+
+export const PartyModal = () => {
+  return (
+    <div className={s.modalView__party}>
+      <Icon icon="Spin" spin />
     </div>
   );
 };
