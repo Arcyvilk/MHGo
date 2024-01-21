@@ -11,5 +11,6 @@ export * from './Modal';
 export * from './QueryBoundary';
 export * from './Select';
 export * from './Slider';
+export * from './Skeleton';
 export * from './Switch';
 export * from './Tooltip';

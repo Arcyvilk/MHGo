@@ -1,4 +1,9 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import {
+  useMutation,
+  useQuery,
+  useSuspenseQuery,
+  useQueryClient,
+} from '@tanstack/react-query';
 import { Quest, UserQuestDaily, UserQuestStory } from '@mhgo/types';
 
 import { API_URL } from '../env';
@@ -18,7 +23,7 @@ export const useQuestsStoryApi = () => {
     isLoading,
     isFetched,
     isError,
-  } = useQuery<Quest[], unknown, Quest[], string[]>({
+  } = useSuspenseQuery<Quest[], unknown, Quest[], string[]>({
     queryKey: ['quests', 'story'],
     queryFn: getQuestsStory,
   });
@@ -37,10 +42,9 @@ export const useUserQuestsStoryApi = (userId: string | null | undefined) => {
     isLoading,
     isFetched,
     isError,
-  } = useQuery<UserQuestStory[], unknown, UserQuestStory[], string[]>({
+  } = useSuspenseQuery<UserQuestStory[], unknown, UserQuestStory[], string[]>({
     queryKey: ['user', userId!, 'quests', 'story'],
     queryFn: getUserQuestsStory,
-    enabled: Boolean(userId),
   });
 
   return { data, isLoading, isFetched, isError };

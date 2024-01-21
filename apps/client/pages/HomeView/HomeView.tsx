@@ -5,6 +5,7 @@ import {
   IconType,
   Modal,
   QueryBoundary,
+  Skeleton,
   SoundSE,
   addCdnUrl,
   modifiers,
@@ -64,7 +65,9 @@ export const HomeView = () => {
               <ActionButton icon="Potion" onClick={onItemsClick} />
               <ActionButton icon="Shop" onClick={onShopClick} />
             </div>
-            <QuestButton onClick={onQuestClick} />
+            <QueryBoundary fallback={<SkeletonQuestButton />}>
+              <LoadQuestButton onClick={onQuestClick} />
+            </QueryBoundary>
           </>
         )}
       </div>
@@ -91,14 +94,14 @@ const ActionButton = ({ icon, onClick }: ActionButtonProps) => {
   );
 };
 
-type QuestButtonProps = { onClick: () => void };
-const QuestButton = (props: QuestButtonProps) => (
-  <QueryBoundary fallback={null}>
-    <QuestButtonLoad {...props} />
-  </QueryBoundary>
+const SkeletonQuestButton = () => (
+  <div className={s.button}>
+    <Skeleton width="100%" height="5rem" />
+  </div>
 );
 
-const QuestButtonLoad = ({ onClick }: QuestButtonProps) => {
+type QuestButtonProps = { onClick: () => void };
+const LoadQuestButton = ({ onClick }: QuestButtonProps) => {
   const { userQuestsWithDetails } = useQuestsStory();
   const { playSound } = useSounds(undefined);
 

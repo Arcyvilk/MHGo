@@ -1,14 +1,13 @@
-import React from 'react';
 import { Icon } from '..';
+import { modifiers } from '../..';
 
 import s from './Loader.module.scss';
 
-type Props = { title?: React.ReactNode };
-export const Loader = ({ title }: Props) => {
+type Props = { fullScreen?: boolean };
+export const Loader = ({ fullScreen = false }: Props) => {
   return (
-    <div className={s.loader}>
+    <div className={modifiers(s, 'loader', { fullScreen })}>
       <Icon icon="Spin" spin />
-      {title && <div>{title}</div>}
     </div>
   );
 };

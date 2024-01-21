@@ -18,7 +18,7 @@ import { useMonsterMarker } from '../../hooks/useMonsterMarker';
 import s from './FightView.module.scss';
 
 export const PrepareView = () => (
-  <QueryBoundary fallback={<Loader />}>
+  <QueryBoundary fallback={<Loader fullScreen />}>
     <Load />
   </QueryBoundary>
 );
@@ -28,7 +28,7 @@ const Load = () => {
   const { markerId, monster, isFetched, inRange } = useMonsterMarker();
   const { habitat, level, name, img } = monster;
 
-  if (!isFetched) return <Loader />;
+  if (!isFetched) return <Loader fullScreen />;
 
   return (
     <div className={modifiers(s, 'fightView', habitat)}>

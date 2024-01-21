@@ -10,11 +10,12 @@ import { useUser } from '../hooks/useUser';
 
 export const useQuestsStory = () => {
   const { userId } = useUser();
-  const { data: questsStory } = useQuestsStoryApi();
-  const { data: userQuestsStory } = useUserQuestsStoryApi(userId);
+  const { data: questsStory, isFetched: isQuestsFetched } = useQuestsStoryApi();
+  const { data: userQuestsStory, isFetched: isUserQuestsFetched } =
+    useUserQuestsStoryApi(userId);
 
   const userQuestsWithDetails = questsStory
-    .map(quest => {
+    ?.map(quest => {
       const userQuest = userQuestsStory?.find(q => q.questId === quest.id) ?? {
         progress: 0,
         obtainDate: null,
@@ -31,7 +32,10 @@ export const useQuestsStory = () => {
     isClaimed: boolean;
   })[];
 
-  return { userQuestsWithDetails };
+  return {
+    userQuestsWithDetails,
+    isFetched: isQuestsFetched && isUserQuestsFetched,
+  };
 };
 
 export const useQuestsDaily = () => {

@@ -28,7 +28,7 @@ import { useMonsterAttack, useMonsterHealthChange } from './utils';
 import s from './FightView.module.scss';
 
 export const FightView = () => (
-  <QueryBoundary fallback={<Loader />}>
+  <QueryBoundary fallback={<Loader fullScreen />}>
     <Load />
   </QueryBoundary>
 );

@@ -1,6 +1,5 @@
-export const fetcher = (url: string, options: any = {}) => {
-  return fetch(url, updateOptions(options));
-};
+export const fetcher = async (url: string, options: any = {}) =>
+  await fetch(url, updateOptions(options));
 
 const updateOptions = (options: any) => {
   const update = { ...options };
