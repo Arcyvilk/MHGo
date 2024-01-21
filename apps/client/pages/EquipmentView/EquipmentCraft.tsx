@@ -146,7 +146,6 @@ const Load = ({
 
   const filteredItems = useMemo(() => {
     return items.filter(item => {
-      console.log(item.type, itemType);
       const filterByType = item.type === itemType;
       const filterByOwned = item.isOwned !== true;
       const filterByNotOwned = item.isOwned !== false;

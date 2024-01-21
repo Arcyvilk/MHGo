@@ -2,7 +2,13 @@ import { useEffect } from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { ToastContainer, ToastContainerProps } from 'react-toastify';
 import ReactHowler from 'react-howler';
-import { Loader, SoundBG, useSounds } from '@mhgo/front';
+import {
+  Loader,
+  LoadingBar,
+  SoundBG,
+  usePrefetch,
+  useSounds,
+} from '@mhgo/front';
 
 import { useAppContext } from './utils/context';
 import {
@@ -30,9 +36,12 @@ import { MonsterGuideView } from './pages/MonsterGuideView';
 
 import { App } from './App';
 
+import s from './App.module.scss';
+
 export const Router = () => {
   const { music, setMusic, musicVolume } = useAppContext();
   const { changeMusic } = useSounds(setMusic);
+  const { isPrefetch, progress } = usePrefetch();
 
   useEffect(() => {
     const isInsideInstalledApp =
@@ -40,7 +49,7 @@ export const Router = () => {
       window.navigator.standalone === true;
     if (isInsideInstalledApp) {
       // Size window after open the app
-      window.resizeTo(400, 1800);
+      window.resizeTo(400, 800);
     }
   }, []);
 
@@ -134,6 +143,7 @@ export const Router = () => {
     },
   ]);
 
+  if (!isPrefetch) return <PrefetchScreen progress={progress} />;
   return (
     <>
       {music && <ReactHowler src={music} playing loop volume={musicVolume} />}
@@ -142,6 +152,17 @@ export const Router = () => {
     </>
   );
 };
+
+const PrefetchScreen = ({ progress }: { progress: number }) => (
+  <div className={s.prefetch}>
+    <img
+      className={s.prefetch__logo}
+      src="https://cdn.arcyvilk.com/mhgo/misc/logo.png"
+      alt="logo"
+    />
+    <LoadingBar max={100} current={Math.round(progress)} />
+  </div>
+);
 
 const toastOptions: ToastContainerProps = {
   closeOnClick: true,

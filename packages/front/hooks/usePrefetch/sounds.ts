@@ -29,27 +29,34 @@ export enum SoundSE {
   BARK09 = 'BARK09',
 }
 
-export const soundSrc: Record<SoundSE, Howl> = {
-  [SoundSE.DOG_EATING]: new Howl({ src: [`${CDN_URL}/sounds/dog_eating.mp3`] }),
-  [SoundSE.OPERA_DOG]: new Howl({ src: [`${CDN_URL}/sounds/opera_dog.mp3`] }),
-  [SoundSE.BELT]: new Howl({ src: [`${CDN_URL}/sounds/belt.wav`] }),
-  [SoundSE.BUBBLE]: new Howl({ src: [`${CDN_URL}/sounds/bubble.wav`] }),
-  [SoundSE.CLICK]: new Howl({ src: [`${CDN_URL}/sounds/snap.wav`] }),
-  [SoundSE.CRYSTAL]: new Howl({ src: [`${CDN_URL}/sounds/crystal.wav`] }),
-  [SoundSE.DEATH]: new Howl({ src: [`${CDN_URL}/sounds/death.wav`] }),
-  [SoundSE.NUKE]: new Howl({ src: [`${CDN_URL}/sounds/nuke.mp3`] }),
-  [SoundSE.OUCH]: new Howl({ src: [`${CDN_URL}/sounds/ouch.wav`] }),
-  [SoundSE.PUNCH]: new Howl({ src: [`${CDN_URL}/sounds/punch.mp3`] }),
-  [SoundSE.TADA]: new Howl({ src: [`${CDN_URL}/sounds/tada.mp3`] }),
-  [SoundSE.WOOF]: new Howl({ src: [`${CDN_URL}/sounds/woof.mp3`] }),
+export const soundSrcRaw = [
+  [SoundSE.DOG_EATING, `${CDN_URL}/sounds/dog_eating.mp3`],
+  [SoundSE.OPERA_DOG, `${CDN_URL}/sounds/opera_dog.mp3`],
+  [SoundSE.BELT, `${CDN_URL}/sounds/belt.wav`],
+  [SoundSE.BUBBLE, `${CDN_URL}/sounds/bubble.wav`],
+  [SoundSE.CLICK, `${CDN_URL}/sounds/snap.wav`],
+  [SoundSE.CRYSTAL, `${CDN_URL}/sounds/crystal.wav`],
+  [SoundSE.DEATH, `${CDN_URL}/sounds/death.wav`],
+  [SoundSE.NUKE, `${CDN_URL}/sounds/nuke.mp3`],
+  [SoundSE.OUCH, `${CDN_URL}/sounds/ouch.wav`],
+  [SoundSE.PUNCH, `${CDN_URL}/sounds/punch.mp3`],
+  [SoundSE.TADA, `${CDN_URL}/sounds/tada.mp3`],
+  [SoundSE.WOOF, `${CDN_URL}/sounds/woof.mp3`],
   // BARKS
-  [SoundSE.BARK01]: new Howl({ src: [`${CDN_URL}/sounds/bark/bark01.mp3`] }),
-  [SoundSE.BARK02]: new Howl({ src: [`${CDN_URL}/sounds/bark/bark02.mp3`] }),
-  [SoundSE.BARK03]: new Howl({ src: [`${CDN_URL}/sounds/bark/bark03.mp3`] }),
-  [SoundSE.BARK04]: new Howl({ src: [`${CDN_URL}/sounds/bark/bark04.mp3`] }),
-  [SoundSE.BARK05]: new Howl({ src: [`${CDN_URL}/sounds/bark/bark05.mp3`] }),
-  [SoundSE.BARK06]: new Howl({ src: [`${CDN_URL}/sounds/bark/bark06.mp3`] }),
-  [SoundSE.BARK07]: new Howl({ src: [`${CDN_URL}/sounds/bark/bark07.mp3`] }),
-  [SoundSE.BARK08]: new Howl({ src: [`${CDN_URL}/sounds/bark/bark08.mp3`] }),
-  [SoundSE.BARK09]: new Howl({ src: [`${CDN_URL}/sounds/bark/bark09.mp3`] }),
-};
+  [SoundSE.BARK01, `${CDN_URL}/sounds/bark/bark01.mp3`],
+  [SoundSE.BARK02, `${CDN_URL}/sounds/bark/bark02.mp3`],
+  [SoundSE.BARK03, `${CDN_URL}/sounds/bark/bark03.mp3`],
+  [SoundSE.BARK04, `${CDN_URL}/sounds/bark/bark04.mp3`],
+  [SoundSE.BARK05, `${CDN_URL}/sounds/bark/bark05.mp3`],
+  [SoundSE.BARK06, `${CDN_URL}/sounds/bark/bark06.mp3`],
+  [SoundSE.BARK07, `${CDN_URL}/sounds/bark/bark07.mp3`],
+  [SoundSE.BARK08, `${CDN_URL}/sounds/bark/bark08.mp3`],
+  [SoundSE.BARK09, `${CDN_URL}/sounds/bark/bark09.mp3`],
+];
+
+export const soundSrc = Object.fromEntries(
+  (soundSrcRaw as [SoundSE, string][]).map(([key, src]) => [
+    key,
+    new Howl({ src }),
+  ]),
+);

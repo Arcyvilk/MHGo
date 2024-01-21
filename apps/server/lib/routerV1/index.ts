@@ -410,3 +410,11 @@ routerV1.get('/tutorial', verifyToken, getTutorial);
 import { getSettings } from './settings';
 
 routerV1.get('/settings', verifyToken, getSettings);
+
+/************************
+ *         MISC         *
+ ************************/
+
+import { getAllImages } from './_misc';
+
+routerV1.get('/misc/prefetch/images', verifyToken, getAllImages);

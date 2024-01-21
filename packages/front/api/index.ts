@@ -9,6 +9,7 @@ export * from './useLoginApi';
 export * from './useMaterialsApi';
 export * from './useMonsterDropsApi';
 export * from './useMarkersApi';
+export * from './useMiscApi';
 export * from './useMonstersApi';
 export * from './useNewsApi';
 export * from './useQuestsApi';

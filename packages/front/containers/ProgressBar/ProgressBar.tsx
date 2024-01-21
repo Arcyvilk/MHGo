@@ -16,3 +16,24 @@ export const ProgressBar = ({ max, current, type }: ProgressBarProps) => {
     </div>
   );
 };
+
+export const LoadingBar = ({ max, current, type }: ProgressBarProps) => {
+  const percentage = (100 * current) / max;
+  return (
+    <>
+      <div className={modifiers(s, 'loadingBar', type)}>
+        <div
+          className={modifiers(s, 'loadingBar__fg', { type })}
+          style={{ width: `${percentage}%` }}
+        />
+        <div className={modifiers(s, 'loadingBar__bg', { type })} />
+        <div className={modifiers(s, 'progressBar__text', type)}>
+          {percentage}%
+        </div>
+      </div>
+      <div className={modifiers(s, 'loadingBar__text', type)}>
+        Loading assets...
+      </div>
+    </>
+  );
+};

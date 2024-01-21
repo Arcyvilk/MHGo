@@ -1,5 +1,6 @@
 import { FC, PropsWithChildren } from 'react';
 import { Navigate, Outlet, ScrollRestoration } from 'react-router-dom';
+import { Loader, QueryBoundary } from '@mhgo/front';
 
 import { useMe } from './hooks/useAuth';
 import { GlobalAchievements } from './containers';
@@ -35,7 +36,11 @@ export const App = () => {
 const RequireAuth: FC<{ children: React.ReactNode }> = ({
   children,
 }: PropsWithChildren) => {
-  return <LoadAuth>{children}</LoadAuth>;
+  return (
+    <QueryBoundary fallback={<Loader fullScreen />}>
+      <LoadAuth>{children}</LoadAuth>
+    </QueryBoundary>
+  );
 };
 
 const LoadAuth = ({ children }: PropsWithChildren) => {
