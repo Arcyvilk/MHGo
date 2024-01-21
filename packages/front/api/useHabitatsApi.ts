@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import { Habitat } from '@mhgo/types';
 
 import { API_URL } from '../env';
@@ -19,7 +19,7 @@ export const useHabitatsApi = () => {
     isLoading,
     isFetched,
     isError,
-  } = useQuery<Habitat[], unknown, Habitat[], string[]>({
+  } = useSuspenseQuery<Habitat[], unknown, Habitat[], string[]>({
     queryKey: ['habitats'],
     queryFn: getHabitats,
     staleTime: Infinity,

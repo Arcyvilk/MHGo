@@ -1,4 +1,8 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import {
+  useMutation,
+  useSuspenseQuery,
+  useQueryClient,
+} from '@tanstack/react-query';
 import { Material, MonsterDrop } from '@mhgo/types';
 
 import { API_URL } from '../env';
@@ -15,7 +19,7 @@ export const useMonsterDropsApi = () => {
     isLoading,
     isFetched,
     isError,
-  } = useQuery<MonsterDrop[], unknown, MonsterDrop[], string[]>({
+  } = useSuspenseQuery<MonsterDrop[], unknown, MonsterDrop[], string[]>({
     queryKey: ['drops', 'monster'],
     queryFn: getMonsterMarkers,
   });

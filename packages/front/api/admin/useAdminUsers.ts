@@ -1,4 +1,8 @@
-import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query';
+import {
+  useSuspenseQuery,
+  useQueryClient,
+  useMutation,
+} from '@tanstack/react-query';
 import { AdminUser, User, UserAuth, UserBan, UserResetType } from '@mhgo/types';
 
 import { API_URL } from '../../env';
@@ -15,7 +19,7 @@ export const useAdminAllUsersApi = () => {
     isLoading,
     isFetched,
     isError,
-  } = useQuery<AdminUser[], unknown, AdminUser[], string[]>({
+  } = useSuspenseQuery<AdminUser[], unknown, AdminUser[], string[]>({
     queryKey: ['admin', 'users', 'all'],
     queryFn: getAllUsers,
   });

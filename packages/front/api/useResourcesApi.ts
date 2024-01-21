@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import { Resource } from '@mhgo/types';
 
 import { API_URL } from '../env';
@@ -16,7 +16,7 @@ export const useResourcesApi = () => {
     isLoading,
     isFetched,
     isError,
-  } = useQuery<Resource[], unknown, Resource[], string[]>({
+  } = useSuspenseQuery<Resource[], unknown, Resource[], string[]>({
     queryKey: ['resources', 'list'],
     queryFn: getResources,
     staleTime: Infinity,

@@ -1,4 +1,8 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import {
+  useMutation,
+  useSuspenseQuery,
+  useQueryClient,
+} from '@tanstack/react-query';
 import {
   CurrencyType,
   ItemToUse,
@@ -18,7 +22,7 @@ export const useUserApi = (userId: string | null | undefined) => {
     return res.json();
   };
 
-  const { data, isLoading, isFetched, isError } = useQuery<
+  const { data, isLoading, isFetched, isError } = useSuspenseQuery<
     User,
     unknown,
     User,
@@ -26,7 +30,7 @@ export const useUserApi = (userId: string | null | undefined) => {
   >({
     queryKey: ['user', userId!],
     queryFn: getUser,
-    enabled: Boolean(userId),
+    // enabled: Boolean(userId),
   });
 
   return { data, isLoading, isFetched, isError };
@@ -43,10 +47,10 @@ export const useUserItemsApi = (userId: string) => {
     isLoading,
     isFetched,
     isError,
-  } = useQuery<UserAmount[], unknown, UserAmount[], string[]>({
+  } = useSuspenseQuery<UserAmount[], unknown, UserAmount[], string[]>({
     queryKey: ['user', userId, 'items'],
     queryFn: getUserItems,
-    enabled: Boolean(userId),
+    // enabled: Boolean(userId),
   });
 
   return { data, isLoading, isFetched, isError };
@@ -63,10 +67,10 @@ export const useUserMaterialsApi = (userId: string) => {
     isLoading,
     isFetched,
     isError,
-  } = useQuery<UserAmount[], unknown, UserAmount[], string[]>({
+  } = useSuspenseQuery<UserAmount[], unknown, UserAmount[], string[]>({
     queryKey: ['user', userId, 'materials'],
     queryFn: getUserMaterials,
-    enabled: Boolean(userId),
+    // enabled: Boolean(userId),
   });
 
   return { data, isLoading, isFetched, isError };
@@ -85,10 +89,15 @@ export const useUserAchievementsApi = (userId: string) => {
     isLoading,
     isFetched,
     isError,
-  } = useQuery<UserAchievement[], unknown, UserAchievement[], string[]>({
+  } = useSuspenseQuery<
+    UserAchievement[],
+    unknown,
+    UserAchievement[],
+    string[]
+  >({
     queryKey: ['user', userId, 'achievements'],
     queryFn: getUserAchievements,
-    enabled: Boolean(userId),
+    // enabled: Boolean(userId),
   });
 
   return { data, isLoading, isFetched, isError };
@@ -105,10 +114,10 @@ export const useUserWealthApi = (userId: string) => {
     isLoading,
     isFetched,
     isError,
-  } = useQuery<UserAmount[], unknown, UserAmount[], string[]>({
+  } = useSuspenseQuery<UserAmount[], unknown, UserAmount[], string[]>({
     queryKey: ['user', userId, 'wealth'],
     queryFn: getUserWealth,
-    enabled: Boolean(userId),
+    // enabled: Boolean(userId),
   });
 
   return { data, isLoading, isFetched, isError };
@@ -120,7 +129,7 @@ export const useUserStatsApi = (userId: string) => {
     return res.json();
   };
 
-  const { data, isLoading, isFetched, isError } = useQuery<
+  const { data, isLoading, isFetched, isError } = useSuspenseQuery<
     StatsWithSpecialEffect,
     unknown,
     StatsWithSpecialEffect,
@@ -128,7 +137,7 @@ export const useUserStatsApi = (userId: string) => {
   >({
     queryKey: ['user', userId, 'stats'],
     queryFn: getUserStats,
-    enabled: Boolean(userId),
+    // enabled: Boolean(userId),
   });
 
   return { data, isLoading, isFetched, isError };
@@ -146,10 +155,10 @@ export const useUserHealthApi = (userId: string) => {
     isLoading,
     isFetched,
     isError,
-  } = useQuery<UserHealth, unknown, UserHealth, string[]>({
+  } = useSuspenseQuery<UserHealth, unknown, UserHealth, string[]>({
     queryKey: ['user', userId, 'health', 'get'],
     queryFn: getUserHealth,
-    enabled: Boolean(userId),
+    // enabled: Boolean(userId),
   });
 
   const data = {

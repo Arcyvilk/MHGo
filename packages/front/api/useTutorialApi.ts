@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import { TutorialStep } from '@mhgo/types';
 
 import { API_URL } from '../env';
@@ -21,7 +21,7 @@ export const useTutorialApi = (stepFrom?: string, stepTo?: string) => {
     isLoading,
     isFetched,
     isError,
-  } = useQuery<TutorialPart, unknown, TutorialPart, string[]>({
+  } = useSuspenseQuery<TutorialPart, unknown, TutorialPart, string[]>({
     queryKey: ['tutorial', `from-${stepFrom}_to-${stepTo}`],
     queryFn: getTutorial,
     staleTime: Infinity,

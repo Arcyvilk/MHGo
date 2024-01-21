@@ -1,4 +1,8 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import {
+  useMutation,
+  useSuspenseQuery,
+  useQueryClient,
+} from '@tanstack/react-query';
 import { Loadout } from '@mhgo/types';
 
 import { API_URL } from '../env';
@@ -15,10 +19,9 @@ export const useUserLoadoutApi = (userId: string) => {
     isLoading,
     isFetched,
     isError,
-  } = useQuery<Loadout[], unknown, Loadout[], string[]>({
+  } = useSuspenseQuery<Loadout[], unknown, Loadout[], string[]>({
     queryKey: ['user', userId, 'loadout'],
     queryFn: getUserLoadout,
-    enabled: Boolean(userId),
   });
 
   return { data, isLoading, isFetched, isError };

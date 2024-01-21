@@ -1,6 +1,10 @@
 import { MonsterMarker, ResourceMarker } from '@mhgo/types';
 import { API_URL } from '../../env';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import {
+  useMutation,
+  useSuspenseQuery,
+  useQueryClient,
+} from '@tanstack/react-query';
 import { fetcher } from '../..';
 
 export const useAdminAllMonsterMarkersApi = () => {
@@ -14,7 +18,7 @@ export const useAdminAllMonsterMarkersApi = () => {
     isLoading,
     isFetched,
     isError,
-  } = useQuery<MonsterMarker[], unknown, MonsterMarker[], string[]>({
+  } = useSuspenseQuery<MonsterMarker[], unknown, MonsterMarker[], string[]>({
     queryKey: ['admin', 'markers', 'monsters', 'all'],
     queryFn: getAllMonsterMarkers,
   });

@@ -8,6 +8,8 @@ import {
   Size,
   useUserHealthApi,
   useNavigateWithScroll,
+  QueryBoundary,
+  Loader,
 } from '@mhgo/front';
 
 import { useUser } from '../../hooks/useUser';
@@ -15,7 +17,13 @@ import { HealthBarSimple } from '../../containers';
 
 import s from './Hunter.module.scss';
 
-export const Hunter = () => {
+export const Hunter = () => (
+  <QueryBoundary fallback={<Loader />}>
+    <Load />
+  </QueryBoundary>
+);
+
+const Load = () => {
   const { navigateWithScroll } = useNavigateWithScroll();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { userName, userId, userLevel } = useUser();

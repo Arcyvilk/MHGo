@@ -1,4 +1,4 @@
-import { Size } from '@mhgo/front';
+import { QueryBoundary, Size, Skeleton } from '@mhgo/front';
 import { useUser } from '../../hooks/useUser';
 import { Icon } from '@mhgo/front';
 
@@ -6,7 +6,13 @@ import s from './Experience.module.scss';
 
 import { useSettingsApi } from '@mhgo/front';
 
-export const Experience = () => {
+export const Experience = () => (
+  <QueryBoundary fallback={<Skeleton width="100%" height="2rem" />}>
+    <Load />
+  </QueryBoundary>
+);
+
+const Load = () => {
   const { userExp } = useUser();
   const { setting: expPerLevel } = useSettingsApi<number>('exp_per_level', 0);
 

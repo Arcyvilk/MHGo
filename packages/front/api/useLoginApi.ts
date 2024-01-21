@@ -1,4 +1,8 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import {
+  useSuspenseQuery,
+  useMutation,
+  useQueryClient,
+} from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 import { UserAuth, UserBan } from '@mhgo/types';
 
@@ -10,7 +14,7 @@ type UserAuthInfo = Pick<
   'isAdmin' | 'isAwaitingModApproval' | 'isModApproved'
 > &
   UserBan & { status: number };
-export const useMeApi = (enabled: boolean = true) => {
+export const useMeApi = (/*enabled: boolean = true*/) => {
   const getMe = async (): Promise<UserAuthInfo | null> => {
     const bearer = JSON.parse(localStorage.MHGO_AUTH ?? {})?.bearer;
     if (!bearer) return null;
@@ -23,7 +27,7 @@ export const useMeApi = (enabled: boolean = true) => {
     return responseWithStatusCode;
   };
 
-  const { data, isLoading, isFetched, isError } = useQuery<
+  const { data, isLoading, isFetched, isError } = useSuspenseQuery<
     UserAuthInfo | null,
     unknown,
     UserAuthInfo | null,
@@ -31,7 +35,7 @@ export const useMeApi = (enabled: boolean = true) => {
   >({
     queryKey: ['me'],
     queryFn: getMe,
-    enabled,
+    // enabled,
   });
 
   return { data, isLoading, isFetched, isError };

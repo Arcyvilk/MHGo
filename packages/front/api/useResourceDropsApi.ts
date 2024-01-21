@@ -1,4 +1,8 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import {
+  useMutation,
+  useSuspenseQuery,
+  useQueryClient,
+} from '@tanstack/react-query';
 import { Material, Resource } from '@mhgo/types';
 
 import { API_URL } from '../env';
@@ -15,7 +19,7 @@ export const useResourceDropsApi = () => {
     isLoading,
     isFetched,
     isError,
-  } = useQuery<Resource[], unknown, Resource[], string[]>({
+  } = useSuspenseQuery<Resource[], unknown, Resource[], string[]>({
     queryKey: ['drops', 'resource'],
     queryFn: getResourceDrops,
   });

@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import { Achievement } from '@mhgo/types';
 
 import { API_URL } from '../env';
@@ -19,7 +19,7 @@ export const useAchievementsApi = () => {
     isLoading,
     isFetched,
     isError,
-  } = useQuery<Achievement[], unknown, Achievement[], string[]>({
+  } = useSuspenseQuery<Achievement[], unknown, Achievement[], string[]>({
     queryKey: ['achievements'],
     queryFn: getAchievements,
   });

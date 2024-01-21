@@ -1,6 +1,6 @@
 import { Material, Monster, Item as TItem, Drop } from '@mhgo/types';
 
-import { Item, addCdnUrl, modifiers, useItemsApi } from '@mhgo/front';
+import { Item, Skeleton, addCdnUrl, modifiers, useItemsApi } from '@mhgo/front';
 import { CloseButton, Loader, QueryBoundary, Tooltip } from '@mhgo/front';
 import {
   useMonstersApi,
@@ -11,11 +11,43 @@ import {
 import s from './MonsterGuideView.module.scss';
 import { useUser } from '../../hooks/useUser';
 
-export const MonsterGuideView = () => (
-  <QueryBoundary fallback={<Loader />}>
-    <Load />
-  </QueryBoundary>
-);
+export const MonsterGuideView = () => {
+  return (
+    <div className={s.monsterGuideView}>
+      <div className={s.header}>
+        <div className={s.header__title}>Monster Guide</div>
+      </div>
+      <div className={s.monsterGuideView__monsters}>
+        <QueryBoundary fallback={<SkeletonLoad />}>
+          <Load />
+        </QueryBoundary>
+      </div>
+      <CloseButton />
+    </div>
+  );
+};
+
+const SkeletonLoad = () => {
+  return (
+    <>
+      <div className={s.monster}>
+        <Skeleton width="100%" height="20rem" />
+      </div>
+      <div className={s.monster}>
+        <Skeleton width="100%" height="20rem" />
+      </div>
+      <div className={s.monster}>
+        <Skeleton width="100%" height="20rem" />
+      </div>
+      <div className={s.monster}>
+        <Skeleton width="100%" height="20rem" />
+      </div>
+      <div className={s.monster}>
+        <Skeleton width="100%" height="20rem" />
+      </div>
+    </>
+  );
+};
 
 const Load = () => {
   const { data: monsters } = useMonstersApi();
@@ -31,17 +63,11 @@ const Load = () => {
   const allMonsters = [...aliveMonsters, ...extinctMonsters];
 
   return (
-    <div className={s.monsterGuideView}>
-      <div className={s.header}>
-        <div className={s.header__title}>Monster Guide</div>
-      </div>
-      <div className={s.monsterGuideView__monsters}>
-        {allMonsters.map(monster => (
-          <MonsterTile key={`monster-tile-${monster.id}`} monster={monster} />
-        ))}
-      </div>
-      <CloseButton />
-    </div>
+    <>
+      {allMonsters.map(monster => (
+        <MonsterTile key={`monster-tile-${monster.id}`} monster={monster} />
+      ))}
+    </>
   );
 };
 

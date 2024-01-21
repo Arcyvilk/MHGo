@@ -1,6 +1,6 @@
 import {
   useMutation,
-  useQuery,
+  useSuspenseQuery,
   useSuspenseQuery,
   useQueryClient,
 } from '@tanstack/react-query';
@@ -64,7 +64,7 @@ export const useQuestsDailyApi = () => {
     isLoading,
     isFetched,
     isError,
-  } = useQuery<Quest[], unknown, Quest[], string[]>({
+  } = useSuspenseQuery<Quest[], unknown, Quest[], string[]>({
     queryKey: ['quests', 'daily'],
     queryFn: getQuestsDaily,
   });
@@ -78,7 +78,7 @@ export const useUserQuestsDailyApi = (userId: string | null | undefined) => {
     return res.json();
   };
 
-  const { data, isLoading, isFetched, isError } = useQuery<
+  const { data, isLoading, isFetched, isError } = useSuspenseQuery<
     UserQuestDaily,
     unknown,
     UserQuestDaily,
@@ -86,7 +86,7 @@ export const useUserQuestsDailyApi = (userId: string | null | undefined) => {
   >({
     queryKey: ['user', userId!, 'quests', 'daily'],
     queryFn: getUserQuestsDaily,
-    enabled: Boolean(userId),
+    // enabled: Boolean(userId),
   });
 
   return { data, isLoading, isFetched, isError };

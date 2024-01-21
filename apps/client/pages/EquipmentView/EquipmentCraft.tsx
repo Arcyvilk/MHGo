@@ -152,12 +152,7 @@ const EquipmentPieces = ({
 
   if (categoryView) {
     const categories = [
-      ...new Set(
-        filtereditems
-          .map(item => item.category)
-          .sort()
-          .filter(Boolean),
-      ),
+      ...new Set(filtereditems.map(item => item.category).filter(Boolean)),
       '',
     ];
     return Array.from(categories).map(category => (

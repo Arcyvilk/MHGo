@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import { Companion } from '@mhgo/types';
 
 import { API_URL } from '../env';
@@ -17,10 +17,10 @@ export const useCompanionApi = (companionId: string) => {
     isLoading,
     isFetched,
     isError,
-  } = useQuery<Companion, unknown, Companion, string[]>({
+  } = useSuspenseQuery<Companion, unknown, Companion, string[]>({
     queryKey: ['companion'],
     queryFn: getCompanion,
-    enabled: Boolean(companionId),
+    // enabled: Boolean(companionId),
   });
 
   const data = companion

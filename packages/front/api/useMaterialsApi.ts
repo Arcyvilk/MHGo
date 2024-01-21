@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import { Material } from '@mhgo/types';
 import { API_URL } from '../env';
 import { addCdnUrl } from '../utils/addCdnUrl';
@@ -15,7 +15,7 @@ export const useMaterialsApi = () => {
     isLoading,
     isFetched,
     isError,
-  } = useQuery<Material[], unknown, Material[], string[]>({
+  } = useSuspenseQuery<Material[], unknown, Material[], string[]>({
     queryKey: ['materials'],
     queryFn: getMaterials,
   });

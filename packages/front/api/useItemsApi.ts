@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import {
   CraftList,
   Item,
@@ -23,7 +23,7 @@ export const useItemsApi = () => {
     isLoading,
     isFetched,
     isError,
-  } = useQuery<Item[], unknown, Item[], string[]>({
+  } = useSuspenseQuery<Item[], unknown, Item[], string[]>({
     queryKey: ['items'],
     queryFn: getItems,
     staleTime: Infinity,
@@ -43,15 +43,15 @@ export const useItemActionsApi = (itemId: string | null) => {
     return res.json();
   };
 
-  const { data, isLoading, isFetched, isError } = useQuery<
-    ItemAction,
-    unknown,
-    ItemAction,
-    string[]
-  >({
+  const {
+    data = {},
+    isLoading,
+    isFetched,
+    isError,
+  } = useSuspenseQuery<ItemAction, unknown, ItemAction, string[]>({
     queryKey: ['items', itemId!, 'actions'],
     queryFn: getItemActions,
-    enabled: Boolean(itemId),
+    // enabled: Boolean(itemId),
   });
 
   return { data, isLoading, isFetched, isError };
@@ -63,15 +63,15 @@ export const useItemCraftsApi = (itemId: string | null) => {
     return res.json();
   };
 
-  const { data, isLoading, isFetched, isError } = useQuery<
-    CraftList[],
-    unknown,
-    CraftList[],
-    string[]
-  >({
+  const {
+    data = [],
+    isLoading,
+    isFetched,
+    isError,
+  } = useSuspenseQuery<CraftList[], unknown, CraftList[], string[]>({
     queryKey: ['items', itemId!, 'crafts'],
     queryFn: getItemCraft,
-    enabled: Boolean(itemId),
+    // enabled: Boolean(itemId),
   });
 
   return { data, isLoading, isFetched, isError };
@@ -83,15 +83,15 @@ export const useItemPriceApi = (itemId: string | null) => {
     return res.json();
   };
 
-  const { data, isLoading, isFetched, isError } = useQuery<
-    UserAmount[],
-    unknown,
-    UserAmount[],
-    string[]
-  >({
+  const {
+    data = [],
+    isLoading,
+    isFetched,
+    isError,
+  } = useSuspenseQuery<UserAmount[], unknown, UserAmount[], string[]>({
     queryKey: ['items', itemId!, 'price'],
     queryFn: getItemPrice,
-    enabled: Boolean(itemId),
+    // enabled: Boolean(itemId),
   });
 
   return { data, isLoading, isFetched, isError };
@@ -99,22 +99,22 @@ export const useItemPriceApi = (itemId: string | null) => {
 
 export const useItemStatsApi = (
   itemId: string | null,
-  isEquippable?: boolean,
+  // isEquippable?: boolean,
 ) => {
   const getItemStats = async (): Promise<Stats> => {
     const res = await fetcher(`${API_URL}/items/item/${itemId}/stats`);
     return res.json();
   };
 
-  const { data, isLoading, isFetched, isError } = useQuery<
-    Stats,
-    unknown,
-    Stats,
-    string[]
-  >({
+  const {
+    data = {},
+    isLoading,
+    isFetched,
+    isError,
+  } = useSuspenseQuery<Stats, unknown, Stats, string[]>({
     queryKey: ['items', itemId!, 'stats'],
     queryFn: getItemStats,
-    enabled: isEquippable && Boolean(itemId),
+    // enabled: isEquippable && Boolean(itemId),
   });
 
   return { data, isLoading, isFetched, isError };
@@ -133,10 +133,15 @@ export const useItemCraftListApi = (userId: string, itemId: string) => {
     isLoading,
     isFetched,
     isError,
-  } = useQuery<ItemCraftingList[], unknown, ItemCraftingList[], string[]>({
+  } = useSuspenseQuery<
+    ItemCraftingList[],
+    unknown,
+    ItemCraftingList[],
+    string[]
+  >({
     queryKey: ['items', itemId, 'craftList', userId],
     queryFn: getItemCraftList,
-    enabled: Boolean(itemId) && Boolean(userId),
+    // enabled: Boolean(itemId) && Boolean(userId),
   });
 
   return { data, isLoading, isFetched, isError };

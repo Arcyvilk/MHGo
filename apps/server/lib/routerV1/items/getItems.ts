@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { log } from '@mhgo/utils';
-import { Item } from '@mhgo/types';
+import { Item, ItemSlot } from '@mhgo/types';
 
 import { mongoInstance } from '../../../api';
 import {
@@ -36,9 +36,23 @@ export const getItems = async (_req: Request, res: Response): Promise<void> => {
       };
     });
 
-    res.status(200).send(itemsWithCraft);
+    // Sort items with slots to always be in the same order
+    const itemBySlots = slotOrder
+      .map(slot => itemsWithCraft.filter(item => item.slot === slot))
+      .flat();
+
+    res.status(200).send(itemBySlots);
   } catch (err: any) {
     log.WARN(err);
     res.status(500).send({ error: err.message ?? 'Internal server error' });
   }
 };
+
+const slotOrder: (ItemSlot | null)[] = [
+  'helmet',
+  'chest',
+  'arm',
+  'waist',
+  'leg',
+  null,
+];

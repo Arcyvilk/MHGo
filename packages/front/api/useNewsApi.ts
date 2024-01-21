@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import { News } from '@mhgo/types';
 
 import { API_URL } from '../env';
@@ -20,7 +20,7 @@ export const useNewsApi = () => {
     isLoading,
     isFetched,
     isError,
-  } = useQuery<News[], unknown, News[], string[]>({
+  } = useSuspenseQuery<News[], unknown, News[], string[]>({
     queryKey: ['news'],
     queryFn: getNews,
     staleTime: Infinity,
