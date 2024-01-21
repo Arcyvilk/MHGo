@@ -7,6 +7,7 @@ import {
   Button,
   Item,
   QueryBoundary,
+  Skeleton,
   SoundSE,
   useNavigateWithScroll,
   useSounds,
@@ -41,13 +42,7 @@ type ItemContextMenuProps = {
   purchaseOnly?: boolean;
   isItemOwned?: boolean;
 };
-export const ItemContextMenu = (props: ItemContextMenuProps) => (
-  <QueryBoundary fallback={<Item.Skeleton />}>
-    <Load {...props} />
-  </QueryBoundary>
-);
-
-const Load = (props: ItemContextMenuProps) => {
+export const ItemContextMenu = (props: ItemContextMenuProps) => {
   const { item, purchaseOnly = false, isItemOwned = true } = props;
   const [tippyInstance, setTippyInstance] = useState<Instance | null>(null);
 
@@ -56,7 +51,7 @@ const Load = (props: ItemContextMenuProps) => {
       <Dropdown
         setInstance={setTippyInstance}
         content={
-          <QueryBoundary fallback={<Item.Skeleton />}>
+          <QueryBoundary fallback={<SkeletonDropdown item={item} />}>
             <LoadDropdown tippyInstance={tippyInstance} {...props} />
           </QueryBoundary>
         }>
@@ -65,6 +60,20 @@ const Load = (props: ItemContextMenuProps) => {
           isNotOwned={!isItemOwned}
         />
       </Dropdown>
+    </div>
+  );
+};
+
+const SkeletonDropdown = ({ item }: { item: TItem }) => {
+  return (
+    <div className={s.itemContextMenu__dropdown}>
+      <div className={s.itemContextMenu__section}>
+        <span style={{ fontWeight: 900 }}>{item.name}</span>
+        <span style={{ fontStyle: 'italic' }}>"{item.description}"</span>
+      </div>
+      <div className={s.itemContextMenu__section}>
+        <ItemStats itemId={item.id} compare />
+      </div>
     </div>
   );
 };
