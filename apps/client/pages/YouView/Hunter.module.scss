@@ -36,6 +36,12 @@
     font-size: $size-18;
   }
 
+  &__level {
+    display: flex;
+    gap: $size-4;
+    align-items: center;
+  }
+
   &__image {
     width: 100%;
     object-fit: cover;

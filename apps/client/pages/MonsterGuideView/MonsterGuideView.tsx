@@ -1,7 +1,7 @@
 import { Material, Monster, Item as TItem, Drop } from '@mhgo/types';
 
 import { Item, Skeleton, addCdnUrl, modifiers, useItemsApi } from '@mhgo/front';
-import { CloseButton, Loader, QueryBoundary, Tooltip } from '@mhgo/front';
+import { CloseButton, QueryBoundary, Tooltip } from '@mhgo/front';
 import {
   useMonstersApi,
   useMonsterDropsApi,
@@ -24,28 +24,6 @@ export const MonsterGuideView = () => {
       </div>
       <CloseButton />
     </div>
-  );
-};
-
-const SkeletonLoad = () => {
-  return (
-    <>
-      <div className={s.monster}>
-        <Skeleton width="100%" height="20rem" />
-      </div>
-      <div className={s.monster}>
-        <Skeleton width="100%" height="20rem" />
-      </div>
-      <div className={s.monster}>
-        <Skeleton width="100%" height="20rem" />
-      </div>
-      <div className={s.monster}>
-        <Skeleton width="100%" height="20rem" />
-      </div>
-      <div className={s.monster}>
-        <Skeleton width="100%" height="20rem" />
-      </div>
-    </>
   );
 };
 
@@ -145,6 +123,28 @@ const MonsterTile = ({ monster }: { monster: Monster }) => {
         )}
       </div>
     </div>
+  );
+};
+
+const SkeletonLoad = () => {
+  return (
+    <>
+      <div className={s.monster}>
+        <Skeleton width="100%" height="20rem" />
+      </div>
+      <div className={s.monster}>
+        <Skeleton width="100%" height="20rem" />
+      </div>
+      <div className={s.monster}>
+        <Skeleton width="100%" height="20rem" />
+      </div>
+      <div className={s.monster}>
+        <Skeleton width="100%" height="20rem" />
+      </div>
+      <div className={s.monster}>
+        <Skeleton width="100%" height="20rem" />
+      </div>
+    </>
   );
 };
 
