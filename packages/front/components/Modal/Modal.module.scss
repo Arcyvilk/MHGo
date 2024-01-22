@@ -8,7 +8,14 @@
   justify-content: center;
   box-sizing: border-box;
   background-color: rgba($color-black, 0.5);
-  z-index: $zindex-modal;
+  
+  &__mui {
+    // I'm sorry future me
+    z-index: $zindex-modal !important;
+    &--isHighModal {
+      z-index: $zindex-modal-highest !important;
+    }
+  }
 
   &--isAbsolute {
     position: fixed;
@@ -18,10 +25,6 @@
     height: 100vh;
   }
 
-  &--isHighModal {
-    z-index: $zindex-modal-highest;
-  }
-  
   &--isTransparent {
     background-color: transparent;
   }

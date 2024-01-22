@@ -34,7 +34,7 @@ export const Dropdown = ({
         setIsOpen(false);
       }}
       appendTo={document.body}
-      zIndex={999}
+      className={s.dropdown__tippy}
       render={attrs => (
         <div className={s.dropdown} {...attrs}>
           {isOpen ? content : null}

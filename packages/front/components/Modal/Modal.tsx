@@ -35,11 +35,14 @@ export const Modal = ({
   };
 
   return (
-    <MuiModal open={isOpen} {...rest} hideBackdrop>
+    <MuiModal
+      open={isOpen}
+      {...rest}
+      hideBackdrop
+      className={modifiers(s, 'modal__mui', { isHighModal })}>
       <div
         className={modifiers(s, 'modal', {
           isOpen,
-          isHighModal,
           isTransparent,
           isOpaque,
           isAbsolute: true,
