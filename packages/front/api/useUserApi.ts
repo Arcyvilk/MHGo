@@ -56,6 +56,28 @@ export const useUserItemsApi = (userId: string) => {
   return { data, isLoading, isFetched, isError };
 };
 
+export const useUserCurrentlyCraftableItemsApi = (userId: string) => {
+  const getUserCraftableItems = async (): Promise<string[]> => {
+    const res = await fetcher(
+      `${API_URL}/users/user/${userId}/items/craftable`,
+    );
+    return res.json();
+  };
+
+  const {
+    data = [],
+    isLoading,
+    isFetched,
+    isError,
+  } = useSuspenseQuery<string[], unknown, string[], string[]>({
+    queryKey: ['user', userId, 'items', 'craftable'],
+    queryFn: getUserCraftableItems,
+    // enabled: Boolean(userId),
+  });
+
+  return { data, isLoading, isFetched, isError };
+};
+
 export const useUserMaterialsApi = (userId: string) => {
   const getUserMaterials = async (): Promise<UserAmount[]> => {
     const res = await fetcher(`${API_URL}/users/user/${userId}/materials/list`);
@@ -89,16 +111,13 @@ export const useUserAchievementsApi = (userId: string) => {
     isLoading,
     isFetched,
     isError,
-  } = useSuspenseQuery<
-    UserAchievement[],
-    unknown,
-    UserAchievement[],
-    string[]
-  >({
-    queryKey: ['user', userId, 'achievements'],
-    queryFn: getUserAchievements,
-    // enabled: Boolean(userId),
-  });
+  } = useSuspenseQuery<UserAchievement[], unknown, UserAchievement[], string[]>(
+    {
+      queryKey: ['user', userId, 'achievements'],
+      queryFn: getUserAchievements,
+      // enabled: Boolean(userId),
+    },
+  );
 
   return { data, isLoading, isFetched, isError };
 };

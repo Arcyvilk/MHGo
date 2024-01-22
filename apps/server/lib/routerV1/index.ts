@@ -229,6 +229,7 @@ import {
   getUser,
   getUserAchievements,
   getUserItems,
+  getUserCraftableItems,
   getUserLoadout,
   getUserMaterials,
   getUserWealth,
@@ -256,6 +257,11 @@ routerV1.get(
   getUserAchievements,
 );
 routerV1.get('/users/user/:userId/items/list', verifyToken, getUserItems);
+routerV1.get(
+  '/users/user/:userId/items/craftable',
+  verifyToken,
+  getUserCraftableItems,
+);
 routerV1.get('/users/user/:userId/loadout/list', verifyToken, getUserLoadout);
 routerV1.get(
   '/users/user/:userId/materials/list',

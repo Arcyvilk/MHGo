@@ -178,6 +178,7 @@ const Load = ({
                 key={`context_menu_${item.id}`}
                 item={item}
                 isItemOwned={item.isOwned}
+                canBeCrafted={item.canBeCrafted}
               />
             ))}
         </div>
@@ -191,6 +192,7 @@ const Load = ({
             key={`context_menu_${item.id}`}
             item={item}
             isItemOwned={item.isOwned}
+            canBeCrafted={item.canBeCrafted}
           />
         ))}
       </div>

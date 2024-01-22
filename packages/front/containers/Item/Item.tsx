@@ -6,6 +6,8 @@ import {
   QueryBoundary,
   Loader,
   Skeleton,
+  Icon,
+  Size,
 } from '@mhgo/front';
 
 import s from './Item.module.scss';
@@ -26,6 +28,7 @@ type ItemProps = {
   onClick?: () => void;
   simple?: boolean;
   isNotOwned?: boolean;
+  canBeCrafted?: boolean;
 };
 
 export const Item = (props: ItemProps) => (
@@ -34,7 +37,13 @@ export const Item = (props: ItemProps) => (
   </QueryBoundary>
 );
 
-const Load = ({ data, onClick, simple, isNotOwned = false }: ItemProps) => {
+const Load = ({
+  data,
+  onClick,
+  simple,
+  isNotOwned = false,
+  canBeCrafted = false,
+}: ItemProps) => {
   const { img, filter, amount, rarity, name, purchasable, price = [] } = data;
   const { playSound } = useSounds(undefined);
 
@@ -91,6 +100,16 @@ const Load = ({ data, onClick, simple, isNotOwned = false }: ItemProps) => {
           ) : null}
         </div>
         <div className={s.item__name}>{name}</div>
+        {canBeCrafted && (
+          <div className={s.item__canBeCrafted}>
+            <div className={s.item__iconBg}>
+              <Icon icon="Burst" size={Size.TINY} />
+              <div className={s.item__iconFg}>
+                <Icon icon="Craftable" size={Size.NANO} />
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </button>
   );

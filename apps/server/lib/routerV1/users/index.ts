@@ -2,6 +2,7 @@ export { getUser } from './getUser';
 
 export { getUserAchievements } from './getUserAchievements';
 export { getUserItems } from './getUserItems';
+export { getUserCraftableItems } from './getUserCraftableItems';
 export { getUserLoadout } from './getUserLoadout';
 export { getUserMaterials } from './getUserMaterials';
 export { getUserWealth } from './getUserWealth';

@@ -2,6 +2,7 @@
 
 .item {
   all: unset;
+  position: relative;
   cursor: pointer;
   display: flex;
   flex-direction: column;
@@ -20,6 +21,24 @@
   &--isNotOwned {
     opacity: 0.5;
   }
+
+  &__canBeCrafted {
+    position: absolute;
+    top: -$size-6;
+    right: -$size-6;
+  }
+
+  &__iconBg {
+    position: relative;
+    color: $color-danger;
+  }
+  &__iconFg {
+    position: absolute;
+    top: 33%;
+    left: 33%;
+    color: $color-white;
+  }
+
 
   &__simple {
     position: relative;

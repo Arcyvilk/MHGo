@@ -42,9 +42,15 @@ type ItemContextMenuProps = {
   useOnly?: boolean;
   purchaseOnly?: boolean;
   isItemOwned?: boolean;
+  canBeCrafted?: boolean;
 };
 export const ItemContextMenu = (props: ItemContextMenuProps) => {
-  const { item, purchaseOnly = false, isItemOwned = true } = props;
+  const {
+    item,
+    purchaseOnly = false,
+    isItemOwned = true,
+    canBeCrafted = false,
+  } = props;
   const [tippyInstance, setTippyInstance] = useState<Instance | null>(null);
   const [isDropdownSuspended, setIsDropdownSuspended] = useState(false);
 
@@ -65,6 +71,7 @@ export const ItemContextMenu = (props: ItemContextMenuProps) => {
         <Item
           data={{ ...item, purchasable: purchaseOnly }}
           isNotOwned={!isItemOwned}
+          canBeCrafted={canBeCrafted}
         />
       </Dropdown>
     </div>

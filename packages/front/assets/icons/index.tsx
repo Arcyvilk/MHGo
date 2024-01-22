@@ -6,6 +6,7 @@ import Back from './Back.svg?react';
 import Burst from './Burst.svg?react';
 import Coin from './Coin.svg?react';
 import Coins from './Coins.svg?react';
+import Craftable from './Craftable.svg?react';
 import Dice from './Dice.svg?react';
 import DogPaw from './DogPaw.svg?react';
 import Drumstick from './Drumstick.svg?react';
@@ -50,6 +51,7 @@ const icons = {
   Burst,
   Coin,
   Coins,
+  Craftable,
   Dice,
   DogPaw,
   Drumstick,

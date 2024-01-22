@@ -1,4 +1,8 @@
-import { useItemsApi, useUserItemsApi } from '@mhgo/front';
+import {
+  useItemsApi,
+  useUserCurrentlyCraftableItemsApi,
+  useUserItemsApi,
+} from '@mhgo/front';
 import { Item as TItem } from '@mhgo/types';
 import { useUser } from './useUser';
 
@@ -6,13 +10,21 @@ export const useUserEquipment = () => {
   const { userId } = useUser();
   const { data: allItems } = useItemsApi();
   const { data: userItems } = useUserItemsApi(userId);
+  const { data: userCanCraftThoseItems } =
+    useUserCurrentlyCraftableItemsApi(userId);
 
   // We want to show all user items, no matter if craftable or not
   const itemsOwned = userItems
     .map(item => {
       const ownedItem = allItems.find(i => i.id === item.id);
       if (!ownedItem) return null;
-      return { ...ownedItem, isOwned: true, amount: item.amount };
+      const canBeCrafted = userCanCraftThoseItems?.includes(item.id);
+      return {
+        ...ownedItem,
+        isOwned: true,
+        canBeCrafted,
+        amount: item.amount,
+      };
     })
     .filter(Boolean);
 
@@ -23,7 +35,12 @@ export const useUserEquipment = () => {
 
   const cratableItemsNotOwned = craftableItems
     .filter(item => !userItems.find(i => item.id === i.id))
-    .map(item => ({ ...item, isOwned: false, amount: 0 }));
+    .map(item => ({
+      ...item,
+      isOwned: false,
+      canBeCrafted: userCanCraftThoseItems?.includes(item.id),
+      amount: 0,
+    }));
 
   // Now we want to sort them to always show in the same order
   const allEquipmentItems = [
@@ -31,6 +48,7 @@ export const useUserEquipment = () => {
     ...cratableItemsNotOwned,
   ] as (TItem & {
     isOwned: boolean;
+    canBeCrafted: boolean;
   })[];
 
   const sortedItems = allItems
