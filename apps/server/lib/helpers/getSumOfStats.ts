@@ -21,7 +21,7 @@ export const getSumOfSpecialEffects = (
       // We iterate through all items that user has equipped and get only "specialEffects" from their stats.
       .map(stat => stat[statType])
       // Then we filter out those that have no special effects at all.
-      .filter(stat => stat.length)
+      .filter(stat => stat?.length)
       // Then we flatten the result so we have array of strings representing the special effect
       .flat()
       // And then we sum all of the special effects so we know how many points user has into a special effect.

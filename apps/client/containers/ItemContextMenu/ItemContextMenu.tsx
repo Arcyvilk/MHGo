@@ -46,14 +46,20 @@ type ItemContextMenuProps = {
 export const ItemContextMenu = (props: ItemContextMenuProps) => {
   const { item, purchaseOnly = false, isItemOwned = true } = props;
   const [tippyInstance, setTippyInstance] = useState<Instance | null>(null);
+  const [isDropdownSuspended, setIsDropdownSuspended] = useState(false);
 
   return (
     <div className={s.itemContextMenu} key={item.id}>
       <Dropdown
         setInstance={setTippyInstance}
+        isSuspended={isDropdownSuspended}
         content={
           <QueryBoundary fallback={<SkeletonDropdown {...props} />}>
-            <LoadDropdown tippyInstance={tippyInstance} {...props} />
+            <LoadDropdown
+              tippyInstance={tippyInstance}
+              setIsDropdownSuspended={setIsDropdownSuspended}
+              {...props}
+            />
           </QueryBoundary>
         }>
         <Item
@@ -122,13 +128,17 @@ const SkeletonDropdown = ({
 };
 
 const LoadDropdown = (
-  props: { tippyInstance: Instance | null } & ItemContextMenuProps,
+  props: {
+    tippyInstance: Instance | null;
+    setIsDropdownSuspended: (isSuspended: boolean) => void;
+  } & ItemContextMenuProps,
 ) => {
   const {
     item,
     isItemOwned = false,
     purchaseOnly = false,
     useOnly = false,
+    setIsDropdownSuspended,
     tippyInstance,
   } = props;
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -148,6 +158,11 @@ const LoadDropdown = (
 
   const { isModalAchievementOpen, setIsModalAchievementOpen, achievementId } =
     useItemActionAchievements(item as TItem, isHealedSuccessfully);
+
+  useEffect(() => {
+    if (isModalOpen || isModalAchievementOpen) setIsDropdownSuspended(true);
+    else setIsDropdownSuspended(false);
+  }, [isModalOpen, isModalAchievementOpen]);
 
   const openActionModal = (selectedAction: Action) => {
     // Open additional action modal and close tippy dropdown

@@ -8,8 +8,15 @@ type DropdownProps = {
   children: React.ReactElement;
   content: React.ReactNode;
   setInstance: (instance: Instance | null) => void;
+  // This prevents Dropdown from closing even in situatoins when it technically should
+  isSuspended: boolean;
 };
-export const Dropdown = ({ children, content, setInstance }: DropdownProps) => {
+export const Dropdown = ({
+  children,
+  content,
+  setInstance,
+  isSuspended,
+}: DropdownProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -22,6 +29,7 @@ export const Dropdown = ({ children, content, setInstance }: DropdownProps) => {
         setInstance(tippyInstance);
       }}
       onHide={() => {
+        if (isSuspended) return;
         setInstance(null);
         setIsOpen(false);
       }}
