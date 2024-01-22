@@ -25,6 +25,8 @@ export const Dropdown = ({ children, content, setInstance }: DropdownProps) => {
         setInstance(null);
         setIsOpen(false);
       }}
+      appendTo={document.body}
+      zIndex={999}
       render={attrs => (
         <div className={s.dropdown} {...attrs}>
           {isOpen ? content : null}

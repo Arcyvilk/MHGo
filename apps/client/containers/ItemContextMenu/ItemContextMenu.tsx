@@ -153,7 +153,8 @@ const LoadDropdown = (
     // Open additional action modal and close tippy dropdown
     setAction(selectedAction);
     setIsModalOpen(true);
-    tippyInstance?.hide();
+    // TODO Temporarily disabled because it also closed all modals
+    // tippyInstance?.hide();
   };
 
   const onItemCraft = () => {
@@ -205,15 +206,6 @@ const LoadDropdown = (
 
   return (
     <>
-      <Flash
-        type={(itemAction?.heal ?? 0) >= 0 ? 'green' : 'red'}
-        isActivated={isHealedSuccessfully}
-      />
-      <ModalAchievement
-        achievementId={achievementId}
-        isOpen={isModalAchievementOpen}
-        setIsOpen={setIsModalAchievementOpen}
-      />
       <div className={s.itemContextMenu__dropdown}>
         <div className={s.itemContextMenu__section}>
           {!isItemOwned && (
@@ -241,7 +233,18 @@ const LoadDropdown = (
         </div>
       </div>
 
-      <Modal isOpen={isModalOpen} setIsOpen={setIsModalOpen}>
+      <Flash
+        type={(itemAction?.heal ?? 0) >= 0 ? 'green' : 'red'}
+        isActivated={isHealedSuccessfully}
+      />
+
+      <ModalAchievement
+        achievementId={achievementId}
+        isOpen={isModalAchievementOpen}
+        setIsOpen={setIsModalAchievementOpen}
+      />
+
+      <Modal isOpen={isModalOpen} setIsOpen={setIsModalOpen} isHighModal>
         <>
           {!useOnly && action === 'craft' && item.craftable && (
             <CraftConfirmation
