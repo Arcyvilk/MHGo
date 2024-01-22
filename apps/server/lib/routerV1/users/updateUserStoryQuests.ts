@@ -6,14 +6,14 @@ import {
   Setting,
   UserItems,
   UserMaterials,
-  UserQuestDaily,
+  UserQuestStory,
   UserWealth,
 } from '@mhgo/types';
 
 import { mongoInstance } from '../../../api';
 import { Db } from 'mongodb';
 
-export const updateUserDailyQuests = async (
+export const updateUserStoryQuests = async (
   req: Request,
   res: Response,
 ): Promise<void> => {
@@ -24,39 +24,37 @@ export const updateUserDailyQuests = async (
 
     if (!userId || !questId) throw new Error('User id or quest id missing!');
 
-    // Check if daily with this ID exists
-    const collectionDailyQuests = db.collection<Quest>('questsDaily');
-    const dailyQuest = await collectionDailyQuests.findOne({ id: questId });
-    if (!dailyQuest)
-      throw new Error('Daily quest with given ID does not exist!');
+    // Check if story quest with this ID exists
+    const collectionStoryQuests = db.collection<Quest>('quests');
+    const storyQuest = await collectionStoryQuests.findOne({ id: questId });
+    if (!storyQuest)
+      throw new Error('Story quest with given ID does not exist!');
 
-    // Check if user currently has this daily quest available
-    const collectionUserDailyQuests =
-      db.collection<UserQuestDaily>('userQuestsDaily');
-    const userQuests =
-      (await collectionUserDailyQuests.findOne({ userId }))?.daily ?? [];
-    const hasUserDaily = userQuests.find(quest => quest.id === questId);
-    if (!hasUserDaily)
-      throw new Error('User does not have this daily quest today!');
+    const isQuestCompleted = progress >= storyQuest.maxProgress;
 
-    // If they do, update it
-    const updatedUserQuests = userQuests.map(quest => {
-      if (quest.id !== questId) return quest;
-      return {
-        ...quest,
-        progress,
-        isClaimed,
-      };
-    });
+    // Check if user currently already has this story quest
+    const collectionUserStoryQuests =
+      db.collection<UserQuestStory>('userQuests');
+    const userQuest = (await collectionUserStoryQuests.findOne({
+      userId,
+      questId,
+    })) ?? { userId, questId, progress: 0, isClaimed, obtainDate: null };
 
-    const responseUserQuests = await collectionUserDailyQuests.updateOne(
-      { userId },
-      { $set: { daily: updatedUserQuests } },
+    const updatedUserQuest = {
+      ...userQuest,
+      isClaimed,
+      progress,
+      obtainDate: isQuestCompleted ? new Date() : userQuest.obtainDate,
+    };
+
+    const responseUserQuests = await collectionUserStoryQuests.updateOne(
+      { userId, questId },
+      { $set: updatedUserQuest },
       { upsert: true },
     );
 
     if (!responseUserQuests.acknowledged)
-      throw new Error('Could not update user daily quest!');
+      throw new Error('Could not update user story quest!');
 
     // If user did not claim the quest rewards, finish here
     if (!isClaimed) {
@@ -64,9 +62,9 @@ export const updateUserDailyQuests = async (
       return;
     }
 
-    await giveUserItems(userId, db, dailyQuest);
-    await giveUserMaterials(userId, db, dailyQuest);
-    await giveUserMoney(userId, db, dailyQuest);
+    await giveUserItems(userId, db, storyQuest);
+    await giveUserMaterials(userId, db, storyQuest);
+    await giveUserMoney(userId, db, storyQuest);
 
     // TODO Give user exp rewards
 
@@ -83,10 +81,10 @@ export const updateUserDailyQuests = async (
  *
  * @param userId string
  * @param db Db
- * @param dailyQuest Quest
+ * @param storyQuest Quest
  */
-const giveUserItems = async (userId: string, db: Db, dailyQuest: Quest) => {
-  const dailyRewardsItem = dailyQuest.rewards.filter(
+const giveUserItems = async (userId: string, db: Db, storyQuest: Quest) => {
+  const storyRewardsItem = storyQuest.rewards.filter(
     reward => reward.type === 'item',
   );
 
@@ -100,23 +98,23 @@ const giveUserItems = async (userId: string, db: Db, dailyQuest: Quest) => {
   let updatedUserItems = userItems;
 
   // Add item rewards to user's inventory
-  dailyRewardsItem.forEach(dailyReward => {
+  storyRewardsItem.forEach(storyReward => {
     const userHasItem = updatedUserItems.find(
-      userItem => userItem.id === dailyReward.id,
+      userItem => userItem.id === storyReward.id,
     );
 
     // User already has item, bump its amount
     if (userHasItem) {
       const update = updatedUserItems.map(userItem => {
-        if (userItem.id === dailyReward.id)
-          return { ...userItem, amount: userItem.amount + dailyReward.amount };
+        if (userItem.id === storyReward.id)
+          return { ...userItem, amount: userItem.amount + storyReward.amount };
         else return userItem;
       });
       updatedUserItems = update;
     }
     // User does not have item, add it
     else
-      updatedUserItems.push({ id: dailyReward.id, amount: dailyReward.amount });
+      updatedUserItems.push({ id: storyReward.id, amount: storyReward.amount });
   });
 
   const responseItems = await collectionUserItems.updateOne(
@@ -134,10 +132,10 @@ const giveUserItems = async (userId: string, db: Db, dailyQuest: Quest) => {
  *
  * @param userId string
  * @param db Db
- * @param dailyQuest Quest
+ * @param storyQuest Quest
  */
-const giveUserMaterials = async (userId: string, db: Db, dailyQuest: Quest) => {
-  const dailyRewardsMaterials = dailyQuest.rewards.filter(
+const giveUserMaterials = async (userId: string, db: Db, storyQuest: Quest) => {
+  const storyRewardsMaterials = storyQuest.rewards.filter(
     reward => reward.type === 'material',
   );
 
@@ -151,16 +149,16 @@ const giveUserMaterials = async (userId: string, db: Db, dailyQuest: Quest) => {
   let updatedUserMaterials = userMaterials;
 
   // Add material rewards to user's inventory
-  dailyRewardsMaterials.forEach(dailyReward => {
+  storyRewardsMaterials.forEach(storyReward => {
     const userHasMaterial = updatedUserMaterials.find(
-      userMaterial => userMaterial.id === dailyReward.id,
+      userMaterial => userMaterial.id === storyReward.id,
     );
 
     // User already has material, bump its amount
     if (userHasMaterial) {
       const update = updatedUserMaterials.map(userItem => {
-        if (userItem.id === dailyReward.id)
-          return { ...userItem, amount: userItem.amount + dailyReward.amount };
+        if (userItem.id === storyReward.id)
+          return { ...userItem, amount: userItem.amount + storyReward.amount };
         else return userItem;
       });
       updatedUserMaterials = update;
@@ -168,8 +166,8 @@ const giveUserMaterials = async (userId: string, db: Db, dailyQuest: Quest) => {
     // User does not have material, add it
     else
       updatedUserMaterials.push({
-        id: dailyReward.id,
-        amount: dailyReward.amount,
+        id: storyReward.id,
+        amount: storyReward.amount,
       });
   });
 
@@ -183,7 +181,7 @@ const giveUserMaterials = async (userId: string, db: Db, dailyQuest: Quest) => {
     throw new Error('Could not update user materials.');
 };
 
-const giveUserMoney = async (userId: string, db: Db, dailyQuest: Quest) => {
+const giveUserMoney = async (userId: string, db: Db, storyQuest: Quest) => {
   // Get base wealth
   const collectionSettings = db.collection<Setting<Currency[]>>('settings');
   const currencies = (
@@ -201,7 +199,7 @@ const giveUserMoney = async (userId: string, db: Db, dailyQuest: Quest) => {
   )?.wealth;
 
   const updatedWealth = currencies.map(currency => {
-    const newWealth = dailyQuest.payment.find(
+    const newWealth = storyQuest.payment.find(
       payment => payment.id === currency.id,
     );
     const newUserAmount = newWealth?.amount ?? 0;

@@ -13,7 +13,7 @@ export const getQuestsStory = async (
     const collection = db.collection<Quest>('quests');
     const quests: Quest[] = [];
 
-    const cursor = collection.find();
+    const cursor = collection.find({ enabled: true });
 
     for await (const el of cursor) {
       if (el.enabled) quests.push(el);

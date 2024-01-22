@@ -76,5 +76,3 @@ const hardcodedUrls = [
   '/misc/question.svg',
   '/misc/sad_palico.png',
 ];
-
-console.log(hardcodedUrls);

@@ -1,4 +1,3 @@
-import { toast } from 'react-toastify';
 import { useState } from 'react';
 import {
   Button,
@@ -13,6 +12,7 @@ import {
   useMaterialsApi,
   useSettingsApi,
   useUpdateUserDailyQuestApi,
+  useUpdateUserStoryQuestApi,
 } from '@mhgo/front';
 import {
   Currency,
@@ -36,6 +36,7 @@ export const QuestTile = ({ type, quest }: QuestTileProps) => {
   const { data: items } = useItemsApi();
   const { data: materials } = useMaterialsApi();
   const { mutate: mutateUserDaily } = useUpdateUserDailyQuestApi(userId);
+  const { mutate: mutateUserStory } = useUpdateUserStoryQuestApi(userId);
   const { setting: currencies } = useSettingsApi('currency_types', [
     { id: 'base' as CurrencyType, icon: 'Question' as IconType },
     { id: 'premium' as CurrencyType, icon: 'Question' as IconType },
@@ -54,7 +55,12 @@ export const QuestTile = ({ type, quest }: QuestTileProps) => {
         progress: quest.progress,
         isClaimed: true,
       });
-    if (type === 'story') toast.info('Not implemented yet!');
+    if (type === 'story')
+      mutateUserStory({
+        questId: quest.id,
+        progress: quest.progress,
+        isClaimed: true,
+      });
   };
 
   const isDone = quest.progress === quest.maxProgress;

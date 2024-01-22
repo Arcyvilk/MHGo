@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import {
   Icon,
@@ -12,10 +12,13 @@ import {
   modifiers,
   useNavigateWithScroll,
   useSounds,
+  useUpdateUserStoryQuestApi,
+  useUserItemsApi,
 } from '@mhgo/front';
 import { Size } from '@mhgo/front';
 
 import { Tutorial } from '../../containers';
+import { useUser } from '../../hooks/useUser';
 import { useTutorialProgress } from '../../hooks/useTutorial';
 import { useQuestsStory } from '../../hooks/useQuests';
 import { useAppContext } from '../../utils/context';
@@ -112,17 +115,37 @@ const LoadQuestButton = ({ onClick }: QuestButtonProps) => {
   const { userQuestsWithDetails } = useQuestsStory();
   const { playSound } = useSounds(undefined);
 
+  useUserQuestItems();
+
   const mostRecentQuest = (userQuestsWithDetails.filter(q => !q.isClaimed) ??
     [])[0];
   const isDone =
     mostRecentQuest &&
     mostRecentQuest?.progress === mostRecentQuest?.maxProgress;
 
+  const noQuestActive = !mostRecentQuest;
+
   const onButtonClick = () => {
     playSound(SoundSE.CLICK);
     onClick();
   };
 
+  if (noQuestActive)
+    return (
+      <button
+        className={modifiers(s, 'button', { isDone })}
+        onClick={onButtonClick}>
+        {userQuestsWithDetails?.length ? (
+          <>
+            <Icon icon="Luck" size={Size.MEDIUM} />
+            <div className={s.button__desc}>
+              <h2 className={s.button__title}>No active quest</h2>
+              <p className={s.button__subtitle}>Your backlog is empty!</p>
+            </div>
+          </>
+        ) : null}
+      </button>
+    );
   return (
     <button
       className={modifiers(s, 'button', { isDone })}
@@ -147,4 +170,46 @@ const LoadQuestButton = ({ onClick }: QuestButtonProps) => {
       ) : null}
     </button>
   );
+};
+
+const useUserQuestItems = () => {
+  const { userId } = useUser();
+  const { userQuestsWithDetails } = useQuestsStory();
+  const { data: userItems } = useUserItemsApi(userId);
+  const { mutate: mutateUserStoryQuest } = useUpdateUserStoryQuestApi(userId);
+
+  useEffect(() => {
+    const questRequirements = userQuestsWithDetails
+      ?.map(quest => {
+        const { id, requirements, maxProgress, progress, isClaimed } = quest;
+        if (isClaimed) return null;
+        const userQuestItems = requirements
+          .filter(requirement => requirement.type === 'item')
+          .map(requirement => {
+            const userItemAmount =
+              userItems.find(userItem => userItem.id === requirement.id)
+                ?.amount ?? 0;
+            return userItemAmount;
+          });
+        const userProgress = userQuestItems[0];
+        if (progress === userProgress) return null;
+        // We can take first element, because currently there is only one requirement per array
+        return { id, maxProgress, userProgress };
+      })
+      .filter(Boolean) as {
+      id: string;
+      maxProgress: number;
+      userProgress: number;
+    }[];
+
+    // Update user quest progress
+    questRequirements.forEach(quest => {
+      const { id, userProgress } = quest;
+      mutateUserStoryQuest({
+        questId: id,
+        progress: userProgress,
+        isClaimed: false,
+      });
+    });
+  }, []);
 };

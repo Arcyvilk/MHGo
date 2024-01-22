@@ -18,4 +18,10 @@ export type Quest = {
   payment: QuestPayment[];
   levelRequirement: number | null;
   enabled: boolean;
+  requirements: QuestRequirement[];
+};
+
+export type QuestRequirement = {
+  type: 'item' | 'material' | 'level';
+  id: string;
 };

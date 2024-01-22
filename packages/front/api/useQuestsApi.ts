@@ -1,7 +1,6 @@
 import {
   useMutation,
   useSuspenseQuery,
-  useSuspenseQuery,
   useQueryClient,
 } from '@tanstack/react-query';
 import { Quest, UserQuestDaily, UserQuestStory } from '@mhgo/types';
@@ -115,6 +114,34 @@ export const useUpdateUserDailyQuestApi = (userId: string) => {
   const { mutate, error, status, isPending, isSuccess, isError } = useMutation({
     mutationKey: ['user', userId, 'quests', 'daily', 'update'],
     mutationFn: updateUserDailyQuests,
+  });
+
+  return { mutate, error, status, isPending, isSuccess, isError };
+};
+
+export const useUpdateUserStoryQuestApi = (userId: string) => {
+  const queryClient = useQueryClient();
+
+  const updateUserStoryQuests = async (variables: {
+    questId: string;
+    progress: number;
+    isClaimed: boolean;
+  }): Promise<void> => {
+    const { questId, progress, isClaimed } = variables;
+    await fetcher(`${API_URL}/users/user/${userId}/quests/story/${questId}`, {
+      method: 'PUT',
+      body: JSON.stringify({ progress, isClaimed }),
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+    });
+    queryClient.invalidateQueries({ queryKey: ['user', userId], exact: false });
+  };
+
+  const { mutate, error, status, isPending, isSuccess, isError } = useMutation({
+    mutationKey: ['user', userId, 'quests', 'story', 'update'],
+    mutationFn: updateUserStoryQuests,
   });
 
   return { mutate, error, status, isPending, isSuccess, isError };

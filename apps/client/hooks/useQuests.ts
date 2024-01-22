@@ -9,13 +9,14 @@ import { Quest } from '@mhgo/types';
 import { useUser } from '../hooks/useUser';
 
 export const useQuestsStory = () => {
-  const { userId } = useUser();
+  const { userId, userLevel } = useUser();
   const { data: questsStory, isFetched: isQuestsFetched } = useQuestsStoryApi();
   const { data: userQuestsStory, isFetched: isUserQuestsFetched } =
     useUserQuestsStoryApi(userId);
 
   const userQuestsWithDetails = questsStory
-    ?.map(quest => {
+    ?.filter(quest => (quest.levelRequirement ?? 0) <= userLevel)
+    .map(quest => {
       const userQuest = userQuestsStory?.find(q => q.questId === quest.id) ?? {
         progress: 0,
         obtainDate: null,
@@ -26,7 +27,8 @@ export const useQuestsStory = () => {
         ...userQuest,
       } as Quest & { progress: number; isClaimed: boolean };
     })
-    .filter(Boolean) as (Quest & {
+    .filter(Boolean)
+    .sort((a, b) => b.progress - a.progress) as (Quest & {
     progress: number;
     dailyDate: Date;
     isClaimed: boolean;
