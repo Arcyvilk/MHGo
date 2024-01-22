@@ -44,7 +44,7 @@ export const PurchaseConfirmation = ({
         {moneyNeeded.map(money => {
           const isTooPoor = money?.userAmount < money?.amount;
           return (
-            <div className={s.purchaseConfirmation__price}>
+            <div className={s.purchaseConfirmation__price} key={money.id}>
               <Icon icon={money.icon} size={Size.MICRO} />
               <span style={isTooPoor ? { color: 'red' } : { color: 'green' }}>
                 {money?.userAmount}

@@ -34,7 +34,9 @@ export const ItemBoxView = () => {
 
 const SkeletonItemBox = () => (
   <div className={s.itemBoxView__container}>
-    {new Array(12).fill(<Item.Skeleton />)}
+    {new Array(12).fill(null).map((_, i) => (
+      <Item.Skeleton key={i} />
+    ))}
   </div>
 );
 

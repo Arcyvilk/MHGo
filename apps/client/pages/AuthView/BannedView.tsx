@@ -1,6 +1,7 @@
 import { Navigate } from 'react-router-dom';
 import { useMe } from '../../hooks/useAuth';
 import s from './AuthView.module.scss';
+import { APP_LOGO } from '../../utils/consts';
 
 export const BannedView = () => {
   const { isBanned, banReason, banEndDate } = useMe();
@@ -10,11 +11,7 @@ export const BannedView = () => {
   }
   return (
     <>
-      <img
-        className={s.authView__logo}
-        src="https://cdn.arcyvilk.com/mhgo/misc/logo.png"
-        alt="logo"
-      />
+      <img className={s.authView__logo} src={APP_LOGO} alt="logo" />
       <div className={s.authView__title}>User banned</div>
       {banEndDate && (
         <div className={s.authView__desc}>

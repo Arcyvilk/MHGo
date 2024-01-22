@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback, useMemo } from 'react';
+import { useEffect, useState, useCallback, useMemo, Fragment } from 'react';
 
 import { CurrencyType } from '@mhgo/types';
 import {
@@ -137,13 +137,13 @@ const Load = ({ onClose }: { onClose: () => void }) => {
               {Object.entries(wealthChange)
                 .filter(([_, value]) => value > 0)
                 .map(([key, value]) => (
-                  <>
+                  <Fragment key={key}>
                     <span>+{value}</span>
                     <Icon
                       icon={key == 'base' ? 'Coin' : 'Paw'}
                       size={Size.MICRO}
                     />
-                  </>
+                  </Fragment>
                 ))}
             </div>
             {luckyDrop && (

@@ -13,6 +13,7 @@ import {
 import { useMe } from '../../hooks/useAuth';
 
 import s from './AuthView.module.scss';
+import { APP_LOGO } from '../../utils/consts';
 
 export const SignInView = () => {
   const { navigateWithoutScroll } = useNavigateWithScroll();
@@ -43,11 +44,7 @@ export const SignInView = () => {
   if (isLoggedIn) return <Navigate to="/" replace={true} />;
   return (
     <>
-      <img
-        className={s.authView__logo}
-        src="https://cdn.arcyvilk.com/mhgo/misc/logo.png"
-        alt="logo"
-      />
+      <img className={s.authView__logo} src={APP_LOGO} alt="logo" />
       <div className={s.authView__title}>Create new account</div>
       <div className={s.authView__inputs}>
         <Input

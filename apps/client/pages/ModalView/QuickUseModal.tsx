@@ -10,7 +10,9 @@ export const QuickUseModal = () => (
       <div className={s.modalView__quickUse}>
         <h2 className={s.modalView__quickUse__title}>Quick use menu</h2>
         <div className={s.modalView__quickUse__items}>
-          {new Array(4).fill(<Item.Skeleton />)}
+          {new Array(4).fill(null).map((_, i) => (
+            <Item.Skeleton key={i} />
+          ))}
         </div>
       </div>
     }>

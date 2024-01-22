@@ -14,11 +14,11 @@ const SkeletonEquipmentLoadout = () => (
   <div className={s.equipmentView__loadout}>
     <h2 className={s.loadout__title}>Loadout</h2>
     <div className={s.loadout__items}>
-      {new Array(6).fill(
-        <div className={s.loadout__item}>
+      {new Array(6).fill(null).map((_, i) => (
+        <div className={s.loadout__item} key={i}>
           <Item.Skeleton simple />
-        </div>,
-      )}
+        </div>
+      ))}
     </div>
   </div>
 );

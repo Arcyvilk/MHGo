@@ -1,12 +1,15 @@
 import { Request, Response } from 'express';
+
 import { log } from '@mhgo/utils';
 import {
+  Achievement,
   Companion,
   Habitat,
   Item,
   Material,
   Monster,
   Resource,
+  TutorialStep,
 } from '@mhgo/types';
 
 import { mongoInstance } from '../../../api';
@@ -17,27 +20,33 @@ export const getPrefetchImages = async (
 ): Promise<void> => {
   try {
     const { db } = mongoInstance.getDb();
-    const images: string[] = [];
+    const images: string[] = [...hardcodedUrls];
 
     // All collections including images
+    const collectionAchievements = db.collection<Achievement>('achievements');
     const collectionCompanions = db.collection<Companion>('companions');
     const collectionHabitats = db.collection<Habitat>('habitats');
     const collectionItems = db.collection<Item>('items');
     const collectionMaterials = db.collection<Material>('materials');
     const collectionMonsters = db.collection<Monster>('monsters');
     const collectionResources = db.collection<Resource>('resources');
+    const collectionTutorial = db.collection<TutorialStep>('tutorial');
 
+    const cursorAchievements = collectionAchievements.find();
     const cursorCompanions = collectionCompanions.find();
     const cursorHabitats = collectionHabitats.find();
     const cursorItems = collectionItems.find();
     const cursorMaterials = collectionMaterials.find();
     const cursorMonsters = collectionMonsters.find();
     const cursorResources = collectionResources.find();
+    const cursorTutorial = collectionTutorial.find({ img: { $ne: null } });
 
+    for await (const el of cursorAchievements) images.push(el.img);
     for await (const el of cursorHabitats) images.push(el.image);
     for await (const el of cursorItems) images.push(el.img);
     for await (const el of cursorMaterials) images.push(el.img);
     for await (const el of cursorResources) images.push(el.img);
+    for await (const el of cursorTutorial) images.push(el.img);
     for await (const el of cursorCompanions) {
       images.push(el.img_full_happy);
       images.push(el.img_full_idle);
@@ -56,3 +65,16 @@ export const getPrefetchImages = async (
     res.status(500).send({ error: err.message ?? 'Internal server error' });
   }
 };
+
+const hardcodedUrls = [
+  '/misc/avatar_nobg.png',
+  '/misc/claimed.png',
+  '/misc/extinct.png',
+  '/misc/hunter.jpg',
+  '/misc/logo.png',
+  '/misc/qr.jpg',
+  '/misc/question.svg',
+  '/misc/sad_palico.png',
+];
+
+console.log(hardcodedUrls);

@@ -72,7 +72,7 @@ const Load = ({ itemId, compare = false }: ItemStatsProps) => {
     <div className={s.itemStats}>
       {compare
         ? statsToCompare.map(stat => (
-            <div className={s.itemStats__stat}>
+            <div className={s.itemStats__stat} key={stat.key}>
               <span className={s.itemStats__name}>{stat.key}:</span>
               <div className={s.itemStats__change}>
                 <span className={s.itemStats__value}>{stat.prev}</span>
@@ -88,7 +88,7 @@ const Load = ({ itemId, compare = false }: ItemStatsProps) => {
             </div>
           ))
         : statsToCompare.map(stat => (
-            <div className={s.itemStats__stat}>
+            <div className={s.itemStats__stat} key={stat.key}>
               <span className={s.itemStats__name}>{stat.key}:</span>
               <div className={s.itemStats__change}>{stat.next}</div>
             </div>

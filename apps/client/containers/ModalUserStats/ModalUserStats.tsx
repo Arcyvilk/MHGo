@@ -29,6 +29,7 @@ export const ModalUserStats = ({
         {specialEffectsArray.length ? (
           specialEffectsArray.map(([key, value]) => (
             <SpecialEffect
+              key={key}
               name={key}
               value={value}
               maxPoints={specialEffectMaxPoints!}
@@ -66,6 +67,7 @@ const SpecialEffect = ({ name, value, maxPoints }: SpecialEffectProps) => {
           const hasPoint = i + 1 <= value;
           return (
             <div
+              key={i}
               className={modifiers(s, 'specialEffect__point', {
                 isFilled: hasPoint,
               })}
