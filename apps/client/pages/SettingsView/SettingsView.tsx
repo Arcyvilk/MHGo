@@ -5,10 +5,10 @@ import { toast } from 'react-toastify';
 import {
   Volume,
   useSounds,
-  addCdnUrl,
   Button,
   CloseButton,
   Slider,
+  logo,
 } from '@mhgo/front';
 import { APP_NAME, APP_VERSION } from '../../utils/consts';
 import { useAppContext } from '../../utils/context';
@@ -98,7 +98,7 @@ export const SettingsView = () => {
         )}
 
         <div className={s.section}>
-          <img src={addCdnUrl('/misc/logo.png')} />
+          <img src={logo} />
           <p className={s.version}>
             Arcyvilk 2023-2024 (c) ALL RIGHTS RESERVED. {APP_NAME} is a
             protected trademark.

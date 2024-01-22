@@ -1,10 +1,16 @@
 import { useState } from 'react';
 import { Navigate } from 'react-router-dom';
-import { Button, Icon, Input, Size, useNavigateWithScroll } from '@mhgo/front';
+import {
+  Button,
+  Icon,
+  Input,
+  Size,
+  logo,
+  useNavigateWithScroll,
+} from '@mhgo/front';
 import { useMe } from '../../hooks/useAuth';
 
 import s from './AuthView.module.scss';
-import { APP_LOGO } from '../../utils/consts';
 
 export const LoginView = () => {
   const { navigateWithoutScroll } = useNavigateWithScroll();
@@ -23,7 +29,7 @@ export const LoginView = () => {
   if (isLoggedIn) return <Navigate to="/" replace={true} />;
   return (
     <>
-      <img className={s.authView__logo} src={APP_LOGO} alt="logo" />
+      <img className={s.authView__logo} src={logo} alt="logo" />
       <div className={s.authView__title}>Login</div>
       <div className={s.authView__inputs}>
         <Input

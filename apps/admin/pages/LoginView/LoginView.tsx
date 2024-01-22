@@ -1,6 +1,14 @@
 import { useState } from 'react';
 import { Navigate } from 'react-router-dom';
-import { Button, Icon, Input, Loader, QueryBoundary, Size } from '@mhgo/front';
+import {
+  Button,
+  Icon,
+  Input,
+  Loader,
+  QueryBoundary,
+  Size,
+  logo,
+} from '@mhgo/front';
 import { useMe } from '../../utils/useMe';
 
 import s from './LoginView.module.scss';
@@ -24,11 +32,7 @@ const Load = () => {
   return (
     <div className={s.loginView}>
       <div className={s.loginView__wrapper}>
-        <img
-          className={s.loginView__logo}
-          src="https://cdn.arcyvilk.com/mhgo/misc/logo.png"
-          alt="logo"
-        />
+        <img className={s.loginView__logo} src={logo} alt="logo" />
         <div className={s.loginView__title}>Login</div>
         <div className={s.loginView__inputs}>
           <Input

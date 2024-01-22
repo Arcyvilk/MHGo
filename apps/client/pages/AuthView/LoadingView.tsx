@@ -1,8 +1,8 @@
 import { Navigate } from 'react-router-dom';
-import { Loader } from '@mhgo/front';
+import { Loader, logo } from '@mhgo/front';
 import { useMe } from '../../hooks/useAuth';
+
 import s from './AuthView.module.scss';
-import { APP_LOGO } from '../../utils/consts';
 
 export const LoadingView = () => {
   const { isPending, isLoggedIn } = useMe();
@@ -12,7 +12,7 @@ export const LoadingView = () => {
 
   return (
     <>
-      <img className={s.authView__logo} src={APP_LOGO} alt="logo" />
+      <img className={s.authView__logo} src={logo} alt="logo" />
       <Loader />
     </>
   );

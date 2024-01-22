@@ -71,7 +71,6 @@ const hardcodedUrls = [
   '/misc/claimed.png',
   '/misc/extinct.png',
   '/misc/hunter.jpg',
-  '/misc/logo.png',
   '/misc/qr.jpg',
   '/misc/question.svg',
   '/misc/sad_palico.png',
