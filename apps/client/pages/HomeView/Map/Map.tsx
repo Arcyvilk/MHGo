@@ -96,9 +96,13 @@ const MapLayer = ({ coords }: MapLayerProps) => {
 
     if (!didCoordsChange) return;
 
-    map.flyTo(centerCoords, zoom.current, {
-      duration: 0.5,
-    });
+    const distanceToNewPosition = centerCurrent.distanceTo(centerCoords);
+
+    if (distanceToNewPosition > 5000) map.panTo(centerCoords);
+    else
+      map.flyTo(centerCoords, zoom.current, {
+        duration: 0.5,
+      });
   }, [coords, map, zoom]);
 
   return (
