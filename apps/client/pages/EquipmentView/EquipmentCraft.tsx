@@ -1,7 +1,6 @@
 import { useMemo, Fragment } from 'react';
 import { ItemType } from '@mhgo/types';
 import {
-  Loader,
   Tabs,
   QueryBoundary,
   Switch,

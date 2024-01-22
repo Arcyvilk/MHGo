@@ -6,4 +6,7 @@ export enum Size {
   MEDIUM = 48,
   BIG = 64,
   LARGE = 128,
+  HUGE = 256,
+  MASSIVE = 512,
+  GARGANTUAN = 1024,
 }

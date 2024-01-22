@@ -8,7 +8,7 @@ import { Quest } from '@mhgo/types';
 
 import { useUser } from '../hooks/useUser';
 
-export const useQuestsStory = () => {
+export const useQuestsStory = (showClaimed: boolean) => {
   const { userId, userLevel } = useUser();
   const { data: questsStory, isFetched: isQuestsFetched } = useQuestsStoryApi();
   const { data: userQuestsStory, isFetched: isUserQuestsFetched } =
@@ -34,13 +34,18 @@ export const useQuestsStory = () => {
     isClaimed: boolean;
   })[];
 
+  const sortedByClaimedQuests = [
+    ...userQuestsWithDetails.filter(q => !q.isClaimed),
+    ...(showClaimed ? userQuestsWithDetails.filter(q => q.isClaimed) : []),
+  ];
+
   return {
-    userQuestsWithDetails,
+    userQuestsWithDetails: sortedByClaimedQuests,
     isFetched: isQuestsFetched && isUserQuestsFetched,
   };
 };
 
-export const useQuestsDaily = () => {
+export const useQuestsDaily = (showClaimed: boolean) => {
   const { userId } = useUser();
   const { data: questsDaily } = useQuestsDailyApi();
   const { data: userQuestsDaily } = useUserQuestsDailyApi(userId);
@@ -60,5 +65,13 @@ export const useQuestsDaily = () => {
     isClaimed: boolean;
   })[];
 
-  return { userQuestsWithDetails, dailyDate: userQuestsDaily?.dailyDate };
+  const sortedByClaimedQuests = [
+    ...userQuestsWithDetails.filter(q => !q.isClaimed),
+    ...(showClaimed ? userQuestsWithDetails.filter(q => q.isClaimed) : []),
+  ];
+
+  return {
+    userQuestsWithDetails: sortedByClaimedQuests,
+    dailyDate: userQuestsDaily?.dailyDate,
+  };
 };

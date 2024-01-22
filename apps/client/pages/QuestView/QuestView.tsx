@@ -3,6 +3,7 @@ import {
   Loader,
   QueryBoundary,
   Skeleton,
+  Switch,
   Tabs,
 } from '@mhgo/front';
 
@@ -10,6 +11,7 @@ import { QuestDailyView } from './QuestDailyView';
 import { QuestStoryView } from './QuestStoryView';
 
 import s from './QuestView.module.scss';
+import { useState } from 'react';
 
 export const TABS = {
   STORY: 'Story',
@@ -46,7 +48,6 @@ export const QuestView = () => {
           },
         ]}
       />
-
       <CloseButton backToHome />
     </div>
   );

@@ -10,13 +10,13 @@ import {
   Rain,
   Size,
   SoundSE,
-  addCdnUrl,
   useCompanionApi,
   useLocalStorage,
   useSettingsApi,
   useSounds,
 } from '@mhgo/front';
 import { chooseRandom } from '@mhgo/utils';
+import { YourCompanion } from '../../containers';
 
 import s from './CompanionView.module.scss';
 
@@ -33,7 +33,7 @@ const companionTips = [
 ];
 
 export const CompanionView = () => (
-  <QueryBoundary fallback={<Loader />}>
+  <QueryBoundary fallback={<Loader fullScreen />}>
     <Load />
   </QueryBoundary>
 );
@@ -134,48 +134,43 @@ const Load = () => {
               {companion?.name}, professional {companion?.species}
               <Icon icon="DogPaw" size={Size.TINY} />
             </div>
-            <img
-              src={addCdnUrl(companion.img_full_idle)}
-              className={s.companionView__image}
-              onContextMenu={e => e.preventDefault()}
-              onClick={onPet}
+            <YourCompanion
+              companion={companion}
+              isSpeechBubbleOpen={isSpeechBubbleOpen}
+              companionTip={companionTip}
+              onPet={onPet}
             />
-            {isSpeechBubbleOpen && <SpeechBubble tip={companionTip} />}
             <Rain type="HEART" isRaining={isRaining} />
+            <div className={s.companionView__actionBar}>
+              <Button
+                label={<Icon icon="Drumstick" />}
+                onClick={onFeed}
+                variant={Button.Variant.DEFAULT}
+                title="Feed your companion!"
+              />
+              <Button
+                label={<Icon icon="Music" />}
+                onClick={onSing}
+                variant={Button.Variant.DEFAULT}
+                title="Ask your companion for a motivational battle hymn!"
+              />
+              <Button
+                label={<Icon icon="HouseLock" />}
+                onClick={onSetHomePosition}
+                variant={Button.Variant.DEFAULT}
+                title="Set your home position to your current position!"
+              />
+              <Button
+                label={<Icon icon="Question" />}
+                onClick={onTip}
+                variant={Button.Variant.DEFAULT}
+                title="Ask your companion for a tip!"
+              />
+            </div>
           </div>
         )}
-        <div className={s.companionView__actionBar}>
-          <Button
-            label={<Icon icon="Drumstick" />}
-            onClick={onFeed}
-            variant={Button.Variant.DEFAULT}
-            title="Feed your companion!"
-          />
-          <Button
-            label={<Icon icon="Music" />}
-            onClick={onSing}
-            variant={Button.Variant.DEFAULT}
-            title="Ask your companion for a motivational battle hymn!"
-          />
-          <Button
-            label={<Icon icon="HouseLock" />}
-            onClick={onSetHomePosition}
-            variant={Button.Variant.DEFAULT}
-            title="Set your home position to your current position!"
-          />
-          <Button
-            label={<Icon icon="Question" />}
-            onClick={onTip}
-            variant={Button.Variant.DEFAULT}
-            title="Ask your companion for a tip!"
-          />
-        </div>
       </div>
       <CloseButton />
     </div>
   );
-};
-
-const SpeechBubble = ({ tip }: { tip: string }) => {
-  return <div className={s.companionView__speechBubble}>{tip}</div>;
 };

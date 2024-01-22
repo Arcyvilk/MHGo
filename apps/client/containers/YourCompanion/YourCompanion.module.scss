@@ -1,0 +1,54 @@
+@import '@mhgo/front/styles/index.scss';
+
+.yourCompanion {
+  display: flex;
+  position: relative;
+  justify-content: center;
+
+  &__image  {
+    max-width: 90%;
+    object-fit: contain;
+    &:active{
+    @include anim-bounce;
+        animation: bounce 0.5s linear;
+    }
+
+    &--isSmol {
+      max-width: 200px;
+    }
+  }
+
+  &__speechBubble {
+    position: absolute;
+    top: 60%;
+    left: 15%;
+    max-width: 256px;
+    background-color: $color-primary-bg;
+    padding: $size-12;
+    border-radius: $size-12;
+    border: $size-4 solid $color-black;
+    font-size: $size-14;
+    filter: drop-shadow(0 0 1px $color-white);
+
+    &:before {
+      content: "";
+      width: 0px;
+      height: 0px;
+      position: absolute;
+      border-left: 10px solid transparent;
+      border-right: 10px solid $color-primary-bg;
+      border-bottom: 10px solid $color-primary-bg;
+      border-top: 10px solid transparent;
+      right: 50%;
+      top: -19px;
+      filter: drop-shadow(-3px -2px 1px $color-black);
+    }
+
+    &--isSmol {
+      font-size: $size-10;
+      padding: $size-8;
+      max-width: 150px;
+      
+    }
+  }
+}

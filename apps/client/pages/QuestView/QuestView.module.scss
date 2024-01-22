@@ -16,11 +16,18 @@
     }
   }
 
+
   &__list {
     display: flex;
     flex-direction: column;
     gap: $size-16;
     padding: $size-16;
+  }
+
+  &__empty {
+    display: flex;
+    width: 100%;
+    justify-content: center;
   }
 
   &__quest {
