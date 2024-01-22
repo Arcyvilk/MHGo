@@ -13,7 +13,7 @@ export const NoPermissions = () => (
 const Load = () => {
   const { isAdmin, isLoggedIn, logoutUser } = useMe();
 
-  if (!isLoggedIn) return <Navigate to="/login" replace={true} />;
+  if (!isLoggedIn) return <Navigate to="/auth/login" replace={true} />;
   if (isAdmin) return <Navigate to="/" replace={true} />;
   return (
     <div className={s.loginView}>
