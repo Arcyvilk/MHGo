@@ -26,7 +26,7 @@ export const signIn = async (req: Request, res: Response): Promise<void> => {
     const privateKey = process.env.PRIVATE_KEY;
     const pwdHash = await bcrypt.hash(pwd, saltRounds);
     const userId =
-      userName.toLowerCase().replace(/[^a-zA-Z0-9 -]/g, '') + Date.now();
+      userName.toLowerCase().replace(/[^a-zA-Z0-9-_]/g, '') + Date.now();
     const newUserLogin: UserAuth = {
       userId,
       pwdHash,
