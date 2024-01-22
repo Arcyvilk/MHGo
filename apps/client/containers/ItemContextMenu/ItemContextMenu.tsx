@@ -205,6 +205,15 @@ const LoadDropdown = (
 
   return (
     <>
+      <Flash
+        type={(itemAction?.heal ?? 0) >= 0 ? 'green' : 'red'}
+        isActivated={isHealedSuccessfully}
+      />
+      <ModalAchievement
+        achievementId={achievementId}
+        isOpen={isModalAchievementOpen}
+        setIsOpen={setIsModalAchievementOpen}
+      />
       <div className={s.itemContextMenu__dropdown}>
         <div className={s.itemContextMenu__section}>
           {!isItemOwned && (
@@ -223,7 +232,7 @@ const LoadDropdown = (
           {!useOnly && !purchaseOnly && item.equippable && isItemOwned && (
             <Button simple label="Equip" onClick={onItemEquip} />
           )}
-          {item.purchasable && (
+          {!useOnly && item.purchasable && (
             <Button simple label="Purchase" onClick={onItemPurchase} />
           )}
           {!purchaseOnly && item.usable && itemAction && isItemOwned && (
@@ -231,38 +240,38 @@ const LoadDropdown = (
           )}
         </div>
       </div>
-      <Flash
-        type={(itemAction?.heal ?? 0) >= 0 ? 'green' : 'red'}
-        isActivated={isHealedSuccessfully}
-      />
-      <ModalAchievement
-        achievementId={achievementId}
-        isOpen={isModalAchievementOpen}
-        setIsOpen={setIsModalAchievementOpen}
-      />
+
       <Modal isOpen={isModalOpen} setIsOpen={setIsModalOpen}>
-        {!useOnly && action === 'craft' && item.craftable && (
-          <CraftConfirmation itemId={item.id} setIsModalOpen={setIsModalOpen} />
-        )}
-        {purchaseOnly && action === 'purchase' && item.purchasable && (
-          <PurchaseConfirmation
-            itemId={item.id}
-            setIsModalOpen={setIsModalOpen}
-          />
-        )}
-        {action === 'text' && (
-          <div className={s.itemContextMenu__itemDesc}>
-            {itemAction?.text ??
-              'Here should be a description of this item, but it got lost somewhere. Sorry. :c'}
-            <Button label="OK " onClick={() => setIsModalOpen(false)} simple />
-          </div>
-        )}
-        {action === 'img' && (
-          <div className={s.itemContextMenu__itemDesc}>
-            <img src={itemAction?.img} className={s.itemContextMenu__itemImg} />
-            <Button label="OK " onClick={() => setIsModalOpen(false)} simple />
-          </div>
-        )}
+        <>
+          {!useOnly && action === 'craft' && item.craftable && (
+            <CraftConfirmation
+              itemId={item.id}
+              setIsModalOpen={setIsModalOpen}
+            />
+          )}
+          {purchaseOnly && action === 'purchase' && item.purchasable && (
+            <PurchaseConfirmation
+              itemId={item.id}
+              setIsModalOpen={setIsModalOpen}
+            />
+          )}
+          {action === 'text' && (
+            <div className={s.itemContextMenu__itemDesc}>
+              {itemAction?.text ??
+                'Here should be a description of this item, but it got lost somewhere. Sorry. :c'}
+              <Button label="OK" onClick={() => setIsModalOpen(false)} simple />
+            </div>
+          )}
+          {action === 'img' && (
+            <div className={s.itemContextMenu__itemDesc}>
+              <img
+                src={itemAction?.img}
+                className={s.itemContextMenu__itemImg}
+              />
+              <Button label="OK" onClick={() => setIsModalOpen(false)} simple />
+            </div>
+          )}
+        </>
       </Modal>
     </>
   );

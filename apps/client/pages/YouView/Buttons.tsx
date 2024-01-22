@@ -53,7 +53,7 @@ export const Buttons = () => {
   return (
     <>
       <Modal isOpen={isModalOpen} setIsOpen={setIsModalOpen}>
-        {activeModal}
+        <>{activeModal}</>
       </Modal>
       <div className={s.buttons}>
         {BUTTONS.map(b => (

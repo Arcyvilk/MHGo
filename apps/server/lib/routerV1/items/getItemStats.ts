@@ -15,7 +15,7 @@ export const getItemStats = async (
     const collection = db.collection<ItemStat>('itemStats');
     const item = await collection.findOne({ itemId });
 
-    res.status(200).send(item?.stats ?? null);
+    res.status(200).send(item?.stats ?? {});
   } catch (err: any) {
     log.WARN(err);
     res.status(500).send({ error: err.message ?? 'Internal server error' });

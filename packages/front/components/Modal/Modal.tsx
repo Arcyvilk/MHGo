@@ -1,15 +1,19 @@
+import MuiModal, { ModalProps as MuiModalProps } from '@mui/material/Modal';
 import { modifiers } from '@mhgo/front';
 import s from './Modal.module.scss';
 
-type ModalProps = {
-  children: React.ReactNode;
-  isOpen: boolean;
-  setIsOpen: (isOpen: boolean) => void;
-  onClose?: () => void;
+type CommonModalProps = {
   isHighModal?: boolean;
   isTransparent?: boolean;
   isOpaque?: boolean;
 };
+type ModalProps = CommonModalProps &
+  Omit<MuiModalProps, 'open'> & {
+    children: React.ReactNode;
+    isOpen: boolean;
+    setIsOpen: (isOpen: boolean) => void;
+    onClose?: () => void;
+  };
 export const Modal = ({
   children,
   isHighModal = false,
@@ -18,6 +22,7 @@ export const Modal = ({
   isOpen,
   setIsOpen,
   onClose,
+  ...rest
 }: ModalProps) => {
   const onModalClose = () => {
     if (onClose) onClose();
@@ -30,23 +35,26 @@ export const Modal = ({
   };
 
   return (
-    <div
-      className={modifiers(s, 'modal', {
-        isOpen,
-        isHighModal,
-        isTransparent,
-        isOpaque,
-      })}
-      onClick={onModalClose}>
-      {isTransparent ? (
-        children
-      ) : (
-        <div
-          className={modifiers(s, 'modal__content')}
-          onClick={onPreventBubbling}>
-          {children}
-        </div>
-      )}
-    </div>
+    <MuiModal open={isOpen} {...rest} hideBackdrop>
+      <div
+        className={modifiers(s, 'modal', {
+          isOpen,
+          isHighModal,
+          isTransparent,
+          isOpaque,
+          isAbsolute: true,
+        })}
+        onClick={onModalClose}>
+        {isTransparent ? (
+          children
+        ) : (
+          <div
+            className={modifiers(s, 'modal__content')}
+            onClick={onPreventBubbling}>
+            {children}
+          </div>
+        )}
+      </div>
+    </MuiModal>
   );
 };

@@ -15,7 +15,7 @@ export const getItemCrafts = async (
     const collection = db.collection<ItemCraftList>('itemCraft');
     const item = await collection.findOne({ itemId });
 
-    res.status(200).send(item?.craftList ?? null);
+    res.status(200).send(item?.craftList ?? []);
   } catch (err: any) {
     log.WARN(err);
     res.status(500).send({ error: err.message ?? 'Internal server error' });

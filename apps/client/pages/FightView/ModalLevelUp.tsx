@@ -24,12 +24,16 @@ type ModalProps = {
 };
 export const ModalLevelUp = ({ levels, isOpen, setIsOpen }: ModalProps) => (
   <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
-    <Rays />
-    <div className={s.result}>
-      <h1 className={s.result__title}>LEVEL UP!</h1>
-      <div className={s.result__content}>Congratulations, you leveled up!</div>
-      <Load levels={levels} setIsOpen={setIsOpen} />
-    </div>
+    <>
+      <Rays />
+      <div className={s.result}>
+        <h1 className={s.result__title}>LEVEL UP!</h1>
+        <div className={s.result__content}>
+          Congratulations, you leveled up!
+        </div>
+        <Load levels={levels} setIsOpen={setIsOpen} />
+      </div>
+    </>
   </Modal>
 );
 

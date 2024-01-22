@@ -32,6 +32,7 @@ const Load = () => {
               key={`context-menu-${item.id}`}
               item={item}
               useOnly
+              isItemOwned
             />
           ))}
         </div>

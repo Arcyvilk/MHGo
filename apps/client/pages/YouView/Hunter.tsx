@@ -9,7 +9,6 @@ import {
   useUserHealthApi,
   useNavigateWithScroll,
   QueryBoundary,
-  Loader,
   Skeleton,
 } from '@mhgo/front';
 

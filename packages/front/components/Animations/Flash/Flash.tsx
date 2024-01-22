@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import { modifiers } from '@mhgo/front';
+
+import { Portal, modifiers } from '@mhgo/front';
 import s from './Flash.module.scss';
 
 type FlashProps = {
@@ -21,6 +22,11 @@ export const Flash = ({ type, isActivated }: FlashProps) => {
     }
   }, [isActive]);
 
-  if (isActive) return <div className={modifiers(s, 'flash', type)} />;
+  if (isActive)
+    return (
+      <Portal>
+        <div className={modifiers(s, 'flash', type)} />
+      </Portal>
+    );
   return null;
 };

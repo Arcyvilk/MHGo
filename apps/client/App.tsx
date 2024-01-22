@@ -10,7 +10,7 @@ import s from './App.module.scss';
 export const App = () => {
   return (
     <RequireAuth>
-      <div className={s.app}>
+      <div className={s.app} id="app_root">
         <ScrollRestoration
           getKey={location => {
             const paths = ['/equipment'];
