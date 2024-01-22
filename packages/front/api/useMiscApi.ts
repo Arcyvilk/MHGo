@@ -1,10 +1,10 @@
-import { useSuspenseQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 
 import { addCdnUrl } from '../utils/addCdnUrl';
 import { API_URL } from '../env';
 import { fetcher } from '..';
 
-export const usePrefetchAllImagesApi = () => {
+export const usePrefetchAllImagesApi = (isLoggedIn: boolean) => {
   const getAllImageUrls = async (): Promise<string[]> => {
     const res = await fetcher(`${API_URL}/misc/prefetch/images`);
     return res.json();
@@ -15,9 +15,10 @@ export const usePrefetchAllImagesApi = () => {
     isLoading,
     isFetched,
     isError,
-  } = useSuspenseQuery<string[], unknown, string[], string[]>({
+  } = useQuery<string[], unknown, string[], string[]>({
     queryKey: ['prefetch'],
     queryFn: getAllImageUrls,
+    enabled: isLoggedIn,
   });
 
   const data = images.map(addCdnUrl);

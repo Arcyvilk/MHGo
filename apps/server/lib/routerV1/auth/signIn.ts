@@ -110,7 +110,7 @@ const giveUserStarterPack = async (db: Db, userId: string) => {
       },
       {
         id: 'potion',
-        amount: 10,
+        amount: 20,
       },
     ],
   };

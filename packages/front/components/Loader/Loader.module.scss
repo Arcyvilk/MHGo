@@ -11,6 +11,8 @@
   &--fullScreen {
     width: 100vw;
     height: 100vh;
+    background-color: $admin-color-primary-bg;
+    color: $admin-color-primary-text;
   }
 
   &--noPadding {

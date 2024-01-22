@@ -5,11 +5,11 @@ import { CDN_URL } from '../../env';
 
 let isPrefetch = false;
 
-export const usePrefetch = () => {
+export const usePrefetch = (isLoggedIn: boolean) => {
   const [_isPrefetch, setIsPrefetch] = useState(isPrefetch);
   const [progress, setProgress] = useState(0);
 
-  const { data: allImages, isFetched } = usePrefetchAllImagesApi();
+  const { data: allImages, isFetched } = usePrefetchAllImagesApi(isLoggedIn);
 
   const allToPrefetch = [
     ...soundSrcRaw.map(i => i[1]),

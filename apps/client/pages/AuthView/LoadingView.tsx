@@ -10,15 +10,13 @@ export const LoadingView = () => {
     return <Navigate to="/" replace={true} />;
   }
   return (
-    <div className={s.authView}>
-      <div className={s.authView__wrapper}>
-        <img
-          className={s.authView__logo}
-          src="https://cdn.arcyvilk.com/mhgo/misc/logo.png"
-          alt="logo"
-        />
-        <Loader />
-      </div>
-    </div>
+    <>
+      <img
+        className={s.authView__logo}
+        src="https://cdn.arcyvilk.com/mhgo/misc/logo.png"
+        alt="logo"
+      />
+      <Loader />
+    </>
   );
 };

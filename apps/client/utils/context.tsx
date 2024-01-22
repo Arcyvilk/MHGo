@@ -15,10 +15,13 @@ type ContextType = {
   setIsLoggedIn: (isLoggedIn: boolean) => void;
   bearerToken: { bearer: string | null };
   setBearerToken: (bearerToken: { bearer: string | null }) => void;
+  // MUSIC
   music: string | undefined;
   setMusic: (music: string | undefined) => void;
   musicVolume: number;
   setMusicVolume: (musicVolume: number) => void;
+  isMusicPlaying: boolean;
+  setIsMusicPlaying: (isMusicPlaying: boolean) => void;
 };
 
 export const AppContextProvider = ({
@@ -45,6 +48,7 @@ export const AppContextProvider = ({
   }, [bearerToken.bearer]);
 
   const [music, setMusic] = useState<string>();
+  const [isMusicPlaying, setIsMusicPlaying] = useState(false);
   // TODO maybe this can be done somewhere else
   // since we use the same algorithgm in useSound
   const [musicVolume, setMusicVolume] = useState<number>(
@@ -62,6 +66,8 @@ export const AppContextProvider = ({
     setBearerToken,
     music,
     setMusic,
+    isMusicPlaying,
+    setIsMusicPlaying,
     musicVolume,
     setMusicVolume,
   };
