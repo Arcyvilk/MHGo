@@ -57,4 +57,10 @@
     justify-content: center;
     gap: $size-8;
   }
+
+  &:active {
+    -webkit-user-drag: none;
+    -webkit-tap-highlight-color: transparent;
+    outline: none;
+  }
 }
