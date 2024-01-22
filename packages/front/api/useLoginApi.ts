@@ -75,6 +75,7 @@ export const useLoginApi = (
       }
     },
     onError: (err: string) => {
+      console.log('error here');
       setBearerToken({ bearer: null });
       toast.error(err.toString());
     },

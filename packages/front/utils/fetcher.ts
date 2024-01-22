@@ -3,7 +3,7 @@ export const fetcher = async (url: string, options: any = {}) =>
 
 const updateOptions = (options: any) => {
   const update = { ...options };
-  const bearer = JSON.parse(localStorage.MHGO_AUTH ?? {})?.bearer;
+  const bearer = JSON.parse(localStorage?.MHGO_AUTH ?? '{}')?.bearer;
 
   if (bearer) {
     update.headers = {
