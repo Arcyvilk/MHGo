@@ -16,7 +16,7 @@ type UserAuthInfo = Pick<
   UserBan & { status: number };
 export const useMeApi = (/*enabled: boolean = true*/) => {
   const getMe = async (): Promise<UserAuthInfo | null> => {
-    const bearer = JSON.parse(localStorage.MHGO_AUTH ?? {})?.bearer;
+    const bearer = JSON.parse(localStorage?.MHGO_AUTH ?? '{}')?.bearer;
     if (!bearer) return null;
     const res = await fetcher(`${API_URL}/auth/me`);
     const response = await res.json();
