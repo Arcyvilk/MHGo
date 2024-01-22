@@ -107,7 +107,7 @@ export const useItemStatsApi = (
   };
 
   const {
-    data = {},
+    data = { element: 'none' },
     isLoading,
     isFetched,
     isError,
@@ -117,7 +117,12 @@ export const useItemStatsApi = (
     // enabled: isEquippable && Boolean(itemId),
   });
 
-  return { data, isLoading, isFetched, isError };
+  return {
+    data: data.element ? data : { ...data, element: 'none' },
+    isLoading,
+    isFetched,
+    isError,
+  };
 };
 
 export const useItemCraftListApi = (userId: string, itemId: string) => {

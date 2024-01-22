@@ -36,8 +36,7 @@ const Load = ({ itemId, compare = false }: ItemStatsProps) => {
     userLoadout.find(loadoutSlot => loadoutSlot.slot === itemSlot)?.itemId ??
     null;
 
-  const { data: slottedItemStats = { element: 'none' } } =
-    useItemStatsApi(slottedItemId);
+  const { data: slottedItemStats } = useItemStatsApi(slottedItemId);
 
   if (!itemStats) return null;
   if (!itemSlot) return null;

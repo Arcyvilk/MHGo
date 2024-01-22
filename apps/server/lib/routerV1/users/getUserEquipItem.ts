@@ -10,7 +10,10 @@ export const getUserEquipItem = async (
 ): Promise<void> => {
   try {
     const { userId, itemId } = req.params;
+    const { action } = req.query;
     const { db } = mongoInstance.getDb();
+
+    if (!action) throw new Error('Incorrect item action'!);
 
     // Get user's loadout
     const collectionUserLoadouts = db.collection<UserLoadout>('userLoadout');
@@ -24,7 +27,7 @@ export const getUserEquipItem = async (
     // Update user's loadout
     const newLoadout = [
       ...loadout.filter(slot => slot.slot !== itemSlot),
-      { slot: itemSlot, itemId },
+      ...(action === 'equip' ? [{ slot: itemSlot, itemId }] : []),
     ];
 
     const responseLoadoutUpdate = await collectionUserLoadouts.updateOne(

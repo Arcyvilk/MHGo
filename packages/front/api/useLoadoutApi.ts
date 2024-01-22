@@ -30,8 +30,14 @@ export const useUserLoadoutApi = (userId: string) => {
 export const useUserEquipItemApi = (userId: string, itemId: string) => {
   const queryClient = useQueryClient();
 
-  const getEquipItem = async (): Promise<void> => {
-    await fetcher(`${API_URL}/users/user/${userId}/item/${itemId}/equip`);
+  const getEquipItem = async ({
+    action,
+  }: {
+    action: 'equip' | 'unequip';
+  }): Promise<void> => {
+    await fetcher(
+      `${API_URL}/users/user/${userId}/item/${itemId}/equip?action=${action}`,
+    );
     queryClient.invalidateQueries({ queryKey: ['user', userId, 'loadout'] });
     queryClient.invalidateQueries({ queryKey: ['user', userId, 'stats'] });
     queryClient.invalidateQueries({

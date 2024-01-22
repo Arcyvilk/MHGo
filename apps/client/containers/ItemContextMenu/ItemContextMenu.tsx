@@ -42,6 +42,7 @@ type ItemContextMenuProps = {
   useOnly?: boolean;
   purchaseOnly?: boolean;
   isItemOwned?: boolean;
+  isItemEquipped?: boolean;
   canBeCrafted?: boolean;
 };
 export const ItemContextMenu = (props: ItemContextMenuProps) => {
@@ -143,6 +144,7 @@ const LoadDropdown = (
   const {
     item,
     isItemOwned = false,
+    isItemEquipped = false,
     purchaseOnly = false,
     useOnly = false,
     setIsDropdownSuspended,
@@ -186,8 +188,14 @@ const LoadDropdown = (
 
   const onItemEquip = () => {
     if (item.equippable) {
-      mutateItemEquip();
+      mutateItemEquip({ action: 'equip' });
       toast.success(`Equipped ${item.name}!`);
+    }
+  };
+  const onItemUnequip = () => {
+    if (item.equippable) {
+      mutateItemEquip({ action: 'unequip' });
+      toast.success(`Unequipped ${item.name}!`);
     }
   };
 
@@ -226,6 +234,23 @@ const LoadDropdown = (
     }
   };
 
+  const hasCraftAction = !useOnly && !purchaseOnly && item.craftable;
+  const hasPurchaseAction = !useOnly && item.purchasable;
+  const hasUseAction =
+    !purchaseOnly && item.usable && itemAction && isItemOwned;
+  const hasEquipAction =
+    !useOnly &&
+    !purchaseOnly &&
+    item.equippable &&
+    isItemOwned &&
+    !isItemEquipped;
+  const hasUnequipAction =
+    !useOnly &&
+    !purchaseOnly &&
+    item.equippable &&
+    isItemOwned &&
+    isItemEquipped;
+
   return (
     <>
       <div className={s.itemContextMenu__dropdown}>
@@ -240,18 +265,19 @@ const LoadDropdown = (
           <ItemStats itemId={item.id} compare />
         </div>
         <div className={s.itemContextMenu__section}>
-          {!useOnly && !purchaseOnly && item.craftable && (
+          {hasCraftAction && (
             <Button simple label="Craft" onClick={onItemCraft} />
           )}
-          {!useOnly && !purchaseOnly && item.equippable && isItemOwned && (
+          {hasEquipAction && (
             <Button simple label="Equip" onClick={onItemEquip} />
           )}
-          {!useOnly && item.purchasable && (
+          {hasUnequipAction && (
+            <Button simple label="Unequip" onClick={onItemUnequip} />
+          )}
+          {hasPurchaseAction && (
             <Button simple label="Purchase" onClick={onItemPurchase} />
           )}
-          {!purchaseOnly && item.usable && itemAction && isItemOwned && (
-            <Button simple label="Use" onClick={onItemUse} />
-          )}
+          {hasUseAction && <Button simple label="Use" onClick={onItemUse} />}
         </div>
       </div>
 
