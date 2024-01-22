@@ -20,7 +20,14 @@ export const getUserDailyQuests = async (
 
     // If yes, just return those dailies
     if (userDailyQuests?.daily?.length) {
-      res.status(200).send(userDailyQuests);
+      const sortedUserDailyQuests = {
+        ...userDailyQuests,
+        daily: [
+          ...userDailyQuests.daily.filter(q => !q.isClaimed),
+          ...userDailyQuests.daily.filter(q => q.isClaimed),
+        ],
+      };
+      res.status(200).send(sortedUserDailyQuests);
       return;
     }
 

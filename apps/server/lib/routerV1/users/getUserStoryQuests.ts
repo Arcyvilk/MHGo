@@ -23,8 +23,13 @@ export const getUserStoryQuests = async (
       userStoryQuests.push(rest);
     }
 
+    const sortedUserStoryQuests = [
+      ...userStoryQuests.filter(q => !q.isClaimed),
+      ...userStoryQuests.filter(q => q.isClaimed),
+    ];
+
     // Fin!
-    res.status(200).send(userStoryQuests);
+    res.status(200).send(sortedUserStoryQuests);
   } catch (err: any) {
     log.WARN(err);
     res.status(500).send({ error: err.message ?? 'Internal server error' });
