@@ -1,8 +1,9 @@
+import { useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 
-import s from './AuthView.module.scss';
 import { useAppContext } from '../../utils/context';
-import { useEffect } from 'react';
+
+import s from './AuthView.module.scss';
 
 export const AuthView = () => {
   const { isMusicPlaying, setIsMusicPlaying } = useAppContext();

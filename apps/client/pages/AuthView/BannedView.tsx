@@ -4,11 +4,11 @@ import s from './AuthView.module.scss';
 import { APP_LOGO } from '../../utils/consts';
 
 export const BannedView = () => {
-  const { isBanned, banReason, banEndDate } = useMe();
+  const { isLoggedIn, isBanned, banReason, banEndDate } = useMe();
 
-  if (!isBanned) {
-    return <Navigate to="/" replace={true} />;
-  }
+  if (!isLoggedIn) return <Navigate to="/auth/login" replace={true} />;
+  if (!isBanned) return <Navigate to="/" replace={true} />;
+
   return (
     <>
       <img className={s.authView__logo} src={APP_LOGO} alt="logo" />

@@ -74,9 +74,6 @@ const LoadAuth = ({ children }: PropsWithChildren) => {
   // const isDev = ENV === 'development';
   // if (isDev) return children;
 
-  if (isLoggedIn && !isPrefetch) {
-    return <PrefetchScreen progress={progress} />;
-  }
   if (isPending === true) {
     return <Navigate to="/auth/loading" replace={true} />;
   }
@@ -88,6 +85,9 @@ const LoadAuth = ({ children }: PropsWithChildren) => {
   }
   if (isLoggedIn === false) {
     return <Navigate to="/auth/login" replace={true} />;
+  }
+  if (isLoggedIn && !isPrefetch) {
+    return <PrefetchScreen progress={progress} />;
   }
   if (isAwaitingModApproval === false || isModApproved === true) {
     return children;

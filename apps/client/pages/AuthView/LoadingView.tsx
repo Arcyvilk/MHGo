@@ -5,11 +5,11 @@ import s from './AuthView.module.scss';
 import { APP_LOGO } from '../../utils/consts';
 
 export const LoadingView = () => {
-  const { isPending } = useMe();
+  const { isPending, isLoggedIn } = useMe();
 
-  if (!isPending) {
-    return <Navigate to="/" replace={true} />;
-  }
+  if (!isLoggedIn) return <Navigate to="/auth/login" replace={true} />;
+  if (!isPending) return <Navigate to="/" replace={true} />;
+
   return (
     <>
       <img className={s.authView__logo} src={APP_LOGO} alt="logo" />

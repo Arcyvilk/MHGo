@@ -4,8 +4,9 @@ import s from './AuthView.module.scss';
 import { APP_LOGO, DEFAULT_COORDS } from '../../utils/consts';
 
 export const AwaitingApprovalView = () => {
-  const { isAwaitingModApproval, isModApproved } = useMe();
+  const { isAwaitingModApproval, isModApproved, isLoggedIn } = useMe();
 
+  if (!isLoggedIn) return <Navigate to="/auth/login" replace={true} />;
   if (!isAwaitingModApproval && isModApproved) {
     return <Navigate to="/" replace={true} />;
   }

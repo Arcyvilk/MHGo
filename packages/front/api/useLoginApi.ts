@@ -13,8 +13,8 @@ type UserAuthInfo = Pick<
   UserAuth,
   'isAdmin' | 'isAwaitingModApproval' | 'isModApproved'
 > &
-  UserBan & { status: number };
-export const useMeApi = (/*enabled: boolean = true*/) => {
+  UserBan & { status: number; error?: string };
+export const useMeApi = () => {
   const getMe = async (): Promise<UserAuthInfo | null> => {
     const bearer = JSON.parse(localStorage?.MHGO_AUTH ?? '{}')?.bearer;
     if (!bearer) return null;
@@ -35,7 +35,6 @@ export const useMeApi = (/*enabled: boolean = true*/) => {
   >({
     queryKey: ['me'],
     queryFn: getMe,
-    // enabled,
   });
 
   return { data, isLoading, isFetched, isError };

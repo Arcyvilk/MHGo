@@ -21,7 +21,7 @@ routerV1.get('/auth/me', verifyToken, getMe);
 routerV1.post('/auth/signIn', signIn);
 routerV1.post('/auth/login', login);
 routerV1.post('/auth/update', verifyToken, update);
-routerV1.get('/auth/logout', verifyToken, logout);
+routerV1.get('/auth/logout', logout);
 
 /********************************
  *         ADMIN ROUTES         *

@@ -11,7 +11,7 @@ export const getMe = async (req: Request, res: Response): Promise<void> => {
     const { userId } = req.user;
 
     if (!userId) {
-      res.status(404).send('Incorrect user requested');
+      res.status(404).send({ error: 'Incorrect user requested' });
       return;
     }
 
@@ -19,7 +19,7 @@ export const getMe = async (req: Request, res: Response): Promise<void> => {
     const userAuth = await collectionUserAuth.findOne({ userId });
 
     if (!userAuth) {
-      res.status(404).send('Incorrect user requested');
+      res.status(404).send({ error: 'Incorrect user requested' });
       return;
     }
 
