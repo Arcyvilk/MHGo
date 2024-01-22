@@ -70,7 +70,7 @@ const Load = ({ stepFrom, stepTo, requirement }: TutorialProps) => {
           <Modal
             isTransparent
             isHighModal
-            isOpaque={false} //currentStep.effects?.includes('darkness')}
+            isOpaque={currentStep.effects?.includes('darkness')}
             isOpen={isOpen}
             setIsOpen={setIsOpen}
             onClose={nextStep}>
