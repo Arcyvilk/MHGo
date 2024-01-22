@@ -1,10 +1,17 @@
 import { Request, Response } from 'express';
 import { log } from '@mhgo/utils';
-import { Habitat, Item, Material, Monster, Resource } from '@mhgo/types';
+import {
+  Companion,
+  Habitat,
+  Item,
+  Material,
+  Monster,
+  Resource,
+} from '@mhgo/types';
 
 import { mongoInstance } from '../../../api';
 
-export const getAllImages = async (
+export const getPrefetchImages = async (
   _req: Request,
   res: Response,
 ): Promise<void> => {
@@ -13,12 +20,14 @@ export const getAllImages = async (
     const images: string[] = [];
 
     // All collections including images
+    const collectionCompanions = db.collection<Companion>('companions');
     const collectionHabitats = db.collection<Habitat>('habitats');
     const collectionItems = db.collection<Item>('items');
     const collectionMaterials = db.collection<Material>('materials');
     const collectionMonsters = db.collection<Monster>('monsters');
     const collectionResources = db.collection<Resource>('resources');
 
+    const cursorCompanions = collectionCompanions.find();
     const cursorHabitats = collectionHabitats.find();
     const cursorItems = collectionItems.find();
     const cursorMaterials = collectionMaterials.find();
@@ -29,6 +38,13 @@ export const getAllImages = async (
     for await (const el of cursorItems) images.push(el.img);
     for await (const el of cursorMaterials) images.push(el.img);
     for await (const el of cursorResources) images.push(el.img);
+    for await (const el of cursorCompanions) {
+      images.push(el.img_full_happy);
+      images.push(el.img_full_idle);
+      images.push(el.img_happy);
+      images.push(el.img_idle);
+      images.push(el.img_surprised);
+    }
     for await (const el of cursorMonsters) {
       images.push(el.img);
       images.push(el.thumbnail);

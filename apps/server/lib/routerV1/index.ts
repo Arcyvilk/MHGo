@@ -415,6 +415,6 @@ routerV1.get('/settings', verifyToken, getSettings);
  *         MISC         *
  ************************/
 
-import { getAllImages } from './_misc';
+import { getPrefetchImages } from './_misc';
 
-routerV1.get('/misc/prefetch/images', verifyToken, getAllImages);
+routerV1.get('/misc/prefetch/images', verifyToken, getPrefetchImages);

@@ -1,1 +1,1 @@
-export { getAllImages } from './getAllImages';
+export { getPrefetchImages } from './getPrefetchImages';
