@@ -1,7 +1,12 @@
 import { modifiers } from '../..';
 import s from './ProgressBar.module.scss';
 
-type ProgressBarProps = { max: number; current: number; type?: string };
+type ProgressBarProps = {
+  max: number;
+  current: number;
+  type?: string;
+  tip?: string;
+};
 export const ProgressBar = ({ max, current, type }: ProgressBarProps) => {
   return (
     <div className={modifiers(s, 'progressBar', type)}>
@@ -17,8 +22,14 @@ export const ProgressBar = ({ max, current, type }: ProgressBarProps) => {
   );
 };
 
-export const LoadingBar = ({ max, current, type }: ProgressBarProps) => {
-  const percentage = (100 * current) / max;
+export const LoadingBar = ({
+  max,
+  current,
+  type,
+  tip = 'Loading assets...',
+}: ProgressBarProps) => {
+  const percentage = ((100 * current) / max).toFixed(2);
+
   return (
     <>
       <div className={modifiers(s, 'loadingBar', type)}>
@@ -31,9 +42,7 @@ export const LoadingBar = ({ max, current, type }: ProgressBarProps) => {
           {percentage}%
         </div>
       </div>
-      <div className={modifiers(s, 'loadingBar__text', type)}>
-        Loading assets...
-      </div>
+      <div className={modifiers(s, 'loadingBar__text', type)}>{tip}</div>
     </>
   );
 };

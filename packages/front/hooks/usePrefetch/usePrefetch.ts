@@ -17,12 +17,10 @@ export const usePrefetch = (isLoggedIn: boolean) => {
     ...allImages,
   ].filter(i => i !== CDN_URL);
 
-  const progressTick = 100 / allToPrefetch.length;
-
   const prefetch = async (index: number) => {
     if (index < allToPrefetch.length) {
       await fetch(allToPrefetch[index]);
-      setProgress(prevProgress => prevProgress + progressTick);
+      setProgress(prevProgress => prevProgress + 1);
 
       await prefetch(index + 1);
     } else {
@@ -40,5 +38,9 @@ export const usePrefetch = (isLoggedIn: boolean) => {
     if (isFetched) prefetch(0);
   }, [isFetched, _isPrefetch]);
 
-  return { isPrefetch: _isPrefetch, progress };
+  return {
+    isPrefetch: _isPrefetch,
+    progress,
+    maxProgress: allToPrefetch.length,
+  };
 };

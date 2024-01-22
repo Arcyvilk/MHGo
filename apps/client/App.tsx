@@ -1,19 +1,23 @@
-import { FC, PropsWithChildren, useEffect } from 'react';
+import { FC, PropsWithChildren, useEffect, useState } from 'react';
 import { Navigate, Outlet, ScrollRestoration } from 'react-router-dom';
+import { chooseRandom } from '@mhgo/utils';
 import {
   Loader,
   LoadingBar,
   QueryBoundary,
   SoundBG,
+  logo,
+  useInterval,
   usePrefetch,
+  useSettingsApi,
   useSounds,
 } from '@mhgo/front';
 
 import { useMe } from './hooks/useAuth';
 import { GlobalAchievements } from './containers';
+import { useAppContext } from './utils/context';
 
 import s from './App.module.scss';
-import { useAppContext } from './utils/context';
 
 export const App = () => {
   const { setMusic, isMusicPlaying, setIsMusicPlaying } = useAppContext();
@@ -69,7 +73,7 @@ const LoadAuth = ({ children }: PropsWithChildren) => {
     isLoggedIn,
     isPending,
   } = useMe();
-  const { isPrefetch, progress } = usePrefetch(isLoggedIn);
+  const { isPrefetch, progress, maxProgress } = usePrefetch(isLoggedIn);
 
   // const isDev = ENV === 'development';
   // if (isDev) return children;
@@ -87,7 +91,7 @@ const LoadAuth = ({ children }: PropsWithChildren) => {
     return <Navigate to="/auth/login" replace={true} />;
   }
   if (isLoggedIn && !isPrefetch) {
-    return <PrefetchScreen progress={progress} />;
+    return <PrefetchScreen progress={progress} maxProgress={maxProgress} />;
   }
   if (isAwaitingModApproval === false || isModApproved === true) {
     return children;
@@ -95,13 +99,36 @@ const LoadAuth = ({ children }: PropsWithChildren) => {
   return;
 };
 
-const PrefetchScreen = ({ progress }: { progress: number }) => (
-  <div className={s.prefetch}>
-    <img
-      className={s.prefetch__logo}
-      src="https://cdn.arcyvilk.com/mhgo/misc/logo.png"
-      alt="logo"
-    />
-    <LoadingBar max={100} current={Math.round(progress)} />
-  </div>
-);
+const PrefetchScreen = ({
+  progress,
+  maxProgress,
+}: {
+  progress: number;
+  maxProgress: number;
+}) => {
+  const { setting: loadingTips } = useSettingsApi('loading_screen_tips', [
+    'Loading assets...',
+  ]);
+  const [currentTip, setCurrentTip] = useState(chooseRandom(loadingTips));
+
+  const onClick = () => {
+    const newTip = chooseRandom(loadingTips);
+    setCurrentTip(newTip);
+  };
+
+  useInterval(() => {
+    const currentTipPool = loadingTips.filter(tip => tip !== currentTip);
+    setCurrentTip(chooseRandom(currentTipPool));
+  }, 5000);
+
+  return (
+    <div className={s.prefetch} onClick={onClick}>
+      <img className={s.prefetch__logo} src={logo} alt="logo" />
+      <LoadingBar
+        max={maxProgress}
+        current={Math.round(progress)}
+        tip={currentTip}
+      />
+    </div>
+  );
+};
