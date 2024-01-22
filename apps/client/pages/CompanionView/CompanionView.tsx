@@ -20,18 +20,6 @@ import { YourCompanion } from '../../containers';
 
 import s from './CompanionView.module.scss';
 
-const companionTips = [
-  "I don't have any tips for now but have a nice day!",
-  'Did you know that giraffes have no vocal cords?',
-  'Did you know that all of those tips are in fact completely useless?',
-  'Did you know that you need money to buy stuff from the shop?',
-  'Did you know that you can see the list of your items in the inventory?',
-  'Did you know that people die when they are killed?',
-  'Did you know that you can whip yourself in this game?',
-  'Did you know that if you set your home coordinates with the second button on the right, a training dummy will spawn there for you to test various setups?',
-  'HAPPY BIRTHDAY!!! <3',
-];
-
 export const CompanionView = () => (
   <QueryBoundary fallback={<Loader fullScreen />}>
     <Load />
@@ -39,17 +27,22 @@ export const CompanionView = () => (
 );
 
 const Load = () => {
+  const { playSound, playRandomSound } = useSounds(undefined);
   const [_, setHomePosition] = useLocalStorage<{
     home: number[];
   }>(LSKeys.MHGO_HOME_POSITION, {
     home: [0, 0],
   });
 
-  const { playSound, playRandomSound } = useSounds(undefined);
-  const [companionTip, setCompanionTip] = useState('Hello!');
+  const { setting = '' } = useSettingsApi<string>('default_companion', '');
+  const { setting: companionTips } = useSettingsApi('companion_tips', [
+    'Have a nice day!',
+  ]);
+
+  const [companionTip, setCompanionTip] = useState(chooseRandom(companionTips));
   const [isSpeechBubbleOpen, setIsSpeechBubbleOpen] = useState(false);
   const [isRaining, setIsRaining] = useState(false);
-  const { setting = '' } = useSettingsApi<string>('default_companion', '');
+
   const { data: companion } = useCompanionApi(setting);
   const geo = useMemo(() => navigator.geolocation, []);
 
