@@ -16,6 +16,7 @@ import { useTutorialProgress } from '../../hooks/useTutorial';
 import { useMonsterMarker } from '../../hooks/useMonsterMarker';
 
 import s from './FightView.module.scss';
+import { useMonsterHealthChange } from './utils';
 
 export const PrepareView = () => (
   <QueryBoundary fallback={<Loader fullScreen />}>
@@ -24,6 +25,8 @@ export const PrepareView = () => (
 );
 
 const Load = () => {
+  // Prefetch before fight
+  useMonsterHealthChange();
   const { isFinishedTutorialPartOne } = useTutorialProgress();
   const { markerId, monster, inRange } = useMonsterMarker();
   const { habitat, level, name, img } = monster;
