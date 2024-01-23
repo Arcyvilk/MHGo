@@ -47,7 +47,7 @@ const Load = () => {
   const { data: items } = useItemsApi();
   const { mutate, isSuccess, isError } = useAdminUpdateItemApi();
   const [order, setOrder] = useState<Order>('asc');
-  const [orderBy, setOrderBy] = useState<keyof TItem>('levelRequirement');
+  const [orderBy, setOrderBy] = useState<keyof TItem>('rarity');
 
   const { setRoute, route: filter } = useContextualRouting<string>({
     key: 'filter',
@@ -66,10 +66,10 @@ const Load = () => {
     if (order && orderBy)
       return filtered.sort((a, b) =>
         order === 'asc'
-          ? (a[orderBy] ?? 0) < (b[orderBy] ?? 0)
+          ? (a[orderBy] ?? 0) > (b[orderBy] ?? 0)
             ? 1
             : -1
-          : (a[orderBy] ?? 0) > (b[orderBy] ?? 0)
+          : (a[orderBy] ?? 0) < (b[orderBy] ?? 0)
             ? 1
             : -1,
       );

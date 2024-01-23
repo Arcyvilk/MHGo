@@ -31,7 +31,7 @@ const Load = () => {
   const navigate = useNavigate();
   const { data: materials } = useMaterialsApi();
   const [order, setOrder] = useState<Order>('asc');
-  const [orderBy, setOrderBy] = useState<keyof Material>('name');
+  const [orderBy, setOrderBy] = useState<keyof Material>('rarity');
 
   const onMaterialEdit = (material: Material) => {
     navigate(`/materials/edit?id=${material.id}`);
@@ -41,10 +41,10 @@ const Load = () => {
     if (order && orderBy)
       return materials.sort((a, b) =>
         order === 'asc'
-          ? (a[orderBy] ?? 0) < (b[orderBy] ?? 0)
+          ? (a[orderBy] ?? 0) > (b[orderBy] ?? 0)
             ? 1
             : -1
-          : (a[orderBy] ?? 0) > (b[orderBy] ?? 0)
+          : (a[orderBy] ?? 0) < (b[orderBy] ?? 0)
             ? 1
             : -1,
       );

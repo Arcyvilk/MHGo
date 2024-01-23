@@ -41,10 +41,10 @@ const Load = () => {
     if (order && orderBy)
       return resources.sort((a, b) =>
         order === 'asc'
-          ? (a[orderBy] ?? 0) < (b[orderBy] ?? 0)
+          ? (a[orderBy] ?? 0) > (b[orderBy] ?? 0)
             ? 1
             : -1
-          : (a[orderBy] ?? 0) > (b[orderBy] ?? 0)
+          : (a[orderBy] ?? 0) < (b[orderBy] ?? 0)
             ? 1
             : -1,
       );
