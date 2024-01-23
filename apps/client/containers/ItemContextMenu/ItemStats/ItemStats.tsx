@@ -78,8 +78,12 @@ const Load = ({ itemId, compare = false }: ItemStatsProps) => {
                 <span className={s.itemStats__value}>→</span>
                 <span
                   className={modifiers(s, 'itemStats__value', {
-                    downgrade: stat.prev > stat.next,
-                    upgrade: stat.prev < stat.next,
+                    downgrade:
+                      (stat.next === 'none' && stat.prev !== stat.next) ||
+                      stat.prev > stat.next,
+                    upgrade:
+                      (stat.prev === 'none' && stat.prev !== stat.next) ||
+                      stat.prev < stat.next,
                   })}>
                   {stat.next}
                 </span>
