@@ -1,8 +1,8 @@
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { FormControlLabel, Switch } from '@mui/material';
-import { ItemType, Item as TItem } from '@mhgo/types';
+import { ItemType, Order, Item as TItem } from '@mhgo/types';
 import {
   Button,
   Icon,
@@ -14,24 +14,24 @@ import {
   useItemsApi,
 } from '@mhgo/front';
 
-import { ActionBar, Table } from '../../containers';
+import { ActionBar, Table, TableHeader } from '../../containers';
 
 import s from './ItemsView.module.scss';
 
-const tableHeaders = [
-  'Name',
-  'Description',
-  'Type',
-  'Rarity',
-  'Category',
-  'Purchasable',
-  'Craftable',
-  'Usable',
-  'Equippable',
-  'Consumable',
-  'Quick use',
-  'LVL req.',
-  'Actions',
+const tableHeaders: TableHeader<TItem>[] = [
+  { id: 'name', label: 'Name' },
+  { id: 'description', label: 'Description' },
+  { id: 'type', label: 'Type' },
+  { id: 'rarity', label: 'Rarity' },
+  { id: 'category', label: 'Category' },
+  { id: 'purchasable', label: 'Purchasable' },
+  { id: 'craftable', label: 'Craftable' },
+  { id: 'usable', label: 'Usable' },
+  { id: 'equippable', label: 'Equippable' },
+  { id: 'consumable', label: 'Consumable' },
+  { id: 'quickUse', label: 'Quick use' },
+  { id: 'levelRequirement', label: 'LVL req.' },
+  { id: 'actions', label: 'Actions' },
 ];
 
 const itemFilters: ItemType[] = ['quest', 'other', 'weapon', 'armor'];
@@ -46,6 +46,8 @@ const Load = () => {
   const navigate = useNavigate();
   const { data: items } = useItemsApi();
   const { mutate, isSuccess, isError } = useAdminUpdateItemApi();
+  const [order, setOrder] = useState<Order>('asc');
+  const [orderBy, setOrderBy] = useState<keyof TItem>('levelRequirement');
 
   const { setRoute, route: filter } = useContextualRouting<string>({
     key: 'filter',
@@ -58,8 +60,21 @@ const Load = () => {
   };
 
   const filteredItems = useMemo(() => {
-    return items.filter(item => filter.split(',').includes(item.type));
-  }, [itemFilters, items]);
+    const filtered = items
+      .filter(item => filter.split(',').includes(item.type))
+      .filter(Boolean) as TItem[];
+    if (order && orderBy)
+      return filtered.sort((a, b) =>
+        order === 'asc'
+          ? (a[orderBy] ?? 0) < (b[orderBy] ?? 0)
+            ? 1
+            : -1
+          : (a[orderBy] ?? 0) > (b[orderBy] ?? 0)
+            ? 1
+            : -1,
+      );
+    else return filtered;
+  }, [itemFilters, items, order, orderBy]);
 
   const onSwitch = (checked: boolean, item: TItem, property: keyof TItem) => {
     const updatedItem = {
@@ -164,7 +179,14 @@ const Load = () => {
         }
       />
       <div className={s.itemsView__content}>
-        <Table tableHeaders={tableHeaders} items={tableRows} />
+        <Table
+          tableHeaders={tableHeaders}
+          items={tableRows}
+          order={order}
+          setOrder={setOrder}
+          orderBy={orderBy}
+          setOrderBy={setOrderBy}
+        />
       </div>
     </div>
   );

@@ -1,3 +1,4 @@
+import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Button,
@@ -7,13 +8,18 @@ import {
   Size,
   useResourcesApi,
 } from '@mhgo/front';
-import { Resource } from '@mhgo/types';
+import { Order, Resource } from '@mhgo/types';
 
-import { ActionBar, Table } from '../../containers';
+import { ActionBar, Table, TableHeader } from '../../containers';
 
 import s from './ResourcesView.module.scss';
 
-const tableHeaders = ['Name', 'Description', 'LVL req.', 'Actions'];
+const tableHeaders: TableHeader<Resource>[] = [
+  { id: 'name', label: 'Name' },
+  { id: 'description', label: 'Description' },
+  { id: 'levelRequirements', label: 'LVL req.' },
+  { id: 'actions', label: 'Actions' },
+];
 
 export const ResourcesView = () => (
   <QueryBoundary fallback={<Loader />}>
@@ -24,12 +30,28 @@ export const ResourcesView = () => (
 const Load = () => {
   const navigate = useNavigate();
   const { data: resources } = useResourcesApi();
+  const [order, setOrder] = useState<Order>('asc');
+  const [orderBy, setOrderBy] = useState<keyof Resource>('levelRequirements');
 
   const onResourceEdit = (resource: Resource) => {
     navigate(`/resources/edit?id=${resource.id}`);
   };
 
-  const tableRows = resources.map(resource => [
+  const sortedResources = useMemo(() => {
+    if (order && orderBy)
+      return resources.sort((a, b) =>
+        order === 'asc'
+          ? (a[orderBy] ?? 0) < (b[orderBy] ?? 0)
+            ? 1
+            : -1
+          : (a[orderBy] ?? 0) > (b[orderBy] ?? 0)
+            ? 1
+            : -1,
+      );
+    else return resources;
+  }, [resources, order, orderBy]);
+
+  const tableRows = sortedResources.map(resource => [
     <ResourceCell resource={resource} />,
     <Table.CustomCell content={resource.description} />,
     resource.levelRequirements,
@@ -55,7 +77,14 @@ const Load = () => {
         }
       />
       <div className={s.resourcesView__content}>
-        <Table tableHeaders={tableHeaders} items={tableRows} />
+        <Table
+          tableHeaders={tableHeaders}
+          items={tableRows}
+          order={order}
+          setOrder={setOrder}
+          orderBy={orderBy}
+          setOrderBy={setOrderBy}
+        />
       </div>
     </div>
   );

@@ -1,5 +1,6 @@
+import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Monster } from '@mhgo/types';
+import { Monster, Order } from '@mhgo/types';
 import {
   Button,
   Icon,
@@ -8,21 +9,21 @@ import {
   Size,
   useMonstersApi,
 } from '@mhgo/front';
-import { ActionBar, Table } from '../../containers';
+import { ActionBar, Table, TableHeader } from '../../containers';
 
 import s from './MonstersView.module.scss';
 
-const tableHeaders = [
-  'Name',
-  'Habitat',
-  'Base HP',
-  'Base damage',
-  'Base AS',
-  'Base DPS',
-  'Base EXP',
-  'Base payment',
-  'LVL req.',
-  'Actions',
+const tableHeaders: TableHeader<Monster & { baseDPS: number }>[] = [
+  { id: 'name', label: 'Name' },
+  { id: 'habitat', label: 'Habitat' },
+  { id: 'baseHP', label: 'Base HP' },
+  { id: 'baseDamage', label: 'Base damage' },
+  { id: 'baseAttackSpeed', label: 'Base AS' },
+  { id: 'baseDPS', label: 'Base DPS' },
+  { id: 'baseExp', label: 'Base EXP' },
+  { id: 'baseWealth', label: 'Base payment' },
+  { id: 'levelRequirements', label: 'LVL req.' },
+  { id: 'actions', label: 'Actions' },
 ];
 
 export const MonstersView = () => (
@@ -34,12 +35,31 @@ export const MonstersView = () => (
 const Load = () => {
   const navigate = useNavigate();
   const { data: monsters } = useMonstersApi();
+  const [order, setOrder] = useState<Order>('asc');
+  const [orderBy, setOrderBy] = useState<keyof Monster | 'baseDPS'>(
+    'levelRequirements',
+  );
 
   const onMonsterEdit = (monster: Monster) => {
     navigate(`/monsters/edit?id=${monster.id}`);
   };
 
-  const tableRows = monsters.map(monster => [
+  const sortedMonsters = useMemo(() => {
+    // Cannot sort by DPS yet, fix in the future
+    if (order && orderBy && orderBy !== 'baseDPS')
+      return monsters.sort((a, b) =>
+        order === 'asc'
+          ? (a[orderBy] ?? 0) < (b[orderBy] ?? 0)
+            ? 1
+            : -1
+          : (a[orderBy] ?? 0) > (b[orderBy] ?? 0)
+            ? 1
+            : -1,
+      );
+    else return monsters;
+  }, [monsters, order, orderBy]);
+
+  const tableRows = sortedMonsters.map(monster => [
     <MonsterCell monster={monster} />,
     monster.habitat,
     monster.baseHP,
@@ -74,7 +94,14 @@ const Load = () => {
         }
       />
       <div className={s.monstersView__content}>
-        <Table tableHeaders={tableHeaders} items={tableRows} />
+        <Table
+          tableHeaders={tableHeaders}
+          items={tableRows}
+          order={order}
+          setOrder={setOrder}
+          orderBy={orderBy}
+          setOrderBy={setOrderBy}
+        />
       </div>
     </div>
   );

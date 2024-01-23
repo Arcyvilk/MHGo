@@ -1,7 +1,8 @@
+import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-import { User } from '@mhgo/types';
+import { AdminUser, Order, User } from '@mhgo/types';
 import { Switch } from '@mui/material';
 import { CDN_URL } from '@mhgo/front/env';
 import {
@@ -14,20 +15,19 @@ import {
   useAdminDeleteUserApi,
   useAdminUpdateUserApi,
 } from '@mhgo/front';
-import { ActionBar, HeaderEdit, Table } from '../../containers';
+import { ActionBar, HeaderEdit, Table, TableHeader } from '../../containers';
 
 import s from './UsersView.module.scss';
-import { useEffect } from 'react';
 
-const tableHeaders = [
-  'Name',
-  'ID',
-  'Exp',
-  'Admin',
-  'Awaiting approval',
-  'Approved',
-  'Banned',
-  'Actions',
+const tableHeaders: TableHeader<AdminUser>[] = [
+  { id: 'name', label: 'Name' },
+  { id: 'id', label: 'ID' },
+  { id: 'exp', label: 'Exp' },
+  { id: 'isAdmin', label: 'Admin' },
+  { id: 'isAwaitingModApproval', label: 'Awaiting approval' },
+  { id: 'isModApproved', label: 'Approved' },
+  { id: 'isBanned', label: 'Banned' },
+  { id: 'actions', label: 'Actions' },
 ];
 export const UsersView = () => (
   <QueryBoundary fallback={<Loader />}>
@@ -38,6 +38,9 @@ export const UsersView = () => (
 const Load = () => {
   const navigate = useNavigate();
   const { data: users } = useAdminAllUsersApi();
+  const [order, setOrder] = useState<Order>('asc');
+  const [orderBy, setOrderBy] = useState<keyof AdminUser>('name');
+
   const {
     mutate: mutateUpdate,
     isSuccess,
@@ -69,7 +72,21 @@ const Load = () => {
     if (shouldDeleteUser) mutateDelete(user.id);
   };
 
-  const tableRows = users.map(user => [
+  const sortedUsers = useMemo(() => {
+    if (order && orderBy)
+      return users.sort((a, b) =>
+        order === 'asc'
+          ? (a[orderBy] ?? 0) < (b[orderBy] ?? 0)
+            ? 1
+            : -1
+          : (a[orderBy] ?? 0) > (b[orderBy] ?? 0)
+            ? 1
+            : -1,
+      );
+    else return users;
+  }, [users, order, orderBy]);
+
+  const tableRows = sortedUsers.map(user => [
     <ItemCell user={user} />,
     <Table.CustomCell content={user.id} />,
     user.exp,
@@ -130,7 +147,14 @@ const Load = () => {
         buttons={<Button label="Create new user" onClick={onUserCreate} />}
       />
       <div className={s.usersView__content}>
-        <Table tableHeaders={tableHeaders} items={tableRows} />
+        <Table
+          tableHeaders={tableHeaders}
+          items={tableRows}
+          order={order}
+          setOrder={setOrder}
+          orderBy={orderBy}
+          setOrderBy={setOrderBy}
+        />
       </div>
     </div>
   );
