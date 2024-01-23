@@ -86,6 +86,24 @@
     &--rarity-5 {
       border: 3px solid $color-rarity-5;
     }
+    &--rarity-6 {
+      position: relative;
+      padding: 3px;
+      border: none;
+      &::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border: 3px solid transparent;
+        border-radius: $size-6;
+        background: linear-gradient(-270deg, #b827fc 0%, #2c90fc 25%, #b8fd33 50%, #fec837 75%, #fd1818 100%);
+        -webkit-mask: 
+          linear-gradient(#fff 0 0) content-box, 
+          linear-gradient(#fff 0 0);
+        -webkit-mask-composite: xor;
+                mask-composite: exclude; 
+      }
+    }
   }
 
   &__name {
@@ -142,6 +160,7 @@
     color: $color-white;
     padding: 2px 4px;
     background-color: $color-rarity-1;
+  
 
     &--rarity-1 {
       background-color: $color-rarity-1;
@@ -157,6 +176,13 @@
     }
     &--rarity-5 {
       background-color: $color-rarity-5;
+    }
+    &--rarity-6 {
+      margin-bottom: -2px;
+      border-radius: 0 0 $size-6 $size-6;
+      background-color: transparent;
+      background: linear-gradient(90deg, #b827fc 0%, #2c90fc 25%, #b8fd33 50%, #fec837 75%, #fd1818 100%);
+      width: calc(100% + 4px);
     }
   }
 
