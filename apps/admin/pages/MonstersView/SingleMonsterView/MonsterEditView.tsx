@@ -13,6 +13,7 @@ import {
   useAdminUpdateMonsterDropsApi,
   QueryBoundary,
   Loader,
+  removeCdnUrl,
 } from '@mhgo/front';
 import { ActionBar, HeaderEdit, IconInfo } from '../../../containers';
 import { Status } from '../../../utils/types';
@@ -397,11 +398,11 @@ const useUpdateMonster = (
   const { mutateMonster, mutateMonsterDrops } = useStatus(setStatus);
 
   const monsterImg = useMemo(
-    () => updatedMonster?.img.replace(CDN_URL, '') ?? '',
+    () => removeCdnUrl(updatedMonster?.img),
     [monster],
   );
   const monsterThumbnail = useMemo(
-    () => updatedMonster?.thumbnail.replace(CDN_URL, '') ?? '',
+    () => removeCdnUrl(updatedMonster?.thumbnail),
     [monster],
   );
 

@@ -2,16 +2,20 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Material } from '@mhgo/types';
 
 import { API_URL } from '../../env';
-import { fetcher } from '../..';
+import { fetcher, removeCdnUrl } from '../..';
 
 // Create material
 export const useAdminCreateMaterialApi = () => {
   const queryClient = useQueryClient();
 
   const adminCreateMaterial = async (variables: Material): Promise<void> => {
+    const fixedMaterial = {
+      ...variables,
+      img: removeCdnUrl(variables.img),
+    };
     const response = await fetcher(`${API_URL}/admin/materials/create`, {
       method: 'POST',
-      body: JSON.stringify(variables),
+      body: JSON.stringify(fixedMaterial),
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
@@ -37,11 +41,15 @@ export const useAdminUpdateMaterialApi = () => {
 
   const adminUpdateMaterial = async (variables: Material): Promise<void> => {
     const { id, ...materialProperties } = variables;
+    const fixedMaterialProperties = {
+      ...materialProperties,
+      img: removeCdnUrl(materialProperties.img),
+    };
     const response = await fetcher(
-      `${API_URL}/admin/materials/material/${variables.id}`,
+      `${API_URL}/admin/materials/material/${id}`,
       {
         method: 'PUT',
-        body: JSON.stringify(materialProperties),
+        body: JSON.stringify(fixedMaterialProperties),
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',

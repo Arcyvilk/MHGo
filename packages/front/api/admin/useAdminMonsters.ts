@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Monster, MonsterDrop } from '@mhgo/types';
 
 import { API_URL } from '../../env';
-import { fetcher } from '../..';
+import { fetcher, removeCdnUrl } from '../..';
 
 // Create monster
 export const useAdminCreateMonsterApi = () => {
@@ -12,9 +12,15 @@ export const useAdminCreateMonsterApi = () => {
     monster: Monster;
     drops: MonsterDrop;
   }): Promise<void> => {
+    const { monster, drops } = variables;
+    const fixedMonsterProperties = {
+      ...monster,
+      img: removeCdnUrl(monster.img),
+      thumbnail: removeCdnUrl(monster.thumbnail),
+    };
     const response = await fetcher(`${API_URL}/admin/monsters/create`, {
       method: 'POST',
-      body: JSON.stringify(variables),
+      body: JSON.stringify({ monster: fixedMonsterProperties, drops }),
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
@@ -39,11 +45,16 @@ export const useAdminUpdateMonsterApi = () => {
 
   const adminUpdateMonster = async (variables: Monster): Promise<void> => {
     const { id, ...monsterProperties } = variables;
+    const fixedMonsterProperties = {
+      ...monsterProperties,
+      img: removeCdnUrl(monsterProperties.img),
+      thumbnail: removeCdnUrl(monsterProperties.thumbnail),
+    };
     const response = await fetcher(
       `${API_URL}/admin/monsters/monster/${variables.id}`,
       {
         method: 'PUT',
-        body: JSON.stringify(monsterProperties),
+        body: JSON.stringify(fixedMonsterProperties),
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',

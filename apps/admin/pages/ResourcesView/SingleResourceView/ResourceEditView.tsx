@@ -7,6 +7,7 @@ import {
   Input,
   Loader,
   QueryBoundary,
+  removeCdnUrl,
   useAdminUpdateResourceApi,
   useResourcesApi,
 } from '@mhgo/front';
@@ -168,7 +169,8 @@ const useUpdateResource = (
   const params = new URLSearchParams(location.search);
   const id = params.get('id');
 
-  const { data: resources, isFetched: isResourcesFetched } = useResourcesApi(true);
+  const { data: resources, isFetched: isResourcesFetched } =
+    useResourcesApi(true);
 
   const resource = useMemo(
     () => resources.find(i => i.id === id),
@@ -183,11 +185,11 @@ const useUpdateResource = (
   const { mutateResource } = useStatus(setStatus);
 
   const resourceImg = useMemo(
-    () => updatedResource?.img.replace(CDN_URL, '') ?? '',
+    () => removeCdnUrl(updatedResource?.img),
     [resources],
   );
   const resourceThumbnail = useMemo(
-    () => updatedResource?.thumbnail.replace(CDN_URL, '') ?? '',
+    () => removeCdnUrl(updatedResource?.thumbnail),
     [resources],
   );
 

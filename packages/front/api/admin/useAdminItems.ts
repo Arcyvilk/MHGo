@@ -9,7 +9,7 @@ import {
 } from '@mhgo/types';
 
 import { API_URL } from '../../env';
-import { fetcher } from '../..';
+import { fetcher, removeCdnUrl } from '../..';
 
 type ItemCreate = {
   item: Item;
@@ -22,9 +22,16 @@ export const useAdminCreateItemApi = () => {
   const queryClient = useQueryClient();
 
   const adminCreateItem = async (variables: ItemCreate): Promise<void> => {
+    const fixedItem = {
+      ...variables,
+      item: {
+        ...variables.item,
+        img: removeCdnUrl(variables.item.img),
+      },
+    };
     const response = await fetcher(`${API_URL}/admin/items/create`, {
       method: 'post',
-      body: JSON.stringify(variables),
+      body: JSON.stringify(fixedItem),
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
@@ -49,17 +56,18 @@ export const useAdminUpdateItemApi = () => {
 
   const adminUpdateItem = async (variables: Item): Promise<void> => {
     const { id, ...itemProperties } = variables;
-    const response = await fetcher(
-      `${API_URL}/admin/items/item/${variables.id}`,
-      {
-        method: 'PUT',
-        body: JSON.stringify(itemProperties),
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-        },
+    const fixedItem = {
+      ...itemProperties,
+      img: removeCdnUrl(itemProperties.img),
+    };
+    const response = await fetcher(`${API_URL}/admin/items/item/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(fixedItem),
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
       },
-    );
+    });
 
     if (response.status !== 200 && response.status !== 201)
       throw new Error((await response.json()).error ?? 'Did not work!');

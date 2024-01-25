@@ -9,6 +9,7 @@ import {
   Item,
   Loader,
   QueryBoundary,
+  removeCdnUrl,
   useAdminUpdateMaterialApi,
   useMaterialsApi,
   useMonsterDropsApi,
@@ -211,7 +212,7 @@ const useUpdateMaterial = () => {
   const { mutate, isSuccess, isError, isPending } = useAdminUpdateMaterialApi();
 
   const materialImg = useMemo(
-    () => updatedMaterial?.img.replace(CDN_URL, '') ?? '',
+    () => removeCdnUrl(updatedMaterial?.img),
     [materials],
   );
 

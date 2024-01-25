@@ -22,8 +22,6 @@ export const usePrefetch = (isLoggedIn: boolean) => {
   const prefetch = async (index: number) => {
     if (index < allToPrefetch.length) {
       const itemToPrefetch = allToPrefetch[index];
-      // cacheId is used to force refetch the item and refresh the cache
-      // whenever it's needed
       await fetch(itemToPrefetch);
       setProgress(prevProgress => prevProgress + 1);
       await prefetch(index + 1);

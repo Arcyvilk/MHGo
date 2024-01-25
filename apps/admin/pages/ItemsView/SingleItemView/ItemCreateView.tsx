@@ -6,6 +6,7 @@ import {
   Button,
   Loader,
   QueryBoundary,
+  removeCdnUrl,
   useAdminCreateItemApi,
 } from '@mhgo/front';
 import { ActionBar, HeaderEdit } from '../../../containers';
@@ -113,7 +114,7 @@ const useUpdateItem = (setStatus: (status: Status) => void) => {
   const [itemStats, setItemStats] = useState(DEFAULT_STATS);
   const [itemPrice, setItemPrice] = useState<UserAmount[]>([]);
 
-  const itemImg = useMemo(() => item?.img.replace(CDN_URL, '') ?? '', [item]);
+  const itemImg = useMemo(() => removeCdnUrl(item?.img), [item]);
 
   const { mutateItem } = useStatus(setStatus);
 

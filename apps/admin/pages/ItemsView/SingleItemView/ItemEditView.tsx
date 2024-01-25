@@ -5,6 +5,7 @@ import {
   Button,
   Loader,
   QueryBoundary,
+  removeCdnUrl,
   useAdminUpdateItemActionApi,
   useAdminUpdateItemApi,
   useAdminUpdateItemCraftlistApi,
@@ -191,10 +192,7 @@ const useUpdateItem = (setStatus: (status: Status) => void) => {
   } = useStatus(setStatus);
 
   // OTHER
-  const itemImg = useMemo(
-    () => updatedItem?.img.replace(CDN_URL, '') ?? '',
-    [items],
-  );
+  const itemImg = useMemo(() => removeCdnUrl(updatedItem?.img), [items]);
 
   const onSave = () => {
     if (updatedItem)

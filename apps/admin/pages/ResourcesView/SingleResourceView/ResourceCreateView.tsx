@@ -2,7 +2,12 @@ import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CDN_URL } from '@mhgo/front/env';
 import { Resource } from '@mhgo/types';
-import { Button, Input, useAdminCreateResourceApi } from '@mhgo/front';
+import {
+  Button,
+  Input,
+  removeCdnUrl,
+  useAdminCreateResourceApi,
+} from '@mhgo/front';
 
 import { ActionBar, HeaderEdit } from '../../../containers';
 import { DEFAULT_RESOURCE } from '../../../utils/defaults';
@@ -124,12 +129,9 @@ const useUpdateResource = (
   const [resource, setResource] = useState<Resource>(DEFAULT_RESOURCE);
   const { mutateResource } = useStatus(setStatus);
 
-  const resourceImg = useMemo(
-    () => resource?.img.replace(CDN_URL, '') ?? '',
-    [resource],
-  );
+  const resourceImg = useMemo(() => removeCdnUrl(resource?.img), [resource]);
   const resourceThumbnail = useMemo(
-    () => resource?.thumbnail.replace(CDN_URL, '') ?? '',
+    () => removeCdnUrl(resource?.thumbnail),
     [resource],
   );
 

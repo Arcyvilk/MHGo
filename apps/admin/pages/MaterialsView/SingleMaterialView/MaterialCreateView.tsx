@@ -9,6 +9,7 @@ import {
   Item,
   Loader,
   QueryBoundary,
+  removeCdnUrl,
   useAdminCreateMaterialApi,
 } from '@mhgo/front';
 
@@ -123,10 +124,7 @@ const useUpdateMaterial = () => {
 
   const { mutate, isSuccess, isError, isPending } = useAdminCreateMaterialApi();
 
-  const materialImg = useMemo(
-    () => material?.img.replace(CDN_URL, '') ?? '',
-    [material],
-  );
+  const materialImg = useMemo(() => removeCdnUrl(material?.img), [material]);
 
   const onCreate = () => {
     if (material)

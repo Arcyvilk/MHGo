@@ -10,6 +10,7 @@ import {
   Loader,
   QueryBoundary,
   Select,
+  removeCdnUrl,
   useAdminCreateMonsterApi,
 } from '@mhgo/front';
 import { MonsterDrops } from './MonsterDrops';
@@ -348,12 +349,9 @@ const useUpdateMonster = (
   const [monster, setMonster] = useState<Monster>(DEFAULT_MONSTER);
   const { mutate } = useStatus(setStatus);
 
-  const monsterImg = useMemo(
-    () => monster?.img.replace(CDN_URL, '') ?? '',
-    [monster],
-  );
+  const monsterImg = useMemo(() => removeCdnUrl(monster?.img), [monster]);
   const monsterThumbnail = useMemo(
-    () => monster?.thumbnail.replace(CDN_URL, '') ?? '',
+    () => removeCdnUrl(monster?.thumbnail),
     [monster],
   );
 
