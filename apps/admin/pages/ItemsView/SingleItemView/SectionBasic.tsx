@@ -11,7 +11,12 @@ type BasicProps = {
   item: TItem;
   setItem: (item: TItem) => void;
   itemImg: string;
-  itemDrops?: { monsterId: string; level: number }[];
+  itemDrops?: {
+    monsterId: string;
+    level: number;
+    chance: number;
+    amount: number;
+  }[];
 };
 export const SectionBasic = ({
   item,
@@ -160,7 +165,11 @@ export const SectionBasic = ({
                     variant={Button.Variant.GHOST}
                     inverted
                     simple
-                    label={`${drop.monsterId} (level ${drop.level})`}
+                    label={`LVL ${
+                      drop.level
+                    } ${drop.monsterId.toUpperCase()} [x${drop.amount}] [${
+                      drop.chance
+                    }%]`}
                     onClick={() =>
                       navigate(`/monsters/edit?id=${drop.monsterId}`)
                     }

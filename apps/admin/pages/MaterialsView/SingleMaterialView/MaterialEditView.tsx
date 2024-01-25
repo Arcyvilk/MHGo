@@ -136,7 +136,11 @@ const Load = () => {
                       variant={Button.Variant.GHOST}
                       simple
                       inverted
-                      label={`${drop.monsterId} (level ${drop.level})`}
+                      label={`LVL ${
+                        drop.level
+                      } ${drop.monsterId.toUpperCase()} [x${drop.amount}] [${
+                        drop.chance
+                      }%]`}
                       onClick={() =>
                         navigate(`/monsters/edit?id=${drop.monsterId}`)
                       }
@@ -158,7 +162,9 @@ const Load = () => {
                       variant={Button.Variant.GHOST}
                       simple
                       inverted
-                      label={resource.name}
+                      label={`${resource.name.toUpperCase()} [x${
+                        resource.amount
+                      }] [${resource.chance}%]`}
                       onClick={() =>
                         navigate(`/resources/edit?id=${resource.id}`)
                       }
@@ -189,18 +195,42 @@ const useUpdateMaterial = () => {
   const [updatedMaterial, setUpdatedMaterial] = useState(material);
 
   const materialDrops = useMemo(() => {
-    const monsters: { monsterId: string; level: number }[] = [];
+    const monsters: {
+      monsterId: string;
+      level: number;
+      chance: number;
+      amount: number;
+    }[] = [];
     drops.forEach(drop =>
       drop.drops.map(levelDrop => {
-        if (levelDrop.drops.some(d => d.id === material?.id))
-          monsters.push({ monsterId: drop.monsterId, level: levelDrop.level });
+        const isDropped = levelDrop.drops.find(d => d.id === material?.id);
+        if (isDropped)
+          monsters.push({
+            monsterId: drop.monsterId,
+            level: levelDrop.level,
+            chance: isDropped.chance,
+            amount: isDropped.amount,
+          });
       }),
     );
-    const resourceDrops = resources
-      .filter(resource =>
-        resource.drops.some(resource => resource.materialId === material?.id),
-      )
-      .map(resource => ({ name: resource.name, id: resource.id }));
+    const resourceDrops: {
+      id: string;
+      name: string;
+      chance: number;
+      amount: number;
+    }[] = [];
+    resources.forEach(resource =>
+      resource.drops.map(resourceDrop => {
+        const isDropped = resourceDrop.materialId === material?.id;
+        if (isDropped)
+          resourceDrops.push({
+            id: resource.id,
+            name: resource.name,
+            chance: resourceDrop.chance,
+            amount: resourceDrop.amount,
+          });
+      }),
+    );
 
     return { monsters, resourceDrops };
   }, [drops, isDropsFetched]);

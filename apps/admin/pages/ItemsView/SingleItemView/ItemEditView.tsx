@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { CDN_URL } from '@mhgo/front/env';
 import {
   Button,
   Loader,
@@ -166,11 +165,22 @@ const useUpdateItem = (setStatus: (status: Status) => void) => {
   // ITEM DROPS API
   const { data: drops, isFetched: isDropsFetched } = useMonsterDropsApi();
   const itemDrops = useMemo(() => {
-    const monsters: { monsterId: string; level: number }[] = [];
+    const monsters: {
+      monsterId: string;
+      level: number;
+      chance: number;
+      amount: number;
+    }[] = [];
     drops.forEach(drop =>
       drop.drops.map(levelDrop => {
-        if (levelDrop.drops.some(d => d.id === item?.id))
-          monsters.push({ monsterId: drop.monsterId, level: levelDrop.level });
+        const isDropped = levelDrop.drops.find(d => d.id === item?.id);
+        if (isDropped)
+          monsters.push({
+            monsterId: drop.monsterId,
+            level: levelDrop.level,
+            chance: isDropped.chance,
+            amount: isDropped.amount,
+          });
       }),
     );
     return monsters;

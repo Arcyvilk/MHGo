@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CraftList, ItemAction, Item as TItem, UserAmount } from '@mhgo/types';
-import { CDN_URL } from '@mhgo/front/env';
 import {
   Button,
   Loader,
