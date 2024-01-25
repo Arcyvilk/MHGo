@@ -332,22 +332,29 @@ import {
   getSingleMonsterMarker,
   getAllMonsterMarkers,
   getAllResourceMarkers,
+  getSingleResourceMarker,
   getMonsterMarkersByUserId,
   getResourceMarkersByUserId,
 } from './markers';
 
-routerV1.get('/map/markers/monsters/list', verifyToken, getAllMonsterMarkers);
-routerV1.get('/map/markers/resources/list', verifyToken, getAllResourceMarkers);
 routerV1.get(
   '/map/markers/monsters/:markerId',
   verifyToken,
   getSingleMonsterMarker,
 );
+routerV1.get('/map/markers/monsters/list', verifyToken, getAllMonsterMarkers);
 routerV1.get(
   '/map/monsters/user/:userId',
   verifyToken,
   getMonsterMarkersByUserId,
 );
+
+routerV1.get(
+  '/map/markers/resources/:markerId',
+  verifyToken,
+  getSingleResourceMarker,
+);
+routerV1.get('/map/markers/resources/list', verifyToken, getAllResourceMarkers);
 routerV1.get(
   '/map/resources/user/:userId',
   verifyToken,

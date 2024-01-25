@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback, useMemo } from 'react';
 
-import { Item } from '@mhgo/front';
+import { Item, useUserMaterialsApi } from '@mhgo/front';
 import { addCdnUrl, useResourceMarkerDropsApi } from '@mhgo/front';
 import { useUser } from '../../hooks/useUser';
 import { Button, Loader, Modal, QueryBoundary } from '@mhgo/front';
@@ -94,6 +94,8 @@ const Load = ({ onClose }: { onClose: () => void }) => {
 };
 
 const useForagingAchievements = () => {
+  const { userId } = useUser();
+  const { data: userMaterials } = useUserMaterialsApi(userId);
   const [achievementId, setAchievementId] = useState<string | null>();
   const [isModalAchievementOpen, setIsModalAchievementOpen] = useState(false);
   const {
@@ -110,6 +112,18 @@ const useForagingAchievements = () => {
   }, [isAchievementUpdateSuccess]);
 
   const updateAchievement = (drops: Material[]) => {
+    // BUG COLLECTOR ACHIEVEMENT
+    const bugIds = ['bug1', 'bug2', 'bug3', 'bug4', 'bug5'];
+    if (drops.some(drop => bugIds.includes(drop.id))) {
+      const foundBugs =
+        userMaterials.filter(m => bugIds.includes(m.id))?.length ?? 0;
+      mutate({
+        achievementId: AchievementId.BUG_COLLECTOR,
+        progress: 0,
+        newValue: foundBugs,
+      });
+    }
+    // EASTER EGG ACHIEVEMENT
     if (drops.some(drop => drop.id === 'easter_egg')) {
       setAchievementId(AchievementId.EASTER_EGG);
       mutate({ achievementId: AchievementId.EASTER_EGG, progress: 1 });

@@ -25,12 +25,7 @@ const Load = ({ coords }: MonsterMarkersProps) => {
   const { navigateWithoutScroll } = useNavigateWithScroll();
   const { playSound } = useSounds(undefined);
 
-  // We make coords less precise so we don't refetch every second
-  const fixedCoords = coords
-    ? [Number(coords[0].toFixed(2)), Number(coords[1].toFixed(2))]
-    : undefined;
-
-  const monsterMarkers = useMonsterMapMarkers(fixedCoords);
+  const monsterMarkers = useMonsterMapMarkers(coords);
 
   return (
     <>

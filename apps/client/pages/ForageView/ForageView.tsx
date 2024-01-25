@@ -15,15 +15,15 @@ import {
   useLocalStorage,
   useSounds,
   useNavigateWithScroll,
-  useResourceMarkersApi,
   addCdnUrl,
+  useSingleResourceMarkerApi,
 } from '@mhgo/front';
 
 import { DEFAULT_COORDS, DEFAULT_MAP_RADIUS } from '../../utils/consts';
 import { useAppContext } from '../../utils/context';
 import { ModalForage } from './ModalForage';
+
 import s from './ForageView.module.scss';
-import { useUser } from '../../hooks/useUser';
 
 export const ForageView = () => (
   <QueryBoundary fallback={<Loader fullScreen />}>
@@ -116,7 +116,7 @@ const Header = ({ name = '?' }: HeaderProps) => {
 };
 
 const useResource = () => {
-  const { userId } = useUser();
+  const { navigateWithoutScroll } = useNavigateWithScroll();
   const { data: resources } = useResourcesApi();
   const { setting: mapRadius } = useSettingsApi(
     'map_radius',
@@ -127,15 +127,14 @@ const useResource = () => {
     DEFAULT_COORDS,
   );
 
-  const { data: resourceMarkers } = useResourceMarkersApi(userId, coords);
-
   const params = new URLSearchParams(location.search);
   const resourceId = params.get('id');
 
-  const resourceMarker = resourceMarkers.find(
-    // @ts-expect-error _id in fact exists
-    r => String(r._id) === resourceId,
-  );
+  useEffect(() => {
+    if (!resourceId) navigateWithoutScroll('/');
+  }, [resourceId]);
+
+  const { data: resourceMarker } = useSingleResourceMarkerApi(resourceId);
   const resource = resources.find(r => r.id === resourceMarker?.resourceId);
 
   const coordsResource = resourceMarker?.coords ?? [0, 0];

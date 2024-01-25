@@ -3,6 +3,7 @@ import {
   LSKeys,
   useLocalStorage,
   useMonstersApi,
+  useNavigateWithScroll,
   useSettingsApi,
   useSingleMonsterMarkerApi,
 } from '@mhgo/front';
@@ -12,11 +13,18 @@ import {
   MONSTER_MARKER_MISSING,
   DEFAULT_COORDS,
 } from '../utils/consts';
+import { useEffect } from 'react';
 
 export const useMonsterMarker = () => {
+  const { navigateWithoutScroll } = useNavigateWithScroll();
+
   const params = new URLSearchParams(location.search);
   const markerId = params.get('id');
   const level = params.get('level') ?? '0';
+
+  useEffect(() => {
+    if (!markerId) navigateWithoutScroll('/');
+  }, [markerId]);
 
   const isTutorial = markerId === 'tutorial';
   const isDummy = markerId === 'dummy';
