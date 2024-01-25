@@ -1,11 +1,14 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { Switch } from '@mui/material';
 import {
   Button,
   Icon,
   Loader,
   QueryBoundary,
   Size,
+  useAdminUpdateMaterialApi,
   useMaterialsApi,
 } from '@mhgo/front';
 import { Material } from '@mhgo/types';
@@ -16,6 +19,7 @@ import { useAppContext } from '../../utils/context';
 import s from './MaterialsView.module.scss';
 
 const tableHeaders: TableHeader<Material>[] = [
+  { id: 'disabled', label: '' },
   { id: 'name', label: 'Name' },
   { id: 'rarity', label: 'Rarity' },
   { id: 'description', label: 'Description' },
@@ -37,10 +41,33 @@ const Load = () => {
   } = useAppContext();
   const navigate = useNavigate();
   const { data: materials } = useMaterialsApi();
+  const { mutate, isSuccess, isError } = useAdminUpdateMaterialApi();
+
+  const onSwitch = (
+    checked: boolean,
+    material: Material,
+    property: keyof Material,
+  ) => {
+    const updatedMaterial = {
+      ...material,
+      [property]: checked,
+    };
+    mutate(updatedMaterial);
+  };
 
   const onMaterialEdit = (material: Material) => {
     navigate(`/materials/edit?id=${material.id}`);
   };
+
+  // TODO Make those two into a hook
+  // and don't display a toast, show "Saving..." and "Saved!" in the header instead
+  useEffect(() => {
+    if (isSuccess) toast.success('Material saved successfully!');
+  }, [isSuccess]);
+
+  useEffect(() => {
+    if (isError) toast.error('Could not save the material :c');
+  }, [isError]);
 
   const sortedMaterials = useMemo(() => {
     if (order && orderBy)
@@ -57,6 +84,11 @@ const Load = () => {
   }, [materials, order, orderBy]);
 
   const tableRows = sortedMaterials.map(material => [
+    <Switch
+      color="default"
+      checked={!material.disabled}
+      onChange={(_, checked) => onSwitch(!checked, material, 'disabled')}
+    />,
     <MaterialCell material={material} />,
     material.rarity,
     <Table.CustomCell content={material.description} />,
@@ -66,6 +98,7 @@ const Load = () => {
       style={{ width: '40px' }}
     />,
   ]);
+
   return (
     <div className={s.materialsView}>
       <div className={s.materialsView__header}>

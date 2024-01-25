@@ -20,6 +20,7 @@ import { useAppContext } from '../../utils/context';
 import s from './ItemsView.module.scss';
 
 const tableHeaders: TableHeader<TItem>[] = [
+  { id: 'disabled', label: '' },
   { id: 'name', label: 'Name' },
   { id: 'description', label: 'Description' },
   { id: 'type', label: 'Type' },
@@ -81,16 +82,16 @@ const Load = () => {
     else return filtered;
   }, [itemFilters, items, order, orderBy]);
 
+  const onItemEdit = (item: TItem) => {
+    navigate(`/items/edit?id=${item.id}`);
+  };
+
   const onSwitch = (checked: boolean, item: TItem, property: keyof TItem) => {
     const updatedItem = {
       ...item,
       [property]: checked,
     };
     mutate(updatedItem);
-  };
-
-  const onItemEdit = (item: TItem) => {
-    navigate(`/items/edit?id=${item.id}`);
   };
 
   // TODO Make those two into a hook
@@ -104,6 +105,11 @@ const Load = () => {
   }, [isError]);
 
   const tableRows = filteredItems.map(item => [
+    <Switch
+      color="default"
+      checked={!item.disabled}
+      onChange={(_, checked) => onSwitch(!checked, item, 'disabled')}
+    />,
     <ItemNameCell item={item} />,
     <Table.CustomCell content={item.description} />,
     item.type,

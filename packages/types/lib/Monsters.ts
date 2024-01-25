@@ -1,11 +1,12 @@
 import { CurrencyType } from './Wealth';
+import { IsDisabled } from './_Misc';
 
 export type BaseWealth = {
   type: CurrencyType;
   amount: number;
 };
 
-export type Monster = {
+export type Monster = IsDisabled & {
   id: string;
   name: string;
   description: string;

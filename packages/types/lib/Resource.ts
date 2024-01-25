@@ -1,4 +1,6 @@
-export type Resource = {
+import { IsDisabled } from './_Misc';
+
+export type Resource = IsDisabled & {
   id: string;
   name: string;
   description: string;

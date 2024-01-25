@@ -18,4 +18,4 @@ export * from './Tutorial';
 export * from './User';
 export * from './Wealth';
 
-export type Order = 'desc' | 'asc';
+export * from './_Misc';

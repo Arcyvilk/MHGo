@@ -1,5 +1,7 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { Switch } from '@mui/material';
 import { Monster } from '@mhgo/types';
 import {
   Button,
@@ -7,6 +9,7 @@ import {
   Loader,
   QueryBoundary,
   Size,
+  useAdminUpdateMonsterApi,
   useMonstersApi,
 } from '@mhgo/front';
 import { ActionBar, Table, TableHeader } from '../../containers';
@@ -15,6 +18,7 @@ import { useAppContext } from '../../utils/context';
 import s from './MonstersView.module.scss';
 
 const tableHeaders: TableHeader<Monster & { baseDPS: number }>[] = [
+  { id: 'disabled', label: '' },
   { id: 'name', label: 'Name' },
   { id: 'description', label: 'Description' },
   { id: 'habitat', label: 'Habitat' },
@@ -43,10 +47,31 @@ const Load = () => {
   } = useAppContext();
   const navigate = useNavigate();
   const { data: monsters } = useMonstersApi();
+  const { mutate, isSuccess, isError } = useAdminUpdateMonsterApi();
+
+  const onSwitch = (
+    checked: boolean,
+    monster: Monster,
+    property: keyof Monster,
+  ) => {
+    const updatedMonster = {
+      ...monster,
+      [property]: checked,
+    };
+    mutate(updatedMonster);
+  };
 
   const onMonsterEdit = (monster: Monster) => {
     navigate(`/monsters/edit?id=${monster.id}`);
   };
+
+  useEffect(() => {
+    if (isSuccess) toast.success('Monster saved successfully!');
+  }, [isSuccess]);
+
+  useEffect(() => {
+    if (isError) toast.error('Could not save the monster :c');
+  }, [isError]);
 
   const sortedMonsters = useMemo(() => {
     // Cannot sort by DPS yet, fix in the future
@@ -64,6 +89,11 @@ const Load = () => {
   }, [monsters, order, orderBy]);
 
   const tableRows = sortedMonsters.map(monster => [
+    <Switch
+      color="default"
+      checked={!monster.disabled}
+      onChange={(_, checked) => onSwitch(!checked, monster, 'disabled')}
+    />,
     <MonsterCell monster={monster} />,
     <Table.CustomCell content={monster.description} />,
     monster.habitat,

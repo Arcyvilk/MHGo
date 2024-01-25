@@ -1,11 +1,14 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { Switch } from '@mui/material';
 import {
   Button,
   Icon,
   Loader,
   QueryBoundary,
   Size,
+  useAdminUpdateResourceApi,
   useResourcesApi,
 } from '@mhgo/front';
 import { Resource } from '@mhgo/types';
@@ -16,6 +19,7 @@ import { useAppContext } from '../../utils/context';
 import s from './ResourcesView.module.scss';
 
 const tableHeaders: TableHeader<Resource>[] = [
+  { id: 'disabled', label: '' },
   { id: 'name', label: 'Name' },
   { id: 'description', label: 'Description' },
   { id: 'levelRequirements', label: 'LVL req.' },
@@ -37,10 +41,33 @@ const Load = () => {
   } = useAppContext();
   const navigate = useNavigate();
   const { data: resources } = useResourcesApi();
+  const { mutate, isSuccess, isError } = useAdminUpdateResourceApi();
 
   const onResourceEdit = (resource: Resource) => {
     navigate(`/resources/edit?id=${resource.id}`);
   };
+
+  const onSwitch = (
+    checked: boolean,
+    resource: Resource,
+    property: keyof Resource,
+  ) => {
+    const updatedResource = {
+      ...resource,
+      [property]: checked,
+    };
+    mutate(updatedResource);
+  };
+
+  // TODO Make those two into a hook
+  // and don't display a toast, show "Saving..." and "Saved!" in the header instead
+  useEffect(() => {
+    if (isSuccess) toast.success('Item saved successfully!');
+  }, [isSuccess]);
+
+  useEffect(() => {
+    if (isError) toast.error('Could not save the item :c');
+  }, [isError]);
 
   const sortedResources = useMemo(() => {
     if (order && orderBy)
@@ -57,6 +84,11 @@ const Load = () => {
   }, [resources, order, orderBy]);
 
   const tableRows = sortedResources.map(resource => [
+    <Switch
+      color="default"
+      checked={!resource.disabled}
+      onChange={(_, checked) => onSwitch(!checked, resource, 'disabled')}
+    />,
     <ResourceCell resource={resource} />,
     <Table.CustomCell content={resource.description} />,
     resource.levelRequirements,
