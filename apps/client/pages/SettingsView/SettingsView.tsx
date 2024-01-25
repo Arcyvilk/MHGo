@@ -42,9 +42,14 @@ export const SettingsView = () => {
   }, [volume]);
 
   const onRefreshCache = () => {
-    queryClient.invalidateQueries();
-    setCacheId({ id: String(Date.now()) });
-    location.reload();
+    const isConfirm = confirm(
+      'Are you sure you want to reload the app? This will redownload all assets and files. If you use mobile data, this might consume a lot of data.',
+    );
+    if (isConfirm) {
+      queryClient.invalidateQueries();
+      setCacheId({ id: String(Date.now()) });
+      location.reload();
+    }
   };
 
   const onDeleteAccountClick = async () => {
