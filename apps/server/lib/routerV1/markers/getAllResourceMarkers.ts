@@ -13,13 +13,9 @@ export const getAllResourceMarkers = async (
 
     const collectionResourceMarkers =
       db.collection<ResourceMarker>('markersResource');
-    const resourceMarkers: ResourceMarker[] = [];
-
-    const cursorResourceMarkers = collectionResourceMarkers.find({});
-
-    for await (const el of cursorResourceMarkers) {
-      resourceMarkers.push(el);
-    }
+    const resourceMarkers: ResourceMarker[] = await collectionResourceMarkers
+      .find()
+      .toArray();
 
     res.status(200).send(resourceMarkers);
   } catch (err: any) {

@@ -56,7 +56,9 @@ export const useMonsterHealthChange = () => {
     // I tried making it do the numbers always follow the cursor,
     // but for some reason it greatly choked the DPS
     particle.classList.add(...classNames);
-    particle.innerText = isRetaliate ? `Retaliate: ${damage}!` : String(damage);
+    particle.innerText = isRetaliate
+      ? `Retaliate: ${damage.toFixed(2)}!`
+      : damage.toFixed(2);
     const wrapper = document.getElementById('monster_wrapper');
     if (wrapper) {
       wrapper.appendChild(particle);

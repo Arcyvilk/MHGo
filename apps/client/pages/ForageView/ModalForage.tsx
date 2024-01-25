@@ -1,17 +1,24 @@
 import { useEffect, useState, useCallback, useMemo } from 'react';
 
+import { Material } from '@mhgo/types';
 import { Item, useUserMaterialsApi } from '@mhgo/front';
-import { addCdnUrl, useResourceMarkerDropsApi } from '@mhgo/front';
-import { useUser } from '../../hooks/useUser';
-import { Button, Loader, Modal, QueryBoundary } from '@mhgo/front';
+import {
+  Button,
+  Loader,
+  Modal,
+  QueryBoundary,
+  addCdnUrl,
+  useResourceMarkerDropsApi,
+} from '@mhgo/front';
 
-import s from './ModalForage.module.scss';
-import { ModalAchievement } from '../../containers';
 import {
   AchievementId,
   useUpdateUserAchievement,
 } from '../../hooks/useUpdateUserAchievement';
-import { Material } from '@mhgo/types';
+import { useUser } from '../../hooks/useUser';
+import { ModalAchievement } from '../../containers';
+
+import s from './ModalForage.module.scss';
 
 type ModalProps = {
   isOpen: boolean;
@@ -33,9 +40,9 @@ const Load = ({ onClose }: { onClose: () => void }) => {
   const params = new URLSearchParams(location.search);
   const markerId = params.get('id') ?? '';
 
-  const [isLootRedeemed, setIsLootRedeemed] = useState(false);
   const { userId } = useUser();
   const { data: drops, mutate, isSuccess } = useResourceMarkerDropsApi(userId);
+  const [isLootRedeemed, setIsLootRedeemed] = useState(false);
 
   const {
     achievementId,
@@ -94,8 +101,6 @@ const Load = ({ onClose }: { onClose: () => void }) => {
 };
 
 const useForagingAchievements = () => {
-  const { userId } = useUser();
-  const { data: userMaterials } = useUserMaterialsApi(userId);
   const [achievementId, setAchievementId] = useState<string | null>();
   const [isModalAchievementOpen, setIsModalAchievementOpen] = useState(false);
   const {
@@ -103,24 +108,34 @@ const useForagingAchievements = () => {
     getIsAchievementUnlocked,
     isSuccess: isAchievementUpdateSuccess,
   } = useUpdateUserAchievement();
+  const { userId } = useUser();
+  const { data: userMaterials } = useUserMaterialsApi(userId);
 
   const isAchievementUnlocked = useMemo(() => {
-    const { unlockedNewAchievement } = getIsAchievementUnlocked(
-      AchievementId.EASTER_EGG,
+    const { unlockedNewAchievement: unlockedEasterEgg } =
+      getIsAchievementUnlocked(AchievementId.EASTER_EGG);
+    const { unlockedNewAchievement: unlockedBugs } = getIsAchievementUnlocked(
+      AchievementId.BUG_COLLECTOR,
     );
-    return unlockedNewAchievement;
+    if (unlockedEasterEgg || unlockedBugs) return true;
+    return false;
   }, [isAchievementUpdateSuccess]);
 
   const updateAchievement = (drops: Material[]) => {
     // BUG COLLECTOR ACHIEVEMENT
     const bugIds = ['bug1', 'bug2', 'bug3', 'bug4', 'bug5'];
-    if (drops.some(drop => bugIds.includes(drop.id))) {
-      const foundBugs =
-        userMaterials.filter(m => bugIds.includes(m.id))?.length ?? 0;
+    const newBugs = drops.filter(d => bugIds.includes(d.id)).map(d => d.id);
+    if (newBugs.length) {
+      const oldBugs = userMaterials
+        .filter(m => m.amount > 0 && bugIds.includes(m.id))
+        .map(m => m.id);
+
+      const allBugs = [...new Set([...oldBugs, ...newBugs])]?.length;
+      setAchievementId(AchievementId.BUG_COLLECTOR);
       mutate({
         achievementId: AchievementId.BUG_COLLECTOR,
         progress: 0,
-        newValue: foundBugs,
+        newValue: allBugs,
       });
     }
     // EASTER EGG ACHIEVEMENT

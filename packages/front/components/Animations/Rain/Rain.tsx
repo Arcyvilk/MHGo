@@ -25,7 +25,6 @@ export const Rain = ({ type, isRaining }: RainProps) => {
     particle.classList.add(s.particle);
     particle.style.left = Math.random() * 100 + '%';
     particle.style.animationDuration = Math.random() * 5 + 3 + 's ';
-    // heart.innerText = "🦄";
     const wrapper = document.getElementById('rainWrapper');
     if (wrapper) {
       wrapper.appendChild(particle);

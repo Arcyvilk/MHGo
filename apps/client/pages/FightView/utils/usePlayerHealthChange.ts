@@ -34,7 +34,7 @@ export const usePlayerHealthChange = () => {
       ' ',
     );
     particle.classList.add(...classNames);
-    particle.innerText = isDodge ? 'Dodged' : String(damage);
+    particle.innerText = isDodge ? 'Dodged' : damage.toFixed(2);
     const wrapper = document.getElementById('user_health_bar');
     if (wrapper) {
       wrapper.appendChild(particle);
