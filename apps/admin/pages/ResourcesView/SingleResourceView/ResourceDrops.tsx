@@ -27,7 +27,7 @@ export const ResourceDrops = (props: ResourceDropsProps) => (
 
 const Load = ({ updatedDrops, setUpdatedDrops }: ResourceDropsProps) => {
   const { data: resources, isFetched } = useResourceDropsApi();
-  const { data: materials } = useMaterialsApi();
+  const { data: materials } = useMaterialsApi(true);
 
   const params = new URLSearchParams(location.search);
   const id = params.get('id');

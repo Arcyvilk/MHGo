@@ -6,7 +6,7 @@ import { CDN_URL } from '@mhgo/front/env';
 import {
   QueryBoundary,
   modifiers,
-  useAllResourceMarkersApi,
+  useAdminAllResourceMarkersApi,
   useResourcesApi,
 } from '@mhgo/front';
 
@@ -28,8 +28,8 @@ const Load = ({
   setSelectedMarker,
   setSelectedCoords,
 }: ResourceMarkerProps) => {
-  const { data: resources } = useResourcesApi();
-  const { data: resourceMarkers } = useAllResourceMarkersApi();
+  const { data: resources } = useResourcesApi(true);
+  const { data: resourceMarkers } = useAdminAllResourceMarkersApi();
 
   return (
     <>

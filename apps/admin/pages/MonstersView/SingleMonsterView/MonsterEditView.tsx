@@ -382,7 +382,7 @@ const useUpdateMonster = (
   const params = new URLSearchParams(location.search);
   const id = params.get('id');
 
-  const { data: monsters, isFetched: isMonsterFetched } = useMonstersApi();
+  const { data: monsters, isFetched: isMonsterFetched } = useMonstersApi(true);
 
   const monster = useMemo(
     () => monsters.find(i => i.id === id),

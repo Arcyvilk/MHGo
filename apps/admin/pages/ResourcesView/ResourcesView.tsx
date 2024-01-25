@@ -40,7 +40,7 @@ const Load = () => {
     setOrderByResource: setOrderBy,
   } = useAppContext();
   const navigate = useNavigate();
-  const { data: resources } = useResourcesApi();
+  const { data: resources } = useResourcesApi(true);
   const { mutate, isSuccess, isError } = useAdminUpdateResourceApi();
 
   const onResourceEdit = (resource: Resource) => {

@@ -40,7 +40,7 @@ const Load = () => {
     setOrderByMaterial: setOrderBy,
   } = useAppContext();
   const navigate = useNavigate();
-  const { data: materials } = useMaterialsApi();
+  const { data: materials } = useMaterialsApi(true);
   const { mutate, isSuccess, isError } = useAdminUpdateMaterialApi();
 
   const onSwitch = (

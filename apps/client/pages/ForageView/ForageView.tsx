@@ -7,7 +7,6 @@ import {
   Rays,
   Nuke,
   modifiers,
-  useAllResourceMarkersApi,
   useResourcesApi,
   useSettingsApi,
   InfoBar,
@@ -16,12 +15,14 @@ import {
   useLocalStorage,
   useSounds,
   useNavigateWithScroll,
+  useResourceMarkersApi,
 } from '@mhgo/front';
 
 import { DEFAULT_COORDS, DEFAULT_MAP_RADIUS } from '../../utils/consts';
 import { useAppContext } from '../../utils/context';
 import { ModalForage } from './ModalForage';
 import s from './ForageView.module.scss';
+import { useUser } from '../../hooks/useUser';
 
 export const ForageView = () => (
   <QueryBoundary fallback={<Loader fullScreen />}>
@@ -108,8 +109,8 @@ const Header = ({ name = '?' }: HeaderProps) => {
 };
 
 const useResource = () => {
+  const { userId } = useUser();
   const { data: resources } = useResourcesApi();
-  const { data: resourceMarkers } = useAllResourceMarkersApi();
   const { setting: mapRadius } = useSettingsApi(
     'map_radius',
     DEFAULT_MAP_RADIUS,
@@ -118,6 +119,8 @@ const useResource = () => {
     LSKeys.MHGO_LAST_KNOWN_LOCATION,
     DEFAULT_COORDS,
   );
+
+  const { data: resourceMarkers } = useResourceMarkersApi(userId, coords);
 
   const params = new URLSearchParams(location.search);
   const resourceId = params.get('id');

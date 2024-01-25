@@ -14,7 +14,7 @@ import {
   useAdminDeleteResourceMarkerApi,
   useAdminUpdateMonsterMarkerApi,
   useAdminUpdateResourceMarkerApi,
-  useAllResourceMarkersApi,
+  useAdminAllResourceMarkersApi,
   useMonstersApi,
   useResourcesApi,
 } from '@mhgo/front';
@@ -264,12 +264,12 @@ const useUpdateMonsterMarker = (
   setStatus: (status: Status) => void,
 ) => {
   const [markerType, setMarkerType] = useState(MarkerType.MONSTER);
-  const { data: monsters } = useMonstersApi();
-  const { data: resources } = useResourcesApi();
+  const { data: monsters } = useMonstersApi(true);
+  const { data: resources } = useResourcesApi(true);
   const { data: monsterMarkers, isFetched: isMonstersFetched } =
     useAdminAllMonsterMarkersApi();
   const { data: resourceMarkers, isFetched: isResourcesFetched } =
-    useAllResourceMarkersApi();
+    useAdminAllResourceMarkersApi();
 
   const {
     mutateUpdateMonsterMarker,

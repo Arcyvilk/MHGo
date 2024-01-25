@@ -127,7 +127,7 @@ const useUpdateItem = (setStatus: (status: Status) => void) => {
   const id = params.get('id');
 
   // ITEM API
-  const { data: items, isFetched: isItemFetched } = useItemsApi();
+  const { data: items, isFetched: isItemFetched } = useItemsApi(true);
 
   const item = useMemo(
     () => items.find(i => i.id === id),

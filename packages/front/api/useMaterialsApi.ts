@@ -4,7 +4,7 @@ import { API_URL } from '../env';
 import { addCdnUrl } from '../utils/addCdnUrl';
 import { fetcher } from '..';
 
-export const useMaterialsApi = () => {
+export const useMaterialsApi = (withDisabled: boolean = false) => {
   const getMaterials = async (): Promise<Material[]> => {
     const res = await fetcher(`${API_URL}/materials/list`);
     return res.json();
@@ -20,10 +20,12 @@ export const useMaterialsApi = () => {
     queryFn: getMaterials,
   });
 
-  const data = materials.map(material => ({
-    ...material,
-    img: addCdnUrl(material.img),
-  }));
+  const data = materials
+    .filter(material => (withDisabled ? true : !material.disabled))
+    .map(material => ({
+      ...material,
+      img: addCdnUrl(material.img),
+    }));
 
   return { data, isLoading, isFetched, isError };
 };

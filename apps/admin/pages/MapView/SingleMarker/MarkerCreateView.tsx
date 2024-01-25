@@ -257,8 +257,8 @@ const useUpdateMarker = (
 
   const { mutateMarkerMonster, mutateResourceMarker } = useStatus(setStatus);
 
-  const { data: monsters } = useMonstersApi();
-  const { data: resources } = useResourcesApi();
+  const { data: monsters } = useMonstersApi(true);
+  const { data: resources } = useResourcesApi(true);
 
   useEffect(() => {
     const coordsChanged =

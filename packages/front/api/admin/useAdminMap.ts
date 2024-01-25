@@ -122,6 +122,25 @@ export const useAdminDeleteMonsterMarkerApi = () => {
   return { mutate, error, status, isPending, isSuccess, isError };
 };
 
+export const useAdminAllResourceMarkersApi = () => {
+  const getResourceMarkers = async (): Promise<ResourceMarker[]> => {
+    const res = await fetcher(`${API_URL}/map/markers/resources/list`);
+    return res.json();
+  };
+
+  const {
+    data = [],
+    isLoading,
+    isFetched,
+    isError,
+  } = useSuspenseQuery<ResourceMarker[], unknown, ResourceMarker[], string[]>({
+    queryKey: ['admin', 'markers', 'resource', 'all'],
+    queryFn: getResourceMarkers,
+  });
+
+  return { data, isLoading, isFetched, isError };
+};
+
 // Create resource marker
 export const useAdminCreateResourceMarkerApi = () => {
   const queryClient = useQueryClient();

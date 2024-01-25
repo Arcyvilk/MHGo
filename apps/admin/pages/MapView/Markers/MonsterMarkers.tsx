@@ -27,7 +27,7 @@ const Load = ({
   setSelectedMarker,
   setSelectedCoords,
 }: MonsterMarkerProps) => {
-  const { data: monsters } = useMonstersApi();
+  const { data: monsters } = useMonstersApi(true);
   const { data: monsterMarkers } = useAdminAllMonsterMarkersApi();
 
   return (

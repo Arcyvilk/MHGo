@@ -12,7 +12,7 @@ import { API_URL } from '../env';
 import { addCdnUrl } from '../utils/addCdnUrl';
 import { fetcher } from '..';
 
-export const useItemsApi = () => {
+export const useItemsApi = (withDisabled: boolean = false) => {
   const getItems = async (): Promise<Item[]> => {
     const res = await fetcher(`${API_URL}/items/list`);
     return res.json();
@@ -29,10 +29,12 @@ export const useItemsApi = () => {
     staleTime: Infinity,
   });
 
-  const data = items.map(item => ({
-    ...item,
-    img: addCdnUrl(item.img),
-  }));
+  const data = items
+    .filter(item => (withDisabled ? true : !item.disabled))
+    .map(item => ({
+      ...item,
+      img: addCdnUrl(item.img),
+    }));
 
   return { data, isLoading, isFetched, isError };
 };

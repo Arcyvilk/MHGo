@@ -46,7 +46,7 @@ const Load = () => {
     setOrderByMonster: setOrderBy,
   } = useAppContext();
   const navigate = useNavigate();
-  const { data: monsters } = useMonstersApi();
+  const { data: monsters } = useMonstersApi(true);
   const { mutate, isSuccess, isError } = useAdminUpdateMonsterApi();
 
   const onSwitch = (

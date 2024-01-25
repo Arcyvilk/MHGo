@@ -52,7 +52,7 @@ const Load = () => {
     setOrderByItem: setOrderBy,
   } = useAppContext();
   const navigate = useNavigate();
-  const { data: items } = useItemsApi();
+  const { data: items } = useItemsApi(true);
   const { mutate, isSuccess, isError } = useAdminUpdateItemApi();
 
   const { setRoute, route: filter } = useContextualRouting<string>({

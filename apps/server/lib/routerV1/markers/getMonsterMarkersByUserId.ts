@@ -58,12 +58,13 @@ export const getMonsterMarkersByUserId = async (
     const filterLevel = [{ level: null }, { level: { $lte: maxMonsterLevel } }];
 
     // Filter out monsters that have level requirements higher than user's level
+    // and ones that are disabled
     const collectionMonsters = db.collection<Monster>('monsters');
     const filterTooHighLevelRequirement: { monsterId: string }[] = [];
-    const cursorAvailableMonsters = collectionMonsters.find({
-      levelRequirements: { $gt: userLevel },
+    const cursorDisabledMonsters = collectionMonsters.find({
+      $or: [{ levelRequirements: { $gt: userLevel } }, { disabled: true }],
     });
-    for await (const el of cursorAvailableMonsters) {
+    for await (const el of cursorDisabledMonsters) {
       filterTooHighLevelRequirement.push({ monsterId: el.id });
     }
 

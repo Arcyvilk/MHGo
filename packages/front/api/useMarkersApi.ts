@@ -78,25 +78,6 @@ export const useMonsterMarkersApi = (userId?: string, coords?: number[]) => {
   };
 };
 
-export const useAllResourceMarkersApi = () => {
-  const getResourceMarkers = async (): Promise<ResourceMarker[]> => {
-    const res = await fetcher(`${API_URL}/map/markers/resources/list`);
-    return res.json();
-  };
-
-  const {
-    data = [],
-    isLoading,
-    isFetched,
-    isError,
-  } = useSuspenseQuery<ResourceMarker[], unknown, ResourceMarker[], string[]>({
-    queryKey: ['markers', 'resource', 'all'],
-    queryFn: getResourceMarkers,
-  });
-
-  return { data, isLoading, isFetched, isError };
-};
-
 export const useResourceMarkersApi = (userId?: string, coords?: number[]) => {
   const lat = coords?.[0] ?? null;
   const lng = coords?.[1] ?? null;

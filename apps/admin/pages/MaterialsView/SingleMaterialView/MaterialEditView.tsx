@@ -176,9 +176,10 @@ const useUpdateMaterial = () => {
   const params = new URLSearchParams(location.search);
   const id = params.get('id');
 
-  const { data: materials, isFetched: isMaterialsFetched } = useMaterialsApi();
+  const { data: materials, isFetched: isMaterialsFetched } =
+    useMaterialsApi(true);
   const { data: drops, isFetched: isDropsFetched } = useMonsterDropsApi();
-  const { data: resources } = useResourcesApi();
+  const { data: resources } = useResourcesApi(true);
 
   const material = useMemo(
     () => materials.find(i => i.id === id),

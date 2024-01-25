@@ -5,7 +5,7 @@ import { API_URL } from '../env';
 import { addCdnUrl } from '../utils/addCdnUrl';
 import { fetcher } from '..';
 
-export const useMonstersApi = () => {
+export const useMonstersApi = (withDisabled: boolean = false) => {
   const getMonsters = async (): Promise<Monster[]> => {
     const res = await fetcher(`${API_URL}/monsters/list`);
     return res.json();
@@ -22,11 +22,13 @@ export const useMonstersApi = () => {
     staleTime: Infinity,
   });
 
-  const data = monsters.map(monster => ({
-    ...monster,
-    img: addCdnUrl(monster.img),
-    thumbnail: addCdnUrl(monster.thumbnail),
-  }));
+  const data = monsters
+    .filter(monster => (withDisabled ? true : !monster.disabled))
+    .map(monster => ({
+      ...monster,
+      img: addCdnUrl(monster.img),
+      thumbnail: addCdnUrl(monster.thumbnail),
+    }));
 
   return { data, isLoading, isFetched, isError };
 };

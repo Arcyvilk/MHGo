@@ -168,7 +168,7 @@ const useUpdateResource = (
   const params = new URLSearchParams(location.search);
   const id = params.get('id');
 
-  const { data: resources, isFetched: isResourcesFetched } = useResourcesApi();
+  const { data: resources, isFetched: isResourcesFetched } = useResourcesApi(true);
 
   const resource = useMemo(
     () => resources.find(i => i.id === id),

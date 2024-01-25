@@ -30,8 +30,8 @@ export const MonsterDrops = (props: MonsterDropsProps) => (
 const Load = ({ updatedDrops, setUpdatedDrops }: MonsterDropsProps) => {
   const { data: drops, isFetched } = useMonsterDropsApi();
   const { setting: maxMonsterLevel } = useSettingsApi('max_monster_level', 5);
-  const { data: items } = useItemsApi();
-  const { data: materials } = useMaterialsApi();
+  const { data: items } = useItemsApi(true);
+  const { data: materials } = useMaterialsApi(true);
 
   const params = new URLSearchParams(location.search);
   const id = params.get('id');

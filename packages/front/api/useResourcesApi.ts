@@ -5,7 +5,7 @@ import { API_URL } from '../env';
 import { addCdnUrl } from '../utils/addCdnUrl';
 import { fetcher } from '..';
 
-export const useResourcesApi = () => {
+export const useResourcesApi = (withDisabled: boolean = false) => {
   const getResources = async (): Promise<Resource[]> => {
     const res = await fetcher(`${API_URL}/resources/list`);
     return res.json();
@@ -22,11 +22,13 @@ export const useResourcesApi = () => {
     staleTime: Infinity,
   });
 
-  const data = resources.map(resource => ({
-    ...resource,
-    img: addCdnUrl(resource.img),
-    thumbnail: addCdnUrl(resource.thumbnail),
-  }));
+  const data = resources
+    .filter(resource => (withDisabled ? true : !resource.disabled))
+    .map(resource => ({
+      ...resource,
+      img: addCdnUrl(resource.img),
+      thumbnail: addCdnUrl(resource.thumbnail),
+    }));
 
   return { data, isLoading, isFetched, isError };
 };

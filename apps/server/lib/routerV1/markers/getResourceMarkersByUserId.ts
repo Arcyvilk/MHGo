@@ -58,12 +58,13 @@ export const getResourceMarkersByUserId = async (
     ];
 
     // Filter out resources that have level requirements higher than user's level
+    // and ones that are disabled
     const collectionResources = db.collection<Resource>('resources');
     const filterTooHighLevelRequirement: { resourceId: string }[] = [];
-    const cursorAvailableResources = collectionResources.find({
-      levelRequirements: { $gt: userLevel },
+    const cursorDisabledResources = collectionResources.find({
+      $or: [{ levelRequirements: { $gt: userLevel } }, { disabled: true }],
     });
-    for await (const el of cursorAvailableResources) {
+    for await (const el of cursorDisabledResources) {
       filterTooHighLevelRequirement.push({ resourceId: el.id });
     }
 

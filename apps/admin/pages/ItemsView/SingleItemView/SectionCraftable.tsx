@@ -27,8 +27,8 @@ export const SectionCraftable = ({
   setItemCraft,
   itemId,
 }: CraftableProps) => {
-  const { data: items } = useItemsApi();
-  const { data: materials } = useMaterialsApi();
+  const { data: items } = useItemsApi(true);
+  const { data: materials } = useMaterialsApi(true);
 
   const getSelect = (mat: CraftList) => {
     if (mat.craftType === 'item')
