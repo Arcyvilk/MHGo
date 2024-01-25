@@ -1,13 +1,6 @@
 import { Request, Response } from 'express';
 import { log } from '@mhgo/utils';
-import {
-  BaseStats,
-  ItemStat,
-  Setting,
-  Stats,
-  User,
-  UserLoadout,
-} from '@mhgo/types';
+import { BaseStats, ItemStat, Setting, User, UserLoadout } from '@mhgo/types';
 
 import { mongoInstance } from '../../../api';
 import { getSumOfStat } from '../../helpers/getSumOfStats';
@@ -34,16 +27,14 @@ export const updateUserHealth = async (
 
     // Get stats of items from user's loadout
     const collectionItemStats = db.collection<ItemStat>('itemStats');
-    const itemStats: Stats[] = [];
-    const cursorItemStats = collectionItemStats.find({
-      itemId: { $in: loadoutIds },
-    });
-    for await (const el of cursorItemStats) {
-      itemStats.push(el.stats);
-    }
+    const itemStats: ItemStat[] = await collectionItemStats
+      .find({
+        itemId: { $in: loadoutIds },
+      })
+      .toArray();
 
     // Get user's current max HP
-    const health = getSumOfStat(baseStats, itemStats, 'health');
+    const health = await getSumOfStat(db, baseStats, itemStats, 'health');
 
     // Get user's current wounds
     const collectionUsers = db.collection<User>('users');

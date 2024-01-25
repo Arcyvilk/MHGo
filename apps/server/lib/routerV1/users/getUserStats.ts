@@ -4,7 +4,6 @@ import {
   BaseStats,
   ItemStat,
   Setting,
-  Stats,
   StatsWithSpecialEffect,
   UserLoadout,
 } from '@mhgo/types';
@@ -40,23 +39,22 @@ export const getUserStats = async (
 
     // Get stats of items from user's loadout
     const collectionItemStats = db.collection<ItemStat>('itemStats');
-    const itemStats: Stats[] = [];
-    const cursorItemStats = collectionItemStats.find({
-      itemId: { $in: loadoutIds },
-    });
-    for await (const el of cursorItemStats) {
-      itemStats.push(el.stats);
-    }
+    const itemStats: ItemStat[] = await collectionItemStats
+      .find({
+        itemId: { $in: loadoutIds },
+      })
+      .toArray();
 
     // Sum all of the stats from all of the items
     const userStats: StatsWithSpecialEffect = {
-      attack: getSumOfStat(baseStats, itemStats, 'attack'),
-      defense: getSumOfStat(baseStats, itemStats, 'defense'),
-      health: getSumOfStat(baseStats, itemStats, 'health'),
-      luck: getSumOfStat(baseStats, itemStats, 'luck'),
-      critChance: getSumOfStat(baseStats, itemStats, 'critChance'),
-      critDamage: getSumOfStat(baseStats, itemStats, 'critDamage'),
-      specialEffects: getSumOfSpecialEffects(
+      attack: await getSumOfStat(db, baseStats, itemStats, 'attack'),
+      defense: await getSumOfStat(db, baseStats, itemStats, 'defense'),
+      health: await getSumOfStat(db, baseStats, itemStats, 'health'),
+      luck: await getSumOfStat(db, baseStats, itemStats, 'luck'),
+      critChance: await getSumOfStat(db, baseStats, itemStats, 'critChance'),
+      critDamage: await getSumOfStat(db, baseStats, itemStats, 'critDamage'),
+      specialEffects: await getSumOfSpecialEffects(
+        db,
         specialEffectMaxPoints,
         itemStats,
         'specialEffects',

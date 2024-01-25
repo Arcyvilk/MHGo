@@ -1,23 +1,46 @@
-import { BaseStats, ItemEffect, Stats } from '@mhgo/types';
+import { BaseStats, Item, ItemEffect, ItemStat, Stats } from '@mhgo/types';
+import { Db } from 'mongodb';
 
-export const getSumOfStat = (
+export const getSumOfStat = async (
+  db: Db,
   baseStats: BaseStats,
-  itemStats: Stats[],
+  itemStats: ItemStat[],
   statType: keyof Omit<Stats, 'element' | 'specialEffects'>,
 ) => {
-  return itemStats
+  // Check if requested items aren't disabled
+  const collectionItems = db.collection<Item>('items');
+  const disabledItemsIds = (
+    await collectionItems.find({ disabled: true }).toArray()
+  ).map(item => item.id);
+
+  const stats = itemStats
+    .filter(item => !disabledItemsIds.includes(item.itemId))
+    .map(item => item.stats);
+
+  return stats
     .filter(stat => stat[statType])
     .reduce((sum, curr) => sum + curr[statType], baseStats[statType]);
 };
 
-export const getSumOfSpecialEffects = (
+export const getSumOfSpecialEffects = async (
+  db: Db,
   specialEffectMaxPoints: number,
-  itemStats: Stats[],
+  itemStats: ItemStat[],
   statType: keyof Pick<Stats, 'specialEffects'>,
 ) => {
+  // Check if requested items aren't disabled
+  const collectionItems = db.collection<Item>('items');
+  const disabledItemsIds = (
+    await collectionItems.find({ disabled: true }).toArray()
+  ).map(item => item.id);
+
+  const stats = itemStats
+    .filter(item => !disabledItemsIds.includes(item.itemId))
+    .map(item => item.stats);
+
   // This is ugly af so I'm going to explain a little bit.
   return (
-    itemStats
+    stats
       // We iterate through all items that user has equipped and get only "specialEffects" from their stats.
       .map(stat => stat[statType])
       // Then we filter out those that have no special effects at all.
