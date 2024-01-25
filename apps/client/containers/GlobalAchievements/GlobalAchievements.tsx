@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useUserWealthApi } from '@mhgo/front';
+import { useUserMaterialsApi, useUserWealthApi } from '@mhgo/front';
 
 import { ModalAchievement } from '../ModalAchievement';
 import {
@@ -18,6 +18,7 @@ export const GlobalAchievements = () => {
   } = useGlobalAchievements();
 
   const { data: userWealth } = useUserWealthApi(userId);
+  const { data: userMaterials } = useUserMaterialsApi(userId);
 
   useEffect(() => {
     const baseMoney = userWealth.find(u => u.id === 'base')?.amount ?? 0;
@@ -29,6 +30,13 @@ export const GlobalAchievements = () => {
         baseMoney,
       );
   }, [userWealth]);
+
+  useEffect(() => {
+    const bugIds = ['bug1', 'bug2', 'bug3', 'bug4', 'bug5'];
+    const foundBugs =
+      userMaterials.filter(m => bugIds.includes(m.id))?.length ?? 0;
+    updateAchievement(AchievementId.BUG_COLLECTOR, true, 0, foundBugs);
+  }, [userMaterials]);
 
   if (!isModalAchievementOpen) return null;
   return (
