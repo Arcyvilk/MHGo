@@ -87,8 +87,11 @@ export const SettingsView = () => {
         </div>
 
         <div className={s.section}>
+          <Button label="Reload app" onClick={onRefreshCache} />
+        </div>
+        <div className={s.section}>
           <Button label="Log out" onClick={logoutUser} />
-          <Button label="Refresh cache" onClick={onRefreshCache} />
+
           <Button
             label="Delete account"
             onClick={onDeleteAccountClick}
