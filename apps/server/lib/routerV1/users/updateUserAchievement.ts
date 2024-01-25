@@ -36,6 +36,7 @@ export const updateUserAchievement = async (
     if (updatedAchievement.progress >= achievement.maxProgress) {
       // Silently fail - it's not a bug if achievement progress would be above the limit,
       // we just don't want to update it to become so
+      res.sendStatus(202);
       return;
     }
 

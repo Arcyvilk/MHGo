@@ -11,13 +11,7 @@ export const getAchievements = async (
   try {
     const { db } = mongoInstance.getDb();
     const collection = db.collection<Achievement>('achievements');
-    const achievements: Achievement[] = [];
-
-    const cursor = collection.find();
-
-    for await (const el of cursor) {
-      achievements.push(el);
-    }
+    const achievements: Achievement[] = await collection.find({}).toArray();
 
     res.status(200).send(achievements);
   } catch (err: any) {
