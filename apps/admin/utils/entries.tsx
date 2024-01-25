@@ -48,22 +48,6 @@ export const entries: Entry[] = [
     component: <MapView />,
   },
   {
-    id: 'monsters',
-    title: 'Monsters',
-    link: '/monsters',
-    icon: 'Monster',
-    mainRoute: true,
-    component: <MonstersView />,
-  },
-  {
-    id: 'resources',
-    title: 'Resources',
-    link: '/resources',
-    icon: 'Star',
-    mainRoute: true,
-    component: <ResourcesView />,
-  },
-  {
     id: 'items',
     title: 'Items',
     link: '/items',
@@ -80,12 +64,20 @@ export const entries: Entry[] = [
     component: <MaterialsView />,
   },
   {
-    id: 'settings',
-    title: 'Settings',
-    link: '/settings',
-    icon: 'Gear',
+    id: 'monsters',
+    title: 'Monsters',
+    link: '/monsters',
+    icon: 'Monster',
     mainRoute: true,
-    component: <SettingsView />,
+    component: <MonstersView />,
+  },
+  {
+    id: 'resources',
+    title: 'Resources',
+    link: '/resources',
+    icon: 'Star',
+    mainRoute: true,
+    component: <ResourcesView />,
   },
   {
     id: 'users',
@@ -95,6 +87,15 @@ export const entries: Entry[] = [
     mainRoute: true,
     component: <UsersView />,
   },
+  {
+    id: 'settings',
+    title: 'Settings',
+    link: '/settings',
+    icon: 'Gear',
+    mainRoute: true,
+    component: <SettingsView />,
+  },
+
   // SUBROUTES
   {
     id: 'item_create',

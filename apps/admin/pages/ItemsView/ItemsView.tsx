@@ -1,8 +1,8 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { FormControlLabel, Switch } from '@mui/material';
-import { ItemType, Order, Item as TItem } from '@mhgo/types';
+import { ItemType, Item as TItem } from '@mhgo/types';
 import {
   Button,
   Icon,
@@ -15,6 +15,7 @@ import {
 } from '@mhgo/front';
 
 import { ActionBar, Table, TableHeader } from '../../containers';
+import { useAppContext } from '../../utils/context';
 
 import s from './ItemsView.module.scss';
 
@@ -43,11 +44,15 @@ export const ItemsView = () => (
 );
 
 const Load = () => {
+  const {
+    orderItem: order,
+    setOrderItem: setOrder,
+    orderByItem: orderBy,
+    setOrderByItem: setOrderBy,
+  } = useAppContext();
   const navigate = useNavigate();
   const { data: items } = useItemsApi();
   const { mutate, isSuccess, isError } = useAdminUpdateItemApi();
-  const [order, setOrder] = useState<Order>('asc');
-  const [orderBy, setOrderBy] = useState<keyof TItem>('rarity');
 
   const { setRoute, route: filter } = useContextualRouting<string>({
     key: 'filter',

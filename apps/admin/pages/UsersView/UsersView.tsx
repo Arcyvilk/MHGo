@@ -1,8 +1,8 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-import { AdminUser, Order, User } from '@mhgo/types';
+import { AdminUser, User } from '@mhgo/types';
 import { Switch } from '@mui/material';
 import { CDN_URL } from '@mhgo/front/env';
 import {
@@ -16,6 +16,7 @@ import {
   useAdminUpdateUserApi,
 } from '@mhgo/front';
 import { ActionBar, HeaderEdit, Table, TableHeader } from '../../containers';
+import { useAppContext } from '../../utils/context';
 
 import s from './UsersView.module.scss';
 
@@ -36,10 +37,14 @@ export const UsersView = () => (
 );
 
 const Load = () => {
+  const {
+    orderUser: order,
+    setOrderUser: setOrder,
+    orderByUser: orderBy,
+    setOrderByUser: setOrderBy,
+  } = useAppContext();
   const navigate = useNavigate();
   const { data: users } = useAdminAllUsersApi();
-  const [order, setOrder] = useState<Order>('asc');
-  const [orderBy, setOrderBy] = useState<keyof AdminUser>('name');
 
   const {
     mutate: mutateUpdate,

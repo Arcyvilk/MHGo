@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Button,
@@ -8,9 +8,10 @@ import {
   Size,
   useMaterialsApi,
 } from '@mhgo/front';
-import { Material, Order } from '@mhgo/types';
+import { Material } from '@mhgo/types';
 
 import { ActionBar, Table, TableHeader } from '../../containers';
+import { useAppContext } from '../../utils/context';
 
 import s from './MaterialsView.module.scss';
 
@@ -28,10 +29,14 @@ export const MaterialsView = () => (
 );
 
 const Load = () => {
+  const {
+    orderMaterial: order,
+    setOrderMaterial: setOrder,
+    orderByMaterial: orderBy,
+    setOrderByMaterial: setOrderBy,
+  } = useAppContext();
   const navigate = useNavigate();
   const { data: materials } = useMaterialsApi();
-  const [order, setOrder] = useState<Order>('asc');
-  const [orderBy, setOrderBy] = useState<keyof Material>('rarity');
 
   const onMaterialEdit = (material: Material) => {
     navigate(`/materials/edit?id=${material.id}`);

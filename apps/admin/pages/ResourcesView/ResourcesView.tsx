@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Button,
@@ -8,9 +8,10 @@ import {
   Size,
   useResourcesApi,
 } from '@mhgo/front';
-import { Order, Resource } from '@mhgo/types';
+import { Resource } from '@mhgo/types';
 
 import { ActionBar, Table, TableHeader } from '../../containers';
+import { useAppContext } from '../../utils/context';
 
 import s from './ResourcesView.module.scss';
 
@@ -28,10 +29,14 @@ export const ResourcesView = () => (
 );
 
 const Load = () => {
+  const {
+    orderResource: order,
+    setOrderResource: setOrder,
+    orderByResource: orderBy,
+    setOrderByResource: setOrderBy,
+  } = useAppContext();
   const navigate = useNavigate();
   const { data: resources } = useResourcesApi();
-  const [order, setOrder] = useState<Order>('asc');
-  const [orderBy, setOrderBy] = useState<keyof Resource>('levelRequirements');
 
   const onResourceEdit = (resource: Resource) => {
     navigate(`/resources/edit?id=${resource.id}`);

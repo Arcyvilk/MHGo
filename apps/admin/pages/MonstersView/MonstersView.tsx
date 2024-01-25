@@ -1,6 +1,6 @@
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Monster, Order } from '@mhgo/types';
+import { Monster } from '@mhgo/types';
 import {
   Button,
   Icon,
@@ -10,6 +10,7 @@ import {
   useMonstersApi,
 } from '@mhgo/front';
 import { ActionBar, Table, TableHeader } from '../../containers';
+import { useAppContext } from '../../utils/context';
 
 import s from './MonstersView.module.scss';
 
@@ -33,12 +34,14 @@ export const MonstersView = () => (
 );
 
 const Load = () => {
+  const {
+    orderMonster: order,
+    setOrderMonster: setOrder,
+    orderByMonster: orderBy,
+    setOrderByMonster: setOrderBy,
+  } = useAppContext();
   const navigate = useNavigate();
   const { data: monsters } = useMonstersApi();
-  const [order, setOrder] = useState<Order>('asc');
-  const [orderBy, setOrderBy] = useState<keyof Monster | 'baseDPS'>(
-    'levelRequirements',
-  );
 
   const onMonsterEdit = (monster: Monster) => {
     navigate(`/monsters/edit?id=${monster.id}`);
