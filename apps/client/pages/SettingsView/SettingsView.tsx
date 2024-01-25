@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
+import { useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 
 import {
@@ -22,8 +23,9 @@ const DEFAULT = {
 };
 
 export const SettingsView = () => {
+  const queryClient = useQueryClient();
   const { logoutUser, isLoggedIn } = useMe();
-  const { setMusic, setMusicVolume } = useAppContext();
+  const { setMusic, setMusicVolume, setCacheId } = useAppContext();
   const { volume, setVolume, changeMusicVolume } = useSounds(setMusic);
   const [installPrompt, setInstallPrompt] = useState<any>(null);
 
@@ -38,6 +40,12 @@ export const SettingsView = () => {
     const newMusicVolume = changeMusicVolume();
     setMusicVolume(newMusicVolume);
   }, [volume]);
+
+  const onRefreshCache = () => {
+    queryClient.invalidateQueries();
+    setCacheId({ id: String(Date.now()) });
+    location.reload();
+  };
 
   const onDeleteAccountClick = async () => {
     toast.info('Coming soon!');
@@ -80,6 +88,7 @@ export const SettingsView = () => {
 
         <div className={s.section}>
           <Button label="Log out" onClick={logoutUser} />
+          <Button label="Refresh cache" onClick={onRefreshCache} />
           <Button
             label="Delete account"
             onClick={onDeleteAccountClick}

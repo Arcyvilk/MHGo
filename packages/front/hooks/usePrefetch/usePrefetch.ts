@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { soundSrcRaw, musicSrcRaw } from '.';
-import { usePrefetchAllImagesApi } from '../..';
+import { addCdnUrl, usePrefetchAllImagesApi } from '../..';
 import { CDN_URL } from '../../env';
 
 let isPrefetch = false;
@@ -15,13 +15,17 @@ export const usePrefetch = (isLoggedIn: boolean) => {
     ...soundSrcRaw.map(i => i[1]),
     ...musicSrcRaw.map(i => i[1]),
     ...allImages,
-  ].filter(i => i !== CDN_URL);
+  ]
+    .filter(i => i?.length && i !== CDN_URL)
+    .map(i => addCdnUrl(i));
 
   const prefetch = async (index: number) => {
     if (index < allToPrefetch.length) {
-      await fetch(allToPrefetch[index]);
+      const itemToPrefetch = allToPrefetch[index];
+      // cacheId is used to force refetch the item and refresh the cache
+      // whenever it's needed
+      await fetch(itemToPrefetch);
       setProgress(prevProgress => prevProgress + 1);
-
       await prefetch(index + 1);
     } else {
       setProgress(100);

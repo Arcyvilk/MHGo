@@ -4,31 +4,9 @@
   @include page-wrapper;
   overflow: hidden; // Rays make website stretch lol
   background-color: $color-black;
-
-  &--swamp {
-    background-image: url("https://cdn.arcyvilk.com/mhgo/habitats/swamp.jpg");
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: cover;
-  }
-  &--forest {
-    background-image: url("https://cdn.arcyvilk.com/mhgo/habitats/forest.jpg");
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: cover;
-  }
-  &--desert {
-    background-image: url("https://cdn.arcyvilk.com/mhgo/habitats/desert.jpg");
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: cover;
-  }
-  &--cave {
-    background-image: url("https://cdn.arcyvilk.com/mhgo/habitats/cave.jpg");
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: cover;
-  }
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
 
   &__wrapper {
     position: relative;

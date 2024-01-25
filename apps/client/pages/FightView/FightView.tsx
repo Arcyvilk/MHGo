@@ -13,6 +13,7 @@ import {
   modifiers,
   useSounds,
   useNavigateWithScroll,
+  addCdnUrl,
 } from '@mhgo/front';
 
 import { useAppContext } from '../../utils/context';
@@ -106,7 +107,11 @@ const Load = () => {
   }, [isMonsterAlive, isPlayerAlive]);
 
   return (
-    <div className={modifiers(s, 'fightView', habitat)}>
+    <div
+      className={s.fightView}
+      style={{
+        backgroundImage: `url("${addCdnUrl(`/habitats/${habitat}.jpg`)}")`,
+      }}>
       <Tutorial
         stepFrom="part3_start"
         stepTo="part3_end"

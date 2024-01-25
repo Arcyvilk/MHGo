@@ -8,6 +8,7 @@ export enum LSKeys {
   MHGO_HOME_POSITION = 'MHGO_HOME_POSITION',
   MHGO_VOLUME = 'MHGO_VOLUME',
   MHGO_AUTH = 'MHGO_AUTH',
+  MHGO_CACHE_ID = 'MHGO_CACHE_ID',
 }
 
 export const useLocalStorage = <T extends Record<string, any>>(
@@ -22,13 +23,17 @@ export const useLocalStorage = <T extends Record<string, any>>(
     }
     try {
       const item = window.localStorage.getItem(key);
-
-      return item ? JSON.parse(item) : initialValue;
+      if (item) return JSON.parse(item);
+      else {
+        window.localStorage.setItem(key, JSON.stringify(initialValue));
+        return initialValue;
+      }
     } catch (error: any) {
       console.log(error);
       return initialValue;
     }
   });
+
   // Return a wrapped version of useState's setter function that ...
   // ... persists the new value to localStorage.
   const setValue = useCallback(

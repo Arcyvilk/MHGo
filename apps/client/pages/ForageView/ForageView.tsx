@@ -16,6 +16,7 @@ import {
   useSounds,
   useNavigateWithScroll,
   useResourceMarkersApi,
+  addCdnUrl,
 } from '@mhgo/front';
 
 import { DEFAULT_COORDS, DEFAULT_MAP_RADIUS } from '../../utils/consts';
@@ -62,7 +63,13 @@ const Load = () => {
 
   if (!resource) return null;
   return (
-    <div className={s.forageView}>
+    <div
+      style={{
+        backgroundImage: `url("${addCdnUrl(
+          '/backgrounds/forage_station.jpg',
+        )}")`,
+      }}
+      className={s.forageView}>
       {!isActive && isModalOpen && (
         <ModalForage isOpen setIsOpen={setIsModalOpen} onClose={onFinish} />
       )}

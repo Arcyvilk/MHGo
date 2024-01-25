@@ -121,6 +121,15 @@ const PrefetchScreen = ({
     setCurrentTip(chooseRandom(currentTipPool));
   }, 5000);
 
+  useEffect(() => {
+    return () => {
+      const locationWithoutSearch = window.location.href
+        .replace(window.location.search, '')
+        .replace('?', '');
+      window.history.replaceState({}, document.title, locationWithoutSearch);
+    };
+  }, []);
+
   return (
     <div className={s.prefetch} onClick={onClick}>
       <img className={s.prefetch__logo} src={logo} alt="logo" />

@@ -1,10 +1,16 @@
-import { DEFAULT_VOLUME, LSKeys, Volume, useLocalStorage } from '@mhgo/front';
 import React, {
   PropsWithChildren,
   useContext,
   useEffect,
   useState,
 } from 'react';
+import {
+  DEFAULT_CACHE_ID,
+  DEFAULT_VOLUME,
+  LSKeys,
+  Volume,
+  useLocalStorage,
+} from '@mhgo/front';
 
 type ContextType = {
   tutorialStep: string | null;
@@ -22,6 +28,9 @@ type ContextType = {
   setMusicVolume: (musicVolume: number) => void;
   isMusicPlaying: boolean;
   setIsMusicPlaying: (isMusicPlaying: boolean) => void;
+  // CACHING
+  cacheId: { id: string };
+  setCacheId: (cacheId: { id: string }) => void;
 };
 
 export const AppContextProvider = ({
@@ -38,6 +47,9 @@ export const AppContextProvider = ({
   }>(LSKeys.MHGO_AUTH, {
     bearer: null,
   });
+  const [cacheId, setCacheId] = useLocalStorage<{
+    id: string;
+  }>(LSKeys.MHGO_CACHE_ID, DEFAULT_CACHE_ID);
 
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(
     Boolean(bearerToken.bearer),
@@ -46,6 +58,12 @@ export const AppContextProvider = ({
   useEffect(() => {
     setIsLoggedIn(Boolean(bearerToken.bearer));
   }, [bearerToken.bearer]);
+
+  useEffect(() => {
+    if (!cacheId?.id) {
+      setCacheId({ id: String(Date.now()) });
+    }
+  }, [cacheId]);
 
   const [music, setMusic] = useState<string>();
   const [isMusicPlaying, setIsMusicPlaying] = useState(false);
@@ -64,6 +82,10 @@ export const AppContextProvider = ({
     setIsLoggedIn,
     bearerToken,
     setBearerToken,
+    // CACHING
+    cacheId,
+    setCacheId,
+    // MUSIC
     music,
     setMusic,
     isMusicPlaying,

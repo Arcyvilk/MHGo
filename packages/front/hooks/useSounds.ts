@@ -9,6 +9,7 @@ export const DEFAULT_VOLUME = {
   bgm: 50,
   se: 50,
 };
+export const DEFAULT_CACHE_ID = { id: String(Date.now()) };
 
 export const useSounds = (
   setMusic: ((music: string | undefined) => void) | undefined,

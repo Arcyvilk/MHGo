@@ -1,6 +1,5 @@
 import {
   CloseButton,
-  Loader,
   ProgressBar,
   QueryBoundary,
   Skeleton,

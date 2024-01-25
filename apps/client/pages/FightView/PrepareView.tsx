@@ -6,7 +6,7 @@ import {
   Loader,
   QueryBoundary,
   Size,
-  modifiers,
+  addCdnUrl,
   useNavigateWithScroll,
   useUserHealthApi,
 } from '@mhgo/front';
@@ -32,7 +32,11 @@ const Load = () => {
   const { habitat, level, name, img } = monster;
 
   return (
-    <div className={modifiers(s, 'fightView', habitat)}>
+    <div
+      className={s.fightView}
+      style={{
+        backgroundImage: `url("${addCdnUrl(`/habitats/${habitat}.jpg`)}")`,
+      }}>
       <Tutorial
         stepFrom="part2_start"
         stepTo="part2_end"

@@ -98,7 +98,7 @@ const MapLayer = ({ coords }: MapLayerProps) => {
 
     const distanceToNewPosition = centerCurrent.distanceTo(centerCoords);
 
-    if (distanceToNewPosition > 5000) map.panTo(centerCoords);
+    if (distanceToNewPosition > 1000) map.panTo(centerCoords);
     else
       map.flyTo(centerCoords, zoom.current, {
         duration: 0.5,
