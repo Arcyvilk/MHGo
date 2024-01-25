@@ -16,6 +16,7 @@ import s from './MonstersView.module.scss';
 
 const tableHeaders: TableHeader<Monster & { baseDPS: number }>[] = [
   { id: 'name', label: 'Name' },
+  { id: 'description', label: 'Description' },
   { id: 'habitat', label: 'Habitat' },
   { id: 'baseHP', label: 'Base HP' },
   { id: 'baseDamage', label: 'Base damage' },
@@ -64,6 +65,7 @@ const Load = () => {
 
   const tableRows = sortedMonsters.map(monster => [
     <MonsterCell monster={monster} />,
+    <Table.CustomCell content={monster.description} />,
     monster.habitat,
     monster.baseHP,
     monster.baseDamage,
