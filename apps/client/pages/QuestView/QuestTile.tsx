@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Button,
   CurrencyInfo,
@@ -25,18 +25,24 @@ import {
 import { useUser } from '../../hooks/useUser';
 
 import s from './QuestView.module.scss';
+import { getDidLevelUp } from '../../hooks/useUserLevelUp';
+import { ModalLevelUp } from '../FightView/ModalLevelUp';
 
 type QuestTileProps = {
   type: 'daily' | 'story';
   quest: Quest & { progress: number; questDate?: Date; isClaimed?: boolean };
 };
 export const QuestTile = ({ type, quest }: QuestTileProps) => {
-  const { userId } = useUser();
   const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
+  const [isModalLevelUpOpen, setIsModalLevelUpOpen] = useState(false);
+
+  const { userId } = useUser();
   const { data: items } = useItemsApi();
   const { data: materials } = useMaterialsApi();
-  const { mutate: mutateUserDaily } = useUpdateUserDailyQuestApi(userId);
-  const { mutate: mutateUserStory } = useUpdateUserStoryQuestApi(userId);
+  const { mutate: mutateUserDaily, data: levelsDaily } =
+    useUpdateUserDailyQuestApi(userId);
+  const { mutate: mutateUserStory, data: levelsStory } =
+    useUpdateUserStoryQuestApi(userId);
   const { setting: currencies } = useSettingsApi('currency_types', [
     { id: 'base' as CurrencyType, icon: 'Question' as IconType },
     { id: 'premium' as CurrencyType, icon: 'Question' as IconType },
@@ -63,8 +69,15 @@ export const QuestTile = ({ type, quest }: QuestTileProps) => {
       });
   };
 
-  const isDone = quest.progress === quest.maxProgress;
+  const isDone = quest.progress >= quest.maxProgress;
   const isClaimed = quest?.isClaimed;
+
+  useEffect(() => {
+    const { didLevelUp } = getDidLevelUp(
+      type === 'story' ? levelsStory : levelsDaily,
+    );
+    if (didLevelUp) setIsModalLevelUpOpen(true);
+  }, [levelsStory, levelsDaily]);
 
   return (
     <div className={modifiers(s, 'questView__quest', { isDone, isClaimed })}>
@@ -73,6 +86,11 @@ export const QuestTile = ({ type, quest }: QuestTileProps) => {
         setIsOpen={setIsConfirmationModalOpen}
         onConfirm={onClaimReward}
         onClose={() => setIsConfirmationModalOpen(false)}
+      />
+      <ModalLevelUp
+        levels={type === 'story' ? levelsStory : levelsDaily}
+        isOpen={isModalLevelUpOpen}
+        setIsOpen={setIsModalLevelUpOpen}
       />
       <div className={s.questView__section}>
         <img className={s.questView__img} src={addCdnUrl(quest.img)} />
@@ -99,6 +117,7 @@ export const QuestTile = ({ type, quest }: QuestTileProps) => {
         {getQuestMaterialReward(materials, quest)}
         {getQuestItemReward(items, quest)}
         <div className={s.questView__payment}>
+          <span>EXP: {quest.exp}</span>
           {getQuestPayment(currencies!, quest)}
         </div>
       </div>

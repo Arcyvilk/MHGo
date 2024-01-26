@@ -11,6 +11,7 @@ import {
   User,
   UserAchievement,
   UserAmount,
+  UserLevelUpdate,
 } from '@mhgo/types';
 
 import { API_URL } from '../env';
@@ -215,18 +216,12 @@ export const useUpdateUserHealthApi = (userId: string) => {
   return { mutate, error, status, isPending, isSuccess, isError };
 };
 
-export type LevelUpdate = {
-  oldExp: number;
-  newExp: number;
-  oldLevel: number;
-  newLevel: number;
-};
 export const useUpdateUserExpApi = (userId: string) => {
   const queryClient = useQueryClient();
 
   const updateUserExp = async (variables: {
     expChange: number;
-  }): Promise<LevelUpdate> => {
+  }): Promise<UserLevelUpdate> => {
     const res = await fetcher(`${API_URL}/users/user/${userId}/exp`, {
       method: 'PUT',
       body: JSON.stringify(variables),

@@ -61,3 +61,10 @@ export type UserQuestStory = {
   obtainDate: Date | null;
   isClaimed: boolean;
 };
+
+export type UserLevelUpdate = {
+  oldExp: number;
+  newExp: number;
+  oldLevel: number;
+  newLevel: number;
+};

@@ -2,7 +2,6 @@ import { useEffect, useMemo } from 'react';
 import {
   Button,
   Item,
-  LevelUpdate,
   Modal,
   Rays,
   useItemsApi,
@@ -10,7 +9,7 @@ import {
   useSettingsApi,
   useUpdateUserItemsApi,
 } from '@mhgo/front';
-import { LevelUpReward, Item as TItem } from '@mhgo/types';
+import { LevelUpReward, Item as TItem, UserLevelUpdate } from '@mhgo/types';
 
 import { DEFAULT_LEVEL_UP_REWARDS } from '../../utils/consts';
 import { useUser } from '../../hooks/useUser';
@@ -18,7 +17,7 @@ import { useUser } from '../../hooks/useUser';
 import s from './ModalResult.module.scss';
 
 type ModalProps = {
-  levels?: LevelUpdate;
+  levels?: UserLevelUpdate;
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
 };

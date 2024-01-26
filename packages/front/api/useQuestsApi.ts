@@ -3,7 +3,12 @@ import {
   useSuspenseQuery,
   useQueryClient,
 } from '@tanstack/react-query';
-import { Quest, UserQuestDaily, UserQuestStory } from '@mhgo/types';
+import {
+  Quest,
+  UserLevelUpdate,
+  UserQuestDaily,
+  UserQuestStory,
+} from '@mhgo/types';
 
 import { API_URL } from '../env';
 import { fetcher } from '..';
@@ -91,6 +96,11 @@ export const useUserQuestsDailyApi = (userId: string | null | undefined) => {
   return { data, isLoading, isFetched, isError };
 };
 
+/**
+ * Update user's daily quests
+ * @param userId
+ * @returns
+ */
 export const useUpdateUserDailyQuestApi = (userId: string) => {
   const queryClient = useQueryClient();
 
@@ -98,27 +108,37 @@ export const useUpdateUserDailyQuestApi = (userId: string) => {
     questId: string;
     progress: number;
     isClaimed: boolean;
-  }): Promise<void> => {
+  }): Promise<UserLevelUpdate> => {
     const { questId, progress, isClaimed } = variables;
-    await fetcher(`${API_URL}/users/user/${userId}/quests/daily/${questId}`, {
-      method: 'PUT',
-      body: JSON.stringify({ progress, isClaimed }),
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
+    const response = await fetcher(
+      `${API_URL}/users/user/${userId}/quests/daily/${questId}`,
+      {
+        method: 'PUT',
+        body: JSON.stringify({ progress, isClaimed }),
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
       },
-    });
+    );
     queryClient.invalidateQueries({ queryKey: ['user', userId], exact: false });
+    return response.json();
   };
 
-  const { mutate, error, status, isPending, isSuccess, isError } = useMutation({
-    mutationKey: ['user', userId, 'quests', 'daily', 'update'],
-    mutationFn: updateUserDailyQuests,
-  });
+  const { mutate, data, error, status, isPending, isSuccess, isError } =
+    useMutation({
+      mutationKey: ['user', userId, 'quests', 'daily', 'update'],
+      mutationFn: updateUserDailyQuests,
+    });
 
-  return { mutate, error, status, isPending, isSuccess, isError };
+  return { mutate, data, error, status, isPending, isSuccess, isError };
 };
 
+/**
+ * Update user's story quests
+ * @param userId
+ * @returns
+ */
 export const useUpdateUserStoryQuestApi = (userId: string) => {
   const queryClient = useQueryClient();
 
@@ -126,23 +146,28 @@ export const useUpdateUserStoryQuestApi = (userId: string) => {
     questId: string;
     progress: number;
     isClaimed: boolean;
-  }): Promise<void> => {
+  }): Promise<UserLevelUpdate> => {
     const { questId, progress, isClaimed } = variables;
-    await fetcher(`${API_URL}/users/user/${userId}/quests/story/${questId}`, {
-      method: 'PUT',
-      body: JSON.stringify({ progress, isClaimed }),
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
+    const response = await fetcher(
+      `${API_URL}/users/user/${userId}/quests/story/${questId}`,
+      {
+        method: 'PUT',
+        body: JSON.stringify({ progress, isClaimed }),
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
       },
-    });
+    );
     queryClient.invalidateQueries({ queryKey: ['user', userId], exact: false });
+    return response.json();
   };
 
-  const { mutate, error, status, isPending, isSuccess, isError } = useMutation({
-    mutationKey: ['user', userId, 'quests', 'story', 'update'],
-    mutationFn: updateUserStoryQuests,
-  });
+  const { mutate, data, error, status, isPending, isSuccess, isError } =
+    useMutation({
+      mutationKey: ['user', userId, 'quests', 'story', 'update'],
+      mutationFn: updateUserStoryQuests,
+    });
 
-  return { mutate, error, status, isPending, isSuccess, isError };
+  return { mutate, data, error, status, isPending, isSuccess, isError };
 };
