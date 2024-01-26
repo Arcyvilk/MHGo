@@ -3,7 +3,8 @@ import { UserLevelUpdate } from '@mhgo/types';
 
 export const useUserLevelUp = (userId: string) => {
   const { mutate, data: levels } = useUpdateUserExpApi(userId);
-  const didLevelUp = getDidLevelUp(levels);
+
+  const didLevelUp = (levels?.newLevel ?? 0) > (levels?.oldLevel ?? 0);
 
   return { mutate, levels, didLevelUp };
 };
