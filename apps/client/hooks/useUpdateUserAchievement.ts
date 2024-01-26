@@ -13,6 +13,7 @@ export enum AchievementId {
   HEARTLESS_MURDERER = 'heartless_murderer',
   SWEET_REVENGE = 'sweet_revenge',
   BUG_COLLECTOR = 'bug_collector',
+  KRIEG_INCARNATE = 'krieg_incarnate',
 }
 
 export const useUpdateUserAchievement = () => {

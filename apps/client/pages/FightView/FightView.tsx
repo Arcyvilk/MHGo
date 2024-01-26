@@ -136,7 +136,12 @@ const Load = () => {
         requirement={!isFinishedTutorialPartOne}
       />
       {isPlayerAlive && !isMonsterAlive && isModalOpen && (
-        <ModalSuccess isOpen setIsOpen={setIsModalOpen} onClose={onFightEnd} />
+        <ModalSuccess
+          isOpen
+          setIsOpen={setIsModalOpen}
+          onClose={onFightEnd}
+          revivalAttempts={revivalAttempts}
+        />
       )}
       {!isPlayerAlive && isModalOpen && (
         <ModalFailure

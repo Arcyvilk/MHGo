@@ -33,19 +33,23 @@ type ModalProps = {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
   onClose: () => void;
+  revivalAttempts: number;
 };
-export const ModalSuccess = ({ isOpen, setIsOpen, onClose }: ModalProps) => (
+export const ModalSuccess = ({ isOpen, setIsOpen, ...props }: ModalProps) => (
   <Modal isOpen={isOpen} setIsOpen={setIsOpen} onClose={() => {}}>
     <div className={s.result}>
       <h1 className={s.result__title}>Success!</h1>
       <QueryBoundary fallback={<Loader />}>
-        <Load onClose={onClose} />
+        <Load {...props} />
       </QueryBoundary>
     </div>
   </Modal>
 );
 
-const Load = ({ onClose }: { onClose: () => void }) => {
+const Load = ({
+  onClose,
+  revivalAttempts,
+}: Omit<ModalProps, 'isOpen' | 'setIsOpen'>) => {
   const params = new URLSearchParams(location.search);
   const markerId = params.get('id') ?? '';
   const level = params.get('level') ?? '0';
@@ -93,7 +97,7 @@ const Load = ({ onClose }: { onClose: () => void }) => {
   useEffect(() => {
     if (isTutorial) setIsTutorialDummyKilled(true);
     redeemLoot();
-    updateAchievement();
+    updateAchievement(revivalAttempts);
   }, []);
 
   useEffect(() => {
@@ -196,11 +200,14 @@ const useKillingAchievements = (monsterId: string) => {
     const { unlockedNewAchievement: unlockedRage } = getIsAchievementUnlocked(
       AchievementId.PRIMAL_RAGE,
     );
-    if (unlocked2137 || unlockedRage) return true;
+    const { unlockedNewAchievement: unlockedKrieg } = getIsAchievementUnlocked(
+      AchievementId.KRIEG_INCARNATE,
+    );
+    if (unlocked2137 || unlockedRage || unlockedKrieg) return true;
     return false;
   }, [isAchievementUpdateSuccess]);
 
-  const updateAchievement = () => {
+  const updateAchievement = (revivalAttempts: number) => {
     if (monsterId === 'babcianiath') {
       setAchievementId(AchievementId.HABEMUS_PAPAM);
       mutate({ achievementId: AchievementId.HABEMUS_PAPAM, progress: 1 });
@@ -215,6 +222,10 @@ const useKillingAchievements = (monsterId: string) => {
     ) {
       setAchievementId(AchievementId.PRIMAL_RAGE);
       mutate({ achievementId: AchievementId.PRIMAL_RAGE, progress: 1 });
+    }
+    if (revivalAttempts === 0) {
+      setAchievementId(AchievementId.KRIEG_INCARNATE);
+      mutate({ achievementId: AchievementId.KRIEG_INCARNATE, progress: 1 });
     }
   };
 
