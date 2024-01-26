@@ -47,6 +47,8 @@ const Load = ({
   const { img, filter, amount, rarity, name, purchasable, price = [] } = data;
   const { playSound } = useSounds(undefined);
 
+  const rarityLabel = rarity === 6 ? 'Special' : `Rarity ${rarity}`;
+
   const onButtonClick = () => {
     playSound(SoundSE.CLICK);
     if (onClick) onClick();
@@ -91,7 +93,7 @@ const Load = ({
         <div className={modifiers(s, 'item__tile', `rarity-${rarity}`)}>
           <img src={img} style={{ filter }} className={s.tile__image} />
           <div className={modifiers(s, 'tile__rarity', `rarity-${rarity}`)}>
-            Rarity {rarity}
+            {rarityLabel}
           </div>
           {amount ? (
             <div className={modifiers(s, 'tile__amount', { isNotOwned })}>
