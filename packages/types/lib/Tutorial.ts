@@ -8,4 +8,10 @@ export type TutorialStep = {
   img: string | null;
   text: string | null;
   effects: 'rays' | null;
+  trigger: TutorialTrigger[];
+};
+
+export type TutorialTrigger = {
+  type: 'item' | 'monster' | 'playerLevel';
+  value: string | number;
 };

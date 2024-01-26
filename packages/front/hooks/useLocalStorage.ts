@@ -9,6 +9,7 @@ export enum LSKeys {
   MHGO_VOLUME = 'MHGO_VOLUME',
   MHGO_AUTH = 'MHGO_AUTH',
   MHGO_CACHE_ID = 'MHGO_CACHE_ID',
+  MHGO_TUTORIAL_OPTIONAL = 'MHGO_TUTORIAL_OPTIONAL',
 }
 
 export const useLocalStorage = <T extends Record<string, any>>(

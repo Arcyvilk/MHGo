@@ -1,10 +1,13 @@
 import { useMemo, useEffect } from 'react';
 import {
+  LSKeys,
   TutorialPart,
   useCompanionApi,
+  useLocalStorage,
   useSettingsApi,
   useTutorialApi,
   useUserAchievementsApi,
+  useUserItemsApi,
 } from '@mhgo/front';
 
 import { useAppContext } from '../utils/context';
@@ -50,8 +53,11 @@ export const useTutorial = (
     currentStep,
     setIsModalAchievementOpen,
   );
-  const { isFinishedTutorialPartOne, isFinishedTutorialPartTwo } =
-    useTutorialProgress();
+  const {
+    isFinishedTutorialPartOne,
+    isFinishedTutorialPartTwo,
+    finishOptionalTutorialPart,
+  } = useTutorialProgress();
 
   const goToNextStep = (onEnd: () => void) => {
     const currStepIndex = tutorial.findIndex(t => t.id === step);
@@ -76,6 +82,7 @@ export const useTutorial = (
     goToNextStep,
     isFinishedTutorialPartOne,
     isFinishedTutorialPartTwo,
+    finishOptionalTutorialPart,
     isFetched: isCompanionFetched && isTutorialFetched,
   };
 };
@@ -118,7 +125,32 @@ export const useTutorialProgress = () => {
     [isFetched, userAchievements],
   );
 
-  return { isFinishedTutorialPartOne, isFinishedTutorialPartTwo, isFetched };
+  // Handling optional tutorials, saved not as achievement, but in LS
+  const [isFinishedTutorialPartOptional, setIsFinishedTutorialPartOptional] =
+    useLocalStorage(
+      LSKeys.MHGO_TUTORIAL_OPTIONAL,
+      {} as Record<string, boolean>,
+    );
+
+  const finishOptionalTutorialPart = (partToFinish: string) => {
+    setIsFinishedTutorialPartOptional({
+      ...isFinishedTutorialPartOptional,
+      [partToFinish]: true,
+    });
+  };
+
+  const getIsFinishedTutorialPartOptional = (partToCheck: string) => {
+    return Boolean(isFinishedTutorialPartOptional?.[partToCheck]);
+  };
+
+  return {
+    isFinishedTutorialPartOne,
+    isFinishedTutorialPartTwo,
+    isFinishedTutorialPartOptional,
+    finishOptionalTutorialPart,
+    getIsFinishedTutorialPartOptional,
+    isFetched,
+  };
 };
 
 /**
@@ -179,4 +211,36 @@ const useTutorialAchievement = (
   };
 
   return { unlockAchievementIfApplicable };
+};
+
+export const useTutorialTrigger = (stepFrom: string, stepTo: string) => {
+  const { userId, userLevel } = useUser();
+  const { data: userItems } = useUserItemsApi(userId);
+  const { data: tutorialPart } = useTutorialApi(stepFrom, stepTo);
+
+  const getShouldTutorialTrigger = () => {
+    const currentStep = tutorialPart.tutorial.find(t => t.id === stepFrom);
+    if (!currentStep) return false;
+    if (!currentStep.trigger || !currentStep.trigger.length) return true;
+
+    const triggers = currentStep.trigger.map(trigger => {
+      const { type, value } = trigger;
+
+      if (type === 'playerLevel') {
+        return Number(value) <= userLevel;
+      }
+      if (type === 'item') {
+        return userItems.some(item => item.id === value);
+      }
+    });
+
+    return triggers.some(Boolean);
+  };
+
+  const shouldTutorialTrigger = useMemo(
+    () => getShouldTutorialTrigger(),
+    [stepFrom, stepTo, userLevel, userItems],
+  );
+
+  return { shouldTutorialTrigger };
 };

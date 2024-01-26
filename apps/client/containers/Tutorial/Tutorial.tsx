@@ -7,7 +7,7 @@ import {
   modifiers,
   useSounds,
 } from '@mhgo/front';
-import { useTutorial } from '../../hooks/useTutorial';
+import { useTutorial, useTutorialTrigger } from '../../hooks/useTutorial';
 
 import s from './Tutorial.module.scss';
 import { TutorialStep } from '@mhgo/types';
@@ -30,8 +30,9 @@ const Load = ({ stepFrom, stepTo, requirement }: TutorialProps) => {
   const [isModalAchievementOpen, setIsModalAchievementOpen] = useState(false);
   const [isOpen, setIsOpen] = useState(true);
 
-  const { currentStep, goToNextStep, isFinishedTutorialPartTwo, isFetched } =
+  const { currentStep, goToNextStep, finishOptionalTutorialPart, isFetched } =
     useTutorial(stepFrom, stepTo, setIsModalAchievementOpen);
+  const { shouldTutorialTrigger } = useTutorialTrigger(stepFrom, stepTo);
 
   const nextStep = () => {
     goToNextStep(() => {
@@ -39,6 +40,7 @@ const Load = ({ stepFrom, stepTo, requirement }: TutorialProps) => {
     });
   };
 
+  // Companion talking to you
   useEffect(() => {
     if (currentStep?.id === stepFrom && currentStep?.companionSpeech)
       playRandomSound([
@@ -54,6 +56,12 @@ const Load = ({ stepFrom, stepTo, requirement }: TutorialProps) => {
       ]);
   }, [currentStep]);
 
+  useEffect(() => {
+    if (currentStep?.id === 'part6_end') {
+      finishOptionalTutorialPart(currentStep.id);
+    }
+  }, [currentStep]);
+
   const isCentered = currentStep?.img || currentStep?.text;
 
   return (
@@ -63,25 +71,22 @@ const Load = ({ stepFrom, stepTo, requirement }: TutorialProps) => {
         isOpen={isModalAchievementOpen}
         setIsOpen={setIsModalAchievementOpen}
       />
-      {!isFinishedTutorialPartTwo &&
-        isFetched &&
-        currentStep &&
-        requirement && (
-          <Modal
-            isTransparent
-            isHighModal
-            isOpaque={currentStep.effects?.includes('darkness')}
-            isOpen={isOpen}
-            setIsOpen={setIsOpen}
-            onClose={nextStep}>
-            <div className={modifiers(s, 'tutorial', { isCentered })}>
-              {currentStep.effects?.includes('rays') && <Rays />}
-              <Spotlight currentStep={currentStep} />
-              <Companion currentStep={currentStep} />
-              <InfoDialog currentStep={currentStep} />
-            </div>
-          </Modal>
-        )}
+      {isFetched && currentStep && requirement && shouldTutorialTrigger && (
+        <Modal
+          isTransparent
+          isHighModal
+          isOpaque={currentStep.effects?.includes('darkness')}
+          isOpen={isOpen}
+          setIsOpen={setIsOpen}
+          onClose={nextStep}>
+          <div className={modifiers(s, 'tutorial', { isCentered })}>
+            {currentStep.effects?.includes('rays') && <Rays />}
+            <Spotlight currentStep={currentStep} />
+            <Companion currentStep={currentStep} />
+            <InfoDialog currentStep={currentStep} />
+          </div>
+        </Modal>
+      )}
     </>
   );
 };

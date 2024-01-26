@@ -8,7 +8,7 @@ import { Quest } from '@mhgo/types';
 
 import { useUser } from '../hooks/useUser';
 
-export const useQuestsStory = (showClaimed: boolean) => {
+export const useQuestsStory = (showClaimed: boolean = false) => {
   const { userId, userLevel } = useUser();
   const { data: questsStory, isFetched: isQuestsFetched } = useQuestsStoryApi();
   const { data: userQuestsStory, isFetched: isUserQuestsFetched } =

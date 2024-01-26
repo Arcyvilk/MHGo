@@ -38,7 +38,11 @@ const Load = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { navigateWithoutScroll, navigateWithScroll } = useNavigateWithScroll();
 
-  const { isFinishedTutorialPartOne } = useTutorialProgress();
+  const {
+    isFinishedTutorialPartOne,
+    isFinishedTutorialPartTwo,
+    getIsFinishedTutorialPartOptional,
+  } = useTutorialProgress();
 
   const onItemsClick = () => setIsModalOpen(true);
   const onYouClick = () => navigateWithoutScroll('/you');
@@ -57,7 +61,17 @@ const Load = () => {
       <Tutorial
         stepFrom="part4_start"
         stepTo="part4_end"
-        requirement={!isFinishedTutorialPartOne && isTutorialDummyKilled}
+        requirement={!isFinishedTutorialPartTwo && isTutorialDummyKilled}
+      />
+      <Tutorial
+        stepFrom="part6_start"
+        stepTo="part6_end"
+        requirement={!getIsFinishedTutorialPartOptional('part6_end')}
+      />
+      <Tutorial
+        stepFrom="part7_start"
+        stepTo="part7_end"
+        requirement={!getIsFinishedTutorialPartOptional('part7_end')}
       />
       <Map />
       <div className={s.actions}>

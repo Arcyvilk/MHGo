@@ -38,7 +38,8 @@ const Load = () => {
   const { setMusic } = useAppContext();
   const { changeMusic, playSound } = useSounds(setMusic);
   const { navigateWithoutScroll } = useNavigateWithScroll();
-  const { isFinishedTutorialPartOne } = useTutorialProgress();
+  const { isFinishedTutorialPartOne, isFinishedTutorialPartTwo } =
+    useTutorialProgress();
   const { getMonsterNewHP, getMonsterRetaliate } = useMonsterHealthChange();
 
   const { monster, isDummy } = useMonsterMarker();
