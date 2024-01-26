@@ -98,7 +98,7 @@ const Load = () => {
               name="material_rarity"
               label="Material's rarity"
               min={1}
-              max={5}
+              max={6}
               type="number"
               value={String(updatedMaterial?.rarity ?? 1)}
               setValue={newRarity =>

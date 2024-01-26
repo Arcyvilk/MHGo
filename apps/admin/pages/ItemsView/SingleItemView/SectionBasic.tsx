@@ -75,7 +75,7 @@ export const SectionBasic = ({
           name="item_rarity"
           label="Item's rarity"
           min={1}
-          max={5}
+          max={6}
           type="number"
           value={String(item?.rarity ?? 1)}
           setValue={rarity =>
