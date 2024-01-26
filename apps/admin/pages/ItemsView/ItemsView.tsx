@@ -36,7 +36,13 @@ const tableHeaders: TableHeader<TItem>[] = [
   { id: 'actions', label: 'Actions' },
 ];
 
-const itemFilters: ItemType[] = ['quest', 'other', 'weapon', 'armor'];
+const itemFilters: ItemType[] = [
+  'quest',
+  'other',
+  'weapon',
+  'certificate',
+  'armor',
+];
 
 export const ItemsView = () => (
   <QueryBoundary fallback={<Loader />}>

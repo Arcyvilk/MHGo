@@ -1,7 +1,7 @@
 import { UserAmount } from './User';
 import { IsDisabled } from './_Misc';
 
-export type ItemType = 'quest' | 'weapon' | 'armor' | 'other';
+export type ItemType = 'quest' | 'weapon' | 'armor' | 'other' | 'certificate';
 
 export type ItemSlot = 'weapon' | 'helmet' | 'chest' | 'arm' | 'waist' | 'leg';
 

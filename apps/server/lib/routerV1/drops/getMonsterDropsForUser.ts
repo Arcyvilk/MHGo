@@ -87,7 +87,6 @@ export const getMonsterDropsForUser = async (
       materialsWithFilter,
     );
     const uniqueItemDrops = getUniqueItemDrops(allDrops, items);
-    const drops = [...uniqueMaterialDrops, ...uniqueItemDrops];
 
     // Give user's their new materials
     const collectionUserMaterials =
@@ -169,8 +168,13 @@ export const getMonsterDropsForUser = async (
       },
     );
 
+    // We don't want to show certificate drops
+    const visibleDrops = [
+      ...uniqueMaterialDrops,
+      ...uniqueItemDrops.filter(item => item.type !== 'certificate'),
+    ];
     // Fin!
-    res.status(200).send(drops);
+    res.status(200).send(visibleDrops);
   } catch (err: any) {
     log.WARN(err);
     res.status(500).send({ error: err.message ?? 'Internal server error' });
