@@ -2,10 +2,12 @@ import { useEffect, useState } from 'react';
 import {
   Button,
   CurrencyInfo,
+  Icon,
   IconType,
   Item,
   Modal,
   ProgressBar,
+  Size,
   addCdnUrl,
   modifiers,
   useItemsApi,
@@ -117,7 +119,9 @@ export const QuestTile = ({ type, quest }: QuestTileProps) => {
         {getQuestMaterialReward(materials, quest)}
         {getQuestItemReward(items, quest)}
         <div className={s.questView__payment}>
-          <span>EXP: {quest.exp}</span>
+          <div className={s.questView__exp}>
+            <Icon icon="Paintball" size={Size.TINY} /> {quest.exp}
+          </div>
           {getQuestPayment(currencies!, quest)}
         </div>
       </div>
