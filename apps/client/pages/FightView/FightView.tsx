@@ -14,6 +14,7 @@ import {
   useSounds,
   useNavigateWithScroll,
   addCdnUrl,
+  useUpdateUserHealthApi,
 } from '@mhgo/front';
 
 import { useAppContext } from '../../utils/context';
@@ -27,6 +28,7 @@ import { PlayerDPS, DmgValue } from './PlayerDPS';
 import { useMonsterAttack, useMonsterHealthChange } from './utils';
 
 import s from './FightView.module.scss';
+import { useUser } from '../../hooks/useUser';
 
 export const FightView = () => (
   <QueryBoundary fallback={<Loader fullScreen />}>
@@ -35,16 +37,19 @@ export const FightView = () => (
 );
 
 const Load = () => {
+  const { userId } = useUser();
   const { setMusic } = useAppContext();
   const { changeMusic, playSound } = useSounds(setMusic);
   const { navigateWithoutScroll } = useNavigateWithScroll();
-  const { isFinishedTutorialPartOne, isFinishedTutorialPartTwo } =
-    useTutorialProgress();
+  const { isFinishedTutorialPartOne } = useTutorialProgress();
   const { getMonsterNewHP, getMonsterRetaliate } = useMonsterHealthChange();
+  const { mutate: mutateUserHealth, isSuccess: isRevivedSuccessfully } =
+    useUpdateUserHealthApi(userId);
 
   const { monster, isDummy } = useMonsterMarker();
   const { habitat, level, baseHP = 0, name, img } = monster;
 
+  const [revivalAttempts, setRevivalAttempts] = useState(1);
   const [dmgValues, setDmgValues] = useState<DmgValue[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMonsterAlive, setIsMonsterAlive] = useState<boolean>(true);
@@ -99,6 +104,12 @@ const Load = () => {
     navigateWithoutScroll('/');
   };
 
+  const onRevive = () => {
+    setIsModalOpen(false);
+    // This should heal to full no matter the loadout
+    mutateUserHealth({ healthChange: 1000 });
+  };
+
   useEffect(() => {
     if (!isPlayerAlive || !isMonsterAlive) {
       setTimeout(() => {
@@ -106,6 +117,12 @@ const Load = () => {
       }, 2000);
     }
   }, [isMonsterAlive, isPlayerAlive]);
+
+  useEffect(() => {
+    if (isRevivedSuccessfully) {
+      setIsPlayerAlive(true);
+    }
+  }, [isRevivedSuccessfully]);
 
   return (
     <div
@@ -122,7 +139,14 @@ const Load = () => {
         <ModalSuccess isOpen setIsOpen={setIsModalOpen} onClose={onFightEnd} />
       )}
       {!isPlayerAlive && isModalOpen && (
-        <ModalFailure isOpen setIsOpen={setIsModalOpen} onClose={onFightEnd} />
+        <ModalFailure
+          isOpen
+          setIsOpen={setIsModalOpen}
+          onForfeit={onFightEnd}
+          onRevive={onRevive}
+          revivalAttempts={revivalAttempts}
+          setRevivalAttempts={setRevivalAttempts}
+        />
       )}
       <Header name={name} maxHP={level * baseHP} currentHP={monsterHP} />
       {!isFightFinished && (

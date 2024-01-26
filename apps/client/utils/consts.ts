@@ -1,10 +1,11 @@
-import { addCdnUrl } from '@mhgo/front';
 import { ItemEffect, Monster, MonsterMarker, Reward, Stats } from '@mhgo/types';
 
 export { API_URL, CDN_URL } from '../env';
 
 export const APP_NAME = 'Master Hoarder GO';
 export const APP_VERSION = 'v0.42.67-beta'; // moved to database
+
+export const ITEM_ID_BLOOD_BAG = 'blood_bag';
 
 export const DEFAULT_COORDS = [0, 0];
 export const DEFAULT_ZOOM = { current: 16 };
