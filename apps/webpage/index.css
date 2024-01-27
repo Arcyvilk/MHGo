@@ -101,6 +101,21 @@ p {
   margin: 0 32px;
 }
 
+
+
+
+.hand {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  max-height: 75%;
+  filter: drop-shadow(10px 10px 10px #000);
+
+  @media (max-width: 1024px) {
+    max-height: 50%;
+  }
+}
+
 .download_buttons {
   position: fixed;
   bottom: 0;
