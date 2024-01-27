@@ -22,11 +22,15 @@ const geoOptions = {
 };
 
 const mapOptions = {
+  preferCanvas: true,
   zoom: 17,
   minZoom: 16,
   maxZoom: 18,
-  scrollWheelZoom: 'center' as Zoom,
   dragging: false,
+  tap: false,
+  scrollWheelZoom: false,
+  doubleClickZoom: false,
+  inertia: false,
 };
 
 export const Map = () => (

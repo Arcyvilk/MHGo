@@ -55,7 +55,7 @@ const Load = () => {
         setIsSpeechBubbleOpen(false);
       }, 5000);
     }
-  }, [companionTip]);
+  }, [isSpeechBubbleOpen, companionTip]);
 
   useEffect(() => {
     let timeout: any;
