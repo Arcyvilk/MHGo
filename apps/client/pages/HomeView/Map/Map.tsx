@@ -31,8 +31,8 @@ const mapOptions = {
   bounceAtZoomLimits: false, // Don't allow zooming more than bounds
   scrollWheelZoom: false,
   doubleClickZoom: false,
-  // zoomSnap: false,
-  // zoomDelta: false,
+  zoomSnap: false,
+  zoomDelta: false,
   trackResize: false,
   inertia: false,
 };
