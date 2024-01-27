@@ -231,9 +231,7 @@ export const useUpdateUserExpApi = (userId: string) => {
       },
     });
 
-    queryClient.invalidateQueries({
-      queryKey: ['user', userId],
-    });
+    queryClient.invalidateQueries({ queryKey: ['user', userId] });
     return res.json();
   };
 
@@ -242,11 +240,16 @@ export const useUpdateUserExpApi = (userId: string) => {
       mutationKey: ['user', userId, 'exp', 'update'],
       mutationFn: updateUserExp,
       onSuccess: data => {
-        if (data.newLevel > data.oldLevel)
+        if (data.newLevel > data.oldLevel) {
           queryClient.invalidateQueries({
             queryKey: ['monster', 'markers'],
             exact: false,
           });
+          queryClient.invalidateQueries({
+            queryKey: ['resource', 'markers'],
+            exact: false,
+          });
+        }
       },
     });
 
