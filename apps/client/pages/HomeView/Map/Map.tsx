@@ -1,6 +1,6 @@
 import { useEffect, useMemo } from 'react';
 import { MapContainer, TileLayer, useMap } from 'react-leaflet';
-import L, { Zoom } from 'leaflet';
+import L from 'leaflet';
 import { LSKeys, useLocalStorage } from '@mhgo/front';
 import { Loader, QueryBoundary } from '@mhgo/front';
 
@@ -27,14 +27,14 @@ const mapOptions = {
   minZoom: 16,
   maxZoom: 18,
   dragging: false,
-  tap: false,
   bounceAtZoomLimits: false, // Don't allow zooming more than bounds
-  scrollWheelZoom: false,
-  doubleClickZoom: false,
-  zoomSnap: false,
-  zoomDelta: false,
-  trackResize: false,
   inertia: false,
+  tap: !L.Browser.mobile,
+  scrollWheelZoom: !L.Browser.mobile,
+  doubleClickZoom: !L.Browser.mobile,
+  trackResize: !L.Browser.mobile,
+  ...(L.Browser.mobile ? { zoomSnap: undefined } : {}),
+  ...(L.Browser.mobile ? { zoomDelta: undefined } : {}),
 };
 
 export const Map = () => (
