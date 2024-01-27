@@ -17,13 +17,12 @@ import {
 } from '@mhgo/front';
 import { Size } from '@mhgo/front';
 
-import { Tutorial } from '../../containers';
 import { useUser } from '../../hooks/useUser';
 import { useTutorialProgress } from '../../hooks/useTutorial';
 import { useQuestsStory } from '../../hooks/useQuests';
-import { useAppContext } from '../../utils/context';
 import { QuickUseModal } from '../ModalView';
 import { Map } from './Map';
+import { HomeTutorials } from './HomeTutorials';
 
 import s from './HomeView.module.scss';
 
@@ -34,15 +33,10 @@ export const HomeView = () => (
 );
 
 const Load = () => {
-  const { isTutorialDummyKilled } = useAppContext();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { navigateWithoutScroll, navigateWithScroll } = useNavigateWithScroll();
 
-  const {
-    isFinishedTutorialPartOne,
-    isFinishedTutorialPartTwo,
-    getIsFinishedTutorialPartOptional,
-  } = useTutorialProgress();
+  const { isFinishedTutorialPartOne } = useTutorialProgress();
 
   const onItemsClick = () => setIsModalOpen(true);
   const onYouClick = () => navigateWithoutScroll('/you');
@@ -53,26 +47,7 @@ const Load = () => {
 
   return (
     <div className={s.homeView}>
-      <Tutorial
-        stepFrom="part1_start"
-        stepTo="part1_end"
-        requirement={!isFinishedTutorialPartOne && !isTutorialDummyKilled}
-      />
-      <Tutorial
-        stepFrom="part4_start"
-        stepTo="part4_end"
-        requirement={!isFinishedTutorialPartTwo && isTutorialDummyKilled}
-      />
-      <Tutorial
-        stepFrom="part6_start"
-        stepTo="part6_end"
-        requirement={!getIsFinishedTutorialPartOptional('part6_end')}
-      />
-      <Tutorial
-        stepFrom="part7_start"
-        stepTo="part7_end"
-        requirement={!getIsFinishedTutorialPartOptional('part7_end')}
-      />
+      <HomeTutorials />
       <Map />
       <div className={s.actions}>
         {isModalOpen && (
