@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { toast } from 'react-toastify';
 import {
   Button,
@@ -39,6 +39,7 @@ const Load = () => {
     'Have a nice day!',
   ]);
 
+  const speechBubbleTimeout = useRef<NodeJS.Timeout>();
   const [companionTip, setCompanionTip] = useState(chooseRandom(companionTips));
   const [isSpeechBubbleOpen, setIsSpeechBubbleOpen] = useState(false);
   const [isRaining, setIsRaining] = useState(false);
@@ -47,13 +48,14 @@ const Load = () => {
   const geo = useMemo(() => navigator.geolocation, []);
 
   useEffect(() => {
-    let timeout: any;
-    if (isSpeechBubbleOpen)
-      timeout = setTimeout(() => {
+    if (speechBubbleTimeout.current) clearTimeout(speechBubbleTimeout.current);
+
+    if (isSpeechBubbleOpen) {
+      speechBubbleTimeout.current = setTimeout(() => {
         setIsSpeechBubbleOpen(false);
       }, 5000);
-    () => timeout && clearTimeout(timeout);
-  }, [isSpeechBubbleOpen]);
+    }
+  }, [companionTip]);
 
   useEffect(() => {
     let timeout: any;
@@ -89,6 +91,8 @@ const Load = () => {
 
   const onSing = () => {
     playSound(SoundSE.OPERA_DOG);
+    setCompanionTip('Awoooo~');
+    setIsSpeechBubbleOpen(true);
     toast.success('You get a +50 morale buff for 5 minutes!');
   };
 
