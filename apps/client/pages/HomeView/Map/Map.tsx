@@ -33,6 +33,7 @@ const mapOptions = {
   scrollWheelZoom: !L.Browser.mobile,
   doubleClickZoom: !L.Browser.mobile,
   trackResize: !L.Browser.mobile,
+  touchZoom: false,
   ...(L.Browser.mobile ? { zoomSnap: undefined } : {}),
   ...(L.Browser.mobile ? { zoomDelta: undefined } : {}),
 };
