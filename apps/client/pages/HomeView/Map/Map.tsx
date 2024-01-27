@@ -29,13 +29,13 @@ const mapOptions = {
   dragging: false,
   bounceAtZoomLimits: false, // Don't allow zooming more than bounds
   inertia: false,
-  tap: !L.Browser.mobile,
-  scrollWheelZoom: !L.Browser.mobile,
-  doubleClickZoom: !L.Browser.mobile,
-  trackResize: !L.Browser.mobile,
+  tap: false,
+  scrollWheelZoom: false,
+  doubleClickZoom: false,
+  trackResize: false,
   touchZoom: false,
-  ...(L.Browser.mobile ? { zoomSnap: undefined } : {}),
-  ...(L.Browser.mobile ? { zoomDelta: undefined } : {}),
+  // ...(L.Browser.mobile ? { zoomSnap: undefined } : {}),
+  // ...(L.Browser.mobile ? { zoomDelta: undefined } : {}),
 };
 
 export const Map = () => (
