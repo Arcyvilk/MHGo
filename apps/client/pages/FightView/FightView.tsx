@@ -38,7 +38,7 @@ export const FightView = () => (
 
 const Load = () => {
   const { userId } = useUser();
-  const { setMusic } = useAppContext();
+  const { setMusic, isTutorialDummyKilled } = useAppContext();
   const { changeMusic, playSound } = useSounds(setMusic);
   const { navigateWithoutScroll } = useNavigateWithScroll();
   const { isFinishedTutorialPartOne } = useTutorialProgress();
@@ -133,7 +133,9 @@ const Load = () => {
       <Tutorial
         stepFrom="part3_start"
         stepTo="part3_end"
-        requirement={!isFinishedTutorialPartOne}
+        requirement={
+          !isFinishedTutorialPartOne && !isTutorialDummyKilled.isKilled
+        }
       />
       {isPlayerAlive && !isMonsterAlive && isModalOpen && (
         <ModalSuccess

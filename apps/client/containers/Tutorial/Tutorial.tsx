@@ -30,9 +30,12 @@ const Load = ({ stepFrom, stepTo, requirement }: TutorialProps) => {
   const [isModalAchievementOpen, setIsModalAchievementOpen] = useState(false);
   const [isOpen, setIsOpen] = useState(true);
 
-  const { currentStep, goToNextStep, finishOptionalTutorialPart, isFetched } =
-    useTutorial(stepFrom, stepTo, setIsModalAchievementOpen);
   const { shouldTutorialTrigger } = useTutorialTrigger(stepFrom, stepTo);
+  const { currentStep, goToNextStep, isFetched } = useTutorial(
+    stepFrom,
+    stepTo,
+    setIsModalAchievementOpen,
+  );
 
   const nextStep = () => {
     goToNextStep(() => {
@@ -54,12 +57,6 @@ const Load = ({ stepFrom, stepTo, requirement }: TutorialProps) => {
         SoundSE.BARK08,
         SoundSE.BARK09,
       ]);
-  }, [currentStep]);
-
-  useEffect(() => {
-    if (currentStep?.id === 'part6_end') {
-      finishOptionalTutorialPart(currentStep.id);
-    }
   }, [currentStep]);
 
   const isCentered = currentStep?.img || currentStep?.text;

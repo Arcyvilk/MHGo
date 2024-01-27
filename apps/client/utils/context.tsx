@@ -14,9 +14,11 @@ import {
 
 type ContextType = {
   tutorialStep: string | null;
-  setTutorialStep: (tutorialStep: string) => void;
-  isTutorialDummyKilled: boolean;
-  setIsTutorialDummyKilled: (isTutorialDummyKilled: boolean) => void;
+  setTutorialStep: (tutorialStep: string | null) => void;
+  isTutorialDummyKilled: { isKilled: boolean };
+  setIsTutorialDummyKilled: (isTutorialDummyKilled: {
+    isKilled: boolean;
+  }) => void;
   isLoggedIn: boolean;
   setIsLoggedIn: (isLoggedIn: boolean) => void;
   bearerToken: { bearer: string | null };
@@ -37,7 +39,10 @@ export const AppContextProvider = ({
   children,
 }: PropsWithChildren): JSX.Element => {
   const [tutorialStep, setTutorialStep] = useState<string | null>(null);
-  const [isTutorialDummyKilled, setIsTutorialDummyKilled] = useState(false);
+  const [isTutorialDummyKilled, setIsTutorialDummyKilled] = useLocalStorage(
+    LSKeys.MHGO_TUTORIAL_DUMMY,
+    { isKilled: false },
+  );
   const [volume] = useLocalStorage<Record<Volume, number>>(
     LSKeys.MHGO_VOLUME,
     DEFAULT_VOLUME,

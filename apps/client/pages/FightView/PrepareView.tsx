@@ -14,9 +14,10 @@ import { HealthBarSimple, Tutorial } from '../../containers';
 import { useUser } from '../../hooks/useUser';
 import { useTutorialProgress } from '../../hooks/useTutorial';
 import { useMonsterMarker } from '../../hooks/useMonsterMarker';
+import { useMonsterHealthChange } from './utils';
+import { useAppContext } from '../../utils/context';
 
 import s from './FightView.module.scss';
-import { useMonsterHealthChange } from './utils';
 
 export const PrepareView = () => (
   <QueryBoundary fallback={<Loader fullScreen />}>
@@ -27,6 +28,7 @@ export const PrepareView = () => (
 const Load = () => {
   // Prefetch before fight
   useMonsterHealthChange();
+  const { isTutorialDummyKilled } = useAppContext();
   const { isFinishedTutorialPartOne } = useTutorialProgress();
   const { markerId, monster, inRange } = useMonsterMarker();
   const { habitat, level, name, img } = monster;
@@ -40,7 +42,9 @@ const Load = () => {
       <Tutorial
         stepFrom="part2_start"
         stepTo="part2_end"
-        requirement={!isFinishedTutorialPartOne}
+        requirement={
+          !isFinishedTutorialPartOne && !isTutorialDummyKilled.isKilled
+        }
       />
       <Header name={name} level={level} />
       {inRange ? (

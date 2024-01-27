@@ -56,7 +56,7 @@ export const useTutorial = (
   const {
     isFinishedTutorialPartOne,
     isFinishedTutorialPartTwo,
-    finishOptionalTutorialPart,
+    finishTutorialPart,
   } = useTutorialProgress();
 
   const goToNextStep = (onEnd: () => void) => {
@@ -67,12 +67,10 @@ export const useTutorial = (
 
     // This part of tutorial still has next step
     if (nextStep) setTutorialStep(nextStep.id);
-    // This part of tutorial has finished...
+    // This part of tutorial has finished, remember the ID on next one
     else {
-      // ...but more is coming soon
-      if (tutorialPart.nextPartId) setTutorialStep(tutorialPart.nextPartId);
-      // And this happens if tutorial finished altogether!
-      else onEnd();
+      finishTutorialPart(step, tutorialPart.nextPartId);
+      onEnd();
     }
   };
 
@@ -82,7 +80,6 @@ export const useTutorial = (
     goToNextStep,
     isFinishedTutorialPartOne,
     isFinishedTutorialPartTwo,
-    finishOptionalTutorialPart,
     isFetched: isCompanionFetched && isTutorialFetched,
   };
 };
@@ -92,14 +89,24 @@ export const useTutorial = (
  */
 const useTutorialLoad = () => {
   const { tutorialStep, setTutorialStep } = useAppContext();
-  const { isFinishedTutorialPartOne, isFinishedTutorialPartTwo, isFetched } =
-    useTutorialProgress();
+  const {
+    isFinishedTutorialPartOne,
+    isFinishedTutorialPartTwo,
+    tutorialStatus,
+    isFetched,
+  } = useTutorialProgress();
 
   useEffect(() => {
     if (isFetched && tutorialStep === null) {
-      if (isFinishedTutorialPartOne && !isFinishedTutorialPartTwo)
+      if (!isFinishedTutorialPartOne) {
+        setTutorialStep('part1_start');
+        return;
+      }
+      if (!isFinishedTutorialPartTwo) {
         setTutorialStep('part5_start');
-      if (!isFinishedTutorialPartOne) setTutorialStep('part1_start');
+        return;
+      }
+      setTutorialStep(tutorialStatus?.nextPartId);
     }
   }, [isFetched]);
 };
@@ -109,8 +116,13 @@ const useTutorialLoad = () => {
  * FIRST PART OF TUTORIAL UNLOCKS UI
  * SECOND PART OF TUTORIAL IS JUST INFORMATIVE
  */
+type TutorialProgress = {
+  nextPartId: string | null;
+  isTutorialDummyKilled: boolean;
+} & Record<Exclude<string, 'nextPartId'>, boolean>;
 export const useTutorialProgress = () => {
   const { userId } = useUser();
+  const { setTutorialStep } = useAppContext();
   const { data: userAchievements, isFetched } = useUserAchievementsApi(userId);
   const achievement = userAchievements.find(
     achievement => achievement.achievementId === AchievementId.TUTORIAL,
@@ -126,29 +138,34 @@ export const useTutorialProgress = () => {
   );
 
   // Handling optional tutorials, saved not as achievement, but in LS
-  const [isFinishedTutorialPartOptional, setIsFinishedTutorialPartOptional] =
-    useLocalStorage(
-      LSKeys.MHGO_TUTORIAL_OPTIONAL,
-      {} as Record<string, boolean>,
-    );
+  const [tutorialStatus, setTutorialStatus] = useLocalStorage(
+    LSKeys.MHGO_TUTORIAL,
+    {} as TutorialProgress,
+  );
 
-  const finishOptionalTutorialPart = (partToFinish: string) => {
-    setIsFinishedTutorialPartOptional({
-      ...isFinishedTutorialPartOptional,
-      [partToFinish]: true,
-    });
+  const finishTutorialPart = (
+    partToFinish: string | null,
+    nextPartId: string | null,
+  ) => {
+    const newTutorialStatus = {
+      ...tutorialStatus,
+      nextPartId,
+      ...(partToFinish ? { [partToFinish]: true } : {}),
+    } as TutorialProgress;
+    setTutorialStatus(newTutorialStatus);
+    setTutorialStep(nextPartId);
   };
 
-  const getIsFinishedTutorialPartOptional = (partToCheck: string) => {
-    return Boolean(isFinishedTutorialPartOptional?.[partToCheck]);
+  const getIsFinishedTutorialPart = (partToCheck: string) => {
+    return Boolean(tutorialStatus?.[partToCheck]);
   };
 
   return {
     isFinishedTutorialPartOne,
     isFinishedTutorialPartTwo,
-    isFinishedTutorialPartOptional,
-    finishOptionalTutorialPart,
-    getIsFinishedTutorialPartOptional,
+    tutorialStatus,
+    finishTutorialPart,
+    getIsFinishedTutorialPart,
     isFetched,
   };
 };
@@ -232,6 +249,7 @@ export const useTutorialTrigger = (stepFrom: string, stepTo: string) => {
       if (type === 'item') {
         return userItems.some(item => item.id === value);
       }
+      return false;
     });
 
     return triggers.some(Boolean);

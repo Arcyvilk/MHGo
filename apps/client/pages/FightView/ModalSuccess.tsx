@@ -95,7 +95,7 @@ const Load = ({
   }, [isLootRedeemed]);
 
   useEffect(() => {
-    if (isTutorial) setIsTutorialDummyKilled(true);
+    if (isTutorial) setIsTutorialDummyKilled({ isKilled: true });
     redeemLoot();
     updateAchievement(revivalAttempts);
   }, []);
