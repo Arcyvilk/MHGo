@@ -5,7 +5,7 @@ export const determineMonsterLevel = (userLevel: number) => {
   const level = params.get('level');
   const randomMonsterLevel = randomNumberBetween(
     1,
-    userLevel > 5 ? 5 : userLevel,
+    userLevel > 10 ? 5 : Math.floor(userLevel / 2),
   );
 
   return level ? Number(level) : randomMonsterLevel;

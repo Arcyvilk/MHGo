@@ -8,5 +8,5 @@ export const getUserLevel = (user: User | null, expPerLevel: number) => {
 };
 
 export const determineMonsterLevel = (userLevel: number) => {
-  return randomNumberBetween(1, userLevel > 5 ? 5 : userLevel);
+  return randomNumberBetween(1, userLevel > 10 ? 5 : Math.floor(userLevel / 2));
 };
