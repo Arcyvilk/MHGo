@@ -1,8 +1,8 @@
 {
   "expo": {
     "name": "OUTDORIA",
-    "slug": "mhgo",
-    "version": "1.0.0-beta",
+    "slug": "outdoria",
+    "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/favicon.png",
     "userInterfaceStyle": "dark",
@@ -30,7 +30,8 @@
     },
     "extra": {
       "eas": {
-        "projectId": "49b8ef64-cf99-426d-8d4c-909a664d0403"
+        // "projectId": "49b8ef64-cf99-426d-8d4c-909a664d0403" // MHGO ID
+        "projectId": "78e2eb62-7083-411c-9307-4c10cfc83ad2" // OUTDORIA ID
       }
     },
     "androidStatusBar": {
