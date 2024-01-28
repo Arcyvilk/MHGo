@@ -206,6 +206,11 @@ const useTutorialAchievement = (
   currentStep: TutorialStep | null,
   setIsModalAchievementOpen: (isModalAchievementOpen: boolean) => void,
 ) => {
+  const { setIsTutorialDummyKilled } = useAppContext();
+  const { setting: isTutorialEnabled } = useSettingsApi(
+    'tutorial_enabled',
+    true,
+  );
   const {
     mutate,
     getIsAchievementUnlocked,
@@ -222,9 +227,20 @@ const useTutorialAchievement = (
     if (isAchievementUnlocked) setIsModalAchievementOpen(true);
   }, [isAchievementUnlocked]);
 
+  useEffect(() => {
+    disableTutorial();
+  }, [isTutorialEnabled]);
+
   const unlockAchievementIfApplicable = () => {
     if (!currentStep?.closeNext) return;
     else mutate({ achievementId: AchievementId.TUTORIAL, progress: 1 });
+  };
+
+  const disableTutorial = () => {
+    if (isTutorialEnabled === false) {
+      mutate({ achievementId: AchievementId.TUTORIAL, progress: 2 });
+      setIsTutorialDummyKilled({ isKilled: true });
+    }
   };
 
   return { unlockAchievementIfApplicable };
@@ -232,10 +248,15 @@ const useTutorialAchievement = (
 
 export const useTutorialTrigger = (stepFrom: string, stepTo: string) => {
   const { userId, userLevel } = useUser();
+  const { setting: isTutorialEnabled } = useSettingsApi(
+    'tutorial_enabled',
+    true,
+  );
   const { data: userItems } = useUserItemsApi(userId);
   const { data: tutorialPart } = useTutorialApi(stepFrom, stepTo);
 
   const getShouldTutorialTrigger = () => {
+    if (!isTutorialEnabled) return false;
     const currentStep = tutorialPart.tutorial.find(t => t.id === stepFrom);
     if (!currentStep) return false;
     if (!currentStep.trigger || !currentStep.trigger.length) return true;
