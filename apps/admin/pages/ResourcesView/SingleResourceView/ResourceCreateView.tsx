@@ -25,7 +25,7 @@ export const ResourceCreateView = () => {
     isError: false,
     isPending: false,
   });
-  const { resource, resourceImg, resourceThumbnail, onCreate, setResource } =
+  const { resource, resourceImg, resourceThumbnail, setResource, onCreate } =
     useUpdateResource(updatedDrops, setStatus);
 
   return (

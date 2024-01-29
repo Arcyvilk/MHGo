@@ -30,10 +30,6 @@ export const useAdminCreateResourceApi = () => {
     if (response.status !== 201)
       throw new Error((await response.json()).error ?? 'Did not work!');
 
-    queryClient.invalidateQueries({
-      queryKey: ['drops', 'resource'],
-      exact: false,
-    });
     queryClient.invalidateQueries({ queryKey: ['resources'], exact: false });
   };
 
