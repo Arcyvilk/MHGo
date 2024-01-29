@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { log } from '@mhgo/utils';
-import { MonsterDrop, Resource } from '@mhgo/types';
+import { MonsterDrop, Resource, ResourceDrop } from '@mhgo/types';
 
 import { mongoInstance } from '../../../api';
 
@@ -32,8 +32,8 @@ export const getResourceDrops = async (
 ): Promise<void> => {
   try {
     const { db } = mongoInstance.getDb(res?.locals?.adventure);
-    const collection = db.collection<Resource>('resources');
-    const drops: Resource[] = [];
+    const collection = db.collection<ResourceDrop>('dropsResource');
+    const drops: ResourceDrop[] = [];
 
     const cursor = collection.find();
 

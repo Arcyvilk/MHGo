@@ -5,19 +5,24 @@ import { happensWithAChanceOf, log } from '@mhgo/utils';
 import {
   Material,
   CraftType,
+  Item as TItem,
   UserMaterials,
   UserAmount,
   ResourceMarker,
-  Resource,
   ResourceDrop,
   UserRespawn,
   Setting,
+  Drop,
+  UserItems,
 } from '@mhgo/types';
 
-import { mongoInstance } from '../../../api';
-import { getUniqueMaterialDrops } from '../../helpers/getUniqueDrops';
+import {
+  getUniqueItemDrops,
+  getUniqueMaterialDrops,
+} from '../../helpers/getUniqueDrops';
 import { addFilterToMaterials } from '../../helpers/addFilterToMaterials';
 import { DEFAULT_RESPAWN_TIME } from '../../helpers/defaults';
+import { mongoInstance } from '../../../api';
 
 type ReqBody = { markerId: string; monsterLevel: number };
 type ReqParams = { userId: string };
@@ -35,6 +40,15 @@ export const getResourceDropsForUser = async (
 
     const { db } = mongoInstance.getDb(res?.locals?.adventure);
 
+    // Get the specified resource marker
+    const collectionResourceMarkers =
+      db.collection<ResourceMarker>('markersResource');
+    const marker = await collectionResourceMarkers.findOne({
+      _id: new ObjectId(markerId),
+    });
+
+    if (!marker) throw new Error('This marker does not exist!');
+
     // Get all materials
     const collectionMaterials = db.collection<Material>('materials');
     const materials: Material[] = [];
@@ -44,18 +58,22 @@ export const getResourceDropsForUser = async (
     }
     const materialsWithFilter = await addFilterToMaterials(db, materials);
 
-    // Get the specified resource marker
-    const collectionResourceMarkers =
-      db.collection<ResourceMarker>('markersResource');
-    const marker = await collectionResourceMarkers.findOne({
-      _id: new ObjectId(markerId),
-    });
+    // Get all items
+    const collectionItems = db.collection<TItem>('items');
+    const items: TItem[] = [];
+    const cursorItems = collectionItems.find();
+    for await (const el of cursorItems) {
+      items.push(el);
+    }
 
     // Get drops from the specified resource
     const resourceId = marker.resourceId;
-    const collectionResources = db.collection<Resource>('resources');
-    const resourceDrops = await collectionResources.findOne({ id: resourceId });
-    const allDrops = (resourceDrops?.drops ?? [])
+    const collectionResourceDrops =
+      db.collection<ResourceDrop>('dropsResource');
+    const allResourceDrops = await collectionResourceDrops.findOne({
+      resourceId,
+    });
+    const allDrops = (allResourceDrops?.drops ?? [])
       .map(drop => {
         const d = new Array(drop.amount)
           .fill(drop)
@@ -63,12 +81,16 @@ export const getResourceDropsForUser = async (
         return d;
       })
       .flat()
-      .map((drop: ResourceDrop) => ({
-        id: drop.materialId,
-        type: 'material' as CraftType,
+      .map((drop: Drop) => ({
+        id: drop.id,
+        type: drop.type,
       }));
 
-    const drops = getUniqueMaterialDrops(allDrops, materialsWithFilter);
+    const uniqueMaterialDrops = getUniqueMaterialDrops(
+      allDrops,
+      materialsWithFilter,
+    );
+    const uniqueItemDrops = getUniqueItemDrops(allDrops, items);
 
     // Give user's their new materials
     const collectionUserMaterials =
@@ -76,7 +98,7 @@ export const getResourceDropsForUser = async (
     const userMaterials = await collectionUserMaterials.findOne({ userId });
     const materialsToUpdate = putUserMaterials(
       userMaterials?.materials ?? [],
-      drops,
+      uniqueMaterialDrops,
     );
 
     const responseMaterialsUpdate = await collectionUserMaterials.updateOne(
@@ -91,6 +113,25 @@ export const getResourceDropsForUser = async (
 
     if (!responseMaterialsUpdate.acknowledged) {
       res.status(400).send({ error: "Could not update user's materials." });
+    }
+
+    // Give user's their new items
+    const collectionUserItems = db.collection<UserItems>('userItems');
+    const userItems = await collectionUserItems.findOne({ userId });
+    const itemsToUpdate = putUserItems(userItems?.items ?? [], uniqueItemDrops);
+
+    const responseItemsUpdate = await collectionUserItems.updateOne(
+      { userId },
+      {
+        $set: {
+          items: itemsToUpdate,
+        },
+      },
+      { upsert: true },
+    );
+
+    if (!responseItemsUpdate.acknowledged) {
+      res.status(400).send({ error: "Could not update user's items." });
     }
 
     // Put marker on cooldown
@@ -130,6 +171,7 @@ export const getResourceDropsForUser = async (
       },
     );
 
+    const drops = [...uniqueMaterialDrops, ...uniqueItemDrops];
     // Fin!
     res.status(200).send(drops);
   } catch (err: any) {
@@ -164,4 +206,30 @@ export const putUserMaterials = (
   );
 
   return [...newUserMaterials, ...oldUserMaterialsUpdated];
+};
+
+export const putUserItems = (
+  oldUserItems: UserAmount[],
+  uniqueItemDrops: (TItem & { dropClass: CraftType; amount: number })[],
+): UserAmount[] => {
+  const newUserItems = uniqueItemDrops
+    .filter(
+      (material: TItem) =>
+        !oldUserItems.some((m: UserAmount) => m.id === material.id),
+    )
+    .map(i => ({ id: i.id, amount: i.amount }));
+
+  const oldUserItemsUpdated = oldUserItems.map((item: UserAmount) => {
+    const newItemAmount = uniqueItemDrops.find(
+      (m: UserAmount) => m.id === item.id,
+    )?.amount;
+    if (!newItemAmount) return item;
+    const newAmount = (item.amount ?? 0) + newItemAmount;
+    return {
+      id: item.id,
+      amount: newAmount,
+    };
+  });
+
+  return [...newUserItems, ...oldUserItemsUpdated];
 };

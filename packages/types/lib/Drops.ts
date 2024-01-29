@@ -14,3 +14,8 @@ export type MonsterDrop = {
     drops: Drop[];
   }[];
 };
+
+export type ResourceDrop = {
+  resourceId: string; // ID of the monster that drops this
+  drops: Drop[];
+};

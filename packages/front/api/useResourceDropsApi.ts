@@ -3,13 +3,13 @@ import {
   useSuspenseQuery,
   useQueryClient,
 } from '@tanstack/react-query';
-import { Material, Resource } from '@mhgo/types';
+import { Material, ResourceDrop } from '@mhgo/types';
 
 import { API_URL } from '../env';
 import { fetcher } from '..';
 
 export const useResourceDropsApi = () => {
-  const getResourceDrops = async (): Promise<Resource[]> => {
+  const getResourceDrops = async (): Promise<ResourceDrop[]> => {
     const res = await fetcher(`${API_URL}/drops/resource/list`);
     return res.json();
   };
@@ -19,7 +19,7 @@ export const useResourceDropsApi = () => {
     isLoading,
     isFetched,
     isError,
-  } = useSuspenseQuery<Resource[], unknown, Resource[], string[]>({
+  } = useSuspenseQuery<ResourceDrop[], unknown, ResourceDrop[], string[]>({
     queryKey: ['drops', 'resource'],
     queryFn: getResourceDrops,
   });

@@ -13,15 +13,16 @@ import {
   UserItems,
   Setting,
   UserRespawn,
+  Drop,
 } from '@mhgo/types';
 
-import { mongoInstance } from '../../../api';
 import {
   getUniqueItemDrops,
   getUniqueMaterialDrops,
 } from '../../helpers/getUniqueDrops';
 import { addFilterToMaterials } from '../../helpers/addFilterToMaterials';
 import { DEFAULT_RESPAWN_TIME } from '../../helpers/defaults';
+import { mongoInstance } from '../../../api';
 
 type ReqBody = { markerId: string; monsterLevel: number };
 type ReqParams = { userId: string };
@@ -80,7 +81,7 @@ export const getMonsterDropsForUser = async (
         return d;
       })
       .flat()
-      .map(drop => ({ id: drop.id, type: drop.type }));
+      .map((drop: Drop) => ({ id: drop.id, type: drop.type }));
 
     const uniqueMaterialDrops = getUniqueMaterialDrops(
       allDrops,
@@ -173,6 +174,7 @@ export const getMonsterDropsForUser = async (
       ...uniqueMaterialDrops,
       ...uniqueItemDrops.filter(item => item.type !== 'certificate'),
     ];
+
     // Fin!
     res.status(200).send(visibleDrops);
   } catch (err: any) {
