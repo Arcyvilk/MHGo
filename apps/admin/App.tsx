@@ -7,14 +7,16 @@ import { Sidebar } from './containers';
 import { useMe } from './utils/useMe';
 
 import s from './App.module.scss';
+import { useAppContext } from './utils/context';
 
 export const App = () => {
   const { isLoggedIn, isAdmin } = useMe();
+  const { adventure } = useAppContext();
   const isFullScreen = isLoggedIn === false || isAdmin === false;
 
   return (
     <RequireAuth>
-      <Sidebar />
+      <Sidebar title={`Current adventure: ${adventure.id.toUpperCase()}`} />
       <div className={modifiers(s, 'app__routeWrapper', { isFullScreen })}>
         <Outlet />
       </div>
