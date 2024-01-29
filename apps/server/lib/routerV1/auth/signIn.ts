@@ -20,7 +20,7 @@ export const signIn = async (req: Request, res: Response): Promise<void> => {
     const { userName, email, pwd } = req.body;
 
     if (!userName || !pwd) throw new Error('User credentials missing!');
-    const { db } = mongoInstance.getDb();
+    const { db, dbAuth } = mongoInstance.getDb(res.locals.adventure);
 
     // Create new user login
     const privateKey = process.env.PRIVATE_KEY;
@@ -37,14 +37,14 @@ export const signIn = async (req: Request, res: Response): Promise<void> => {
     };
 
     // Check if the username is not taken
-    const collectionUsers = db.collection<User>('users');
+    const collectionUsers = dbAuth.collection<User>('users');
     const sameUsernameUser = await collectionUsers.findOne({ name: userName });
     if (sameUsernameUser) {
       throw new Error('This username is already taken!');
     }
 
     // Save new user credentials to database
-    const collectionLogin = db.collection<UserAuth>('userAuth');
+    const collectionLogin = dbAuth.collection<UserAuth>('userAuth');
     const responseSignIn = await collectionLogin.insertOne(newUserLogin);
 
     if (!responseSignIn.acknowledged) {

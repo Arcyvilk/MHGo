@@ -11,7 +11,7 @@ export const getItemCraftingList = async (
 ): Promise<void> => {
   try {
     const { itemId, userId } = req.params;
-    const { db } = mongoInstance.getDb();
+    const { db } = mongoInstance.getDb(res.locals.adventure);
     const collectionMaterials = db.collection<Material>('materials');
 
     // Get item that we want to craft

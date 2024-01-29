@@ -6,7 +6,7 @@ import { mongoInstance } from '../../../api';
 
 export const getMe = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { db } = mongoInstance.getDb();
+    const { dbAuth } = mongoInstance.getDb(res.locals.adventure);
     // @ts-expect-error req.user IS defined
     const { userId } = req.user;
 
@@ -15,7 +15,7 @@ export const getMe = async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
-    const collectionUserAuth = db.collection<UserAuth>('userAuth');
+    const collectionUserAuth = dbAuth.collection<UserAuth>('userAuth');
     const userAuth = await collectionUserAuth.findOne({ userId });
 
     if (!userAuth) {
@@ -23,7 +23,7 @@ export const getMe = async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
-    const collectionUserBan = db.collection<UserBan>('userBans');
+    const collectionUserBan = dbAuth.collection<UserBan>('userBans');
     const userBan = (await collectionUserBan.findOne({ userId })) ?? {};
 
     const censoredUserAuth = {

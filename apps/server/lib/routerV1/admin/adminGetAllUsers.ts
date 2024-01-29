@@ -5,14 +5,14 @@ import { User, UserAuth, UserBan } from '@mhgo/types';
 import { mongoInstance } from '../../../api';
 
 export const adminGetAllUsers = async (
-  _req: Request,
+  req: Request,
   res: Response,
 ): Promise<void> => {
   try {
-    const { db } = mongoInstance.getDb();
+    const { dbAuth } = mongoInstance.getDb(res.locals.adventure);
 
     // Get list of users
-    const collectionUsers = db.collection<User>('users');
+    const collectionUsers = dbAuth.collection<User>('users');
     const users: User[] = [];
     const cursorUsers = collectionUsers.find();
 
@@ -21,7 +21,7 @@ export const adminGetAllUsers = async (
     }
 
     // Get list of users' bans
-    const collectionUserBans = db.collection<UserBan>('userBans');
+    const collectionUserBans = dbAuth.collection<UserBan>('userBans');
     const usersBans: UserBan[] = [];
     const cursorUserBans = collectionUserBans.find();
 
@@ -30,7 +30,7 @@ export const adminGetAllUsers = async (
     }
 
     // Get list of users' auth
-    const collectionUserAuth = db.collection<UserAuth>('userAuth');
+    const collectionUserAuth = dbAuth.collection<UserAuth>('userAuth');
     const usersAuth: UserAuth[] = [];
     const cursorUserAuth = collectionUserAuth.find();
 

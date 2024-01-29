@@ -1,6 +1,7 @@
 import React, { PropsWithChildren, useContext, useMemo, useState } from 'react';
 import { LSKeys, useLocalStorage } from '@mhgo/front';
 import {
+  Adventure,
   Material,
   Monster,
   Order,
@@ -13,6 +14,8 @@ type ContextType = {
   isLoggedIn: boolean;
   bearerToken: { bearer: string | null };
   setBearerToken: (bearerToken: { bearer: string | null }) => void;
+  adventure: { id: Adventure };
+  setAdventure: (adventure: { id: Adventure }) => void;
   // ORDERING
 
   orderItem: Order;
@@ -48,6 +51,11 @@ export const AppContextProvider = ({
   }>(LSKeys.MHGO_AUTH, {
     bearer: null,
   });
+  const [adventure, setAdventure] = useLocalStorage<{
+    id: Adventure;
+  }>(LSKeys.MHGO_ADVENTURE, {
+    id: 'mhgo',
+  });
 
   const isLoggedIn = useMemo<boolean>(
     () => Boolean(bearerToken.bearer),
@@ -75,6 +83,8 @@ export const AppContextProvider = ({
     isLoggedIn,
     bearerToken,
     setBearerToken,
+    adventure,
+    setAdventure,
 
     // ORDERING
     orderItem,

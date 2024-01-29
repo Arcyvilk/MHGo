@@ -9,12 +9,12 @@ export const updateUserExp = async (
   res: Response,
 ): Promise<void> => {
   try {
-    const { db } = mongoInstance.getDb();
+    const { db, dbAuth } = mongoInstance.getDb(res.locals.adventure);
     const { userId } = req.params;
     const { expChange } = req.body;
 
     // Get user
-    const collectionUsers = db.collection<User>('users');
+    const collectionUsers = dbAuth.collection<User>('users');
     const user = await collectionUsers.findOne({
       id: userId,
     });

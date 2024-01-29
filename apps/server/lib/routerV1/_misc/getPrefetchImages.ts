@@ -15,11 +15,11 @@ import {
 import { mongoInstance } from '../../../api';
 
 export const getPrefetchImages = async (
-  _req: Request,
+  req: Request,
   res: Response,
 ): Promise<void> => {
   try {
-    const { db } = mongoInstance.getDb();
+    const { db } = mongoInstance.getDb(res.locals.adventure);
     const images: string[] = [...hardcodedUrls];
 
     // All collections including images

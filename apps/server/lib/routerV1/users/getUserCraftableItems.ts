@@ -16,7 +16,7 @@ export const getUserCraftableItems = async (
 ): Promise<void> => {
   try {
     const { userId } = req.params;
-    const { db } = mongoInstance.getDb();
+    const { db } = mongoInstance.getDb(res.locals.adventure);
 
     if (!userId) throw new Error('Missing userId');
 

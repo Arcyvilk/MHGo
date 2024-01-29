@@ -5,11 +5,11 @@ import { Resource } from '@mhgo/types';
 import { mongoInstance } from '../../../api';
 
 export const getResources = async (
-  _req: Request,
+  req: Request,
   res: Response,
 ): Promise<void> => {
   try {
-    const { db } = mongoInstance.getDb();
+    const { db } = mongoInstance.getDb(res.locals.adventure);
     const collection = db.collection<Resource>('resources');
     const resources: Resource[] = [];
     const cursor = collection.find();

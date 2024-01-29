@@ -10,7 +10,7 @@ export const getUserLoadout = async (
 ): Promise<void> => {
   try {
     const { userId } = req.params;
-    const { db } = mongoInstance.getDb();
+    const { db } = mongoInstance.getDb(res.locals.adventure);
     const collection = db.collection<UserLoadout>('userLoadout');
 
     const userLoadout = await collection.findOne({ userId });

@@ -10,7 +10,7 @@ export const adminUpdateUser = async (
   res: Response,
 ): Promise<void> => {
   try {
-    const { db } = mongoInstance.getDb();
+    const { dbAuth } = mongoInstance.getDb(res.locals.adventure);
     const { userId } = req.params;
     const { user, userBan, userAuth } = req.body as {
       user?: Partial<WithId<User>>;
@@ -26,7 +26,7 @@ export const adminUpdateUser = async (
     // Update basic user info
     if (user) {
       const { _id, id, createdAt, ...updatedFields } = user;
-      const collectionUsers = db.collection<User>('users');
+      const collectionUsers = dbAuth.collection<User>('users');
       const response = await collectionUsers.updateOne(
         { id: userId },
         { $set: updatedFields },
@@ -39,7 +39,7 @@ export const adminUpdateUser = async (
 
     // Update user auth info
     if (userAuth) {
-      const collectionAuth = db.collection<UserAuth>('userAuth');
+      const collectionAuth = dbAuth.collection<UserAuth>('userAuth');
       const response = await collectionAuth.updateOne(
         { userId },
         { $set: userAuth },
@@ -52,7 +52,7 @@ export const adminUpdateUser = async (
 
     // Update user ban info
     if (userBan) {
-      const collectionBans = db.collection<UserBan>('userBans');
+      const collectionBans = dbAuth.collection<UserBan>('userBans');
       const response = await collectionBans.updateOne(
         { userId },
         { $set: userBan },

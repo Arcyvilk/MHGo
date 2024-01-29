@@ -10,7 +10,7 @@ export const getUserItems = async (
 ): Promise<void> => {
   try {
     const { userId } = req.params;
-    const { db } = mongoInstance.getDb();
+    const { db } = mongoInstance.getDb(res.locals.adventure);
 
     // Get all items
     const collectionItems = db.collection<Item>('items');

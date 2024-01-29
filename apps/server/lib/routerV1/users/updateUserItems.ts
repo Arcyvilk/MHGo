@@ -9,7 +9,7 @@ export const updateUserItems = async (
   res: Response,
 ): Promise<void> => {
   try {
-    const { db } = mongoInstance.getDb();
+    const { db } = mongoInstance.getDb(res.locals.adventure);
     const { userId } = req.params;
     const rewardsToAdd = req.body as Reward[];
 

@@ -10,7 +10,7 @@ export const getUserHealth = async (
   res: Response,
 ): Promise<void> => {
   try {
-    const { db } = mongoInstance.getDb();
+    const { db, dbAuth } = mongoInstance.getDb(res.locals.adventure);
     const { userId } = req.params;
 
     // Get base stats of every user
@@ -36,7 +36,7 @@ export const getUserHealth = async (
     const health = await getSumOfStat(db, baseStats, itemStats, 'health');
 
     // Get user's current wounds
-    const collectionUsers = db.collection<User>('users');
+    const collectionUsers = dbAuth.collection<User>('users');
     const user = await collectionUsers.findOne({ id: userId });
     const wounds = user.wounds;
 

@@ -33,7 +33,7 @@ export const getResourceDropsForUser = async (
     if (!userId) throw new Error('User ID missing!');
     if (!markerId) throw new Error('Resource marker ID missing!');
 
-    const { db } = mongoInstance.getDb();
+    const { db } = mongoInstance.getDb(res.locals.adventure);
 
     // Get all materials
     const collectionMaterials = db.collection<Material>('materials');

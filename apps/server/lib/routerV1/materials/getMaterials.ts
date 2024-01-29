@@ -6,11 +6,11 @@ import { mongoInstance } from '../../../api';
 import { addFilterToMaterials } from '../../helpers/addFilterToMaterials';
 
 export const getMaterials = async (
-  _req: Request,
+  req: Request,
   res: Response,
 ): Promise<void> => {
   try {
-    const { db } = mongoInstance.getDb();
+    const { db } = mongoInstance.getDb(res.locals.adventure);
 
     // Get all materials
     const collectionMaterials = db.collection<Material>('materials');

@@ -24,10 +24,10 @@ export const getMonsterMarkersByUserId = async (
     const { userId } = req.params;
     const { lat, lng } = req.query;
 
-    const { db } = mongoInstance.getDb();
+    const { db, dbAuth } = mongoInstance.getDb(res.locals.adventure);
 
     // Get the maximum level of monster that can spawn on random level spawns
-    const collectionUsers = db.collection<User>('users');
+    const collectionUsers = dbAuth.collection<User>('users');
     const collectionSettings = db.collection<Setting<number>>('settings');
     const user = await collectionUsers.findOne({ id: userId });
     const expPerLevel =

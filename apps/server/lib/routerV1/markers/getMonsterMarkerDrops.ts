@@ -14,12 +14,12 @@ export const getMonsterMarkerDrops = async (
 ): Promise<void> => {
   try {
     const { userId } = req.params;
-    const { db } = mongoInstance.getDb();
+    const { db, dbAuth } = mongoInstance.getDb(res.locals.adventure);
 
-    const collectionUsers = db.collection<User>('users');
+    const collectionUsers = dbAuth.collection<User>('users');
     const collectionSettings = db.collection<Setting<number>>('settings');
     const collectionMonsterMarkers =
-      db.collection<MonsterMarker>('markersMonster');;
+      db.collection<MonsterMarker>('markersMonster');
 
     const user = await collectionUsers.findOne({ id: userId });
     const expPerLevel =

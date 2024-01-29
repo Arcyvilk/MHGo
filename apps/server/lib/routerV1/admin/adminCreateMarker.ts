@@ -9,7 +9,7 @@ export const adminCreateMonsterMarker = async (
   res: Response,
 ): Promise<void> => {
   try {
-    const { db } = mongoInstance.getDb();
+    const { db } = mongoInstance.getDb(res.locals.adventure);
 
     const collection = db.collection<MonsterMarker>('markersMonster');
     const monsterMarker = req.body as MonsterMarker;
@@ -32,7 +32,7 @@ export const adminCreateResourceMarker = async (
   res: Response,
 ): Promise<void> => {
   try {
-    const { db } = mongoInstance.getDb();
+    const { db } = mongoInstance.getDb(res.locals.adventure);
 
     const collection = db.collection<ResourceMarker>('markersResource');
     const resourceMarker = req.body as ResourceMarker;

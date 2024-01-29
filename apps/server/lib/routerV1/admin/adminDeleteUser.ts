@@ -8,19 +8,19 @@ export const adminDeleteUser = async (
   res: Response,
 ): Promise<void> => {
   try {
-    const { db } = mongoInstance.getDb();
+    const { db, dbAuth } = mongoInstance.getDb(res.locals.adventure);
     const { userId } = req.params;
 
     if (!userId) throw new Error('Requested user does not exist');
 
     // Delete basic user info
-    const collectionUsers = db.collection('users');
+    const collectionUsers = dbAuth.collection('users');
     const responseUser = await collectionUsers.deleteOne({ id: userId });
     if (!responseUser.acknowledged)
       throw new Error('Could not delete this user.');
 
     // Delete user auth info
-    const collectionAuth = db.collection('userAuth');
+    const collectionAuth = dbAuth.collection('userAuth');
     const responseAuth = await collectionAuth.deleteOne({ userId });
     if (!responseAuth.acknowledged)
       throw new Error('Could not delete this user.');
@@ -30,7 +30,7 @@ export const adminDeleteUser = async (
     await collectionAchievements.deleteOne({ userId });
 
     // Delete user ban info
-    const collectionBans = db.collection('userBans');
+    const collectionBans = dbAuth.collection('userBans');
     await collectionBans.deleteOne({ userId });
 
     // Delete user items

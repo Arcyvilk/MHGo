@@ -4,9 +4,9 @@ import { News } from '@mhgo/types';
 
 import { mongoInstance } from '../../../api';
 
-export const update = async (_req: Request, res: Response): Promise<void> => {
+export const update = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { db } = mongoInstance.getDb();
+    const { db } = mongoInstance.getDb(res.locals.adventure);
     const collection = db.collection<News>('news');
     const news: News[] = [];
 

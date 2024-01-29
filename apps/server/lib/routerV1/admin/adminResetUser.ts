@@ -20,7 +20,7 @@ export const adminResetUser = async (
   res: Response,
 ): Promise<void> => {
   try {
-    const { db } = mongoInstance.getDb();
+    const { db, dbAuth } = mongoInstance.getDb(res.locals.adventure);
     const { userId } = req.params;
     const toReset = req.body as UserResetType;
 
@@ -28,7 +28,7 @@ export const adminResetUser = async (
 
     // Reset user's exp, wounds
     if (toReset.basic) {
-      const collectionUsers = db.collection<User>('users');
+      const collectionUsers = dbAuth.collection<User>('users');
       await collectionUsers.updateOne(
         { id: userId },
         { $set: { exp: 0, wounds: 0 } },
@@ -121,7 +121,7 @@ export const adminUserEnableGodmode = async (
   res: Response,
 ): Promise<void> => {
   try {
-    const { db } = mongoInstance.getDb();
+    const { db } = mongoInstance.getDb(res.locals.adventure);
     const { userId } = req.params;
 
     if (!userId) throw new Error('No user ID provided!');

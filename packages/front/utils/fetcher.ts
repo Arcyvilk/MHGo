@@ -4,11 +4,13 @@ export const fetcher = async (url: string, options: any = {}) =>
 const updateOptions = (options: any) => {
   const update = { ...options };
   const bearer = JSON.parse(localStorage?.MHGO_AUTH ?? '{}')?.bearer;
+  const adventure = JSON.parse(localStorage?.MHGO_ADVENTURE ?? '{}')?.id;
 
   if (bearer) {
     update.headers = {
       ...update.headers,
-      Authorization: `Bearer ${bearer}`,
+      'X-Adventure': adventure,
+      'Authorization': `Bearer ${bearer}`,
     };
   }
   return update;

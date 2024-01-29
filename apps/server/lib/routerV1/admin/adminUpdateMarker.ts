@@ -12,7 +12,7 @@ export const adminUpdateMonsterMarker = async (
   res: Response,
 ): Promise<void> => {
   try {
-    const { db } = mongoInstance.getDb();
+    const { db } = mongoInstance.getDb(res.locals.adventure);
     const { markerId } = req.params;
 
     const collection = db.collection<MonsterMarker>('markersMonster');
@@ -42,7 +42,7 @@ export const adminDeleteMonsterMarker = async (
   res: Response,
 ): Promise<void> => {
   try {
-    const { db } = mongoInstance.getDb();
+    const { db } = mongoInstance.getDb(res.locals.adventure);
     const { markerId } = req.params;
 
     const collection = db.collection<MonsterMarker>('markersMonster');
@@ -69,7 +69,7 @@ export const adminUpdateResourceMarker = async (
   res: Response,
 ): Promise<void> => {
   try {
-    const { db } = mongoInstance.getDb();
+    const { db } = mongoInstance.getDb(res.locals.adventure);
     const { markerId } = req.params;
 
     const collection = db.collection<ResourceMarker>('markersResource');
@@ -99,7 +99,7 @@ export const adminDeleteResourceMarker = async (
   res: Response,
 ): Promise<void> => {
   try {
-    const { db } = mongoInstance.getDb();
+    const { db } = mongoInstance.getDb(res.locals.adventure);
     const { markerId } = req.params;
 
     const collection = db.collection<ResourceMarker>('markersResource');

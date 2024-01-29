@@ -5,11 +5,11 @@ import { MonsterDrop, Resource } from '@mhgo/types';
 import { mongoInstance } from '../../../api';
 
 export const getMonsterDrops = async (
-  _req: Request,
+  req: Request,
   res: Response,
 ): Promise<void> => {
   try {
-    const { db } = mongoInstance.getDb();
+    const { db } = mongoInstance.getDb(res.locals.adventure);
     const collection = db.collection<MonsterDrop>('drops');
     const drops: MonsterDrop[] = [];
 
@@ -27,11 +27,11 @@ export const getMonsterDrops = async (
 };
 
 export const getResourceDrops = async (
-  _req: Request,
+  req: Request,
   res: Response,
 ): Promise<void> => {
   try {
-    const { db } = mongoInstance.getDb();
+    const { db } = mongoInstance.getDb(res.locals.adventure);
     const collection = db.collection<Resource>('resources');
     const drops: Resource[] = [];
 

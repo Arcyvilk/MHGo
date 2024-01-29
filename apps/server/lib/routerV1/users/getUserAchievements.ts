@@ -10,7 +10,7 @@ export const getUserAchievements = async (
 ): Promise<void> => {
   try {
     const { userId } = req.params;
-    const { db } = mongoInstance.getDb();
+    const { db } = mongoInstance.getDb(res.locals.adventure);
     const collection = db.collection<UserAchievements>('userAchievements');
 
     const userAchievements = await collection.findOne({ userId });

@@ -10,7 +10,7 @@ export const getDropsByMonsterId = async (
 ): Promise<void> => {
   try {
     const { monsterId } = req.params;
-    const { db } = mongoInstance.getDb();
+    const { db } = mongoInstance.getDb(res.locals.adventure);
     const collection = db.collection<MonsterDrop>('drops');
 
     const monsterDrops = await collection.findOne({ monsterId });

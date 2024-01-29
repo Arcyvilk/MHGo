@@ -9,7 +9,7 @@ export const updateUserAchievement = async (
   res: Response,
 ): Promise<void> => {
   try {
-    const { db } = mongoInstance.getDb();
+    const { db } = mongoInstance.getDb(res.locals.adventure);
     const { userId } = req.params;
     const { achievementId, progress, newValue } = req.body as Pick<
       UserAchievement,

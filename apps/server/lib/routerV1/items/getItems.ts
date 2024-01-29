@@ -8,9 +8,9 @@ import {
   getItemsPrices,
 } from '../../helpers/getItemDetails';
 
-export const getItems = async (_req: Request, res: Response): Promise<void> => {
+export const getItems = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { db } = mongoInstance.getDb();
+    const { db } = mongoInstance.getDb(res.locals.adventure);
 
     // Get all items
     const collectionItems = db.collection<Item>('items');

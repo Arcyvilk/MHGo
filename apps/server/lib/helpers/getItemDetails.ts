@@ -3,7 +3,7 @@ import { ItemCraftList, ItemPrice } from '@mhgo/types';
 import { mongoInstance } from '../../api';
 
 export const getItemsCraftList = async (itemIds: string[]) => {
-  const { db } = mongoInstance.getDb();
+  const { db } = mongoInstance.getDb(res.locals.adventure);
   const collectionItemCraft = db.collection<ItemCraftList>('itemCraft');
 
   const craftLists: ItemCraftList[] = [];
@@ -19,7 +19,7 @@ export const getItemsCraftList = async (itemIds: string[]) => {
 };
 
 export const getItemsPrices = async (itemIds: string[]) => {
-  const { db } = mongoInstance.getDb();
+  const { db } = mongoInstance.getDb(res.locals.adventure);
   const collectionItemPrices = db.collection<ItemPrice>('itemPrice');
 
   const itemsPrices: ItemPrice[] = [];

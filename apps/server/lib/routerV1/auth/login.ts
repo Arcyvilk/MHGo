@@ -15,15 +15,15 @@ export const login = async (req: Request, res: Response): Promise<void> => {
     if (!userName || !pwd) throw new Error('User credentials missing!');
 
     // Get basic user data
-    const { db } = mongoInstance.getDb();
-    const collectionUsers = db.collection<User>('users');
+    const { dbAuth } = mongoInstance.getDb(res.locals.adventure);
+    const collectionUsers = dbAuth.collection<User>('users');
     const user = await collectionUsers.findOne({ name: userName });
     if (!user) throw new Error('Invalid credentials!');
 
     // Get user's credentials
     const userId = user.id;
     const privateKey = process.env.PRIVATE_KEY;
-    const collectionLogin = db.collection<UserAuth>('userAuth');
+    const collectionLogin = dbAuth.collection<UserAuth>('userAuth');
     const { pwdHash, isAdmin } = await collectionLogin.findOne({ userId });
 
     const match = await bcrypt.compare(pwd, pwdHash);

@@ -10,7 +10,7 @@ export const getSingleMonsterMarker = async (
   res: Response,
 ): Promise<void> => {
   try {
-    const { db } = mongoInstance.getDb();
+    const { db } = mongoInstance.getDb(res.locals.adventure);
     const { markerId } = req.params;
 
     if (!markerId) throw new Error('Monster marker ID missing!');
