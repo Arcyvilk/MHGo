@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CDN_URL } from '@mhgo/front/env';
-import { Resource } from '@mhgo/types';
+import { Resource, ResourceDrop } from '@mhgo/types';
 import {
   Button,
   Input,
@@ -19,7 +19,7 @@ import useEnhancedEffect from '@mui/material/utils/useEnhancedEffect';
 
 export const ResourceCreateView = () => {
   const navigate = useNavigate();
-  const [updatedDrops, setUpdatedDrops] = useState<Resource['drops']>([]);
+  const [updatedDrops, setUpdatedDrops] = useState<ResourceDrop['drops']>([]);
   const [status, setStatus] = useState({
     isSuccess: false,
     isError: false,

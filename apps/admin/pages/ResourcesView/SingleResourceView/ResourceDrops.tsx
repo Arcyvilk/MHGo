@@ -8,16 +8,17 @@ import {
   QueryBoundary,
   Select,
   Tooltip,
+  useItemsApi,
   useMaterialsApi,
   useResourceDropsApi,
 } from '@mhgo/front';
-import { ResourceDrop } from '@mhgo/types';
+import { Drop } from '@mhgo/types';
 
 import s from './SingleResourceView.module.scss';
 
 type ResourceDropsProps = {
-  updatedDrops: ResourceDrop[];
-  setUpdatedDrops: (updatedDrops: ResourceDrop[]) => void;
+  updatedDrops: Drop[];
+  setUpdatedDrops: (updatedDrops: Drop[]) => void;
 };
 export const ResourceDrops = (props: ResourceDropsProps) => (
   <QueryBoundary fallback={<Loader />}>
@@ -26,64 +27,98 @@ export const ResourceDrops = (props: ResourceDropsProps) => (
 );
 
 const Load = ({ updatedDrops, setUpdatedDrops }: ResourceDropsProps) => {
-  const { data: resources, isFetched } = useResourceDropsApi();
+  const { data: drops, isFetched } = useResourceDropsApi();
+  const { data: items } = useItemsApi(true);
   const { data: materials } = useMaterialsApi(true);
 
   const params = new URLSearchParams(location.search);
   const id = params.get('id');
 
   const resourceDrops = useMemo(
-    () => resources.find(resource => resource.id === id)?.drops ?? [],
-    [resources],
+    () => drops.find(drop => drop.resourceId === id)?.drops ?? [],
+    [drops],
   );
 
   useEffect(() => {
     setUpdatedDrops(resourceDrops);
   }, [isFetched, resourceDrops]);
 
-  const getSelect = (mat: ResourceDrop) => {
-    // Resource points can drop only materials
-    return materials.map(m => ({
-      id: m.id,
-      name: m.name,
-      // Dont allow to select materials which are already part of recipe
-      disabled: Boolean(
-        m.id === mat.materialId ||
-          updatedDrops?.find(entry => entry.materialId === m.id),
-      ),
-    }));
+  const getSelect = (mat: Drop) => {
+    if (mat.type === 'item')
+      return items.map(i => ({
+        id: i.id,
+        name: i.name,
+        disabled: Boolean(
+          // Dont allow to select item currently selected
+          i.id === mat.id ||
+            // Dont allow to select items which are already part of recipe
+            updatedDrops?.find(entry => entry.id === i.id),
+        ),
+      }));
+
+    if (mat.type === 'material')
+      return materials.map(m => ({
+        id: m.id,
+        name: m.name,
+        // Dont allow to select materials which are already part of recipe
+        disabled: Boolean(
+          m.id === mat.id || updatedDrops?.find(entry => entry.id === m.id),
+        ),
+      }));
+    return [];
   };
 
   return (
     <div className={s.resourceDrops}>
       <div className={s.resourceDrops__perLevel}>
         <h3 className={s.resourceDrops__title}>Drops</h3>
-        <Button
-          label="Add material"
-          onClick={() => {
-            const newDrop: ResourceDrop = {
-              // We fake this id because if we select first item from list
-              // it will duplicate if user creates more fields at once
-              // Having a fake ID set as date ensures their uniqueness
-              // Hacky and ugly I know. It's 2:26AM, I deserve some leniency
-              materialId: uuid(),
-              amount: 1,
-              chance: 100,
-            };
-            setUpdatedDrops([...updatedDrops, newDrop]);
-          }}
-        />
-        {updatedDrops.map(drop => (
-          <div className={s.resourceDrops__craftMaterial}>
+        <div style={{ display: 'flex', gap: '8px' }}>
+          <Button
+            label="Add item"
+            onClick={() => {
+              const newDrop: Drop = {
+                // We fake this id because if we select first item from list
+                // it will duplicate if user creates more fields at once
+                // Having a fake ID set as date ensures their uniqueness
+                // Hacky and ugly I know. It's 2:26AM, I deserve some leniency
+                id: uuid(),
+                type: 'item',
+                amount: 1,
+                chance: 100,
+              };
+              setUpdatedDrops([...updatedDrops, newDrop]);
+            }}
+          />
+          <Button
+            label="Add material"
+            onClick={() => {
+              const newDrop: Drop = {
+                // We fake this id because if we select first material from list
+                // it will duplicate if user creates more fields at once
+                // Having a fake ID set as date ensures their uniqueness
+                // Hacky and ugly I know. It's 2:26AM, I deserve some leniency
+                id: uuid(),
+                type: 'material',
+                amount: 1,
+                chance: 100,
+              };
+              setUpdatedDrops([...updatedDrops, newDrop]);
+            }}
+          />
+        </div>
+        {updatedDrops.map((drop, index) => (
+          <div
+            className={s.resourceDrops__craftMaterial}
+            key={`craftmat-${index}`}>
             <div style={{ maxWidth: '200px', minWidth: '200px' }}>
               <Select
-                defaultSelected={drop.materialId}
+                defaultSelected={drop.id}
                 data={getSelect(drop)}
                 name="Material"
                 setValue={selectedMatId => {
                   const updatedEntries = updatedDrops.map(entry => {
-                    if (entry.materialId === drop.materialId)
-                      return { ...entry, materialId: selectedMatId };
+                    if (entry.id === drop.id)
+                      return { ...entry, id: selectedMatId };
                     return entry;
                   });
                   return setUpdatedDrops(updatedEntries);
@@ -100,7 +135,7 @@ const Load = ({ updatedDrops, setUpdatedDrops }: ResourceDropsProps) => {
                 style={{ maxWidth: '65px' }}
                 setValue={selectedMatAmount => {
                   const updatedEntries = updatedDrops.map(entry => {
-                    if (entry.materialId === drop.materialId)
+                    if (entry.id === drop.id)
                       return {
                         ...entry,
                         amount: Number(selectedMatAmount),
@@ -121,7 +156,7 @@ const Load = ({ updatedDrops, setUpdatedDrops }: ResourceDropsProps) => {
                 style={{ maxWidth: '65px' }}
                 setValue={selectedMatChance => {
                   const updatedEntries = updatedDrops.map(entry => {
-                    if (entry.materialId === drop.materialId)
+                    if (entry.id === drop.id)
                       return {
                         ...entry,
                         chance: Number(selectedMatChance),
@@ -136,7 +171,7 @@ const Load = ({ updatedDrops, setUpdatedDrops }: ResourceDropsProps) => {
               label={<Icon icon="X" />}
               onClick={() => {
                 const updatedEntries = updatedDrops.filter(
-                  entry => entry.materialId !== drop.materialId,
+                  entry => entry.id !== drop.id,
                 );
                 setUpdatedDrops(updatedEntries);
               }}

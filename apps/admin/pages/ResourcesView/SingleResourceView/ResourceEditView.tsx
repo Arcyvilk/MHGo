@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { ResourceDrop } from '@mhgo/types';
 import { CDN_URL } from '@mhgo/front/env';
 import {
   Button,
@@ -9,14 +10,15 @@ import {
   QueryBoundary,
   removeCdnUrl,
   useAdminUpdateResourceApi,
+  useAdminUpdateResourceDropsApi,
   useResourcesApi,
 } from '@mhgo/front';
+
 import { ActionBar, HeaderEdit } from '../../../containers';
+import { Status } from '../../../utils/types';
+import { ResourceDrops } from '.';
 
 import s from './SingleResourceView.module.scss';
-import { ResourceDrops } from '.';
-import { Resource } from '@mhgo/types';
-import { Status } from '../../../utils/types';
 
 export const ResourceEditView = () => (
   <QueryBoundary fallback={<Loader />}>
@@ -26,7 +28,7 @@ export const ResourceEditView = () => (
 
 const Load = () => {
   const navigate = useNavigate();
-  const [updatedDrops, setUpdatedDrops] = useState<Resource['drops']>([]);
+  const [updatedDrops, setUpdatedDrops] = useState<ResourceDrop['drops']>([]);
   const [status, setStatus] = useState({
     isSuccess: false,
     isError: false,
@@ -163,7 +165,7 @@ const Load = () => {
 };
 
 const useUpdateResource = (
-  updatedDrops: Resource['drops'],
+  updatedDrops: ResourceDrop['drops'],
   setStatus: (status: Status) => void,
 ) => {
   const params = new URLSearchParams(location.search);
@@ -182,7 +184,7 @@ const useUpdateResource = (
     setUpdatedResource(resource);
   }, [isResourcesFetched]);
 
-  const { mutateResource } = useStatus(setStatus);
+  const { mutateResource, mutateResourceDrops } = useStatus(setStatus);
 
   const resourceImg = useMemo(
     () => removeCdnUrl(updatedResource?.img),
@@ -200,8 +202,9 @@ const useUpdateResource = (
         img: resourceImg,
         thumbnail: resourceThumbnail,
         levelRequirements: updatedResource.levelRequirements ?? null,
-        drops: updatedDrops,
       });
+    if (updatedDrops)
+      mutateResourceDrops({ resourceId: resource!.id, drops: updatedDrops });
   };
 
   return {
@@ -222,6 +225,13 @@ const useStatus = (setStatus: (status: Status) => void) => {
     isPending: isPendingMonster,
   } = useAdminUpdateResourceApi();
 
+  const {
+    mutate: mutateResourceDrops,
+    isSuccess: isSuccessDrops,
+    isError: isErrorDrops,
+    isPending: isPendingDrops,
+  } = useAdminUpdateResourceDropsApi();
+
   useEffect(() => {
     setStatus({
       isSuccess: isSuccessMonster,
@@ -230,5 +240,13 @@ const useStatus = (setStatus: (status: Status) => void) => {
     });
   }, [isSuccessMonster, isErrorMonster, isPendingMonster]);
 
-  return { mutateResource };
+  useEffect(() => {
+    setStatus({
+      isSuccess: isSuccessDrops,
+      isError: isErrorDrops,
+      isPending: isPendingDrops,
+    });
+  }, [isSuccessDrops, isErrorDrops, isPendingDrops]);
+
+  return { mutateResource, mutateResourceDrops };
 };

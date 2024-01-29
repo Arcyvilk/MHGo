@@ -53,6 +53,7 @@ import {
   adminCreateResource,
   adminUpdateResource,
   adminUpdateMonsterDrops,
+  adminUpdateResourceDrops,
   adminUpdateSettings,
 } from './admin';
 
@@ -205,6 +206,12 @@ routerV1.put(
   verifyAdminToken,
   validateAdventure,
   adminUpdateMonsterDrops,
+);
+routerV1.put(
+  '/admin/resources/resource/:resourceId/drops',
+  verifyAdminToken,
+  validateAdventure,
+  adminUpdateResourceDrops,
 );
 
 routerV1.put(
