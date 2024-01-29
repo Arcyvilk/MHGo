@@ -9,7 +9,7 @@ export const getUserDailyQuests = async (
   res: Response,
 ): Promise<void> => {
   try {
-    const { db } = mongoInstance.getDb(res.locals.adventure);
+    const { db } = mongoInstance.getDb(res?.locals?.adventure);
     const { userId } = req.params;
     if (!userId) throw new Error('Incorrect user ID provided');
 

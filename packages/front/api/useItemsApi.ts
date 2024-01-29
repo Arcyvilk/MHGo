@@ -26,7 +26,6 @@ export const useItemsApi = (withDisabled: boolean = false) => {
   } = useSuspenseQuery<Item[], unknown, Item[], string[]>({
     queryKey: ['items'],
     queryFn: getItems,
-    staleTime: Infinity,
   });
 
   const data = items

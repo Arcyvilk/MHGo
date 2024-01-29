@@ -33,7 +33,7 @@ export const getResourceDropsForUser = async (
     if (!userId) throw new Error('User ID missing!');
     if (!markerId) throw new Error('Resource marker ID missing!');
 
-    const { db } = mongoInstance.getDb(res.locals.adventure);
+    const { db } = mongoInstance.getDb(res?.locals?.adventure);
 
     // Get all materials
     const collectionMaterials = db.collection<Material>('materials');
@@ -42,7 +42,7 @@ export const getResourceDropsForUser = async (
     for await (const el of cursorMaterials) {
       materials.push(el);
     }
-    const materialsWithFilter = await addFilterToMaterials(materials);
+    const materialsWithFilter = await addFilterToMaterials(db, materials);
 
     // Get the specified resource marker
     const collectionResourceMarkers =

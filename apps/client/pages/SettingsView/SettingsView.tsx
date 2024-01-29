@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 
@@ -23,9 +23,10 @@ const DEFAULT = {
 };
 
 export const SettingsView = () => {
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { logoutUser, isLoggedIn } = useMe();
-  const { setMusic, setMusicVolume, setCacheId } = useAppContext();
+  const { setMusic, setMusicVolume, setCacheId, adventure } = useAppContext();
   const { volume, setVolume, changeMusicVolume } = useSounds(setMusic);
   const [installPrompt, setInstallPrompt] = useState<any>(null);
 
@@ -50,6 +51,10 @@ export const SettingsView = () => {
       setCacheId({ id: String(Date.now()) });
       location.reload();
     }
+  };
+
+  const onSwitchAdventure = () => {
+    navigate('/auth/adventure');
   };
 
   const onDeleteAccountClick = async () => {
@@ -91,6 +96,16 @@ export const SettingsView = () => {
           />
         </div>
 
+        <div className={s.section}>
+          <div className={s.section__title}>
+            Current adventure: {adventure.id.toUpperCase()}
+          </div>
+          <Button
+            label="Switch adventure"
+            onClick={onSwitchAdventure}
+            variant={Button.Variant.ACTION}
+          />
+        </div>
         <div className={s.section}>
           <Button label="Reload app" onClick={onRefreshCache} />
         </div>

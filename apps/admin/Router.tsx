@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { ToastContainer, ToastContainerProps } from 'react-toastify';
-import { Loader } from '@mhgo/front';
+import { AdventureSelectView, Loader } from '@mhgo/front';
 
 import { entries } from './utils/entries';
 import { LoginView, NoPermissions } from './pages';
@@ -25,6 +25,7 @@ export const Router = () => {
       children: [
         // AUTH ROUTES
         { path: '/auth/login', element: <LoginView /> },
+        { path: '/auth/adventure', element: <AdventureSelectView /> },
         { path: '/auth/forbidden', element: <NoPermissions /> },
       ],
     },

@@ -11,7 +11,7 @@ export const getUserEquipItem = async (
   try {
     const { userId, itemId } = req.params;
     const { action } = req.query;
-    const { db } = mongoInstance.getDb(res.locals.adventure);
+    const { db } = mongoInstance.getDb(res?.locals?.adventure);
 
     if (!action) throw new Error('Incorrect item action'!);
 

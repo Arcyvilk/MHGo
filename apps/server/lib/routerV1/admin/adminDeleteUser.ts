@@ -8,7 +8,9 @@ export const adminDeleteUser = async (
   res: Response,
 ): Promise<void> => {
   try {
-    const { db, dbAuth } = mongoInstance.getDb(res.locals.adventure);
+    const { db } = mongoInstance.getDb(res?.locals?.adventure);
+    const { dbAuth } = mongoInstance.getDbAuth();
+
     const { userId } = req.params;
 
     if (!userId) throw new Error('Requested user does not exist');

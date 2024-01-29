@@ -9,7 +9,7 @@ export const adminUpdateMonsterDrops = async (
   res: Response,
 ): Promise<void> => {
   try {
-    const { db } = mongoInstance.getDb(res.locals.adventure);
+    const { db } = mongoInstance.getDb(res?.locals?.adventure);
     const { monsterId } = req.params;
     const drops = req.body as MonsterDrop['drops'];
 

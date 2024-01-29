@@ -10,7 +10,7 @@ import {
 
 export const getItems = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { db } = mongoInstance.getDb(res.locals.adventure);
+    const { db } = mongoInstance.getDb(res?.locals?.adventure);
 
     // Get all items
     const collectionItems = db.collection<Item>('items');
@@ -22,8 +22,8 @@ export const getItems = async (req: Request, res: Response): Promise<void> => {
     }
 
     const itemIds = items.map(item => item.id);
-    const craftLists = await getItemsCraftList(itemIds);
-    const prices = await getItemsPrices(itemIds);
+    const craftLists = await getItemsCraftList(db, itemIds);
+    const prices = await getItemsPrices(db, itemIds);
 
     const itemsWithCraft = items.map(item => {
       const craftList =

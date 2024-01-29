@@ -10,7 +10,7 @@ export const getMaterials = async (
   res: Response,
 ): Promise<void> => {
   try {
-    const { db } = mongoInstance.getDb(res.locals.adventure);
+    const { db } = mongoInstance.getDb(res?.locals?.adventure);
 
     // Get all materials
     const collectionMaterials = db.collection<Material>('materials');
@@ -20,7 +20,7 @@ export const getMaterials = async (
       materials.push(el);
     }
 
-    const materialsWithFilter = await addFilterToMaterials(materials);
+    const materialsWithFilter = await addFilterToMaterials(db, materials);
 
     res.status(200).send(materialsWithFilter);
   } catch (err: any) {

@@ -9,7 +9,7 @@ export const getQuestsDaily = async (
   res: Response,
 ): Promise<void> => {
   try {
-    const { db } = mongoInstance.getDb(res.locals.adventure);
+    const { db } = mongoInstance.getDb(res?.locals?.adventure);
     const collection = db.collection<Quest>('questsDaily');
     const quests: Quest[] = [];
 

@@ -10,7 +10,7 @@ export const getUserWealth = async (
 ): Promise<void> => {
   try {
     const { userId } = req.params;
-    const { db } = mongoInstance.getDb(res.locals.adventure);
+    const { db } = mongoInstance.getDb(res?.locals?.adventure);
     const collection = db.collection<UserWealth>('userWealth');
     const userWealth: UserAmount[] = [];
 

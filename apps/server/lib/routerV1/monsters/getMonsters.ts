@@ -9,7 +9,7 @@ export const getMonsters = async (
   res: Response,
 ): Promise<void> => {
   try {
-    const { db } = mongoInstance.getDb(res.locals.adventure);
+    const { db } = mongoInstance.getDb(res?.locals?.adventure);
     const collection = db.collection<Monster>('monsters');
     const monsters: Monster[] = [];
     const cursor = collection.find();

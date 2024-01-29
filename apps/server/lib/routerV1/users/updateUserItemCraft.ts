@@ -15,7 +15,7 @@ export const updateUserItemCraft = async (
   res: Response,
 ): Promise<void> => {
   try {
-    const { db } = mongoInstance.getDb(res.locals.adventure);
+    const { db } = mongoInstance.getDb(res?.locals?.adventure);
     const { userId, itemId } = req.params;
     const { amount = 1 } = req.body;
 

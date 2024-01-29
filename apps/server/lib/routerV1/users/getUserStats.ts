@@ -20,7 +20,7 @@ export const getUserStats = async (
 ): Promise<void> => {
   try {
     const { userId } = req.params;
-    const { db } = mongoInstance.getDb(res.locals.adventure);
+    const { db } = mongoInstance.getDb(res?.locals?.adventure);
 
     // Get base stats of every user
     const collectionSettings = db.collection<Setting<unknown>>('settings');

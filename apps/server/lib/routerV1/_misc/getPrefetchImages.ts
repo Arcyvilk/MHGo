@@ -19,7 +19,7 @@ export const getPrefetchImages = async (
   res: Response,
 ): Promise<void> => {
   try {
-    const { db } = mongoInstance.getDb(res.locals.adventure);
+    const { db } = mongoInstance.getDb(res?.locals?.adventure);
     const images: string[] = [...hardcodedUrls];
 
     // All collections including images

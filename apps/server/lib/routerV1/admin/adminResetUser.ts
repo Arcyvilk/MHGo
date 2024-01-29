@@ -20,7 +20,9 @@ export const adminResetUser = async (
   res: Response,
 ): Promise<void> => {
   try {
-    const { db, dbAuth } = mongoInstance.getDb(res.locals.adventure);
+    const { db } = mongoInstance.getDb(res?.locals?.adventure);
+    const { dbAuth } = mongoInstance.getDbAuth();
+
     const { userId } = req.params;
     const toReset = req.body as UserResetType;
 
@@ -121,7 +123,7 @@ export const adminUserEnableGodmode = async (
   res: Response,
 ): Promise<void> => {
   try {
-    const { db } = mongoInstance.getDb(res.locals.adventure);
+    const { db } = mongoInstance.getDb(res?.locals?.adventure);
     const { userId } = req.params;
 
     if (!userId) throw new Error('No user ID provided!');

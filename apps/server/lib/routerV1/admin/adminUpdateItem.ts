@@ -20,7 +20,7 @@ export const adminUpdateItem = async (
   res: Response,
 ): Promise<void> => {
   try {
-    const { db } = mongoInstance.getDb(res.locals.adventure);
+    const { db } = mongoInstance.getDb(res?.locals?.adventure);
     const { itemId } = req.params;
 
     const collection = db.collection<Item>('items');
@@ -54,7 +54,7 @@ export const adminUpdateItemAction = async (
   res: Response,
 ): Promise<void> => {
   try {
-    const { db } = mongoInstance.getDb(res.locals.adventure);
+    const { db } = mongoInstance.getDb(res?.locals?.adventure);
     const { itemId } = req.params;
 
     const collection = db.collection<ItemAction>('itemActions');
@@ -86,7 +86,7 @@ export const adminUpdateItemCrafts = async (
   res: Response,
 ): Promise<void> => {
   try {
-    const { db } = mongoInstance.getDb(res.locals.adventure);
+    const { db } = mongoInstance.getDb(res?.locals?.adventure);
     const { itemId } = req.params;
 
     const collection = db.collection<ItemCraftList>('itemCraft');
@@ -149,7 +149,7 @@ export const adminUpdateItemStats = async (
   res: Response,
 ): Promise<void> => {
   try {
-    const { db } = mongoInstance.getDb(res.locals.adventure);
+    const { db } = mongoInstance.getDb(res?.locals?.adventure);
     const { itemId } = req.params;
 
     const collection = db.collection<ItemStat>('itemStats');
@@ -189,7 +189,7 @@ export const adminUpdateItemPrice = async (
   res: Response,
 ): Promise<void> => {
   try {
-    const { db } = mongoInstance.getDb(res.locals.adventure);
+    const { db } = mongoInstance.getDb(res?.locals?.adventure);
     const { itemId } = req.params;
 
     const collection = db.collection<ItemPrice>('itemPrice');

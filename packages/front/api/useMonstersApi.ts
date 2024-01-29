@@ -19,7 +19,6 @@ export const useMonstersApi = (withDisabled: boolean = false) => {
   } = useSuspenseQuery<Monster[], unknown, Monster[], string[]>({
     queryKey: ['monsters', 'list'],
     queryFn: getMonsters,
-    staleTime: Infinity,
   });
 
   const data = monsters

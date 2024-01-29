@@ -11,7 +11,7 @@ export const getItemStats = async (
   try {
     const { itemId } = req.params;
 
-    const { db } = mongoInstance.getDb(res.locals.adventure);
+    const { db } = mongoInstance.getDb(res?.locals?.adventure);
     const collection = db.collection<ItemStat>('itemStats');
     const item = await collection.findOne({ itemId });
 

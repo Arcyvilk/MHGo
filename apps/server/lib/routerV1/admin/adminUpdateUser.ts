@@ -10,7 +10,8 @@ export const adminUpdateUser = async (
   res: Response,
 ): Promise<void> => {
   try {
-    const { dbAuth } = mongoInstance.getDb(res.locals.adventure);
+    const { dbAuth } = mongoInstance.getDbAuth();
+
     const { userId } = req.params;
     const { user, userBan, userAuth } = req.body as {
       user?: Partial<WithId<User>>;

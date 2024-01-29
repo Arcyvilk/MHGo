@@ -10,7 +10,7 @@ export const adminUpdateResource = async (
   res: Response,
 ): Promise<void> => {
   try {
-    const { db } = mongoInstance.getDb(res.locals.adventure);
+    const { db } = mongoInstance.getDb(res?.locals?.adventure);
     const { resourceId } = req.params;
 
     const collection = db.collection<Resource>('resources');

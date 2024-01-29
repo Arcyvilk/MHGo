@@ -22,7 +22,6 @@ export const useHabitatsApi = () => {
   } = useSuspenseQuery<Habitat[], unknown, Habitat[], string[]>({
     queryKey: ['habitats'],
     queryFn: getHabitats,
-    staleTime: Infinity,
   });
 
   return { data, isLoading, isFetched, isError };

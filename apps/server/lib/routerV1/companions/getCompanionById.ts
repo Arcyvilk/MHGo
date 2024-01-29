@@ -13,7 +13,7 @@ export const getCompanionById = async (
 
     if (!companionId) throw new Error('Requested companion does not exist!');
 
-    const { db } = mongoInstance.getDb(res.locals.adventure);
+    const { db } = mongoInstance.getDb(res?.locals?.adventure);
     const collection = db.collection<Companion>('companions');
     const companion = await collection.findOne({ id: companionId });
 

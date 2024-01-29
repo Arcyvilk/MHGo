@@ -11,7 +11,6 @@ import {
   Volume,
   useLocalStorage,
 } from '@mhgo/front';
-import { Adventure } from '@mhgo/types';
 
 type ContextType = {
   tutorialStep: string | null;
@@ -35,8 +34,8 @@ type ContextType = {
   cacheId: { id: string };
   setCacheId: (cacheId: { id: string }) => void;
   // CHOOSING ADVENTURE
-  adventure: { id: Adventure };
-  setAdventure: (adventure: { id: Adventure }) => void;
+  adventure: { id: string };
+  setAdventure: (adventure: { id: string }) => void;
 };
 
 export const AppContextProvider = ({
@@ -57,7 +56,7 @@ export const AppContextProvider = ({
     bearer: null,
   });
   const [adventure, setAdventure] = useLocalStorage<{
-    id: Adventure;
+    id: string;
   }>(LSKeys.MHGO_ADVENTURE, {
     id: 'mhgo',
   });

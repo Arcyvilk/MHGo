@@ -19,7 +19,6 @@ export const useResourcesApi = (withDisabled: boolean = false) => {
   } = useSuspenseQuery<Resource[], unknown, Resource[], string[]>({
     queryKey: ['resources', 'list'],
     queryFn: getResources,
-    staleTime: Infinity,
   });
 
   const data = resources

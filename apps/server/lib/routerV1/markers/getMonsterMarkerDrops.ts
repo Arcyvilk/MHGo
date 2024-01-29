@@ -14,7 +14,8 @@ export const getMonsterMarkerDrops = async (
 ): Promise<void> => {
   try {
     const { userId } = req.params;
-    const { db, dbAuth } = mongoInstance.getDb(res.locals.adventure);
+    const { db } = mongoInstance.getDb(res?.locals?.adventure);
+    const { dbAuth } = mongoInstance.getDbAuth();
 
     const collectionUsers = dbAuth.collection<User>('users');
     const collectionSettings = db.collection<Setting<number>>('settings');

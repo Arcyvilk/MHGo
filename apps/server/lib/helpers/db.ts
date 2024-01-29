@@ -3,17 +3,13 @@ import { log } from '@mhgo/utils';
 import { Adventure } from '@mhgo/types';
 
 const DB_AUTH = 'auth';
-const DB_MHGO = 'mhgo';
-const DB_OUTDORIA = 'outdoria';
 
 export class MongoInstance {
   public client: MongoClient;
 
   public dbAuth: Db;
-  public dbMhgo: Db;
-  public dbOutdoria: Db;
+  public adventureDbs: { [key: string]: Db } = {};
 
-  // TODO: Add support for multiple databases
   constructor() {
     try {
       const url = process.env.DATABASE_URL;
@@ -22,18 +18,37 @@ export class MongoInstance {
       }
       this.client = new MongoClient(url);
       this.dbAuth = this.client.db(DB_AUTH);
-      this.dbMhgo = this.client.db(DB_MHGO);
-      this.dbOutdoria = this.client.db(DB_OUTDORIA);
+      this.populateAdventureDbs();
     } catch (error: any) {
       log.WARN(error);
       throw error;
     }
   }
 
-  getDb(adventure: Adventure) {
-    let dbAdventure: Db;
-    if (adventure === 'mhgo') dbAdventure = this.dbMhgo;
-    if (adventure === 'outdoria') dbAdventure = this.dbOutdoria;
-    return { dbAuth: this.dbAuth, db: dbAdventure };
+  private async populateAdventureDbs() {
+    const collectionAdventures =
+      this.dbAuth.collection<Adventure>('adventures');
+    const adventures = await collectionAdventures.find({}).toArray();
+    adventures.forEach(adventure => {
+      try {
+        this.adventureDbs[adventure.id] = this.client.db(adventure.id);
+      } catch (error) {
+        log.WARN(error);
+      }
+    });
+  }
+
+  getDbAuth() {
+    return { dbAuth: this.dbAuth };
+  }
+
+  getDb(adventure: string) {
+    if (!adventure) throw new Error('Adventure not found');
+
+    const dbAdventure: Db = this.adventureDbs[adventure];
+
+    if (!dbAdventure) throw new Error('Adventure data not found');
+
+    return { db: dbAdventure };
   }
 }

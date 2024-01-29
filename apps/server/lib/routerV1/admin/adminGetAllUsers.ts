@@ -9,7 +9,7 @@ export const adminGetAllUsers = async (
   res: Response,
 ): Promise<void> => {
   try {
-    const { dbAuth } = mongoInstance.getDb(res.locals.adventure);
+    const { dbAuth } = mongoInstance.getDbAuth();
 
     // Get list of users
     const collectionUsers = dbAuth.collection<User>('users');

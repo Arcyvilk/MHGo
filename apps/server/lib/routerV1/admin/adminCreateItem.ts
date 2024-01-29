@@ -19,7 +19,7 @@ export const adminCreateItem = async (
   res: Response,
 ): Promise<void> => {
   try {
-    const { db } = mongoInstance.getDb(res.locals.adventure);
+    const { db } = mongoInstance.getDb(res?.locals?.adventure);
     const { item, itemAction, itemCraft, itemPrice, itemStats } = req.body as {
       item: Item;
       itemAction: ItemAction;

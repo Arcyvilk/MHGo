@@ -24,7 +24,6 @@ export const useTutorialApi = (stepFrom?: string, stepTo?: string) => {
   } = useSuspenseQuery<TutorialPart, unknown, TutorialPart, string[]>({
     queryKey: ['tutorial', `from-${stepFrom}_to-${stepTo}`],
     queryFn: getTutorial,
-    staleTime: Infinity,
   });
 
   const data = {

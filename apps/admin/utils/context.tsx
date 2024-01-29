@@ -1,7 +1,6 @@
 import React, { PropsWithChildren, useContext, useMemo, useState } from 'react';
 import { LSKeys, useLocalStorage } from '@mhgo/front';
 import {
-  Adventure,
   Material,
   Monster,
   Order,
@@ -14,8 +13,8 @@ type ContextType = {
   isLoggedIn: boolean;
   bearerToken: { bearer: string | null };
   setBearerToken: (bearerToken: { bearer: string | null }) => void;
-  adventure: { id: Adventure };
-  setAdventure: (adventure: { id: Adventure }) => void;
+  adventure: { id: string };
+  setAdventure: (adventure: { id: string }) => void;
   // ORDERING
 
   orderItem: Order;
@@ -52,7 +51,7 @@ export const AppContextProvider = ({
     bearer: null,
   });
   const [adventure, setAdventure] = useLocalStorage<{
-    id: Adventure;
+    id: string;
   }>(LSKeys.MHGO_ADVENTURE, {
     id: 'mhgo',
   });

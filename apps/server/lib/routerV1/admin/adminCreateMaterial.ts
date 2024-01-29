@@ -9,7 +9,7 @@ export const adminCreateMaterial = async (
   res: Response,
 ): Promise<void> => {
   try {
-    const { db } = mongoInstance.getDb(res.locals.adventure);
+    const { db } = mongoInstance.getDb(res?.locals?.adventure);
     const { filter, ...material } = req.body as Material;
 
     // Check if the material with this ID already exists

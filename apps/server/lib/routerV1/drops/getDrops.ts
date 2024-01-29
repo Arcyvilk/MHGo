@@ -9,7 +9,7 @@ export const getMonsterDrops = async (
   res: Response,
 ): Promise<void> => {
   try {
-    const { db } = mongoInstance.getDb(res.locals.adventure);
+    const { db } = mongoInstance.getDb(res?.locals?.adventure);
     const collection = db.collection<MonsterDrop>('drops');
     const drops: MonsterDrop[] = [];
 
@@ -31,7 +31,7 @@ export const getResourceDrops = async (
   res: Response,
 ): Promise<void> => {
   try {
-    const { db } = mongoInstance.getDb(res.locals.adventure);
+    const { db } = mongoInstance.getDb(res?.locals?.adventure);
     const collection = db.collection<Resource>('resources');
     const drops: Resource[] = [];
 

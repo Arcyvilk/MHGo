@@ -15,7 +15,8 @@ export const login = async (req: Request, res: Response): Promise<void> => {
     if (!userName || !pwd) throw new Error('User credentials missing!');
 
     // Get basic user data
-    const { dbAuth } = mongoInstance.getDb(res.locals.adventure);
+    const { dbAuth } = mongoInstance.getDbAuth();
+
     const collectionUsers = dbAuth.collection<User>('users');
     const user = await collectionUsers.findOne({ name: userName });
     if (!user) throw new Error('Invalid credentials!');

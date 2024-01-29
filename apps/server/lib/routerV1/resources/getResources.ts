@@ -9,7 +9,7 @@ export const getResources = async (
   res: Response,
 ): Promise<void> => {
   try {
-    const { db } = mongoInstance.getDb(res.locals.adventure);
+    const { db } = mongoInstance.getDb(res?.locals?.adventure);
     const collection = db.collection<Resource>('resources');
     const resources: Resource[] = [];
     const cursor = collection.find();

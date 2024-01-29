@@ -20,7 +20,9 @@ export const signIn = async (req: Request, res: Response): Promise<void> => {
     const { userName, email, pwd } = req.body;
 
     if (!userName || !pwd) throw new Error('User credentials missing!');
-    const { db, dbAuth } = mongoInstance.getDb(res.locals.adventure);
+
+    const { db } = mongoInstance.getDb(res?.locals?.adventure);
+    const { dbAuth } = mongoInstance.getDbAuth();
 
     // Create new user login
     const privateKey = process.env.PRIVATE_KEY;

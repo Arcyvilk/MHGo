@@ -6,7 +6,7 @@ import { mongoInstance } from '../../../api';
 
 export const update = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { db } = mongoInstance.getDb(res.locals.adventure);
+    const { db } = mongoInstance.getDb(res?.locals?.adventure);
     const collection = db.collection<News>('news');
     const news: News[] = [];
 

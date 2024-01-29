@@ -1,3 +1,5 @@
+export { AdventureSelectView } from './AdventureSelectView';
+
 export { AuthView } from './AuthView';
 export { AwaitingApprovalView } from './AwaitingApprovalView';
 export { BannedView } from './BannedView';

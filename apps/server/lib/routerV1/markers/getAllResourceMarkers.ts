@@ -9,7 +9,7 @@ export const getAllResourceMarkers = async (
   res: Response,
 ): Promise<void> => {
   try {
-    const { db } = mongoInstance.getDb(res.locals.adventure);
+    const { db } = mongoInstance.getDb(res?.locals?.adventure);
 
     const collectionResourceMarkers =
       db.collection<ResourceMarker>('markersResource');

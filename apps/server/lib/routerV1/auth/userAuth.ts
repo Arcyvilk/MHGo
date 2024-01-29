@@ -6,7 +6,7 @@ import { mongoInstance } from '../../../api';
 
 export const getMe = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { dbAuth } = mongoInstance.getDb(res.locals.adventure);
+    const { dbAuth } = mongoInstance.getDbAuth();
     // @ts-expect-error req.user IS defined
     const { userId } = req.user;
 

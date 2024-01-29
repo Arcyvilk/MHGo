@@ -10,7 +10,7 @@ export const getDropsByResourceId = async (
 ): Promise<void> => {
   try {
     const { resourceId } = req.params;
-    const { db } = mongoInstance.getDb(res.locals.adventure);
+    const { db } = mongoInstance.getDb(res?.locals?.adventure);
     const collection = db.collection<Resource>('resources');
 
     const resourceDrops = await collection.findOne({ id: resourceId });

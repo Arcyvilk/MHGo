@@ -10,7 +10,7 @@ export const getTutorial = async (
 ): Promise<void> => {
   try {
     const { stepFrom, stepTo } = req.query;
-    const { db } = mongoInstance.getDb(res.locals.adventure);
+    const { db } = mongoInstance.getDb(res?.locals?.adventure);
     const collection = db.collection<TutorialStep>('tutorial');
     const tutorial: TutorialStep[] = [];
 

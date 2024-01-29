@@ -7,7 +7,10 @@ import { mongoInstance } from '../../../api';
 export const getUser = async (req: Request, res: Response): Promise<void> => {
   try {
     const { userId } = req.params;
-    const { db, dbAuth } = mongoInstance.getDb(res.locals.adventure);
+
+    const { db } = mongoInstance.getDb(res?.locals?.adventure);
+    const { dbAuth } = mongoInstance.getDbAuth();
+
     const collection = dbAuth.collection<User>('users');
 
     const user = await collection.findOne({ id: userId });

@@ -9,7 +9,7 @@ export const adminCreateMonster = async (
   res: Response,
 ): Promise<void> => {
   try {
-    const { db } = mongoInstance.getDb(res.locals.adventure);
+    const { db } = mongoInstance.getDb(res?.locals?.adventure);
     const collectionMonsterDrops = db.collection<MonsterDrop>('drops');
     const { monster, drops } = req.body as {
       monster: Monster;

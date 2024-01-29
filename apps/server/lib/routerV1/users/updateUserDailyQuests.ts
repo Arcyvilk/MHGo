@@ -15,7 +15,7 @@ export const updateUserDailyQuests = async (
   res: Response,
 ): Promise<void> => {
   try {
-    const { db } = mongoInstance.getDb(res.locals.adventure);
+    const { db } = mongoInstance.getDb(res?.locals?.adventure);
     const { userId, questId } = req.params;
     const { progress, isClaimed } = req.body;
 

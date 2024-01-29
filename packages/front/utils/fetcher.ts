@@ -6,12 +6,10 @@ const updateOptions = (options: any) => {
   const bearer = JSON.parse(localStorage?.MHGO_AUTH ?? '{}')?.bearer;
   const adventure = JSON.parse(localStorage?.MHGO_ADVENTURE ?? '{}')?.id;
 
-  if (bearer) {
-    update.headers = {
-      ...update.headers,
-      'X-Adventure': adventure,
-      'Authorization': `Bearer ${bearer}`,
-    };
-  }
+  update.headers = {
+    ...update.headers,
+    ...(adventure ? { 'X-Adventure': adventure } : {}),
+    ...(bearer ? { Authorization: `Bearer ${bearer}` } : {}),
+  };
   return update;
 };

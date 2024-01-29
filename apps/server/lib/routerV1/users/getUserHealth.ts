@@ -10,7 +10,9 @@ export const getUserHealth = async (
   res: Response,
 ): Promise<void> => {
   try {
-    const { db, dbAuth } = mongoInstance.getDb(res.locals.adventure);
+    const { db } = mongoInstance.getDb(res?.locals?.adventure);
+    const { dbAuth } = mongoInstance.getDbAuth();
+
     const { userId } = req.params;
 
     // Get base stats of every user

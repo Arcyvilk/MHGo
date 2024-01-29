@@ -16,6 +16,7 @@ import {
   verifyToken,
   verifyAdminToken,
 } from './auth';
+import { validateAdventure } from '../helpers/validateAdventure';
 
 routerV1.get('/auth/me', verifyToken, validateAdventure, getMe);
 routerV1.post('/auth/signIn', signIn);
@@ -70,11 +71,13 @@ routerV1.put(
 routerV1.put(
   '/admin/users/user/:userId/reset',
   verifyAdminToken,
+  validateAdventure,
   adminResetUser,
 );
 routerV1.post(
   '/admin/users/user/:userId/godmode',
   verifyAdminToken,
+  validateAdventure,
   adminUserEnableGodmode,
 );
 routerV1.delete(
@@ -118,75 +121,89 @@ routerV1.put(
 routerV1.put(
   '/admin/items/item/:itemId/action',
   verifyAdminToken,
+  validateAdventure,
   adminUpdateItemAction,
 );
 routerV1.put(
   '/admin/items/item/:itemId/crafts',
   verifyAdminToken,
+  validateAdventure,
   adminUpdateItemCrafts,
 );
 routerV1.put(
   '/admin/items/item/:itemId/price',
   verifyAdminToken,
+  validateAdventure,
   adminUpdateItemPrice,
 );
 routerV1.put(
   '/admin/items/item/:itemId/stats',
   verifyAdminToken,
+  validateAdventure,
   adminUpdateItemStats,
 );
 
 routerV1.put(
   '/admin/materials/material/:materialId',
   verifyAdminToken,
+  validateAdventure,
   adminUpdateMaterial,
 );
 routerV1.put(
   '/admin/monsters/monster/:monsterId',
   verifyAdminToken,
+  validateAdventure,
   adminUpdateMonster,
 );
 routerV1.put(
   '/admin/resources/resource/:resourceId',
   verifyAdminToken,
+  validateAdventure,
   adminUpdateResource,
 );
 
 routerV1.post(
   '/admin/marker/monster/create',
   verifyAdminToken,
+  validateAdventure,
   adminCreateMonsterMarker,
 );
 routerV1.put(
   '/admin/marker/monster/:markerId',
   verifyAdminToken,
+  validateAdventure,
   adminUpdateMonsterMarker,
 );
 routerV1.delete(
   '/admin/marker/monster/:markerId',
   verifyAdminToken,
+  validateAdventure,
   adminDeleteMonsterMarker,
 );
 
 routerV1.post(
   '/admin/marker/resource/create',
   verifyAdminToken,
+  validateAdventure,
   adminCreateResourceMarker,
 );
 routerV1.put(
   '/admin/marker/resource/:markerId',
   verifyAdminToken,
+  validateAdventure,
   adminUpdateResourceMarker,
 );
 routerV1.delete(
   '/admin/marker/resource/:markerId',
   verifyAdminToken,
+  validateAdventure,
   adminDeleteResourceMarker,
 );
 
 routerV1.put(
   '/admin/monsters/monster/:monsterId/drops',
   verifyAdminToken,
+  validateAdventure,
   adminUpdateMonsterDrops,
 );
 
@@ -254,6 +271,7 @@ routerV1.get(
 routerV1.get(
   '/users/user/:userId/craft/:itemId',
   verifyToken,
+  validateAdventure,
   getItemCraftingList,
 );
 
@@ -285,6 +303,7 @@ routerV1.get(
 routerV1.put(
   '/drops/monster/user/:userId',
   verifyToken,
+  validateAdventure,
   getMonsterDropsForUser,
 );
 
@@ -303,6 +322,7 @@ routerV1.get(
 routerV1.put(
   '/drops/resource/user/:userId',
   verifyToken,
+  validateAdventure,
   getResourceDropsForUser,
 );
 
@@ -339,6 +359,7 @@ routerV1.get('/users/user/:userId', verifyToken, validateAdventure, getUser);
 routerV1.get(
   '/users/user/:userId/achievements/list',
   verifyToken,
+  validateAdventure,
   getUserAchievements,
 );
 routerV1.get(
@@ -350,6 +371,7 @@ routerV1.get(
 routerV1.get(
   '/users/user/:userId/items/craftable',
   verifyToken,
+  validateAdventure,
   getUserCraftableItems,
 );
 routerV1.get(
@@ -361,6 +383,7 @@ routerV1.get(
 routerV1.get(
   '/users/user/:userId/materials/list',
   verifyToken,
+  validateAdventure,
   getUserMaterials,
 );
 routerV1.get(
@@ -378,6 +401,7 @@ routerV1.get(
 routerV1.get(
   '/users/user/:userId/item/:itemId/equip',
   verifyToken,
+  validateAdventure,
   getUserEquipItem,
 );
 
@@ -396,27 +420,32 @@ routerV1.put(
 routerV1.put(
   '/users/user/:userId/achievement',
   verifyToken,
+  validateAdventure,
   updateUserAchievement,
 );
 
 routerV1.get(
   '/users/user/:userId/quests/daily',
   verifyToken,
+  validateAdventure,
   getUserDailyQuests,
 );
 routerV1.get(
   '/users/user/:userId/quests/story',
   verifyToken,
+  validateAdventure,
   getUserStoryQuests,
 );
 routerV1.put(
   '/users/user/:userId/quests/daily/:questId',
   verifyToken,
+  validateAdventure,
   updateUserDailyQuests,
 );
 routerV1.put(
   '/users/user/:userId/quests/story/:questId',
   verifyToken,
+  validateAdventure,
   updateUserStoryQuests,
 );
 
@@ -441,16 +470,19 @@ routerV1.put(
 routerV1.put(
   '/users/user/:userId/consume',
   verifyToken,
+  validateAdventure,
   updateUserItemsConsume,
 );
 routerV1.put(
   '/users/user/:userId/craft/:itemId',
   verifyToken,
+  validateAdventure,
   updateUserItemCraft,
 );
 routerV1.put(
   '/users/user/:userId/purchase/:itemId',
   verifyToken,
+  validateAdventure,
   updateUserItemPurchase,
 );
 
@@ -477,11 +509,13 @@ routerV1.get(
 routerV1.get(
   '/map/markers/monsters/:markerId',
   verifyToken,
+  validateAdventure,
   getSingleMonsterMarker,
 );
 routerV1.get(
   '/map/monsters/user/:userId',
   verifyToken,
+  validateAdventure,
   getMonsterMarkersByUserId,
 );
 
@@ -495,11 +529,13 @@ routerV1.get(
 routerV1.get(
   '/map/markers/resources/:markerId',
   verifyToken,
+  validateAdventure,
   getSingleResourceMarker,
 );
 routerV1.get(
   '/map/resources/user/:userId',
   verifyToken,
+  validateAdventure,
   getResourceMarkersByUserId,
 );
 
@@ -560,6 +596,7 @@ import { getCompanionById } from './companions';
 routerV1.get(
   '/companions/companion/:companionId',
   verifyToken,
+  validateAdventure,
   getCompanionById,
 );
 
@@ -591,9 +628,9 @@ routerV1.get('/settings', verifyToken, validateAdventure, getSettings);
  *         MISC         *
  ************************/
 
-import { getPrefetchImages } from './_misc';
-import { validateAdventure } from '../helpers/validateAdventure';
+import { getAdventures, getPrefetchImages } from './_misc';
 
+routerV1.get('/misc/adventures', verifyToken, validateAdventure, getAdventures);
 routerV1.get(
   '/misc/prefetch/images',
   verifyToken,
