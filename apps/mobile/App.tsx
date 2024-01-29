@@ -46,7 +46,7 @@ const App = () => {
   return (
     <WebView
       style={styles.container}
-      source={{ uri: 'https://app-outdoria.masterhoarder.site' }}
+      source={{ uri: 'https://app.masterhoarder.site' }}
       geolocationEnabled={true}
     />
   );

@@ -19,7 +19,7 @@
     "production": {
       "env": {
         "APP_ICON": "./assets/favicon.png",
-        "APP_NAME": "outdoria"
+        "APP_NAME": "mhgo"
         },
       "android": {
         "buildType": "apk"
