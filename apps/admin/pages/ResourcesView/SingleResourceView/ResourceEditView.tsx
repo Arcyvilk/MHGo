@@ -150,14 +150,12 @@ const Load = () => {
               src={`${CDN_URL}${resourceThumbnail}`}
             />
           </div>
-          <div className={s.singleMonsterView__content}>
-            <div className={s.singleResourceView__section}>
-              <ResourceDrops
-                updatedDrops={updatedDrops}
-                setUpdatedDrops={setUpdatedDrops}
-              />
-            </div>
-          </div>
+        </div>
+        <div className={s.singleResourceView__section}>
+          <ResourceDrops
+            updatedDrops={updatedDrops}
+            setUpdatedDrops={setUpdatedDrops}
+          />
         </div>
       </div>
     </div>
