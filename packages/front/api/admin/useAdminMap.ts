@@ -160,7 +160,9 @@ export const useAdminCreateResourceMarkerApi = () => {
     if (response.status !== 201)
       throw new Error((await response.json()).error ?? 'Did not work!');
 
-    queryClient.invalidateQueries({ queryKey: ['markers', 'resource', 'all'] });
+    queryClient.invalidateQueries({
+      queryKey: ['admin', 'markers', 'resource', 'all'],
+    });
   };
 
   const { mutate, error, status, isPending, isSuccess, isError } = useMutation({
@@ -194,7 +196,9 @@ export const useAdminUpdateResourceMarkerApi = () => {
     if (response.status !== 200 && response.status !== 201)
       throw new Error((await response.json()).error ?? 'Did not work!');
 
-    queryClient.invalidateQueries({ queryKey: ['markers', 'resource', 'all'] });
+    queryClient.invalidateQueries({
+      queryKey: ['admin', 'markers', 'resource', 'all'],
+    });
   };
 
   const { mutate, error, status, isPending, isSuccess, isError } = useMutation({
@@ -220,7 +224,9 @@ export const useAdminDeleteResourceMarkerApi = () => {
     if (response.status !== 200)
       throw new Error((await response.json()).error ?? 'Did not work!');
 
-    queryClient.invalidateQueries({ queryKey: ['markers', 'resource', 'all'] });
+    queryClient.invalidateQueries({
+      queryKey: ['admin', 'markers', 'resource', 'all'],
+    });
   };
 
   const { mutate, error, status, isPending, isSuccess, isError } = useMutation({
