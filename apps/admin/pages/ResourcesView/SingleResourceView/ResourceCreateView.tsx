@@ -123,7 +123,7 @@ export const ResourceCreateView = () => {
 };
 
 const useUpdateResource = (
-  drops: Resource['drops'],
+  drops: ResourceDrop['drops'],
   setStatus: (status: Status) => void,
 ) => {
   const [resource, setResource] = useState<Resource>(DEFAULT_RESOURCE);
@@ -136,14 +136,18 @@ const useUpdateResource = (
   );
 
   const onCreate = () => {
-    if (resource)
+    if (resource) {
+      const resourceId = resource.name.toLowerCase().replace(/ /g, '_');
       mutateResource({
-        ...resource,
-        img: resourceImg,
-        thumbnail: resourceThumbnail,
-        levelRequirements: resource.levelRequirements ?? null,
-        drops,
+        resource: {
+          ...resource,
+          img: resourceImg,
+          thumbnail: resourceThumbnail,
+          levelRequirements: resource.levelRequirements ?? null,
+        },
+        drops: { resourceId, drops },
       });
+    }
   };
 
   return {

@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { Resource } from '@mhgo/types';
+import { Resource, ResourceDrop } from '@mhgo/types';
 
 import { API_URL } from '../../env';
 import { fetcher, removeCdnUrl } from '../..';
@@ -8,15 +8,19 @@ import { fetcher, removeCdnUrl } from '../..';
 export const useAdminCreateResourceApi = () => {
   const queryClient = useQueryClient();
 
-  const adminCreateResource = async (variables: Resource): Promise<void> => {
-    const fixedResource = {
-      ...variables,
-      img: removeCdnUrl(variables.img),
-      thumbnail: removeCdnUrl(variables.thumbnail),
+  const adminCreateResource = async (variables: {
+    resource: Resource;
+    drops: ResourceDrop;
+  }): Promise<void> => {
+    const { resource, drops } = variables;
+    const fixedResourceProperties = {
+      ...resource,
+      img: removeCdnUrl(resource.img),
+      thumbnail: removeCdnUrl(resource.thumbnail),
     };
     const response = await fetcher(`${API_URL}/admin/resources/create`, {
       method: 'POST',
-      body: JSON.stringify(fixedResource),
+      body: JSON.stringify({ resource: fixedResourceProperties, drops }),
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',

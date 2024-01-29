@@ -86,7 +86,6 @@ export const DEFAULT_RESOURCE: Resource = {
   img: '/resources/XXX.jpg',
   thumbnail: '/resources/thumbnail-XXX.svg',
   levelRequirements: 0,
-  drops: [],
 };
 
 export const DEFAULT_MONSTER_MARKER: Omit<MonsterMarker, 'respawnTime' | 'id'> =

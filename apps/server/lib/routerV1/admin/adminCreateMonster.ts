@@ -10,13 +10,12 @@ export const adminCreateMonster = async (
 ): Promise<void> => {
   try {
     const { db } = mongoInstance.getDb(res?.locals?.adventure);
-    const collectionMonsterDrops = db.collection<MonsterDrop>('drops');
     const { monster, drops } = req.body as {
       monster: Monster;
       drops: MonsterDrop;
     };
 
-    // Check if the item with this ID already exists
+    // Check if the monster with this ID already exists
     const newId = monster.name.toLowerCase().replace(/ /g, '_');
     const collectionMonsters = db.collection<Monster>('monsters');
     const monsterWithSameId = await collectionMonsters.findOne({ id: newId });
@@ -33,11 +32,12 @@ export const adminCreateMonster = async (
       img: monster.img.replace(process.env.CDN_URL, ''),
     });
     if (!responseMonsters.acknowledged) {
-      res.status(400).send({ error: 'Could not create this monster.' });
+      res.status(400).send({ error: 'Could not create this monster drops.' });
       return;
     }
 
     // Create monster drops
+    const collectionMonsterDrops = db.collection<MonsterDrop>('drops');
     const responseDrops = await collectionMonsterDrops.insertOne(drops);
     if (!responseDrops.acknowledged) {
       res.status(400).send({ error: 'Could not create this monster.' });
