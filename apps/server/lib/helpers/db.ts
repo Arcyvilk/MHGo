@@ -1,13 +1,18 @@
 import { Db, MongoClient } from 'mongodb';
 import { log } from '@mhgo/utils';
 
+const DB_AUTH = 'auth';
+const DB_MHGO = 'mhgo';
+const DB_OUTDORIA = 'outdoria';
+
 export class MongoInstance {
   public client: MongoClient;
   public db: Db;
 
+  // TODO: Add support for multiple databases
   constructor() {
     try {
-      const url = process.env.DATABASE_URL;
+      const url = process.env.DB_NAME;
       if (!url) {
         throw new Error('No database URL provided');
       }
@@ -29,7 +34,7 @@ export const connectToDb = async (): Promise<{
   db: Db;
 }> => {
   try {
-    const url = process.env.DATABASE_URL;
+    const url = process.env.DB_NAME;
     if (!url) {
       throw new Error('No database URL provided');
     }
