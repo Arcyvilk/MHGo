@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { ToastContainer, ToastContainerProps } from 'react-toastify';
-import { Loader, useAdventuresApi } from '@mhgo/front';
+import { Loader } from '@mhgo/front';
 
 import { entries } from './utils/entries';
 import { AdventureSelectView, LoginView, NoPermissions } from './pages';
@@ -19,7 +19,6 @@ const toastOptions: ToastContainerProps = {
 };
 
 export const Router = () => {
-  const { data: adventures } = useAdventuresApi();
   const router = createBrowserRouter([
     {
       path: '/auth',
@@ -28,7 +27,7 @@ export const Router = () => {
         { path: '/auth/login', element: <LoginView /> },
         {
           path: '/auth/adventure',
-          element: <AdventureSelectView adventures={adventures} />,
+          element: <AdventureSelectView />,
         },
         { path: '/auth/forbidden', element: <NoPermissions /> },
       ],

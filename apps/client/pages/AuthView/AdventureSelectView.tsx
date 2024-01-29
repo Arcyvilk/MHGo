@@ -1,17 +1,24 @@
 import { useQueryClient } from '@tanstack/react-query';
-import { Button, logo } from '@mhgo/front';
-import { Adventure } from '@mhgo/types';
+import {
+  Button,
+  Loader,
+  QueryBoundary,
+  logo,
+  useAdventuresApi,
+} from '@mhgo/front';
 
 import { useAppContext } from '../../utils/context';
 
 import s from './AuthView.module.scss';
 
-type AdventureSelectViewProps = {
-  adventures: Adventure[];
-};
-export const AdventureSelectView = ({
-  adventures,
-}: AdventureSelectViewProps) => {
+export const AdventureSelectView = () => (
+  <QueryBoundary fallback={<Loader />}>
+    <Load />
+  </QueryBoundary>
+);
+
+const Load = () => {
+  const { data: adventures } = useAdventuresApi();
   const { setAdventure, setCacheId } = useAppContext();
   const queryClient = useQueryClient();
 

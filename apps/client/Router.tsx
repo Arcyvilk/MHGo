@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { ToastContainer, ToastContainerProps } from 'react-toastify';
 import ReactHowler from 'react-howler';
-import { Loader, SoundBG, useAdventuresApi, useSounds } from '@mhgo/front';
+import { Loader, SoundBG, useSounds } from '@mhgo/front';
 
 import { useAppContext } from './utils/context';
 import {
@@ -35,7 +35,6 @@ import { App } from './App';
 export const Router = () => {
   const { music, setMusic, isMusicPlaying, musicVolume } = useAppContext();
   const { changeMusic } = useSounds(setMusic);
-  const { data: adventures } = useAdventuresApi();
 
   useEffect(() => {
     const isInsideInstalledApp =
@@ -59,7 +58,7 @@ export const Router = () => {
         // AUTH ROUTES
         {
           path: '/auth/adventure',
-          element: <AdventureSelectView adventures={adventures} />,
+          element: <AdventureSelectView />,
         },
         { path: '/auth/loading', element: <LoadingView /> },
         { path: '/auth/login', element: <LoginView /> },
