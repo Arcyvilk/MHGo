@@ -37,6 +37,12 @@
     width: 100%;
   }
 
+  &__buttons {
+    display: flex;
+    flex-direction: column;
+    gap: $size-8;
+  }
+
   &__title {
     @include page-title; 
     text-align: center;

@@ -4,7 +4,7 @@ import { Adventure } from '@mhgo/types';
 
 import { useAppContext } from '../../utils/context';
 
-import s from './AuthView.module.scss';
+import s from './LoginView.module.scss';
 
 type AdventureSelectViewProps = {
   adventures: Adventure[];
@@ -12,21 +12,20 @@ type AdventureSelectViewProps = {
 export const AdventureSelectView = ({
   adventures,
 }: AdventureSelectViewProps) => {
-  const { setAdventure, setCacheId } = useAppContext();
+  const { setAdventure } = useAppContext();
   const queryClient = useQueryClient();
 
   const onSwitchAdventure = (id: string) => {
     setAdventure({ id });
     queryClient.invalidateQueries();
-    setCacheId({ id: String(Date.now()) });
     location.replace('/');
   };
 
   return (
-    <>
-      <img className={s.authView__logo} src={logo} alt="logo" />
-      <div className={s.authView__title}>Select adventure</div>
-      <div className={s.authView__buttons}>
+    <div className={s.loginView__wrapper}>
+      <img className={s.loginView__logo} src={logo} alt="logo" />
+      <div className={s.loginView__title}>Select adventure</div>
+      <div className={s.loginView__buttons}>
         {adventures.map(adventure => (
           <Button
             label={adventure.name}
@@ -35,6 +34,6 @@ export const AdventureSelectView = ({
           />
         ))}
       </div>
-    </>
+    </div>
   );
 };

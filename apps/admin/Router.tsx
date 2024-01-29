@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { ToastContainer, ToastContainerProps } from 'react-toastify';
-import { AdventureSelectView, Loader } from '@mhgo/front';
+import { Loader, useAdventuresApi } from '@mhgo/front';
 
 import { entries } from './utils/entries';
-import { LoginView, NoPermissions } from './pages';
+import { AdventureSelectView, LoginView, NoPermissions } from './pages';
 import { App } from './App';
 
 import 'leaflet/dist/leaflet.css';
@@ -19,13 +19,17 @@ const toastOptions: ToastContainerProps = {
 };
 
 export const Router = () => {
+  const { data: adventures } = useAdventuresApi();
   const router = createBrowserRouter([
     {
       path: '/auth',
       children: [
         // AUTH ROUTES
         { path: '/auth/login', element: <LoginView /> },
-        { path: '/auth/adventure', element: <AdventureSelectView /> },
+        {
+          path: '/auth/adventure',
+          element: <AdventureSelectView adventures={adventures} />,
+        },
         { path: '/auth/forbidden', element: <NoPermissions /> },
       ],
     },
