@@ -73,7 +73,7 @@ export const getMonsterMarkersByUserId = async (
 
     // Apply all filters and get all visible markers
     const collectionMonsterMarkers =
-      db.collection<HabitatMarker>('markersSpawns');
+      db.collection<HabitatMarker>('markersMonster');
     const monsterMarkers: MonsterMarker[] = [];
 
     // Aggregate all filters together

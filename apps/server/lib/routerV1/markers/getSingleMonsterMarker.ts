@@ -16,7 +16,7 @@ export const getSingleMonsterMarker = async (
     if (!markerId) throw new Error('Monster marker ID missing!');
 
     const collectionMonsterMarkers =
-      db.collection<MonsterMarker>('markersSpawns');
+      db.collection<MonsterMarker>('markersMonster');
     const monsterMarker = await collectionMonsterMarkers.findOne({
       _id: new ObjectId(markerId),
     });

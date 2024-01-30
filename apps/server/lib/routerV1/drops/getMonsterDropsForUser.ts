@@ -43,7 +43,7 @@ export const getMonsterDropsForUser = async (
 
     // Get the specified monster marker
     const collectionMonsterMarkers =
-      db.collection<MonsterMarker>('markersSpawns');
+      db.collection<MonsterMarker>('markersMonster');
     const marker = await collectionMonsterMarkers.findOne({
       _id: new ObjectId(markerId),
     });
