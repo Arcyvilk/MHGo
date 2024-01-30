@@ -126,10 +126,10 @@ const useMapEvents = (
   };
   map.on('locationfound', onLocationFound);
 
-  const onLocationError = (e: any) => {
-    console.log(e.message);
-  };
-  map.on('locationerror', onLocationError);
+  // const onLocationError = (e: any) => {
+  //   console.log(e.message);
+  // };
+  // map.on('locationerror', onLocationError);
 
   // Refresh location every second
   map.locate({

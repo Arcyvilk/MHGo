@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
 import { v4 as uuid } from 'uuid';
+import { explosion } from '@mhgo/front';
 
 import { SoundSE, useSounds } from '../../../hooks';
 import { CDN_URL } from '../../../env';
+
 import s from './Nuke.module.scss';
 
 export const Nuke = () => {
@@ -12,7 +14,7 @@ export const Nuke = () => {
 
   useEffect(() => {
     setTimeout(() => {
-      setSrc(`${CDN_URL}/misc/explosion.gif?test=${uuid()}`);
+      setSrc(`${explosion}?test=${uuid()}`);
     }, 0);
     playSound(SoundSE.NUKE);
   }, []);

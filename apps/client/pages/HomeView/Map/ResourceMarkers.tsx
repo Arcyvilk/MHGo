@@ -29,7 +29,6 @@ const Load = ({ coords }: ResourceMarkerProps) => {
   return (
     <>
       {resourceMarkers.map(r => {
-        console.log(r);
         const position = L.latLng(r.coords[0], r.coords[1]);
         const onClick = () => {
           playSound(SoundSE.CLICK);
