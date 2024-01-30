@@ -13,7 +13,7 @@ import {
   useAdminUpdateMaterialApi,
   useMaterialsApi,
   useMonsterDropsApi,
-  useResourcesApi,
+  useResourceDropsApi,
 } from '@mhgo/front';
 import { ActionBar, HeaderEdit } from '../../../containers';
 
@@ -185,8 +185,10 @@ const useUpdateMaterial = () => {
 
   const { data: materials, isFetched: isMaterialsFetched } =
     useMaterialsApi(true);
-  const { data: drops, isFetched: isDropsFetched } = useMonsterDropsApi();
-  const { data: resources } = useResourcesApi(true);
+  const { data: dropMonsters, isFetched: isDropMonstersFetched } =
+    useMonsterDropsApi();
+  const { data: dropResources, isFetched: isDropResourcesFetched } =
+    useResourceDropsApi();
 
   const material = useMemo(
     () => materials.find(i => i.id === id),
@@ -201,7 +203,7 @@ const useUpdateMaterial = () => {
       chance: number;
       amount: number;
     }[] = [];
-    drops.forEach(drop =>
+    dropMonsters.forEach(drop =>
       drop.drops.map(levelDrop => {
         const isDropped = levelDrop.drops.find(d => d.id === material?.id);
         if (isDropped)
@@ -219,13 +221,13 @@ const useUpdateMaterial = () => {
       chance: number;
       amount: number;
     }[] = [];
-    resources.forEach(resource =>
+    dropResources.forEach(resource =>
       resource.drops.map(resourceDrop => {
-        const isDropped = resourceDrop.materialId === material?.id;
+        const isDropped = resourceDrop.id === material?.id;
         if (isDropped)
           resourceDrops.push({
-            id: resource.id,
-            name: resource.name,
+            id: resource.resourceId,
+            name: resource.resourceId,
             chance: resourceDrop.chance,
             amount: resourceDrop.amount,
           });
@@ -233,7 +235,12 @@ const useUpdateMaterial = () => {
     );
 
     return { monsters, resourceDrops };
-  }, [drops, isDropsFetched]);
+  }, [
+    dropMonsters,
+    dropResources,
+    isDropMonstersFetched,
+    isDropResourcesFetched,
+  ]);
 
   useEffect(() => {
     setUpdatedMaterial(material);
