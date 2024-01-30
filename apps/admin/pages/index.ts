@@ -1,3 +1,4 @@
+export * from './HabitatsView';
 export * from './HomeView';
 export * from './ItemsView';
 export * from './LoginView';

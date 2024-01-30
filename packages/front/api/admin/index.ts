@@ -1,5 +1,6 @@
 export * from './useAdmin';
 export * from './useAdminDrops';
+export * from './useAdminHabitats';
 export * from './useAdminItems';
 export * from './useAdminMaterials';
 export * from './useAdminMap';

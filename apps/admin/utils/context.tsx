@@ -7,6 +7,7 @@ import {
   Item as TItem,
   Resource,
   AdminUser,
+  Habitat,
 } from '@mhgo/types';
 
 type ContextType = {
@@ -17,24 +18,28 @@ type ContextType = {
   setAdventure: (adventure: { id: string }) => void;
   // ORDERING
 
+  orderHabitat: Order;
   orderItem: Order;
   orderMaterial: Order;
   orderMonster: Order;
   orderResource: Order;
   orderUser: Order;
 
+  setOrderHabitat: (order: Order) => void;
   setOrderItem: (order: Order) => void;
   setOrderMaterial: (order: Order) => void;
   setOrderMonster: (order: Order) => void;
   setOrderResource: (order: Order) => void;
   setOrderUser: (order: Order) => void;
 
+  orderByHabitat: keyof Habitat;
   orderByItem: keyof TItem;
   orderByMaterial: keyof Material;
   orderByMonster: keyof Monster | 'baseDPS';
   orderByResource: keyof Resource;
   orderByUser: keyof AdminUser;
 
+  setOrderByHabitat: (orderBy: keyof Habitat) => void;
   setOrderByItem: (orderBy: keyof TItem) => void;
   setOrderByMaterial: (orderBy: keyof Material) => void;
   setOrderByMonster: (orderBy: keyof Monster | 'baseDPS') => void;
@@ -63,6 +68,8 @@ export const AppContextProvider = ({
 
   // ORDERING
 
+  const [orderHabitat, setOrderHabitat] = useState<Order>('asc');
+  const [orderByHabitat, setOrderByHabitat] = useState<keyof Habitat>('name');
   const [orderItem, setOrderItem] = useState<Order>('asc');
   const [orderByItem, setOrderByItem] = useState<keyof TItem>('rarity');
   const [orderMaterial, setOrderMaterial] = useState<Order>('asc');
@@ -86,24 +93,28 @@ export const AppContextProvider = ({
     setAdventure,
 
     // ORDERING
+    orderHabitat,
     orderItem,
     orderMaterial,
     orderMonster,
     orderResource,
     orderUser,
 
+    setOrderHabitat,
     setOrderItem,
     setOrderMaterial,
     setOrderMonster,
     setOrderResource,
     setOrderUser,
 
+    orderByHabitat,
     orderByItem,
     orderByMaterial,
     orderByMonster,
     orderByResource,
     orderByUser,
 
+    setOrderByHabitat,
     setOrderByItem,
     setOrderByMaterial,
     setOrderByMonster,

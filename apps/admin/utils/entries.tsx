@@ -1,5 +1,6 @@
 import { IconType } from '@mhgo/front';
 import {
+  HabitatsView,
   HomeView,
   ItemsView,
   MapView,
@@ -9,6 +10,8 @@ import {
   SettingsView,
   UsersView,
   //
+  HabitatCreateView,
+  HabitatEditView,
   ItemCreateView,
   ItemEditView,
   MaterialCreateView,
@@ -64,6 +67,14 @@ export const entries: Entry[] = [
     component: <MaterialsView />,
   },
   {
+    id: 'habitats',
+    title: 'Habitats',
+    link: '/habitats',
+    icon: 'Tree',
+    mainRoute: true,
+    component: <HabitatsView />,
+  },
+  {
     id: 'monsters',
     title: 'Monsters',
     link: '/monsters',
@@ -97,6 +108,22 @@ export const entries: Entry[] = [
   },
 
   // SUBROUTES
+  {
+    id: 'habitat_create',
+    title: 'Create habitat',
+    link: '/habitats/create',
+    icon: 'Tree',
+    mainRoute: false,
+    component: <HabitatCreateView />,
+  },
+  {
+    id: 'habitat_edit',
+    title: 'Edit habitat',
+    link: '/habitats/edit',
+    icon: 'Tree',
+    mainRoute: false,
+    component: <HabitatEditView />,
+  },
   {
     id: 'item_create',
     title: 'Create item',

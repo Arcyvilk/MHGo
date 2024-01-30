@@ -42,6 +42,7 @@ import Star from './Star.svg?react';
 import StarYellow from './StarYellow.svg?react';
 import Sword from './Sword.svg?react';
 import Trash from './Trash.svg?react';
+import Tree from './Tree.svg?react';
 import X from './X.svg?react';
 
 const icons = {
@@ -87,6 +88,7 @@ const icons = {
   StarYellow,
   Sword,
   Trash,
+  Tree,
   X,
 };
 

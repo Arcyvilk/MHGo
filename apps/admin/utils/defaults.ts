@@ -10,6 +10,7 @@ import {
   ResourceMarker,
   Stats,
   ItemEffect,
+  Habitat,
 } from '@mhgo/types';
 
 export const DEFAULT_COORDS = [0, 0];
@@ -22,6 +23,14 @@ export const DEFAULT_STATS: Stats = {
   luck: 0,
   critChance: 0,
   critDamage: 0,
+};
+
+export const DEFAULT_HABITAT: Habitat = {
+  id: uuid(),
+  name: '',
+  description: '',
+  image: '/habitats/XXX.jpg',
+  monsters: [],
 };
 
 export const DEFAULT_MONSTER: Monster = {
