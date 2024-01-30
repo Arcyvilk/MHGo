@@ -29,11 +29,11 @@ const Load = ({ coords }: ResourceMarkerProps) => {
   return (
     <>
       {resourceMarkers.map(r => {
+        console.log(r);
         const position = L.latLng(r.coords[0], r.coords[1]);
         const onClick = () => {
           playSound(SoundSE.CLICK);
-          // @ts-expect-error _id in fact exists
-          navigateWithoutScroll(`/forage?markerId=${String(r._id)}`);
+          navigateWithoutScroll(`/forage?markerId=${r.id}`);
         };
 
         return (

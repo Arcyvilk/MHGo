@@ -128,7 +128,7 @@ const useResource = () => {
   );
 
   const params = new URLSearchParams(location.search);
-  const resourceId = params.get('id');
+  const resourceId = params.get('markerId');
 
   useEffect(() => {
     if (!resourceId) navigateWithoutScroll('/');
