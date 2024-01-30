@@ -1,6 +1,6 @@
-import { useEffect, useMemo } from 'react';
+import { useEffect, useState } from 'react';
 import { MapContainer, TileLayer, useMap } from 'react-leaflet';
-import L from 'leaflet';
+import L, { LatLng, LocationEvent } from 'leaflet';
 import { LSKeys, useLocalStorage } from '@mhgo/front';
 import { Loader, QueryBoundary } from '@mhgo/front';
 
@@ -14,12 +14,7 @@ import { useTutorialProgress } from '../../../hooks/useTutorial';
 
 import 'leaflet/dist/leaflet.css';
 import s from './Map.module.scss';
-
-const geoOptions = {
-  enableHighAccuracy: false,
-  timeout: 5000,
-  maximumAge: 0,
-};
+import { MapActions } from '.';
 
 const mapOptions = {
   preferCanvas: true,
@@ -45,26 +40,12 @@ export const Map = () => (
 );
 
 const Load = () => {
-  const geo = useMemo(() => navigator.geolocation, []);
-
   const [zoom] = useLocalStorage(LSKeys.MHGO_MAP_ZOOM, DEFAULT_ZOOM);
+  const [accuracy, setAccuracy] = useState(0);
   const [coords, setCoords] = useLocalStorage(
     LSKeys.MHGO_LAST_KNOWN_LOCATION,
     DEFAULT_COORDS,
   );
-
-  useEffect(() => {
-    geo.watchPosition(
-      (position: GeolocationPosition) => {
-        const { latitude, longitude } = position.coords;
-        setCoords([latitude, longitude]);
-      },
-      error => {
-        console.error(`ERROR(${error.code}): ${error.message}`);
-      },
-      geoOptions,
-    );
-  }, []);
 
   return (
     <MapContainer
@@ -72,47 +53,28 @@ const Load = () => {
       className={s.mapContainer}
       {...mapOptions}
       zoom={zoom.current}>
-      <MapLayer coords={coords} />
+      <MapLayer
+        coords={coords}
+        setCoords={setCoords}
+        setAccuracy={setAccuracy}
+      />
+      <MapActions accuracy={accuracy} />
     </MapContainer>
   );
 };
 
-type MapLayerProps = { coords: number[] };
-const MapLayer = ({ coords }: MapLayerProps) => {
+type MapLayerProps = {
+  coords: number[];
+  setCoords: (coords: number[]) => void;
+  setAccuracy: (accuracy: number) => void;
+};
+const MapLayer = ({ coords, setCoords, setAccuracy }: MapLayerProps) => {
   const { isFinishedTutorialPartOne } = useTutorialProgress();
-  const [zoom, setZoom] = useLocalStorage(LSKeys.MHGO_MAP_ZOOM, DEFAULT_ZOOM);
   const [homePosition] = useLocalStorage(LSKeys.MHGO_HOME_POSITION, {
     home: null,
   });
-  const map = useMap();
 
-  useEffect(() => {
-    map.invalidateSize();
-  }, [map]);
-
-  map.on('zoom', () => {
-    const newZoom = Math.round(map.getZoom());
-    if (newZoom !== zoom.current) setZoom({ current: newZoom });
-  });
-
-  useEffect(() => {
-    if (!map) return;
-    const centerCurrent = map.getCenter();
-    const centerCoords = L.latLng(coords[0], coords[1]);
-    const didCoordsChange =
-      centerCurrent.lat.toFixed(4) !== centerCoords.lat.toFixed(4) ||
-      centerCurrent.lng.toFixed(4) !== centerCoords.lng.toFixed(4);
-
-    if (!didCoordsChange) return;
-
-    const distanceToNewPosition = centerCurrent.distanceTo(centerCoords);
-
-    if (distanceToNewPosition > 1000) map.panTo(centerCoords);
-    else
-      map.flyTo(centerCoords, zoom.current, {
-        duration: 0.5,
-      });
-  }, [coords, map, zoom]);
+  useMapEvents(coords, setCoords, setAccuracy);
 
   return (
     <>
@@ -135,4 +97,74 @@ const MapLayer = ({ coords }: MapLayerProps) => {
       <UserMarker coords={coords} />
     </>
   );
+};
+
+const useMapEvents = (
+  coords: number[],
+  setCoords: (coords: number[]) => void,
+  setAccuracy: (accuracy: number) => void,
+) => {
+  const map = useMap();
+  const [zoom, setZoom] = useLocalStorage(LSKeys.MHGO_MAP_ZOOM, DEFAULT_ZOOM);
+
+  // Handle map zoom
+  const onMapZoom = () => {
+    const newZoom = Math.round(map.getZoom());
+    if (newZoom !== zoom.current) setZoom({ current: newZoom });
+  };
+
+  map.on('zoom', onMapZoom);
+
+  // Handle map change location
+  const onLocationFound = (location: LocationEvent) => {
+    const { accuracy, latlng } = location;
+    const isSignificantCoordsChange = getIsSignificantCoordsChange(latlng);
+    if (isSignificantCoordsChange) {
+      setCoords([latlng.lat, latlng.lng]);
+    }
+    setAccuracy(accuracy);
+  };
+  map.on('locationfound', onLocationFound);
+
+  const onLocationError = (e: any) => {
+    console.log(e.message);
+  };
+  map.on('locationerror', onLocationError);
+
+  // Refresh location every second
+  map.locate({
+    setView: true,
+    watch: true,
+    enableHighAccuracy: true,
+    timeout: 20000,
+    maximumAge: 0,
+    maxZoom: zoom.current,
+  });
+
+  // Get rid of the blank tiles on render
+  useEffect(() => {
+    map.invalidateSize();
+  }, [map]);
+
+  useEffect(() => {
+    if (!map) return;
+    const newCoords = L.latLng(coords[0], coords[1]);
+    const isSignificantCoordsChange = getIsSignificantCoordsChange(newCoords);
+    if (isSignificantCoordsChange) map.panTo(newCoords);
+  }, [coords, map, zoom]);
+
+  const getIsSignificantCoordsChange = (newCoords: LatLng) => {
+    const centerCurrent = map.getCenter();
+    const isSignificantCoordsChange =
+      roundToDecimal(centerCurrent.lat, 4) !==
+        roundToDecimal(newCoords.lat, 4) ||
+      roundToDecimal(centerCurrent.lng, 4) !== roundToDecimal(newCoords.lng, 4);
+
+    return isSignificantCoordsChange;
+  };
+};
+
+const roundToDecimal = (num: number, decimal: number) => {
+  const toDecimal = Math.pow(10, decimal);
+  return Math.round((num + Number.EPSILON) * toDecimal) / toDecimal;
 };

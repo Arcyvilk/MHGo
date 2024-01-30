@@ -35,6 +35,7 @@ import Pulse from './Pulse.svg?react';
 import QR from './QR.svg?react';
 import Quest from './Quest.svg?react';
 import Question from './Question.svg?react';
+import Refresh from './Refresh.svg?react';
 import Shield from './Shield.svg?react';
 import Shop from './Shop.svg?react';
 import Spin from './Spin.svg?react';
@@ -81,6 +82,7 @@ const icons = {
   QR,
   Quest,
   Question,
+  Refresh,
   Shop,
   Shield,
   Spin,

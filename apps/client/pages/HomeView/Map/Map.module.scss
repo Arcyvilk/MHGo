@@ -16,3 +16,37 @@
 .popup {
   font-size: $size-12;
 }
+
+.mapActions {
+  display: flex;
+  position: absolute;
+  gap: $size-8;
+  top: 0;
+  right: 0;
+  z-index: $zindex-map-actions;
+  padding: $size-4;
+  border-radius: 0 0 0 $size-8;
+  filter: drop-shadow(0 0 10px $color-black);
+  opacity: 0.5;
+
+  &__accuracy {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &--good {
+    background-color: $color-success;
+    color: $color-white;
+  }
+  &--medium {
+    background-color: $color-action;
+  }
+  &--bad {
+    background-color: $color-danger;
+    color: $color-white;
+  }
+  &--terrible {
+    background-color: $color-terrible;
+    color: $color-white;
+  }
+}

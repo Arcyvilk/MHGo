@@ -34,6 +34,7 @@ export const HomeView = () => (
 
 const Load = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+
   const { navigateWithoutScroll, navigateWithScroll } = useNavigateWithScroll();
 
   const { isFinishedTutorialPartOne } = useTutorialProgress();
