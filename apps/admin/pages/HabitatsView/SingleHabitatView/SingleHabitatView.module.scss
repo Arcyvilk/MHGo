@@ -37,3 +37,22 @@
     min-height: $size-72;
   }
 }
+
+.habitatSpawns {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  width: 100%;
+  gap: $size-8;
+
+  &__title {
+    margin: 0;
+    margin-bottom: $size-24;
+  }
+
+  &__monster {
+    display: flex;
+    flex-direction: row;
+    gap: $size-4;
+  }
+}

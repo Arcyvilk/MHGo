@@ -14,6 +14,8 @@ import {
 
 import { ActionBar, HeaderEdit } from '../../../containers';
 import { DEFAULT_HABITAT } from '../../../utils/defaults';
+import { HabitatSpawns } from './HabitatSpawns';
+import { validateHabitat } from './validation';
 
 import s from './SingleHabitatView.module.scss';
 
@@ -89,6 +91,11 @@ const Load = () => {
               style={{ maxWidth: '256px' }}
             />
           </div>
+          <div
+            className={s.singleHabitatView__section}
+            style={{ alignItems: 'center' }}>
+            <HabitatSpawns habitat={habitat} setHabitat={setHabitat} />
+          </div>
         </div>
       </div>
     </div>
@@ -103,7 +110,8 @@ const useUpdateHabitat = () => {
   const habitatImg = useMemo(() => removeCdnUrl(habitat?.image), [habitat]);
 
   const onCreate = () => {
-    if (habitat)
+    const isValid = validateHabitat(habitat);
+    if (isValid && habitat)
       mutate({
         ...habitat,
         image: habitatImg,

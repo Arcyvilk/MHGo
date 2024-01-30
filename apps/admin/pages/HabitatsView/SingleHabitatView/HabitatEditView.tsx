@@ -12,6 +12,8 @@ import {
   useHabitatsApi,
 } from '@mhgo/front';
 import { ActionBar, HeaderEdit } from '../../../containers';
+import { HabitatSpawns } from './HabitatSpawns';
+import { validateHabitat } from './validation';
 
 import s from './SingleHabitatView.module.scss';
 
@@ -74,44 +76,48 @@ const Load = () => {
         }
       />
       <div className={s.singleHabitatView__content}>
-        <div className={s.singleHabitatView__content}>
-          <div className={s.singleHabitatView__section}>
-            <Input
-              name="habitat_name"
-              label="Habitat's name"
-              value={updatedHabitat?.name ?? ''}
-              setValue={name =>
-                updatedHabitat && setUpdatedHabitat({ ...updatedHabitat, name })
-              }
-            />
-            <Input
-              name="habitat_desc"
-              label="Habitat's description"
-              value={updatedHabitat?.description ?? ''}
-              setValue={description =>
-                updatedHabitat &&
-                setUpdatedHabitat({ ...updatedHabitat, description })
-              }
-            />
-          </div>
-          <div
-            className={s.singleHabitatView__section}
-            style={{ alignItems: 'center' }}>
-            <Input
-              name="habitat_image"
-              label="Path to habitat image"
-              value={habitatImg}
-              setValue={image =>
-                updatedHabitat &&
-                setUpdatedHabitat({ ...updatedHabitat, image })
-              }
-            />
-            <img
-              src={`${CDN_URL}${habitatImg}`}
-              style={{ maxWidth: '256px' }}
-            />
-          </div>
+        <div className={s.singleHabitatView__section}>
+          <Input
+            name="habitat_name"
+            label="Habitat's name"
+            value={updatedHabitat?.name ?? ''}
+            setValue={name =>
+              updatedHabitat && setUpdatedHabitat({ ...updatedHabitat, name })
+            }
+          />
+          <Input
+            name="habitat_desc"
+            label="Habitat's description"
+            value={updatedHabitat?.description ?? ''}
+            setValue={description =>
+              updatedHabitat &&
+              setUpdatedHabitat({ ...updatedHabitat, description })
+            }
+          />
         </div>
+        <div
+          className={s.singleHabitatView__section}
+          style={{ alignItems: 'center' }}>
+          <Input
+            name="habitat_image"
+            label="Path to habitat image"
+            value={habitatImg}
+            setValue={image =>
+              updatedHabitat && setUpdatedHabitat({ ...updatedHabitat, image })
+            }
+          />
+          <img src={`${CDN_URL}${habitatImg}`} style={{ maxWidth: '256px' }} />
+        </div>
+      </div>
+      <div className={s.singleHabitatView__content}>
+        {updatedHabitat && setUpdatedHabitat && (
+          <div className={s.singleHabitatView__section}>
+            <HabitatSpawns
+              habitat={updatedHabitat}
+              setHabitat={setUpdatedHabitat}
+            />
+          </div>
+        )}
       </div>
     </div>
   );
@@ -141,7 +147,8 @@ const useUpdateHabitat = () => {
   );
 
   const onSave = () => {
-    if (updatedHabitat)
+    const isValid = validateHabitat(updatedHabitat);
+    if (isValid && updatedHabitat)
       mutate({
         ...updatedHabitat,
         image: habitatImg,

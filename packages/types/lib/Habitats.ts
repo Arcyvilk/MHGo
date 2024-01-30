@@ -1,3 +1,5 @@
+export type HabitatType = 'swamp' | 'desert' | 'forest' | 'cave'; // TODO deprecate this
+
 export type Habitat = {
   id: string;
   name: string;
