@@ -100,7 +100,7 @@ const Load = () => {
 const HabitatCell = ({ habitat }: { habitat: Habitat }) => {
   return (
     <div className={s.habitatsView__detail}>
-      <img src={habitat.image} className={s.habitatsView__icon} />
+      <img src={habitat.thumbnail} className={s.habitatsView__icon} />
       {habitat.name}
     </div>
   );

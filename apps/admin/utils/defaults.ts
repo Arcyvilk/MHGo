@@ -30,6 +30,7 @@ export const DEFAULT_HABITAT: Habitat = {
   name: '',
   description: '',
   image: '/habitats/XXX.jpg',
+  thumbnail: '/habitats/thumbnail-XXX.jpg',
   monsters: [],
 };
 

@@ -14,7 +14,7 @@ export const adminUpdateHabitat = async (
     const { habitatId } = req.params;
 
     const collection = db.collection<Habitat>('habitats');
-    const { _id, id, image, ...updatedFields } = req.body as Partial<
+    const { _id, id, image, thumbnail, ...updatedFields } = req.body as Partial<
       WithId<Habitat>
     >;
 
@@ -23,6 +23,7 @@ export const adminUpdateHabitat = async (
       {
         $set: {
           ...updatedFields,
+          thumbnail: thumbnail.replace(process.env.CDN_URL, ''),
           image: image.replace(process.env.CDN_URL, ''),
         },
       },

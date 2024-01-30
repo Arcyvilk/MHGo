@@ -30,6 +30,7 @@ const Load = () => {
   const {
     habitat,
     habitatImg,
+    habitatThumbnail,
     setHabitat,
     onCreate,
     isSuccess,
@@ -94,6 +95,20 @@ const Load = () => {
           <div
             className={s.singleHabitatView__section}
             style={{ alignItems: 'center' }}>
+            <Input
+              name="habitat_thumbnail"
+              label="Path to habitat thumbnail"
+              value={habitatThumbnail}
+              setValue={thumbnail => setHabitat({ ...habitat, thumbnail })}
+            />
+            <img
+              src={`${CDN_URL}${habitatThumbnail}`}
+              style={{ maxWidth: '64px' }}
+            />
+          </div>
+          <div
+            className={s.singleHabitatView__section}
+            style={{ alignItems: 'center' }}>
             <HabitatSpawns habitat={habitat} setHabitat={setHabitat} />
           </div>
         </div>
@@ -108,6 +123,10 @@ const useUpdateHabitat = () => {
   const { mutate, isSuccess, isError, isPending } = useAdminCreateHabitatApi();
 
   const habitatImg = useMemo(() => removeCdnUrl(habitat?.image), [habitat]);
+  const habitatThumbnail = useMemo(
+    () => removeCdnUrl(habitat?.thumbnail),
+    [habitat],
+  );
 
   const onCreate = () => {
     const isValid = validateHabitat(habitat);
@@ -121,6 +140,7 @@ const useUpdateHabitat = () => {
   return {
     habitat,
     habitatImg,
+    habitatThumbnail,
     setHabitat,
     onCreate,
     isSuccess,

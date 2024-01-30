@@ -29,6 +29,7 @@ const Load = () => {
     habitat,
     updatedHabitat,
     habitatImg,
+    habitatThumbnail,
     setUpdatedHabitat,
     onSave,
     isSuccess,
@@ -108,6 +109,23 @@ const Load = () => {
           />
           <img src={`${CDN_URL}${habitatImg}`} style={{ maxWidth: '256px' }} />
         </div>
+        <div
+          className={s.singleHabitatView__section}
+          style={{ alignItems: 'center' }}>
+          <Input
+            name="habitat_thumbnail"
+            label="Path to habitat thumbnail"
+            value={habitatThumbnail}
+            setValue={thumbnail =>
+              updatedHabitat &&
+              setUpdatedHabitat({ ...updatedHabitat, thumbnail })
+            }
+          />
+          <img
+            src={`${CDN_URL}${habitatThumbnail}`}
+            style={{ maxWidth: '64px' }}
+          />
+        </div>
       </div>
       <div className={s.singleHabitatView__content}>
         {updatedHabitat && setUpdatedHabitat && (
@@ -145,6 +163,10 @@ const useUpdateHabitat = () => {
     () => removeCdnUrl(updatedHabitat?.image),
     [habitats],
   );
+  const habitatThumbnail = useMemo(
+    () => removeCdnUrl(updatedHabitat?.thumbnail),
+    [habitats],
+  );
 
   const onSave = () => {
     const isValid = validateHabitat(updatedHabitat);
@@ -158,6 +180,7 @@ const useUpdateHabitat = () => {
   return {
     habitat,
     habitatImg,
+    habitatThumbnail,
     updatedHabitat,
     setUpdatedHabitat,
     onSave,

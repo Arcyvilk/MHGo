@@ -27,6 +27,7 @@ export const adminCreateHabitat = async (
       ...habitat,
       id: newId,
       image: habitat.image.replace(process.env.CDN_URL, ''),
+      thumbnail: habitat.thumbnail.replace(process.env.CDN_URL, ''),
     });
     if (!responseHabitat.acknowledged) {
       res.status(400).send({ error: 'Could not create this habitat.' });

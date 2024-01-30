@@ -5,6 +5,7 @@ export type Habitat = {
   name: string;
   description: string;
   image: string;
+  thumbnail: string;
   monsters: HabitatMonster[];
 };
 
