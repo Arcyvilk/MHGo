@@ -34,9 +34,11 @@ import {
   adminResetUser,
   adminDeleteUser,
   adminUserEnableGodmode,
+  adminCreateHabitat,
   adminCreateItem,
   adminCreateMaterial,
   adminCreateMonster,
+  adminUpdateHabitat,
   adminUpdateItem,
   adminUpdateItemAction,
   adminUpdateItemCrafts,
@@ -89,6 +91,12 @@ routerV1.delete(
 );
 
 routerV1.post(
+  '/admin/habitats/create',
+  verifyAdminToken,
+  validateAdventure,
+  adminCreateHabitat,
+);
+routerV1.post(
   '/admin/items/create',
   verifyAdminToken,
   validateAdventure,
@@ -113,6 +121,12 @@ routerV1.post(
   adminCreateResource,
 );
 
+routerV1.put(
+  '/admin/habitats/habitat/:habitatId',
+  verifyAdminToken,
+  validateAdventure,
+  adminUpdateHabitat,
+);
 routerV1.put(
   '/admin/items/item/:itemId',
   verifyAdminToken,

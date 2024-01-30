@@ -11,7 +11,7 @@ export const useAdminCreateHabitatApi = () => {
   const adminCreateHabitat = async (variables: Habitat): Promise<void> => {
     const fixedHabitat = {
       ...variables,
-      img: removeCdnUrl(variables.image),
+      image: removeCdnUrl(variables.image),
     };
     const response = await fetcher(`${API_URL}/admin/habitats/create`, {
       method: 'POST',
@@ -43,7 +43,7 @@ export const useAdminUpdateHabitatApi = () => {
     const { id, ...habitatProperties } = variables;
     const fixedHabitatProperties = {
       ...habitatProperties,
-      img: removeCdnUrl(habitatProperties.image),
+      image: removeCdnUrl(habitatProperties.image),
     };
     const response = await fetcher(`${API_URL}/admin/habitats/habitat/${id}`, {
       method: 'PUT',

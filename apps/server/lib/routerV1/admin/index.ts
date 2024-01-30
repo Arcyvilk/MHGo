@@ -5,6 +5,7 @@ export { adminResetUser, adminUserEnableGodmode } from './adminResetUser';
 export { adminDeleteUser } from './adminDeleteUser';
 
 // CREATION
+export { adminCreateHabitat } from './adminCreateHabitat';
 export { adminCreateItem } from './adminCreateItem';
 export { adminCreateMaterial } from './adminCreateMaterial';
 export { adminCreateMonster } from './adminCreateMonster';
@@ -18,6 +19,7 @@ export {
   adminUpdateItemPrice,
   adminUpdateItemStats,
 } from './adminUpdateItem';
+export { adminUpdateHabitat } from './adminUpdateHabitat';
 export { adminUpdateMaterial } from './adminUpdateMaterial';
 export { adminUpdateMonster } from './adminUpdateMonster';
 export { adminUpdateResource } from './adminUpdateResource';
