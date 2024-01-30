@@ -3,7 +3,7 @@ import { useAppContext } from './context';
 import { useEffect } from 'react';
 
 export const useMe = () => {
-  const { isLoggedIn, bearerToken, setBearerToken } = useAppContext();
+  const { isLoggedIn, setBearerToken } = useAppContext();
 
   const { mutate: mutateLogin, isPending: isLoginPending } =
     useLoginApi(setBearerToken);
@@ -11,11 +11,7 @@ export const useMe = () => {
   const { mutate: mutateSignIn, isPending: isSigninPending } =
     useSignInApi(setBearerToken);
 
-  const {
-    data: userAuthData,
-    isError,
-    isFetched,
-  } = useMeApi(Boolean(bearerToken.bearer));
+  const { data: userAuthData, isError, isFetched } = useMeApi();
 
   const loginUser = (userName: string, pwd: string) => {
     mutateLogin({ userName, pwd });

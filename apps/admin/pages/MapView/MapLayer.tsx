@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { TileLayer, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import { MonsterMarkers, ResourceMarkers } from './Markers';
@@ -11,6 +11,7 @@ type MapLayerProps = {
   setCreateView: (createView: boolean) => void;
   showMonsters: boolean;
   showResources: boolean;
+  isSatelliteEnabled: boolean;
 };
 export const MapLayer = ({
   currentCoords,
@@ -20,8 +21,24 @@ export const MapLayer = ({
   setCreateView,
   showMonsters,
   showResources,
+  isSatelliteEnabled,
 }: MapLayerProps) => {
   const map = useMap();
+
+  const { attribution, url } = useMemo(() => {
+    if (isSatelliteEnabled)
+      return {
+        attribution:
+          '&copy; <a href="https://stadiamaps.com/" target="_blank">Stadia Maps</a>&copy; <a href="https://www.stamen.com/" target="_blank">Stamen Design</a>&copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a>&copy; <a href="https://www.openstreetmap.org/copyright/" target="_blank">OpenStreetMap contributors</a>',
+        url: 'https://tiles.stadiamaps.com/data/satellite/{z}/{x}/{y}.jpg',
+      };
+    else
+      return {
+        attribution:
+          '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+        url: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+      };
+  }, [isSatelliteEnabled]);
 
   useEffect(() => {
     map.invalidateSize();
@@ -39,10 +56,7 @@ export const MapLayer = ({
 
   return (
     <>
-      <TileLayer
-        attribution='&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-        url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
-      />
+      <TileLayer attribution={attribution} url={url} />
       {showMonsters && (
         <MonsterMarkers
           selectedMarker={selectedMarker}

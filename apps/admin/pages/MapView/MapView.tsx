@@ -49,6 +49,7 @@ const Load = () => {
   const [selectedCoords, setSelectedCoords] = useState<number[]>(coords);
   const [selectedMarker, setSelectedMarker] = useState<string | null>(null);
 
+  const [isSatelliteEnabled, setIsSatelliteEnabled] = useState(false);
   const [showResources, setShowResources] = useState(true);
   const [showMonsters, setShowMonsters] = useState(true);
 
@@ -72,6 +73,7 @@ const Load = () => {
   return (
     <div className={s.mapView}>
       <HeaderEdit status={status} title="MAP" />
+
       <ActionBar
         title={
           selectedMarker ? (
@@ -81,7 +83,22 @@ const Load = () => {
           )
         }
         buttons={
-          <div style={{ display: 'flex', gap: '8px' }}>
+          <div
+            style={{
+              display: 'flex',
+              gap: '8px',
+            }}>
+            <FormControlLabel
+              label="Satellite view"
+              control={
+                <Switch
+                  defaultChecked={false}
+                  value={isSatelliteEnabled}
+                  color="default"
+                  onChange={(_, checked) => setIsSatelliteEnabled(checked)}
+                />
+              }
+            />
             <FormControlLabel
               label="Resources"
               control={
@@ -122,6 +139,7 @@ const Load = () => {
           setCreateView={setCreateView}
           showMonsters={showMonsters}
           showResources={showResources}
+          isSatelliteEnabled={isSatelliteEnabled}
         />
       </MapContainer>
       {selectedMarker && (
