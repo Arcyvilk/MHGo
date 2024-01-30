@@ -46,8 +46,9 @@ export function Table<
       <MUITable>
         <TableHead>
           <TableRow>
-            {tableHeaders.map(headCell => (
+            {tableHeaders.map((headCell, headIndex) => (
               <TableCell
+                key={`headCell-${headIndex}`}
                 sortDirection={orderBy === headCell.id ? order : false}>
                 <TableSortLabel
                   active={orderBy === headCell.id}
@@ -60,8 +61,8 @@ export function Table<
           </TableRow>
         </TableHead>
         <TableBody>
-          {items.map((item, index) => (
-            <TableRow key={index}>
+          {items.map((item, rowIndex) => (
+            <TableRow key={`row-${rowIndex}`}>
               {item.map(i => (
                 <TableCell>{i}</TableCell>
               ))}
@@ -73,7 +74,7 @@ export function Table<
   );
 }
 
-const ItemCell = ({ content }: { content: string }) => {
+const ItemCell = ({ content }: { content: React.ReactNode }) => {
   return <div className={s.customCell}>{content}</div>;
 };
 

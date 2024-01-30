@@ -9,7 +9,7 @@ import {
   Size,
   useHabitatsApi,
 } from '@mhgo/front';
-import { Habitat } from '@mhgo/types';
+import { Habitat, HabitatMonster } from '@mhgo/types';
 
 import { ActionBar, Table, TableHeader } from '../../containers';
 import { useAppContext } from '../../utils/context';
@@ -18,6 +18,7 @@ import s from './HabitatsView.module.scss';
 
 const tableHeaders: TableHeader<Habitat>[] = [
   { id: 'name', label: 'Name' },
+  { id: 'monsters', label: 'Spawns' },
   { id: 'description', label: 'Description' },
   { id: 'actions', label: 'Actions' },
 ];
@@ -58,6 +59,7 @@ const Load = () => {
 
   const tableRows = sortedHabitats.map(habitat => [
     <HabitatCell habitat={habitat} />,
+    <SpawnCell monsters={habitat.monsters} />,
     <Table.CustomCell content={habitat.description} />,
     <Button
       label={<Icon icon="Edit" size={Size.MICRO} />}
@@ -65,6 +67,7 @@ const Load = () => {
       style={{ width: '40px' }}
     />,
   ]);
+
   return (
     <div className={s.habitatsView}>
       <div className={s.habitatsView__header}>
@@ -99,6 +102,18 @@ const HabitatCell = ({ habitat }: { habitat: Habitat }) => {
     <div className={s.habitatsView__detail}>
       <img src={habitat.image} className={s.habitatsView__icon} />
       {habitat.name}
+    </div>
+  );
+};
+
+const SpawnCell = ({ monsters }: { monsters: HabitatMonster[] }) => {
+  return (
+    <div className={s.habitatsView__spawn}>
+      {monsters.map(monster => (
+        <span key={monster.id}>
+          [{monster.spawnChance}%] {monster.id}
+        </span>
+      ))}
     </div>
   );
 };

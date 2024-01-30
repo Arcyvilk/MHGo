@@ -24,4 +24,9 @@
     max-width: $size-24;
     max-height: $size-24;
   }
+
+  &__spawn {
+    display: flex;
+    flex-direction:column;
+  }
 }
