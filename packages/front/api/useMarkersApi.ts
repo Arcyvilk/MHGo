@@ -55,6 +55,7 @@ export const useSingleMonsterMarkerApi = (
       return {
         id: 'tutorial',
         monsterId: 'tutorial',
+        habitatId: 'tutorial',
         coords: [0, 0],
         level: null,
       };
@@ -62,6 +63,7 @@ export const useSingleMonsterMarkerApi = (
       return {
         id: 'dummy',
         monsterId: 'dummy',
+        habitatId: 'dummy',
         coords: homePosition.home,
         level: null,
       };

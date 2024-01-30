@@ -11,6 +11,7 @@ import {
   Stats,
   ItemEffect,
   Habitat,
+  HabitatMarker,
 } from '@mhgo/types';
 
 export const DEFAULT_COORDS = [0, 0];
@@ -101,6 +102,13 @@ export const DEFAULT_RESOURCE: Resource = {
 export const DEFAULT_MONSTER_MARKER: Omit<MonsterMarker, 'respawnTime' | 'id'> =
   {
     monsterId: '',
+    level: null,
+    coords: [],
+  };
+
+export const DEFAULT_HABITAT_MARKER: Omit<HabitatMarker, 'respawnTime' | 'id'> =
+  {
+    habitatId: '',
     level: null,
     coords: [],
   };

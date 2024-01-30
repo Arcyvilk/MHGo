@@ -5,7 +5,7 @@ import {
   QueryBoundary,
   modifiers,
   useAdminAllMonsterMarkersApi,
-  useHabitatsApi,
+  useMonstersApi,
 } from '@mhgo/front';
 
 import s from './Markers.module.scss';
@@ -27,13 +27,13 @@ const Load = ({
   setSelectedMarker,
   setSelectedCoords,
 }: MonsterMarkerProps) => {
-  const { data: habitats } = useHabitatsApi();
+  const { data: monsters } = useMonstersApi(true);
   const { data: monsterMarkers } = useAdminAllMonsterMarkersApi();
 
   return (
     <>
       {monsterMarkers.map(marker => {
-        const habitat = habitats.find(h => h.id === marker.habitatId) ?? {
+        const monster = monsters.find(m => m.id === marker.monsterId) ?? {
           thumbnail: `${CDN_URL}/misc/question.svg`,
         };
         const position = L.latLng(marker.coords[0], marker.coords[1]);
@@ -43,7 +43,7 @@ const Load = ({
             // @ts-expect-error _id in fact DOES exist
             marker._id,
           )}">
-              <img src="${`${CDN_URL}${habitat.thumbnail}`}" class="${modifiers(
+              <img src="${monster.thumbnail}" class="${modifiers(
                 s,
                 'marker__thumbnail',
                 // @ts-expect-error it DOES have _id

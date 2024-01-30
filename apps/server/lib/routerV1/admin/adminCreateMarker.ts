@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { log } from '@mhgo/utils';
-import { MonsterMarker, ResourceMarker } from '@mhgo/types';
+import { ResourceMarker, MonsterMarker } from '@mhgo/types';
 
 import { mongoInstance } from '../../../api';
 
@@ -11,7 +11,7 @@ export const adminCreateMonsterMarker = async (
   try {
     const { db } = mongoInstance.getDb(res?.locals?.adventure);
 
-    const collection = db.collection<MonsterMarker>('markersMonster');
+    const collection = db.collection<MonsterMarker>('markersSpawns');
     const monsterMarker = req.body as MonsterMarker;
 
     const response = await collection.insertOne(monsterMarker);

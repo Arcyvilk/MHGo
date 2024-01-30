@@ -1,4 +1,4 @@
-import { MonsterMarker, ResourceMarker } from '@mhgo/types';
+import { HabitatMarker, ResourceMarker } from '@mhgo/types';
 import { API_URL } from '../../env';
 import {
   useMutation,
@@ -8,7 +8,7 @@ import {
 import { fetcher } from '../..';
 
 export const useAdminAllMonsterMarkersApi = () => {
-  const getAllMonsterMarkers = async (): Promise<MonsterMarker[]> => {
+  const getAllMonsterMarkers = async (): Promise<HabitatMarker[]> => {
     const res = await fetcher(`${API_URL}/map/markers/monsters/list`);
     return res.json();
   };
@@ -18,7 +18,7 @@ export const useAdminAllMonsterMarkersApi = () => {
     isLoading,
     isFetched,
     isError,
-  } = useSuspenseQuery<MonsterMarker[], unknown, MonsterMarker[], string[]>({
+  } = useSuspenseQuery<HabitatMarker[], unknown, HabitatMarker[], string[]>({
     queryKey: ['admin', 'markers', 'monsters', 'all'],
     queryFn: getAllMonsterMarkers,
   });
@@ -31,7 +31,7 @@ export const useAdminCreateMonsterMarkerApi = () => {
   const queryClient = useQueryClient();
 
   const adminCreateMonsterMarker = async (
-    variables: Omit<MonsterMarker, 'id'>,
+    variables: Omit<HabitatMarker, 'id'>,
   ): Promise<void> => {
     const response = await fetcher(`${API_URL}/admin/marker/monster/create`, {
       method: 'POST',
@@ -63,7 +63,7 @@ export const useAdminUpdateMonsterMarkerApi = () => {
   const queryClient = useQueryClient();
 
   const adminUpdateMonsterMarker = async (
-    variables: MonsterMarker,
+    variables: HabitatMarker,
   ): Promise<void> => {
     const { id, ...monsterProperties } = variables;
     const response = await fetcher(

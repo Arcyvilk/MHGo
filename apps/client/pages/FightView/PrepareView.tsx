@@ -30,7 +30,7 @@ const Load = () => {
   useMonsterHealthChange();
   const { isTutorialDummyKilled } = useAppContext();
   const { isFinishedTutorialPartOne } = useTutorialProgress();
-  const { markerId, monster, inRange } = useMonsterMarker();
+  const { markerId, monsterId, monster, inRange } = useMonsterMarker();
   const { habitat, level, name, img } = monster;
 
   return (
@@ -50,7 +50,7 @@ const Load = () => {
       {inRange ? (
         <div className={s.fightView__wrapper}>
           <img className={s.fightView__monster} src={img} draggable={false} />
-          <Actions markerId={markerId} level={level} />
+          <Actions markerId={markerId} level={level} monsterId={monsterId} />
         </div>
       ) : (
         <div className={s.fightView__wrapper}>
@@ -77,15 +77,21 @@ const Header = ({ name = '?', level = 0 }: HeaderProps) => {
   );
 };
 
-type ActionsProps = { markerId: string | null; level?: number };
-const Actions = ({ markerId, level = 0 }: ActionsProps) => {
+type ActionsProps = {
+  markerId: string | null;
+  monsterId: string | null;
+  level?: number;
+};
+const Actions = ({ markerId, monsterId, level = 0 }: ActionsProps) => {
   const { navigateWithoutScroll } = useNavigateWithScroll();
   const { userId } = useUser();
   const { data: userHealth } = useUserHealthApi(userId);
   const isUserAlive = userHealth.currentHealth > 0;
 
   const onFight = () => {
-    navigateWithoutScroll(`/fight?id=${markerId}&level=${level}`);
+    navigateWithoutScroll(
+      `/fight?markerId=${markerId}&level=${level}&monsterId=${monsterId}`,
+    );
   };
   const onFlee = () => {
     navigateWithoutScroll('/');

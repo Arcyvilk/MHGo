@@ -4,9 +4,13 @@ export type MapMarker = {
   respawnTime?: number; // in seconds?
 };
 
-export type MonsterMarker = MapMarker & {
-  monsterId: string;
+export type HabitatMarker = MapMarker & {
+  habitatId: string;
   level: number | null;
+};
+
+export type MonsterMarker = HabitatMarker & {
+  monsterId: string;
 };
 
 export type ResourceMarker = MapMarker & {

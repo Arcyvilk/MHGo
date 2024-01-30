@@ -16,6 +16,7 @@ export const UserMarker = ({ coords }: { coords: number[] }) => {
       </div>`,
   });
 
+  // TODO merge that circle into user marker
   return (
     <>
       <Marker icon={icon} position={position} />

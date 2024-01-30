@@ -6,7 +6,6 @@ import {
   Item as TItem,
   Material,
   MonsterDrop,
-  MonsterMarker,
   CraftType,
   UserMaterials,
   UserAmount,
@@ -14,6 +13,7 @@ import {
   Setting,
   UserRespawn,
   Drop,
+  MonsterMarker,
 } from '@mhgo/types';
 
 import {
@@ -24,7 +24,7 @@ import { addFilterToMaterials } from '../../helpers/addFilterToMaterials';
 import { DEFAULT_RESPAWN_TIME } from '../../helpers/defaults';
 import { mongoInstance } from '../../../api';
 
-type ReqBody = { markerId: string; monsterLevel: number };
+type ReqBody = { markerId: string; monsterId: string; monsterLevel: number };
 type ReqParams = { userId: string };
 
 export const getMonsterDropsForUser = async (
@@ -33,16 +33,17 @@ export const getMonsterDropsForUser = async (
 ): Promise<void> => {
   try {
     const { userId } = req.params;
-    const { markerId, monsterLevel } = req.body;
+    const { markerId, monsterId, monsterLevel } = req.body;
 
     if (!userId) throw new Error('User ID missing!');
-    if (!markerId) throw new Error('Monster marker ID missing!');
+    if (!markerId) throw new Error('Marker ID missing!');
+    if (!monsterId) throw new Error('Monster ID missing!');
 
     const { db } = mongoInstance.getDb(res?.locals?.adventure);
 
     // Get the specified monster marker
     const collectionMonsterMarkers =
-      db.collection<MonsterMarker>('markersMonster');
+      db.collection<MonsterMarker>('markersSpawns');
     const marker = await collectionMonsterMarkers.findOne({
       _id: new ObjectId(markerId),
     });
@@ -67,7 +68,6 @@ export const getMonsterDropsForUser = async (
     }
 
     // Get drops from the specified monster
-    const monsterId = marker.monsterId;
     const collectionMonsterDrops = db.collection<MonsterDrop>('drops');
     const allMonsterDrops = await collectionMonsterDrops.findOne({ monsterId });
     const monsterDropsPerLevel = allMonsterDrops.drops.find(

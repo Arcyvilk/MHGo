@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { FormControlLabel, Switch } from '@mui/material';
-import { MapMarker, MonsterMarker, ResourceMarker } from '@mhgo/types';
+import { HabitatMarker, MapMarker, ResourceMarker } from '@mhgo/types';
 import {
   Button,
   Input,
@@ -10,6 +10,7 @@ import {
   modifiers,
   useAdminCreateMonsterMarkerApi,
   useAdminCreateResourceMarkerApi,
+  useHabitatsApi,
   useMonstersApi,
   useResourcesApi,
 } from '@mhgo/front';
@@ -18,7 +19,7 @@ import { Status } from '../../../utils/types';
 
 import s from './SingleMarkerView.module.scss';
 import {
-  DEFAULT_MONSTER_MARKER,
+  DEFAULT_HABITAT_MARKER,
   DEFAULT_RESOURCE_MARKER,
 } from '../../../utils/defaults';
 
@@ -48,7 +49,7 @@ const Load = ({ selectedCoords, onCancel, setStatus }: MarkerProps) => {
     setMapMarker,
     resourceMarker,
     setResourceMarker,
-    monsters,
+    habitats,
     resources,
     onCreate,
   } = useUpdateMarker(selectedCoords, setStatus, onCancel);
@@ -155,13 +156,13 @@ const Load = ({ selectedCoords, onCancel, setStatus }: MarkerProps) => {
               })}>
               <Select
                 name="monster_marker"
-                label="Monster on marker"
-                data={monsters.map(m => ({ id: m.id, name: m.name }))}
-                defaultSelected={monsterMarker?.monsterId ?? monsters[0].id}
-                setValue={monsterId =>
+                label="Marker's habitat"
+                data={habitats.map(m => ({ id: m.id, name: m.name }))}
+                defaultSelected={monsterMarker?.habitatId ?? habitats[0].id}
+                setValue={habitatId =>
                   setMonsterMarker({
                     ...monsterMarker,
-                    monsterId,
+                    habitatId,
                   })
                 }
               />
@@ -238,7 +239,7 @@ const Load = ({ selectedCoords, onCancel, setStatus }: MarkerProps) => {
 };
 
 type MapMarkerFixed = Omit<MapMarker, 'id'>;
-type MonsterMarkerFixed = Omit<MonsterMarker, 'id'>;
+type MonsterMarkerFixed = Omit<HabitatMarker, 'id'>;
 type ResourceMarkerFixed = Omit<ResourceMarker, 'id'>;
 
 const useUpdateMarker = (
@@ -248,7 +249,7 @@ const useUpdateMarker = (
 ) => {
   const [markerType, setMarkerType] = useState(MarkerType.MONSTER);
   const [monsterMarker, setMonsterMarker] = useState<MonsterMarkerFixed>(
-    DEFAULT_MONSTER_MARKER,
+    DEFAULT_HABITAT_MARKER,
   );
   const [resourceMarker, setResourceMarker] = useState<ResourceMarkerFixed>(
     DEFAULT_RESOURCE_MARKER,
@@ -257,6 +258,7 @@ const useUpdateMarker = (
 
   const { mutateMarkerMonster, mutateResourceMarker } = useStatus(setStatus);
 
+  const { data: habitats } = useHabitatsApi();
   const { data: monsters } = useMonstersApi(true);
   const { data: resources } = useResourcesApi(true);
 
@@ -294,6 +296,7 @@ const useUpdateMarker = (
     setResourceMarker,
     mapMarker,
     setMapMarker,
+    habitats,
     monsters,
     resources,
     onCreate,

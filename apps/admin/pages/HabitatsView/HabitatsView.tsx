@@ -15,6 +15,7 @@ import { ActionBar, Table, TableHeader } from '../../containers';
 import { useAppContext } from '../../utils/context';
 
 import s from './HabitatsView.module.scss';
+import { CDN_URL } from '@mhgo/front/env';
 
 const tableHeaders: TableHeader<Habitat>[] = [
   { id: 'name', label: 'Name' },
@@ -100,7 +101,10 @@ const Load = () => {
 const HabitatCell = ({ habitat }: { habitat: Habitat }) => {
   return (
     <div className={s.habitatsView__detail}>
-      <img src={habitat.thumbnail} className={s.habitatsView__icon} />
+      <img
+        src={`${CDN_URL}${habitat.thumbnail}`}
+        className={s.habitatsView__icon}
+      />
       {habitat.name}
     </div>
   );

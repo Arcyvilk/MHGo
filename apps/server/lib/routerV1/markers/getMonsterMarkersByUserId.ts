@@ -1,5 +1,7 @@
 import { Request, Response } from 'express';
 import {
+  Habitat,
+  HabitatMarker,
   Monster,
   MonsterMarker,
   Setting,
@@ -9,10 +11,8 @@ import {
 import { log } from '@mhgo/utils';
 
 import { mongoInstance } from '../../../api';
-import {
-  determineMonsterLevel,
-  getUserLevel,
-} from '../../helpers/getUserLevel';
+import { getUserLevel } from '../../helpers/getUserLevel';
+import { determineMonsterSpawn } from '../../helpers/getMonsterSpawn';
 import { ObjectId } from 'mongodb';
 
 export const getMonsterMarkersByUserId = async (
@@ -26,6 +26,10 @@ export const getMonsterMarkersByUserId = async (
 
     const { db } = mongoInstance.getDb(res?.locals?.adventure);
     const { dbAuth } = mongoInstance.getDbAuth();
+
+    // Get all habitats
+    const collectionHabitats = db.collection<Habitat>('habitats');
+    const habitats = await collectionHabitats.find().toArray();
 
     // Get the maximum level of monster that can spawn on random level spawns
     const collectionUsers = dbAuth.collection<User>('users');
@@ -58,18 +62,7 @@ export const getMonsterMarkersByUserId = async (
     // Show only markers with no level or level lower than user's level
     const filterLevel = [{ level: null }, { level: { $lte: maxMonsterLevel } }];
 
-    // Filter out monsters that have level requirements higher than user's level
-    // and ones that are disabled
-    const collectionMonsters = db.collection<Monster>('monsters');
-    const filterTooHighLevelRequirement: { monsterId: string }[] = [];
-    const cursorDisabledMonsters = collectionMonsters.find({
-      $or: [{ levelRequirements: { $gt: userLevel } }, { disabled: true }],
-    });
-    for await (const el of cursorDisabledMonsters) {
-      filterTooHighLevelRequirement.push({ monsterId: el.id });
-    }
-
-    // Filter out monsters that are still respawning
+    // Filter out markers that are still respawning
     const collectionUserRespawn = db.collection<UserRespawn>('userRespawn');
     const filterCooldown: { _id: ObjectId }[] = [];
     const cursorUserRespawn = collectionUserRespawn.find({ userId });
@@ -80,12 +73,12 @@ export const getMonsterMarkersByUserId = async (
 
     // Apply all filters and get all visible markers
     const collectionMonsterMarkers =
-      db.collection<MonsterMarker>('markersMonster');
+      db.collection<HabitatMarker>('markersSpawns');
     const monsterMarkers: MonsterMarker[] = [];
 
     // Aggregate all filters together
     const orFilters = [...filterLevel];
-    const norFilters = [...filterCooldown, ...filterTooHighLevelRequirement];
+    const norFilters = [...filterCooldown]; //, ...filterTooHighLevelRequirement];
 
     const cursorMonsterMarkers = collectionMonsterMarkers.find({
       ...filterCoords,
@@ -93,12 +86,31 @@ export const getMonsterMarkersByUserId = async (
       ...(norFilters.length ? { $nor: norFilters } : {}),
     });
 
-    for await (const el of cursorMonsterMarkers) {
-      monsterMarkers.push({
-        ...el,
-        id: String(el._id),
-        level: el.level ?? determineMonsterLevel(userLevel),
-      });
+    // Filter out out monsters that have level requirements higher than user's level
+    // and ones that are disabled
+    const collectionMonsters = db.collection<Monster>('monsters');
+    const disabledMonsters = (
+      await collectionMonsters
+        .find({
+          $or: [{ levelRequirements: { $gt: userLevel } }, { disabled: true }],
+        })
+        .toArray()
+    ).map(monster => monster.id);
+
+    for await (const marker of cursorMonsterMarkers) {
+      const spawnedMonster = determineMonsterSpawn(
+        marker,
+        habitats,
+        disabledMonsters,
+        userLevel,
+      );
+      if (spawnedMonster.shouldSpawn)
+        monsterMarkers.push({
+          ...marker,
+          id: String(marker._id),
+          monsterId: spawnedMonster.monsterId,
+          level: spawnedMonster.monsterLevel,
+        });
     }
 
     res.status(200).send(monsterMarkers);

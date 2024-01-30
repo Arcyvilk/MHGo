@@ -51,7 +51,8 @@ const Load = ({
   revivalAttempts,
 }: Omit<ModalProps, 'isOpen' | 'setIsOpen'>) => {
   const params = new URLSearchParams(location.search);
-  const markerId = params.get('id') ?? '';
+  const markerId = params.get('markerId') ?? '';
+  const monsterId = params.get('monsterId') ?? '';
   const level = params.get('level') ?? '0';
 
   const { setIsTutorialDummyKilled } = useAppContext();
@@ -90,6 +91,7 @@ const Load = ({
     mutateUserExp({ expChange });
     mutateUserDrops({
       markerId,
+      monsterId,
       monsterLevel: Number(level),
     });
   }, [isLootRedeemed]);

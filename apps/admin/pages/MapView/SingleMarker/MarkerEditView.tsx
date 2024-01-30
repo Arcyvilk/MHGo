@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { v4 as uuid } from 'uuid';
 import { FormControlLabel, Switch } from '@mui/material';
-import { MapMarker, MonsterMarker, ResourceMarker } from '@mhgo/types';
+import { MapMarker, ResourceMarker, HabitatMarker } from '@mhgo/types';
 import {
   Button,
   Input,
@@ -9,23 +9,25 @@ import {
   QueryBoundary,
   Select,
   modifiers,
+  // Monster markers
   useAdminAllMonsterMarkersApi,
-  useAdminDeleteMonsterMarkerApi,
-  useAdminDeleteResourceMarkerApi,
   useAdminUpdateMonsterMarkerApi,
-  useAdminUpdateResourceMarkerApi,
+  useAdminDeleteMonsterMarkerApi,
+  // Resource markers
   useAdminAllResourceMarkersApi,
-  useMonstersApi,
+  useAdminUpdateResourceMarkerApi,
+  useAdminDeleteResourceMarkerApi,
   useResourcesApi,
+  useHabitatsApi,
 } from '@mhgo/front';
 import { ActionBar, IconInfo } from '../../../containers';
-
-import s from './SingleMarkerView.module.scss';
 import { Status } from '../../../utils/types';
 import {
-  DEFAULT_MONSTER_MARKER,
   DEFAULT_RESOURCE_MARKER,
+  DEFAULT_HABITAT_MARKER,
 } from '../../../utils/defaults';
+
+import s from './SingleMarkerView.module.scss';
 
 enum MarkerType {
   RESOURCE = 'resource',
@@ -56,11 +58,11 @@ const Load = ({
 }: MarkerProps) => {
   const {
     markerType,
-    monsters,
     monsterMarker,
     setMonsterMarker,
     mapMarker,
     setMapMarker,
+    habitats,
     resources,
     resourceMarker,
     setResourceMarker,
@@ -179,13 +181,13 @@ const Load = ({
               // Ugly hack but works lol
               key={uuid()}
               name="monster_marker"
-              label="Monster on marker"
-              data={monsters.map(m => ({ id: m.id, name: m.name }))}
-              defaultSelected={monsterMarker?.monsterId}
-              setValue={monsterId =>
+              label="Marker's habitat"
+              data={habitats.map(h => ({ id: h.id, name: h.name }))}
+              defaultSelected={monsterMarker?.habitatId}
+              setValue={habitatId =>
                 setMonsterMarker({
                   ...monsterMarker,
-                  monsterId,
+                  habitatId,
                 })
               }
             />
@@ -252,7 +254,7 @@ const Load = ({
 };
 
 type MapMarkerFixed = Omit<MapMarker, 'id'>;
-type MonsterMarkerFixed = Omit<MonsterMarker, 'id'>;
+type MonsterMarkerFixed = Omit<HabitatMarker, 'id'>;
 type ResourceMarkerFixed = Omit<ResourceMarker, 'id'>;
 
 // selectedMarker is in fact ObjectId from MongoDB
@@ -264,7 +266,7 @@ const useUpdateMonsterMarker = (
   setStatus: (status: Status) => void,
 ) => {
   const [markerType, setMarkerType] = useState(MarkerType.MONSTER);
-  const { data: monsters } = useMonstersApi(true);
+  const { data: habitats } = useHabitatsApi();
   const { data: resources } = useResourcesApi(true);
   const { data: monsterMarkers, isFetched: isMonstersFetched } =
     useAdminAllMonsterMarkersApi();
@@ -282,7 +284,7 @@ const useUpdateMonsterMarker = (
     monsterMarkers.find(
       // @ts-expect-error it DOES have _id
       m => String(m._id) === selectedMarker,
-    ) ?? DEFAULT_MONSTER_MARKER,
+    ) ?? DEFAULT_HABITAT_MARKER,
   );
   const [resourceMarker, setResourceMarker] = useState<ResourceMarkerFixed>(
     resourceMarkers.find(
@@ -362,7 +364,7 @@ const useUpdateMonsterMarker = (
 
   return {
     markerType,
-    monsters,
+    habitats,
     monsterMarker,
     setMonsterMarker,
     resources,

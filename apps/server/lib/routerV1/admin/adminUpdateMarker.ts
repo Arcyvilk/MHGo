@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { ObjectId, WithId } from 'mongodb';
 import { log } from '@mhgo/utils';
-import { MonsterMarker, ResourceMarker } from '@mhgo/types';
+import { ResourceMarker, MonsterMarker } from '@mhgo/types';
 
 import { mongoInstance } from '../../../api';
 
@@ -15,7 +15,7 @@ export const adminUpdateMonsterMarker = async (
     const { db } = mongoInstance.getDb(res?.locals?.adventure);
     const { markerId } = req.params;
 
-    const collection = db.collection<MonsterMarker>('markersMonster');
+    const collection = db.collection<MonsterMarker>('markersSpawns');
     const { _id, ...updatedFields } = req.body as Partial<
       WithId<MonsterMarker>
     >;
@@ -45,7 +45,7 @@ export const adminDeleteMonsterMarker = async (
     const { db } = mongoInstance.getDb(res?.locals?.adventure);
     const { markerId } = req.params;
 
-    const collection = db.collection<MonsterMarker>('markersMonster');
+    const collection = db.collection<MonsterMarker>('markersSpawns');
 
     const response = await collection.deleteOne({
       _id: new ObjectId(markerId),

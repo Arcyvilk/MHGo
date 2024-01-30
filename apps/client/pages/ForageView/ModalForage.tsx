@@ -38,7 +38,7 @@ export const ModalForage = ({ isOpen, setIsOpen, onClose }: ModalProps) => (
 
 const Load = ({ onClose }: { onClose: () => void }) => {
   const params = new URLSearchParams(location.search);
-  const markerId = params.get('id') ?? '';
+  const markerId = params.get('markerId') ?? '';
 
   const { userId } = useUser();
   const { data: drops, mutate, isSuccess } = useResourceMarkerDropsApi(userId);

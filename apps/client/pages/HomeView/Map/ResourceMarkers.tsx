@@ -33,7 +33,7 @@ const Load = ({ coords }: ResourceMarkerProps) => {
         const onClick = () => {
           playSound(SoundSE.CLICK);
           // @ts-expect-error _id in fact exists
-          navigateWithoutScroll(`/forage?id=${String(r._id)}`);
+          navigateWithoutScroll(`/forage?markerId=${String(r._id)}`);
         };
 
         return (

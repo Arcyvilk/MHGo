@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { v4 as uuid } from 'uuid';
 import {
   Button,
@@ -97,7 +97,6 @@ const Load = ({ habitat, setHabitat }: HabitatSpawnsProps) => {
                     };
                   return entry;
                 });
-                console.log(updatedSpawns);
                 return setSpawns(updatedSpawns);
               }}
             />

@@ -1,12 +1,10 @@
 import { Request, Response } from 'express';
 import { log } from '@mhgo/utils';
+import { Setting, MonsterMarker, User } from '@mhgo/types';
 
 import { mongoInstance } from '../../../api';
-import {
-  determineMonsterLevel,
-  getUserLevel,
-} from '../../helpers/getUserLevel';
-import { MonsterMarker, Setting, User } from '@mhgo/types';
+import { getUserLevel } from '../../helpers/getUserLevel';
+import { determineMonsterLevel } from '../../helpers/getMonsterSpawn';
 
 export const getMonsterMarkerDrops = async (
   req: Request,
@@ -20,7 +18,7 @@ export const getMonsterMarkerDrops = async (
     const collectionUsers = dbAuth.collection<User>('users');
     const collectionSettings = db.collection<Setting<number>>('settings');
     const collectionMonsterMarkers =
-      db.collection<MonsterMarker>('markersMonster');
+      db.collection<MonsterMarker>('markersSpawns');
 
     const user = await collectionUsers.findOne({ id: userId });
     const expPerLevel =

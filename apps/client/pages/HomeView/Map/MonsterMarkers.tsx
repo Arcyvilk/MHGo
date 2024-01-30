@@ -33,7 +33,9 @@ const Load = ({ coords }: MonsterMarkersProps) => {
         const position = L.latLng(m.coords[0], m.coords[1]);
         const onClick = () => {
           playSound(SoundSE.CLICK);
-          navigateWithoutScroll(`/prepare?id=${m.id}&level=${m.level}`);
+          navigateWithoutScroll(
+            `/prepare?markerId=${m.id}&monsterId=${m.monsterId}&level=${m.level}`,
+          );
         };
 
         return (

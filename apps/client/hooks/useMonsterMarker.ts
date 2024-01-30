@@ -19,7 +19,8 @@ export const useMonsterMarker = () => {
   const { navigateWithoutScroll } = useNavigateWithScroll();
 
   const params = new URLSearchParams(location.search);
-  const markerId = params.get('id');
+  const markerId = params.get('markerId');
+  const monsterId = params.get('monsterId');
   const level = params.get('level') ?? '0';
 
   useEffect(() => {
@@ -35,12 +36,6 @@ export const useMonsterMarker = () => {
 
   const { inRange } = useMonsterMarkerDistance(isTutorial);
 
-  // I sincerely apologize for this nested ternary
-  const monsterId = isTutorial
-    ? 'tutorial'
-    : isDummy
-      ? 'dummy'
-      : monsterMarker?.monsterId;
   const monsterData = monsters.find(m => m.id === monsterId);
 
   if (!monsterMarker || !monsterData)
@@ -59,6 +54,7 @@ export const useMonsterMarker = () => {
   };
 
   return {
+    monsterId,
     markerId,
     monster,
     inRange,
@@ -70,7 +66,7 @@ export const useMonsterMarker = () => {
 
 const useMonsterMarkerDistance = (isTutorial?: boolean) => {
   const params = new URLSearchParams(location.search);
-  const markerId = params.get('id');
+  const markerId = params.get('markerId');
 
   const { setting: mapRadius } = useSettingsApi('map_radius', 0);
   const { data: monsterMarker, isFetched } =

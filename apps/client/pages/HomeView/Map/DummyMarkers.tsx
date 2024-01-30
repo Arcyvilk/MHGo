@@ -28,7 +28,7 @@ const Load = ({ coords }: DummyMarkersProps) => {
   const position = L.latLng(coords[0], coords[1]);
   const onClick = () => {
     playSound(SoundSE.CLICK);
-    navigateWithoutScroll(`/prepare?id=dummy&level=1`);
+    navigateWithoutScroll(`/prepare?markerId=dummy&monsterId=dummy&level=1`);
   };
 
   return (
