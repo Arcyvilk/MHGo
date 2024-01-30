@@ -1,7 +1,9 @@
 import { useEffect, useMemo } from 'react';
 import { TileLayer, useMap } from 'react-leaflet';
 import L from 'leaflet';
+
 import { MonsterMarkers, ResourceMarkers } from './Markers';
+import { MAP_KEY } from '../../env';
 
 type MapLayerProps = {
   currentCoords: number[];
@@ -29,8 +31,8 @@ export const MapLayer = ({
     if (isSatelliteEnabled)
       return {
         attribution:
-          '&copy; <a href="https://stadiamaps.com/" target="_blank">Stadia Maps</a>&copy; <a href="https://www.stamen.com/" target="_blank">Stamen Design</a>&copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a>&copy; <a href="https://www.openstreetmap.org/copyright/" target="_blank">OpenStreetMap contributors</a>',
-        url: 'https://tiles.stadiamaps.com/data/satellite/{z}/{x}/{y}.jpg',
+          '<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>',
+        url: `https://api.maptiler.com/tiles/satellite-v2/{z}/{x}/{y}.jpg?key=${MAP_KEY}`,
       };
     else
       return {
