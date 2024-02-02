@@ -8,6 +8,7 @@ import {
   Resource,
   AdminUser,
   Habitat,
+  Quest,
 } from '@mhgo/types';
 
 type ContextType = {
@@ -22,6 +23,7 @@ type ContextType = {
   orderItem: Order;
   orderMaterial: Order;
   orderMonster: Order;
+  orderQuest: Order;
   orderResource: Order;
   orderUser: Order;
 
@@ -29,6 +31,7 @@ type ContextType = {
   setOrderItem: (order: Order) => void;
   setOrderMaterial: (order: Order) => void;
   setOrderMonster: (order: Order) => void;
+  setOrderQuest: (order: Order) => void;
   setOrderResource: (order: Order) => void;
   setOrderUser: (order: Order) => void;
 
@@ -36,6 +39,7 @@ type ContextType = {
   orderByItem: keyof TItem;
   orderByMaterial: keyof Material;
   orderByMonster: keyof Monster | 'baseDPS';
+  orderByQuest: keyof Quest;
   orderByResource: keyof Resource;
   orderByUser: keyof AdminUser;
 
@@ -43,6 +47,7 @@ type ContextType = {
   setOrderByItem: (orderBy: keyof TItem) => void;
   setOrderByMaterial: (orderBy: keyof Material) => void;
   setOrderByMonster: (orderBy: keyof Monster | 'baseDPS') => void;
+  setOrderByQuest: (orderByQuest: keyof Quest) => void;
   setOrderByResource: (orderBy: keyof Resource) => void;
   setOrderByUser: (orderBy: keyof AdminUser) => void;
 };
@@ -78,6 +83,9 @@ export const AppContextProvider = ({
   const [orderResource, setOrderResource] = useState<Order>('asc');
   const [orderByResource, setOrderByResource] =
     useState<keyof Resource>('levelRequirements');
+  const [orderQuest, setOrderQuest] = useState<Order>('asc');
+  const [orderByQuest, setOrderByQuest] =
+    useState<keyof Quest>('levelRequirement');
   const [orderMonster, setOrderMonster] = useState<Order>('asc');
   const [orderByMonster, setOrderByMonster] = useState<
     keyof Monster | 'baseDPS'
@@ -97,6 +105,7 @@ export const AppContextProvider = ({
     orderItem,
     orderMaterial,
     orderMonster,
+    orderQuest,
     orderResource,
     orderUser,
 
@@ -104,6 +113,7 @@ export const AppContextProvider = ({
     setOrderItem,
     setOrderMaterial,
     setOrderMonster,
+    setOrderQuest,
     setOrderResource,
     setOrderUser,
 
@@ -111,6 +121,7 @@ export const AppContextProvider = ({
     orderByItem,
     orderByMaterial,
     orderByMonster,
+    orderByQuest,
     orderByResource,
     orderByUser,
 
@@ -118,6 +129,7 @@ export const AppContextProvider = ({
     setOrderByItem,
     setOrderByMaterial,
     setOrderByMonster,
+    setOrderByQuest,
     setOrderByResource,
     setOrderByUser,
   };

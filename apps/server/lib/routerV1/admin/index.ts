@@ -38,5 +38,11 @@ export {
   adminDeleteResourceMarker,
 } from './adminUpdateMarker';
 
+// QUESTS
+export {
+  adminGetAllQuestsDaily,
+  adminGetAllQuestsStory,
+} from './adminGetAllQuests';
+
 // OTHER
 export { adminUpdateSettings } from './adminUpdateSettings';

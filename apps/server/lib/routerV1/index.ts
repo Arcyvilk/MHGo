@@ -29,15 +29,21 @@ routerV1.get('/auth/logout', logout);
  ********************************/
 
 import {
+  // USERS
   adminGetAllUsers,
   adminUpdateUser,
   adminResetUser,
   adminDeleteUser,
   adminUserEnableGodmode,
+  // CREATE
   adminCreateHabitat,
   adminCreateItem,
   adminCreateMaterial,
   adminCreateMonster,
+  adminCreateMonsterMarker,
+  adminCreateResourceMarker,
+  adminCreateResource,
+  // UPDATE
   adminUpdateHabitat,
   adminUpdateItem,
   adminUpdateItemAction,
@@ -46,17 +52,18 @@ import {
   adminUpdateItemStats,
   adminUpdateMaterial,
   adminUpdateMonster,
-  adminCreateMonsterMarker,
   adminUpdateMonsterMarker,
-  adminDeleteMonsterMarker,
-  adminCreateResourceMarker,
   adminUpdateResourceMarker,
-  adminDeleteResourceMarker,
-  adminCreateResource,
   adminUpdateResource,
   adminUpdateMonsterDrops,
   adminUpdateResourceDrops,
   adminUpdateSettings,
+  // DELETE
+  adminDeleteMonsterMarker,
+  adminDeleteResourceMarker,
+  // QUESTS
+  adminGetAllQuestsDaily,
+  adminGetAllQuestsStory,
 } from './admin';
 
 routerV1.get(
@@ -226,6 +233,19 @@ routerV1.put(
   verifyAdminToken,
   validateAdventure,
   adminUpdateResourceDrops,
+);
+
+routerV1.get(
+  '/admin/quests/daily/list',
+  verifyAdminToken,
+  validateAdventure,
+  adminGetAllQuestsDaily,
+);
+routerV1.get(
+  '/admin/quests/story/list',
+  verifyAdminToken,
+  validateAdventure,
+  adminGetAllQuestsStory,
 );
 
 routerV1.put(

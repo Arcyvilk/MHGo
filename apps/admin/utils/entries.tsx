@@ -22,6 +22,7 @@ import {
   ResourceEditView,
   UserCreateView,
   UserEditView,
+  QuestsView,
 } from '../pages';
 
 export type Entry = {
@@ -89,6 +90,14 @@ export const entries: Entry[] = [
     icon: 'Star',
     mainRoute: true,
     component: <ResourcesView />,
+  },
+  {
+    id: 'quests',
+    title: 'Quests',
+    link: '/quests',
+    icon: 'Quest',
+    mainRoute: true,
+    component: <QuestsView />,
   },
   {
     id: 'users',

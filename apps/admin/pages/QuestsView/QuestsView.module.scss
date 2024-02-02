@@ -1,0 +1,32 @@
+@import '@mhgo/front/styles/index.scss';
+
+.questsView {
+  @include page-wrapper-admin;
+  &__header {
+    @include page-header-admin;
+  }
+  &__content {
+    @include page-content-admin;
+    display: flex;
+    gap: $size-16;
+    padding: $size-8;
+    flex-wrap: wrap;
+  }
+  &__title {
+    @include page-title;
+  }
+
+  &__questDetail {
+    display: flex;
+    align-items: center;
+    gap: $size-8;
+    font-weight: 600;
+    min-width: 200px;
+  }
+
+  &__questIcon {
+    max-width: $size-24;
+    max-height: $size-24;
+  }
+}
+

@@ -5,6 +5,7 @@ export * from './LoginView';
 export * from './MapView';
 export * from './MaterialsView';
 export * from './MonstersView';
+export * from './QuestsView';
 export * from './ResourcesView';
 export * from './SettingsView';
 export * from './UsersView';
