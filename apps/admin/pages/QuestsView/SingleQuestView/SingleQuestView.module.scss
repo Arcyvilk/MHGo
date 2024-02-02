@@ -1,0 +1,32 @@
+@import '@mhgo/front/styles/index.scss';
+
+.singleQuestView {
+  @include page-wrapper-admin;
+
+  &__content {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+    padding: $size-8;
+    gap: $size-32;
+    span {
+      font-family: $font-open-sans;
+      font-size: $size-12;
+      font-weight: 600;
+    }
+  }
+
+  &__section {
+    @include page-section-admin;
+  }
+
+  &__infoSection {
+    display: flex;
+    flex-direction: column;
+    gap: $size-8;
+    p {
+      margin: 0;
+    }
+  }
+}

@@ -23,6 +23,8 @@ import {
   UserCreateView,
   UserEditView,
   QuestsView,
+  QuestCreateView,
+  QuestEditView,
 } from '../pages';
 
 export type Entry = {
@@ -188,6 +190,22 @@ export const entries: Entry[] = [
     icon: 'Star',
     mainRoute: false,
     component: <ResourceCreateView />,
+  },
+  {
+    id: 'quest_edit',
+    title: 'Edit quest',
+    link: '/quests/edit',
+    icon: 'Quest',
+    mainRoute: false,
+    component: <QuestEditView />,
+  },
+  {
+    id: 'quest_create',
+    title: 'Create quest',
+    link: '/quests/create',
+    icon: 'Quest',
+    mainRoute: false,
+    component: <QuestCreateView />,
   },
   {
     id: 'resource_edit',
