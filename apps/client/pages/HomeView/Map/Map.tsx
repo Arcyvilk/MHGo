@@ -118,10 +118,7 @@ const useMapEvents = (
   // Handle map change location
   const onLocationFound = (location: LocationEvent) => {
     const { accuracy, latlng } = location;
-    const isSignificantCoordsChange = getIsSignificantCoordsChange(latlng);
-    if (isSignificantCoordsChange) {
-      setCoords([latlng.lat, latlng.lng]);
-    }
+    setCoords([latlng.lat, latlng.lng]);
     setAccuracy(accuracy);
   };
   map.on('locationfound', onLocationFound);
@@ -149,22 +146,25 @@ const useMapEvents = (
   useEffect(() => {
     if (!map) return;
     const newCoords = L.latLng(coords[0], coords[1]);
-    const isSignificantCoordsChange = getIsSignificantCoordsChange(newCoords);
-    if (isSignificantCoordsChange) map.panTo(newCoords);
+    map.panTo(newCoords);
   }, [coords, map, zoom]);
-
-  const getIsSignificantCoordsChange = (newCoords: LatLng) => {
-    const centerCurrent = map.getCenter();
-    const isSignificantCoordsChange =
-      roundToDecimal(centerCurrent.lat, 4) !==
-        roundToDecimal(newCoords.lat, 4) ||
-      roundToDecimal(centerCurrent.lng, 4) !== roundToDecimal(newCoords.lng, 4);
-
-    return isSignificantCoordsChange;
-  };
 };
 
-const roundToDecimal = (num: number, decimal: number) => {
-  const toDecimal = Math.pow(10, decimal);
-  return Math.round((num + Number.EPSILON) * toDecimal) / toDecimal;
-};
+// TODO Those were used to update marker's position only when position changed
+// by more than 10^-4 accuracy. But it triggered a very ugly bug with local storage
+// so it's disabled. Leaving it here in case it was important enough to be reenabled
+
+// const getIsSignificantCoordsChange = (newCoords: LatLng) => {
+//   const centerCurrent = map.getCenter();
+
+//   const isSignificantCoordsChange =
+//     roundToDecimal(centerCurrent.lat, 4) !== roundToDecimal(newCoords.lat, 4) ||
+//     roundToDecimal(centerCurrent.lng, 4) !== roundToDecimal(newCoords.lng, 4);
+
+//   return isSignificantCoordsChange;
+// };
+
+// const roundToDecimal = (num: number, decimal: number) => {
+//   const toDecimal = Math.pow(10, decimal);
+//   return Math.round((num + Number.EPSILON) * toDecimal) / toDecimal;
+// };
