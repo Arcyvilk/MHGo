@@ -8,6 +8,7 @@ import {
   Loader,
   QueryBoundary,
   Size,
+  useAdminDeleteResourceApi,
   useAdminUpdateResourceApi,
   useResourcesApi,
 } from '@mhgo/front';
@@ -41,10 +42,31 @@ const Load = () => {
   } = useAppContext();
   const navigate = useNavigate();
   const { data: resources } = useResourcesApi(true);
-  const { mutate, isSuccess, isError } = useAdminUpdateResourceApi();
+  const {
+    mutate: mutateUpdate,
+    isSuccess,
+    isError,
+  } = useAdminUpdateResourceApi();
+  const {
+    mutate: mutateDelete,
+    isSuccess: isDeleteSuccess,
+    isError: isDeleteError,
+  } = useAdminDeleteResourceApi();
+
+  useEffect(() => {
+    if (isDeleteError === true) toast.error('Could not delete resource!');
+    if (isDeleteSuccess === true)
+      toast.success('Resource deleted successfully!');
+  }, [isDeleteSuccess, isDeleteError]);
 
   const onResourceEdit = (resource: Resource) => {
     navigate(`/resources/edit?id=${resource.id}`);
+  };
+  const onResourceDelete = (resource: Resource) => {
+    const shouldDeleteResource = confirm(
+      `Are you REALLY sure you want to delete resource ${resource.name}? THIS CANNOT BE UNDONE! `,
+    );
+    if (shouldDeleteResource) mutateDelete(resource.id);
   };
 
   const onSwitch = (
@@ -56,7 +78,7 @@ const Load = () => {
       ...resource,
       [property]: checked,
     };
-    mutate(updatedResource);
+    mutateUpdate(updatedResource);
   };
 
   // TODO Make those two into a hook
@@ -92,11 +114,21 @@ const Load = () => {
     <ResourceCell resource={resource} />,
     <Table.CustomCell content={resource.description} />,
     resource.levelRequirements,
-    <Button
-      label={<Icon icon="Edit" size={Size.MICRO} />}
-      onClick={() => onResourceEdit(resource)}
-      style={{ width: '40px' }}
-    />,
+    <div style={{ display: 'flex', gap: '4px' }}>
+      <Button
+        label={<Icon icon="Edit" size={Size.MICRO} />}
+        onClick={() => onResourceEdit(resource)}
+        style={{ width: '40px' }}
+      />
+      <Button
+        label={<Icon icon="Trash" size={Size.MICRO} />}
+        onClick={() => {
+          onResourceDelete(resource);
+        }}
+        variant={Button.Variant.DANGER}
+        style={{ width: '40px' }}
+      />
+    </div>,
   ]);
   return (
     <div className={s.resourcesView}>

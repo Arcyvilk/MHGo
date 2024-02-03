@@ -81,10 +81,10 @@ const Load = () => {
     navigate(`/monsters/edit?id=${monster.id}`);
   };
   const onMonsterDelete = (monster: Monster) => {
-    const shouldDeleteUser = confirm(
+    const shouldDeleteMonster = confirm(
       `Are you REALLY sure you want to delete monster ${monster.name}? THIS CANNOT BE UNDONE! `,
     );
-    if (shouldDeleteUser) mutateDelete(monster.id);
+    if (shouldDeleteMonster) mutateDelete(monster.id);
   };
 
   useEffect(() => {

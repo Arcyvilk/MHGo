@@ -81,3 +81,35 @@ export const useAdminUpdateResourceApi = () => {
 
   return { mutate, error, status, isPending, isSuccess, isError };
 };
+
+// Delete resource
+export const useAdminDeleteResourceApi = () => {
+  const queryClient = useQueryClient();
+
+  const adminDeleteResource = async (resourceId: string): Promise<void> => {
+    const response = await fetcher(
+      `${API_URL}/admin/resources/resource/${resourceId}`,
+      {
+        method: 'DELETE',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+      },
+    );
+
+    if (response.status !== 200 && response.status !== 201)
+      throw new Error((await response.json()).error ?? 'Did not work!');
+    queryClient.invalidateQueries({ queryKey: ['resources'] });
+    queryClient.invalidateQueries({
+      queryKey: ['admin', 'markers', 'resource', 'all'],
+    });
+  };
+
+  const { mutate, error, status, isPending, isSuccess, isError } = useMutation({
+    mutationKey: ['admin', 'resource', 'delete'],
+    mutationFn: adminDeleteResource,
+  });
+
+  return { mutate, error, status, isPending, isSuccess, isError };
+};

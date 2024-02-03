@@ -61,6 +61,7 @@ import {
   // DELETE
   adminDeleteMonster,
   adminDeleteMonsterMarker,
+  adminDeleteResource,
   adminDeleteResourceMarker,
   // QUESTS
   adminGetAllQuestsDaily,
@@ -190,6 +191,12 @@ routerV1.delete(
   verifyAdminToken,
   validateAdventure,
   adminDeleteMonster,
+);
+routerV1.delete(
+  '/admin/resources/resource/:resourceId',
+  verifyAdminToken,
+  validateAdventure,
+  adminDeleteResource,
 );
 
 routerV1.post(

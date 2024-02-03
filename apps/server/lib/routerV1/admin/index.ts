@@ -28,6 +28,7 @@ export { adminUpdateResourceDrops } from './adminUpdateResourceDrops';
 
 // DELETION
 export { adminDeleteMonster } from './adminDeleteMonster';
+export { adminDeleteResource } from './adminDeleteResource';
 
 // MARKERS
 export {
