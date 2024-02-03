@@ -59,6 +59,7 @@ import {
   adminUpdateResourceDrops,
   adminUpdateSettings,
   // DELETE
+  adminDeleteMonster,
   adminDeleteMonsterMarker,
   adminDeleteResourceMarker,
   // QUESTS
@@ -182,6 +183,13 @@ routerV1.put(
   verifyAdminToken,
   validateAdventure,
   adminUpdateResource,
+);
+
+routerV1.delete(
+  '/admin/monsters/monster/:monsterId',
+  verifyAdminToken,
+  validateAdventure,
+  adminDeleteMonster,
 );
 
 routerV1.post(

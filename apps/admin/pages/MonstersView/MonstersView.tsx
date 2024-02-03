@@ -9,6 +9,7 @@ import {
   Loader,
   QueryBoundary,
   Size,
+  useAdminDeleteMonsterApi,
   useAdminUpdateMonsterApi,
   useMonstersApi,
 } from '@mhgo/front';
@@ -47,7 +48,22 @@ const Load = () => {
   } = useAppContext();
   const navigate = useNavigate();
   const { data: monsters } = useMonstersApi(true);
-  const { mutate, isSuccess, isError } = useAdminUpdateMonsterApi();
+  const {
+    mutate: mutateUpdate,
+    isSuccess,
+    isError,
+  } = useAdminUpdateMonsterApi();
+  const {
+    mutate: mutateDelete,
+    isSuccess: isDeleteSuccess,
+    isError: isDeleteError,
+  } = useAdminDeleteMonsterApi();
+
+  useEffect(() => {
+    if (isDeleteError === true) toast.error('Could not delete monster!');
+    if (isDeleteSuccess === true)
+      toast.success('Monster deleted successfully!');
+  }, [isDeleteSuccess, isDeleteError]);
 
   const onSwitch = (
     checked: boolean,
@@ -58,11 +74,17 @@ const Load = () => {
       ...monster,
       [property]: checked,
     };
-    mutate(updatedMonster);
+    mutateUpdate(updatedMonster);
   };
 
   const onMonsterEdit = (monster: Monster) => {
     navigate(`/monsters/edit?id=${monster.id}`);
+  };
+  const onMonsterDelete = (monster: Monster) => {
+    const shouldDeleteUser = confirm(
+      `Are you REALLY sure you want to delete monster ${monster.name}? THIS CANNOT BE UNDONE! `,
+    );
+    if (shouldDeleteUser) mutateDelete(monster.id);
   };
 
   useEffect(() => {
@@ -106,11 +128,21 @@ const Load = () => {
       .map(wealth => `${wealth.type}: ${wealth.amount}`)
       .join('; '),
     monster.levelRequirements,
-    <Button
-      label={<Icon icon="Edit" size={Size.MICRO} />}
-      onClick={() => onMonsterEdit(monster)}
-      style={{ width: '40px' }}
-    />,
+    <div style={{ display: 'flex', gap: '4px' }}>
+      <Button
+        label={<Icon icon="Edit" size={Size.MICRO} />}
+        onClick={() => onMonsterEdit(monster)}
+        style={{ width: '40px' }}
+      />
+      <Button
+        label={<Icon icon="Trash" size={Size.MICRO} />}
+        onClick={() => {
+          onMonsterDelete(monster);
+        }}
+        variant={Button.Variant.DANGER}
+        style={{ width: '40px' }}
+      />
+    </div>,
   ]);
 
   return (
