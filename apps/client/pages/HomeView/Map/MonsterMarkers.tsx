@@ -65,12 +65,12 @@ const SingleMonsterMarker = ({
   position,
   onClick,
 }: SingleMonsterMarkerProps) => {
-  const { icon, isReady } = useMonsterMarkerIcon(
+  const { icon, isMarkerIconLoaded } = useMonsterMarkerIcon(
     monster.thumbnail,
     monster.level,
   );
 
-  if (!isReady) return null;
+  if (!isMarkerIconLoaded) return null;
   return (
     <Marker
       key={`monster-${monster.id}`}

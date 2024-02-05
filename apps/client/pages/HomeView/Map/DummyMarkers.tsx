@@ -23,9 +23,11 @@ const Load = ({ coords }: DummyMarkersProps) => {
   const { data: monsters } = useMonstersApi();
   const trainingMonster = monsters.find(m => m.id === 'dummy');
 
-  const { icon } = useMonsterMarkerIcon(trainingMonster?.thumbnail);
+  const { icon, isMarkerIconLoaded } = useMonsterMarkerIcon(
+    trainingMonster?.thumbnail,
+  );
 
-  if (!coords || !trainingMonster) return null;
+  if (!coords || !trainingMonster || !isMarkerIconLoaded) return null;
 
   const position = L.latLng(coords[0], coords[1]);
   const onClick = () => {

@@ -20,7 +20,7 @@ export const useMonsterMarkerIcon = (
   const canvas = document.createElement('canvas');
   const ctx = canvas.getContext('2d');
 
-  const [isReady, setIsReady] = useState(false);
+  const [isMarkerIconLoaded, setIsMarkerIconLoaded] = useState(false);
   const [icon, setIcon] = useState(new L.Icon({ iconUrl: thumbnail }));
 
   useEffect(() => {
@@ -75,9 +75,9 @@ export const useMonsterMarkerIcon = (
         className: modifiers(s, 'marker__thumbnail', 'big'),
       });
       setIcon(newIcon);
-      setIsReady(true);
+      setIsMarkerIconLoaded(true);
     };
   };
 
-  return { icon, isReady };
+  return { icon, isMarkerIconLoaded };
 };
