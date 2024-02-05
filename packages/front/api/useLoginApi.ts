@@ -9,28 +9,36 @@ import { UserAuth, UserBan } from '@mhgo/types';
 import { API_URL } from '../env';
 import { fetcher } from '..';
 
+type ErrorMe = { error?: string };
 type UserAuthInfo = Pick<
   UserAuth,
   'isAdmin' | 'isAwaitingModApproval' | 'isModApproved'
 > &
-  UserBan & { status: number; error?: string };
+  UserBan &
+  ErrorMe & { status: number };
 export const useMeApi = () => {
-  const getMe = async (): Promise<UserAuthInfo | null> => {
+  const getMe = async (): Promise<UserAuthInfo | ErrorMe | null> => {
     const bearer = JSON.parse(localStorage?.MHGO_AUTH ?? '{}')?.bearer;
     if (!bearer) return null;
     const res = await fetcher(`${API_URL}/auth/me`);
-    const response = await res.json();
-    const responseWithStatusCode = {
-      ...response,
-      status: res.status,
-    };
-    return responseWithStatusCode;
+
+    try {
+      const response = await res.json();
+      const responseWithStatusCode = {
+        ...response,
+        status: res.status,
+      };
+      return responseWithStatusCode;
+    } catch (error: any) {
+      localStorage.MHGO_AUTH = '{"bearer": null}';
+      return { error: error?.message ?? 'Forbidden' };
+    }
   };
 
   const { data, isLoading, isFetched, isError } = useSuspenseQuery<
-    UserAuthInfo | null,
+    UserAuthInfo | ErrorMe | null,
     unknown,
-    UserAuthInfo | null,
+    UserAuthInfo | ErrorMe | null,
     string[]
   >({
     queryKey: ['me'],

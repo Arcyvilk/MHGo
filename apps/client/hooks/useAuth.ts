@@ -3,6 +3,7 @@ import { useAppContext } from '../utils/context';
 import { useEffect } from 'react';
 
 export const useMe = () => {
+  const { data: userAuthData, isError } = useMeApi();
   const { isLoggedIn, setBearerToken } = useAppContext();
   const {
     mutate: mutateLogin,
@@ -17,8 +18,6 @@ export const useMe = () => {
     isError: isSigninError,
     error: singinError,
   } = useSignInApi(setBearerToken);
-
-  const { data: userAuthData, isError } = useMeApi();
 
   const loginUser = (userName: string, pwd: string) => {
     mutateLogin({ userName, pwd });
