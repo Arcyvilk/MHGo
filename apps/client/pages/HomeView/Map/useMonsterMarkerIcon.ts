@@ -11,17 +11,18 @@ const DEFAULTS = {
   starHeight: 20,
   offsetShadowFactor: 0,
   stars: 5,
+  dummyIcon: addCdnUrl('/misc/dummy.png'),
 };
 
 export const useMonsterMarkerIcon = (
-  thumbnail: string = addCdnUrl('/misc/dummy.png'),
+  thumbnail: string = DEFAULTS.dummyIcon,
   level: number = 0,
 ) => {
   const canvas = document.createElement('canvas');
   const ctx = canvas.getContext('2d');
 
   const [isMarkerIconLoaded, setIsMarkerIconLoaded] = useState(false);
-  const [icon, setIcon] = useState(new L.Icon({ iconUrl: thumbnail }));
+  const [icon, setIcon] = useState(new L.Icon({ iconUrl: DEFAULTS.dummyIcon }));
 
   useEffect(() => {
     if (!ctx) return;
