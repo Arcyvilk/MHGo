@@ -9,10 +9,9 @@ import {
   useNavigateWithScroll,
   useSounds,
 } from '@mhgo/front';
-import StarYellow from '@mhgo/front/assets/icons/StarYellow.svg';
-import { useUser } from '../../../hooks/useUser';
 
-import s from './Marker.module.scss';
+import { useMonsterMarkerIcon } from './useMonsterMarkerIcon';
+import { useUser } from '../../../hooks/useUser';
 
 type MonsterMarkersProps = { coords?: number[] };
 export const MonsterMarkers = (props: MonsterMarkersProps) => (
@@ -40,11 +39,14 @@ const Load = ({ coords }: MonsterMarkersProps) => {
 
         return (
           <Fragment key={m.id}>
-            <Marker
-              key={'monster-' + m.id}
-              icon={getMonsterMarkerIcon(m.level, m.thumbnail)}
+            <SingleMonsterMarker
+              monster={{
+                id: m.id,
+                thumbnail: m.thumbnail,
+                level: m.level ?? 0,
+              }}
               position={position}
-              eventHandlers={{ click: onClick }}
+              onClick={onClick}
             />
           </Fragment>
         );
@@ -53,21 +55,30 @@ const Load = ({ coords }: MonsterMarkersProps) => {
   );
 };
 
-const getMonsterMarkerIcon = (level: number | null = 0, thumbnail?: string) => {
-  const stars = new Array(level)
-    .fill(null)
-    .map(() => `<img src="${StarYellow}" class="${s.marker__star}" />`)
-    .join('');
+type SingleMonsterMarkerProps = {
+  monster: { id: string; thumbnail?: string; level?: number };
+  position: L.LatLng;
+  onClick: () => void;
+};
+const SingleMonsterMarker = ({
+  monster,
+  position,
+  onClick,
+}: SingleMonsterMarkerProps) => {
+  const { icon, isReady } = useMonsterMarkerIcon(
+    monster.thumbnail,
+    monster.level,
+  );
 
-  return new L.DivIcon({
-    className: s.marker__icon,
-    html: `<div class="${s.marker__wrapper}">
-        <img src="${thumbnail}" class="${s.marker__thumbnail}"/>    
-        <div class="${s.marker__stars}">
-          ${stars}
-        </div>  
-      </div>`,
-  });
+  if (!isReady) return null;
+  return (
+    <Marker
+      key={`monster-${monster.id}`}
+      icon={icon}
+      position={position}
+      eventHandlers={{ click: onClick }}
+    />
+  );
 };
 
 const useMonsterMapMarkers = (coords?: number[]) => {

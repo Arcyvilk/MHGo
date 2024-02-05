@@ -8,7 +8,7 @@ import {
   useSounds,
 } from '@mhgo/front';
 
-import s from './Marker.module.scss';
+import { useMonsterMarkerIcon } from './useMonsterMarkerIcon';
 
 type DummyMarkersProps = { coords?: number[] };
 export const DummyMarkers = (props: DummyMarkersProps) => (
@@ -23,6 +23,8 @@ const Load = ({ coords }: DummyMarkersProps) => {
   const { data: monsters } = useMonstersApi();
   const trainingMonster = monsters.find(m => m.id === 'dummy');
 
+  const { icon } = useMonsterMarkerIcon(trainingMonster?.thumbnail);
+
   if (!coords || !trainingMonster) return null;
 
   const position = L.latLng(coords[0], coords[1]);
@@ -34,18 +36,9 @@ const Load = ({ coords }: DummyMarkersProps) => {
   return (
     <Marker
       key={'marker-dummy'}
-      icon={getResourceMarkerIcon(trainingMonster.thumbnail)}
+      icon={icon}
       position={position}
       eventHandlers={{ click: onClick }}
     />
   );
-};
-
-const getResourceMarkerIcon = (thumbnail?: string) => {
-  return new L.DivIcon({
-    className: s.marker__icon,
-    html: `<div class="${s.marker__wrapper}">
-        <img src="${thumbnail}" class="${s.marker__thumbnail}"/>
-      </div>`,
-  });
 };

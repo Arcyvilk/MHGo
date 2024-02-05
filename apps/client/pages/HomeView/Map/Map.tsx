@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { MapContainer, TileLayer, useMap } from 'react-leaflet';
-import L, { LatLng, LocationEvent } from 'leaflet';
+import L, { LocationEvent } from 'leaflet';
 import { LSKeys, useLocalStorage } from '@mhgo/front';
 import { Loader, QueryBoundary } from '@mhgo/front';
 
@@ -11,10 +11,9 @@ import { DummyMarkers } from './DummyMarkers';
 import { TutorialMarkers } from './TutorialMarkers';
 import { DEFAULT_COORDS, DEFAULT_ZOOM } from '../../../utils/consts';
 import { useTutorialProgress } from '../../../hooks/useTutorial';
-
-import 'leaflet/dist/leaflet.css';
-import s from './Map.module.scss';
 import { MapActions } from '.';
+
+import s from './Map.module.scss';
 
 const mapOptions = {
   preferCanvas: true,

@@ -5,6 +5,7 @@ import { registerSW } from 'virtual:pwa-register';
 import { AppContextProvider } from './utils/context';
 import { Router } from './Router';
 
+import 'leaflet/dist/leaflet.css';
 import 'tippy.js/dist/tippy.css';
 import 'react-toastify/dist/ReactToastify.css';
 import './index.scss';

@@ -4,6 +4,7 @@ import L from 'leaflet';
 import {
   QueryBoundary,
   SoundSE,
+  modifiers,
   useNavigateWithScroll,
   useResourceMarkersApi,
   useResourcesApi,
@@ -54,7 +55,11 @@ const getResourceMarkerIcon = (thumbnail?: string) => {
   return new L.DivIcon({
     className: s.marker__icon,
     html: `<div class="${s.marker__wrapper}">
-        <img src="${thumbnail}" class="${s.marker__thumbnail}"/>
+        <img src="${thumbnail}" class="${modifiers(
+          s,
+          'marker__thumbnail',
+          'small',
+        )}"/>
       </div>`,
   });
 };
