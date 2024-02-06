@@ -17,7 +17,7 @@ type UserAuthInfo = Pick<
   UserBan &
   ErrorMe & { status: number };
 export const useMeApi = () => {
-  const getMe = async (): Promise<UserAuthInfo | ErrorMe | null> => {
+  const getMe = async (): Promise<UserAuthInfo | null> => {
     const bearer = JSON.parse(localStorage?.MHGO_AUTH ?? '{}')?.bearer;
     if (!bearer) return null;
     const res = await fetcher(`${API_URL}/auth/me`);
@@ -31,14 +31,14 @@ export const useMeApi = () => {
       return responseWithStatusCode;
     } catch (error: any) {
       localStorage.MHGO_AUTH = '{"bearer": null}';
-      return { error: error?.message ?? 'Forbidden' };
+      return { error: error?.message ?? 'Forbidden' } as UserAuthInfo;
     }
   };
 
   const { data, isLoading, isFetched, isError } = useSuspenseQuery<
-    UserAuthInfo | ErrorMe | null,
+    UserAuthInfo | null,
     unknown,
-    UserAuthInfo | ErrorMe | null,
+    UserAuthInfo | null,
     string[]
   >({
     queryKey: ['me'],

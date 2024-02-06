@@ -1,0 +1,14 @@
+@import '@mhgo/front/styles/index.scss';
+
+.homeView {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  padding: $size-16;
+  padding-bottom: $size-32;
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: flex-end;
+  align-self: flex-end;
+}
