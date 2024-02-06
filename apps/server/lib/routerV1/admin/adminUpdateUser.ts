@@ -53,10 +53,17 @@ export const adminUpdateUser = async (
 
     // Update user ban info
     if (userBan) {
+      // TODO Add legit reason and end date for ban
+      const userBanAllData = {
+        ...userBan,
+        userId,
+        banReason: 'Because yes',
+        banEndDate: new Date(32475321603000),
+      };
       const collectionBans = dbAuth.collection<UserBan>('userBans');
       const response = await collectionBans.updateOne(
         { userId },
-        { $set: userBan },
+        { $set: userBanAllData },
         { upsert: true },
       );
 
