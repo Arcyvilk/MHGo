@@ -3,7 +3,6 @@ import { WithId } from 'mongodb';
 export type MapMarker = WithId<{
   id: string;
   coords: number[];
-  seed: number;
   respawnTime?: number; // in seconds?
 }>;
 
