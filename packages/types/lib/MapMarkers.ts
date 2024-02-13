@@ -1,8 +1,11 @@
-export type MapMarker = {
+import { WithId } from 'mongodb';
+
+export type MapMarker = WithId<{
   id: string;
   coords: number[];
+  seed: number;
   respawnTime?: number; // in seconds?
-};
+}>;
 
 export type HabitatMarker = MapMarker & {
   habitatId: string;

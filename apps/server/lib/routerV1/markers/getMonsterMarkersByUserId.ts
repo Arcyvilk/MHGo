@@ -14,6 +14,7 @@ import { mongoInstance } from '../../../api';
 import { getUserLevel } from '../../helpers/getUserLevel';
 import { determineMonsterSpawn } from '../../helpers/getMonsterSpawn';
 import { ObjectId } from 'mongodb';
+import { getGlobalSeed } from '../../helpers/getSeed';
 
 export const getMonsterMarkersByUserId = async (
   req: Request,
@@ -97,12 +98,15 @@ export const getMonsterMarkersByUserId = async (
         .toArray()
     ).map(monster => monster.id);
 
+    const globalSeed = await getGlobalSeed(db);
+
     for await (const marker of cursorMonsterMarkers) {
-      const spawnedMonster = determineMonsterSpawn(
+      const spawnedMonster = await determineMonsterSpawn(
         marker,
         habitats,
         disabledMonsters,
         userLevel,
+        globalSeed,
       );
       if (spawnedMonster.shouldSpawn)
         monsterMarkers.push({

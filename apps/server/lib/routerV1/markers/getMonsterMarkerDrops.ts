@@ -5,6 +5,7 @@ import { Setting, MonsterMarker, User } from '@mhgo/types';
 import { mongoInstance } from '../../../api';
 import { getUserLevel } from '../../helpers/getUserLevel';
 import { determineMonsterLevel } from '../../helpers/getMonsterSpawn';
+import { getGlobalSeed } from '../../helpers/getSeed';
 
 export const getMonsterMarkerDrops = async (
   req: Request,
@@ -33,11 +34,14 @@ export const getMonsterMarkerDrops = async (
       $or: [{ level: null }, { level: { $lte: maxMonsterLevel } }],
     });
 
-    for await (const el of cursorMonsterMarkers) {
+    const globalSeed = await getGlobalSeed(db);
+
+    for await (const marker of cursorMonsterMarkers) {
       monsterMarkers.push({
-        ...el,
-        id: el._id,
-        level: el.level ?? determineMonsterLevel(userLevel),
+        ...marker,
+        id: marker._id,
+        level:
+          marker.level ?? determineMonsterLevel(marker, userLevel, globalSeed),
       });
     }
 
