@@ -35,7 +35,9 @@
     text-transform: uppercase;
     cursor: pointer;
 
-    
+    &--isActive {
+      background-color: rgba($admin-color-tertiary-bg, 0.8);
+    }
 
     &:hover {
       background-color: rgba($admin-color-tertiary-bg, 0.8);
