@@ -3,7 +3,6 @@ import { ToastContainer, ToastContainerProps } from 'react-toastify';
 import { Loader } from '@mhgo/front';
 
 import {
-  AdventureSelectView,
   AuthView,
   BannedView,
   HomeView,
@@ -22,10 +21,6 @@ export const Router = () => {
         { path: '/auth/login', element: <LoginView /> },
         { path: '/auth/ban', element: <BannedView /> },
         { path: '/auth/forbidden', element: <NoPermissions /> },
-        {
-          path: '/auth/adventure',
-          element: <AdventureSelectView />,
-        },
       ],
     },
     // INTERACTIVE PATHS

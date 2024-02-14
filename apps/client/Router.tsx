@@ -6,7 +6,6 @@ import { Loader, SoundBG, useSounds } from '@mhgo/front';
 
 import { useAppContext } from './utils/context';
 import {
-  AdventureSelectView,
   AchievementsView,
   AuthView,
   AwaitingApprovalView,
@@ -56,10 +55,6 @@ export const Router = () => {
       element: <AuthView />,
       children: [
         // AUTH ROUTES
-        {
-          path: '/auth/adventure',
-          element: <AdventureSelectView />,
-        },
         { path: '/auth/loading', element: <LoadingView /> },
         { path: '/auth/login', element: <LoginView /> },
         { path: '/auth/signin', element: <SignInView /> },

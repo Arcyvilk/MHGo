@@ -1,7 +1,8 @@
 @import '../../styles/index.scss';
 
 .select {
-  all: unset;
+  appearance: none;
+  -webkit-appearance: none;
   font-size: $size-12;
   font-weight: 600;
   padding: $size-8 $size-12;
@@ -10,6 +11,33 @@
   background-color: $color-white;
   color: $color-primary-text;
   cursor: pointer;
+  position: relative;
+
+  &:before,
+  &:after {
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    pointer-events: none;
+  }
+
+  &:before {
+    border-width: $size-4;
+    border-color: transparent transparent black transparent;
+    top: 50%;
+    right: $size-10;
+    transform: translateY(-50%);
+  }
+
+  &:after {
+    border-width: $size-4;
+    border-color: black transparent transparent transparent;
+    top: 50%;
+    right: $size-10;
+    transform: translateY(-50%);
+  }
 
   &__wrapper {
     display: flex;

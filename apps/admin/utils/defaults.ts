@@ -5,7 +5,6 @@ import {
   ItemType,
   Material,
   Monster,
-  MonsterMarker,
   Resource,
   ResourceMarker,
   Stats,
@@ -99,23 +98,18 @@ export const DEFAULT_RESOURCE: Resource = {
   levelRequirements: 0,
 };
 
-export const DEFAULT_MONSTER_MARKER: Omit<MonsterMarker, 'respawnTime' | 'id'> =
-  {
-    monsterId: '',
-    level: null,
-    coords: [],
-  };
-
-export const DEFAULT_HABITAT_MARKER: Omit<HabitatMarker, 'respawnTime' | 'id'> =
-  {
-    habitatId: '',
-    level: null,
-    coords: [],
-  };
+export const DEFAULT_HABITAT_MARKER: Omit<
+  HabitatMarker,
+  'respawnTime' | 'id' | '_id'
+> = {
+  habitatId: '',
+  level: null,
+  coords: [],
+};
 
 export const DEFAULT_RESOURCE_MARKER: Omit<
   ResourceMarker,
-  'respawnTime' | 'id'
+  'respawnTime' | 'id' | '_id'
 > = {
   resourceId: '',
   coords: [],

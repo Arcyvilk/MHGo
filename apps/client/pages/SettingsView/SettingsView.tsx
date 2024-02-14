@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 
@@ -10,6 +10,7 @@ import {
   CloseButton,
   Slider,
   logo,
+  AdventureSelect,
 } from '@mhgo/front';
 import { APP_NAME, APP_VERSION } from '../../utils/consts';
 import { useAppContext } from '../../utils/context';
@@ -23,10 +24,10 @@ const DEFAULT = {
 };
 
 export const SettingsView = () => {
-  const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { logoutUser, isLoggedIn } = useMe();
-  const { setMusic, setMusicVolume, setCacheId, adventure } = useAppContext();
+  const { adventure, setAdventure, setMusic, setMusicVolume, setCacheId } =
+    useAppContext();
   const { volume, setVolume, changeMusicVolume } = useSounds(setMusic);
   const [installPrompt, setInstallPrompt] = useState<any>(null);
 
@@ -53,8 +54,10 @@ export const SettingsView = () => {
     }
   };
 
-  const onSwitchAdventure = () => {
-    navigate('/auth/adventure');
+  const onAdventureSwitch = (id: string) => {
+    setAdventure({ id });
+    queryClient.invalidateQueries();
+    location.reload();
   };
 
   const onDeleteAccountClick = async () => {
@@ -75,6 +78,13 @@ export const SettingsView = () => {
         <div className={s.header__title}>Settings</div>
       </div>
       <div className={s.settingsView__wrapper}>
+        <div className={s.section}>
+          <AdventureSelect
+            currentAdventure={adventure}
+            onAdventureSwitch={onAdventureSwitch}
+          />
+        </div>
+
         <div className={s.section}>
           <SettingsSlider
             title="Master Volume"
@@ -97,21 +107,11 @@ export const SettingsView = () => {
         </div>
 
         <div className={s.section}>
-          <div className={s.section__title}>
-            Current adventure: {adventure.id.toUpperCase()}
-          </div>
-          <Button
-            label="Switch adventure"
-            onClick={onSwitchAdventure}
-            variant={Button.Variant.ACTION}
-          />
-        </div>
-        <div className={s.section}>
           <Button label="Reload app" onClick={onRefreshCache} />
         </div>
+
         <div className={s.section}>
           <Button label="Log out" onClick={logoutUser} />
-
           <Button
             label="Delete account"
             onClick={onDeleteAccountClick}

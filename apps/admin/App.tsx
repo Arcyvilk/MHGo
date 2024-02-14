@@ -1,22 +1,37 @@
 import { Outlet } from 'react-router-dom';
 import { FC, PropsWithChildren } from 'react';
 import { Navigate } from 'react-router-dom';
-import { Loader, QueryBoundary, modifiers } from '@mhgo/front';
+import { AdventureSelect, Loader, QueryBoundary, modifiers } from '@mhgo/front';
 
 import { Sidebar } from './containers';
 import { useMe } from './utils/useMe';
 
 import s from './App.module.scss';
 import { useAppContext } from './utils/context';
+import { useQueryClient } from '@tanstack/react-query';
 
 export const App = () => {
   const { isLoggedIn, isAdmin } = useMe();
-  const { adventure } = useAppContext();
+  const { adventure, setAdventure } = useAppContext();
+  const queryClient = useQueryClient();
+
   const isFullScreen = isLoggedIn === false || isAdmin === false;
+
+  const onAdventureSwitch = (id: string) => {
+    setAdventure({ id });
+    queryClient.invalidateQueries();
+  };
 
   return (
     <RequireAuth>
-      <Sidebar title={`Current adventure: ${adventure.id.toUpperCase()}`} />
+      <Sidebar
+        title={
+          <AdventureSelect
+            currentAdventure={adventure}
+            onAdventureSwitch={onAdventureSwitch}
+          />
+        }
+      />
       <div className={modifiers(s, 'app__routeWrapper', { isFullScreen })}>
         <Outlet />
       </div>

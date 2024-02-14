@@ -4,7 +4,7 @@ import { ToastContainer, ToastContainerProps } from 'react-toastify';
 import { Loader } from '@mhgo/front';
 
 import { entries } from './utils/entries';
-import { AdventureSelectView, LoginView, NoPermissions } from './pages';
+import { LoginView, NoPermissions } from './pages';
 import { App } from './App';
 
 import 'leaflet/dist/leaflet.css';
@@ -25,10 +25,6 @@ export const Router = () => {
       children: [
         // AUTH ROUTES
         { path: '/auth/login', element: <LoginView /> },
-        {
-          path: '/auth/adventure',
-          element: <AdventureSelectView />,
-        },
         { path: '/auth/forbidden', element: <NoPermissions /> },
       ],
     },

@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
 
 import { API_URL } from '../env';
 import { fetcher } from '..';
@@ -35,7 +35,7 @@ export const useAdventuresApi = () => {
     isLoading,
     isFetched,
     isError,
-  } = useQuery<Adventure[], unknown, Adventure[], string[]>({
+  } = useSuspenseQuery<Adventure[], unknown, Adventure[], string[]>({
     queryKey: ['adventures'],
     queryFn: getAdventures,
   });

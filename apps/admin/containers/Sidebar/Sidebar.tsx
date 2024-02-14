@@ -1,11 +1,11 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Icon, Loader, QueryBoundary, Size, modifiers } from '@mhgo/front';
+import { Icon, Loader, QueryBoundary, Size } from '@mhgo/front';
 
 import { Entry, entries } from '../../utils/entries';
+import { useMe } from '../../utils/useMe';
 
 import s from './Sidebar.module.scss';
-import { useMe } from '../../utils/useMe';
 
 type SidebarProps = { title?: React.ReactNode };
 export const Sidebar = (props: SidebarProps) => (
@@ -22,15 +22,11 @@ const Load = ({ title }: SidebarProps) => {
     navigate(entry.link);
   };
 
-  const onSwitchAdventure = () => {
-    navigate('/auth/adventure');
-  };
-
   if (isLoggedIn === false || isAdmin === false) return null;
   return (
     <div className={s.sidebar}>
       <div className={s.sidebar__top}>
-        {title && <h2>{title}</h2>}
+        {title}
         {entries
           .filter(entry => entry.mainRoute)
           .map(entry => (
@@ -51,13 +47,6 @@ const Load = ({ title }: SidebarProps) => {
       </div>
 
       <div className={s.sidebar__bottom}>
-        <button
-          key="switch_adventure"
-          className={s.sidebar__entry}
-          onClick={onSwitchAdventure}>
-          <Icon icon="Logout" size={Size.MICRO} />
-          Switch adventure
-        </button>
         <button key="logout" className={s.sidebar__entry} onClick={logoutUser}>
           <Icon icon="Logout" size={Size.MICRO} />
           Logout
