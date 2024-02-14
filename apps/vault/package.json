@@ -7,7 +7,7 @@
   "type": "module",
   "scripts": {
     "dev": "turbo dev:vault",
-    "dev:vault": "env MODE=dev vite --config vite.config.ts --port 3094",
+    "dev:vault": "env MODE=dev vite --config vite.config.ts --port 3092",
     "build:vault": "vite --config vite.config.ts build",
     "turbo:build": "turbo type-check build:vault",
     "type-check": "tsc",

@@ -23,8 +23,8 @@ const app = express();
 
 const allowedOrigins = [
   process.env.CORS_CLIENT ?? 'http://localhost:3091',
+  process.env.CORS_VAULT ?? 'http://localhost:3092',
   process.env.CORS_ADMIN ?? 'http://localhost:3093',
-  process.env.CORS_VAULT ?? 'http://localhost:3094',
 ];
 
 app.use(express.json({ limit: '5mb' }));
