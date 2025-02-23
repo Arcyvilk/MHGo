@@ -7,5 +7,6 @@ export * from './MaterialsView';
 export * from './MonstersView';
 export * from './QuestsView';
 export * from './ResourcesView';
+export * from './ReviewView';
 export * from './SettingsView';
 export * from './UsersView';
