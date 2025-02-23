@@ -63,7 +63,7 @@ const Load = () => {
 
   return (
     <div className={s.singleUserView}>
-      <HeaderEdit status={status} title="Edit user" />
+      <HeaderEdit status={status} title="Edit user" hasBackButton={true} />
       <ActionBar
         title={`User ID: ${updatedUser?.id}`}
         buttons={

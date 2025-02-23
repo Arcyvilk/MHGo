@@ -24,6 +24,7 @@
 @mixin page-title {
   margin: 0;
   font-size: $size-24;
+  text-transform: uppercase;
 }
 
 @mixin ellipsis {

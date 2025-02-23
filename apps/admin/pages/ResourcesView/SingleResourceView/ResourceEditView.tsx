@@ -45,7 +45,11 @@ const Load = () => {
   if (!updatedResource)
     return (
       <div className={s.singleResourceView}>
-        <HeaderEdit title="This resource does not exist" status={status} />
+        <HeaderEdit
+          title="This resource does not exist"
+          status={status}
+          hasBackButton={true}
+        />
         <ActionBar
           buttons={
             <Button
@@ -60,7 +64,7 @@ const Load = () => {
 
   return (
     <div className={s.singleResourceView}>
-      <HeaderEdit title="Edit resource" status={status} />
+      <HeaderEdit title="Edit resource" status={status} hasBackButton={true} />
       <ActionBar
         title={`Resource ID: ${updatedResource?.id}`}
         buttons={

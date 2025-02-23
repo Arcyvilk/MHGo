@@ -30,7 +30,11 @@ export const ResourceCreateView = () => {
 
   return (
     <div className={s.singleResourceView}>
-      <HeaderEdit status={status} title="Create resource" />
+      <HeaderEdit
+        status={status}
+        title="Create resource"
+        hasBackButton={true}
+      />
       <ActionBar
         buttons={
           <>

@@ -42,6 +42,7 @@ const Load = () => {
       <HeaderEdit
         status={{ isSuccess, isPending, isError }}
         title="Edit material"
+        hasBackButton={true}
       />
       <ActionBar
         buttons={

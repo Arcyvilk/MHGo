@@ -72,7 +72,7 @@ const Load = () => {
 
   return (
     <div className={s.mapView}>
-      <HeaderEdit status={status} title="MAP" />
+      <HeaderEdit status={status} title="MAP" hasBackButton={false} />
 
       <ActionBar
         title={

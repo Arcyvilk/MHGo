@@ -43,6 +43,7 @@ const Load = () => {
       <HeaderEdit
         status={{ isSuccess, isPending, isError }}
         title="Create habitat"
+        hasBackButton={true}
       />
       <ActionBar
         buttons={

@@ -9,8 +9,13 @@ import s from './HeaderEdit.module.scss';
 type HeaderEditProps = {
   title: string;
   status: Status;
+  hasBackButton: boolean;
 };
-export const HeaderEdit = ({ title, status }: HeaderEditProps) => {
+export const HeaderEdit = ({
+  title,
+  status,
+  hasBackButton,
+}: HeaderEditProps) => {
   const navigate = useNavigate();
   const [saveStatus, setSaveStatus] = useState(status);
 
@@ -30,13 +35,15 @@ export const HeaderEdit = ({ title, status }: HeaderEditProps) => {
   return (
     <div className={s.headerEdit__header}>
       <h1 className={s.headerEdit__title}>
-        <Button
-          label={<Icon icon="Back" size={Size.MICRO} />}
-          onClick={() => navigate(-1)}
-          style={{ width: '48px' }}
-          inverted
-          variant={Button.Variant.GHOST}
-        />
+        {hasBackButton && (
+          <Button
+            label={<Icon icon="Back" size={Size.MICRO} />}
+            onClick={() => navigate(-1)}
+            style={{ width: '48px' }}
+            inverted
+            variant={Button.Variant.GHOST}
+          />
+        )}
         {title}
       </h1>
       <div

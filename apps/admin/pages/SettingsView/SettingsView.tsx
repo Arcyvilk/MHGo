@@ -36,7 +36,7 @@ const Load = () => {
 
   return (
     <div className={s.settingsView}>
-      <HeaderEdit status={status} title="Settings" />
+      <HeaderEdit status={status} title="Settings" hasBackButton={false} />
       <ActionBar
         buttons={
           <>

@@ -56,6 +56,7 @@ const Load = () => {
       <HeaderEdit
         status={{ isSuccess, isPending, isError }}
         title="Edit habitat"
+        hasBackButton={true}
       />
       <ActionBar
         title={`Habitat ID: ${updatedHabitat?.id}`}
