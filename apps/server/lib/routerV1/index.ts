@@ -59,6 +59,7 @@ import {
   adminUpdateResourceDrops,
   adminUpdateSettings,
   // DELETE
+  adminDeleteItem,
   adminDeleteMonster,
   adminDeleteMonsterMarker,
   adminDeleteResource,
@@ -66,6 +67,8 @@ import {
   // QUESTS
   adminGetAllQuestsDaily,
   adminGetAllQuestsStory,
+  // MISC
+  adminGetAllToReview,
 } from './admin';
 
 routerV1.get(
@@ -142,6 +145,13 @@ routerV1.put(
   validateAdventure,
   adminUpdateItem,
 );
+routerV1.delete(
+  '/admin/items/item/:itemId',
+  verifyAdminToken,
+  validateAdventure,
+  adminDeleteItem,
+);
+
 routerV1.put(
   '/admin/items/item/:itemId/action',
   verifyAdminToken,
@@ -268,6 +278,13 @@ routerV1.put(
   verifyAdminToken,
   validateAdventure,
   adminUpdateSettings,
+);
+
+routerV1.get(
+  '/admin/misc/review',
+  verifyAdminToken,
+  validateAdventure,
+  adminGetAllToReview,
 );
 
 /*****************************
