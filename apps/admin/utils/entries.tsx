@@ -114,7 +114,7 @@ export const entries: Entry[] = [
     id: 'review',
     title: 'Review',
     link: '/review',
-    icon: 'Friends',
+    icon: 'Warning',
     mainRoute: true,
     component: <ReviewView />,
   },
