@@ -10,7 +10,9 @@ import {
   ItemCraftList,
   ItemPrice,
   ItemStat,
+  MonsterDrop,
   Quest,
+  ResourceDrop,
   UserItems,
   UserLoadout,
 } from '@mhgo/types';
@@ -112,102 +114,122 @@ export const adminDeleteItem = async (
     // - quests
     // - questsDaily
 
-    // Delete item from monster drops
-    const collectionDrops = db.collection<Drop>('drops');
-    // await collectionDrops.deleteMany({ itemId });
-
-    // Delete item from resource drops
-    const collectionDropsResource = db.collection<Drop>('dropsResource');
-    // await collectionDropsResource.deleteMany({ itemId });
-
     // Delete item from ingridient list of other items
     // await collectionItemCraft.deleteMany({ itemId });
 
-    // Delete item from quest rewards and requirements
-    const collectionQuests = db.collection<Quest>('quests');
-    const quests = await collectionQuests.find().toArray();
+    // Delete item from monster drops
+    const collectionDropsMonster = db.collection<MonsterDrop>('drops');
+    const dropsMonster = await collectionDropsMonster
+      .find({ 'drops.drops.type': 'item', 'drops.drops.id': itemId })
+      .toArray();
 
-    quests.forEach(quest => {
-      // Remove deleted item from quest requirement list
-      const questRequirementsWithoutItem = quest.requirements.filter(
-        requirement => {
-          if (requirement.type !== 'item') return true;
-          return requirement.id !== itemId;
-        },
-      );
-
-      // Remove deleted item from quest rewards list
-      const questRewardsWithoutItem = quest.rewards.filter(reward => {
-        if (reward.type !== 'item') return true;
-        return reward.id !== itemId;
+    dropsMonster.forEach(monster => {
+      // This is problematic because it's double nested! Test more!
+      const drops = monster.drops.map(level => {
+        const filteredDrops = level.drops.filter(drop => drop.id !== itemId);
+        return {
+          ...level,
+          drops: filteredDrops,
+        };
       });
 
-      // Check if something actually did change
-      const isRequirementsChanged =
-        quest.requirements.length > questRequirementsWithoutItem.length;
-      const isRewardsChanged =
-        quest.rewards.length > questRewardsWithoutItem.length;
+      collectionDropsMonster.updateOne(
+        { monsterId: monster.monsterId },
+        { $set: { drops } },
+      );
 
-      // If it did create a change review entry and update the quest entry
-      if (isRequirementsChanged || isRewardsChanged) {
-        changesToReview.affectedEntities.push({
-          isApproved: false,
-          id: quest.id,
-          type: 'quests',
-        });
+      changesToReview.affectedEntities.push({
+        isApproved: false,
+        id: monster.monsterId,
+        type: 'drops',
+      });
+    });
 
-        collectionQuests.updateOne(
-          { id: quest.id },
+    // Delete item from resource drops
+    const collectionDropsResource =
+      db.collection<ResourceDrop>('dropsResource');
+    const dropsResource = await collectionDropsResource
+      .find({ 'drops.type': 'item', 'drops.id': itemId })
+      .toArray();
+
+    dropsResource.forEach(resource => {
+      const drops = resource.drops.filter(drop => drop.id !== itemId);
+      collectionDropsResource.updateOne(
+        { resourceId: resource.resourceId },
+        { $set: { drops } },
+      );
+
+      changesToReview.affectedEntities.push({
+        isApproved: false,
+        id: resource.resourceId,
+        type: 'dropsResource',
+      });
+    });
+
+    // Delete item from quest rewards and requirements
+    const collectionQuests = db.collection<Quest>('quests');
+    const quests = await collectionQuests
+      .find({
+        $or: [
           {
-            $set: {
-              ...(isRequirementsChanged
-                ? { requirements: questRequirementsWithoutItem }
-                : {}),
-              ...(isRewardsChanged ? { rewards: questRewardsWithoutItem } : {}),
-            },
+            'rewards.id': itemId,
+            'rewards.type': 'item',
           },
-        );
-      }
+          {
+            'requirements.id': itemId,
+            'requirements.type': 'item',
+          },
+        ],
+      })
+      .toArray();
+
+    quests.forEach(quest => {
+      // Remove deleted item from requirements
+      const requirements = quest.requirements.filter(
+        requirement => requirement.id !== itemId,
+      );
+      // Remove deleted item from rewards
+      const rewards = quest.rewards.filter(reward => reward.id !== itemId);
+
+      collectionQuests.updateOne(
+        { id: quest.id },
+        { $set: { rewards, requirements } },
+      );
+
+      changesToReview.affectedEntities.push({
+        isApproved: false,
+        id: quest.id,
+        type: 'quests',
+      });
     });
 
     // Delete item from daily quest rewards (they have no requirements)
     const collectionQuestsDaily = db.collection<Quest>('questsDaily');
-    const questsDaily = await collectionQuestsDaily.find().toArray();
+    const questsDaily = await collectionQuestsDaily
+      .find({ 'rewards.id': itemId, 'rewards.type': 'item' })
+      .toArray();
 
     questsDaily.forEach(quest => {
-      // Remove deleted item from quest rewards list
-      const questRewardsWithoutItem = quest.rewards.filter(reward => {
-        if (reward.type !== 'item') return true;
-        return reward.id !== itemId;
+      const rewards = quest.rewards.filter(r => r.id !== itemId);
+      collectionQuestsDaily.updateOne({ id: quest.id }, { $set: { rewards } });
+
+      changesToReview.affectedEntities.push({
+        isApproved: false,
+        id: quest.id,
+        type: 'questsDaily',
       });
-
-      // Check if anything actually changed
-      const isRewardsChanged =
-        quest.rewards.length > questRewardsWithoutItem.length;
-
-      // If it did create a change review entry and update the quest entry
-      if (isRewardsChanged) {
-        changesToReview.affectedEntities.push({
-          isApproved: false,
-          id: quest.id,
-          type: 'questsDaily',
-        });
-
-        collectionQuestsDaily.updateOne(
-          { id: quest.id },
-          { $set: { rewards: questRewardsWithoutItem } },
-        );
-      }
     });
 
-    // TODO THIS SHOULD BE AT THE VERY END!
-    // Delete basic item info
+    // FINALIZE EVERYTHING!
+    // Delete basic item info...
     const responseItems = await collectionItems.deleteOne({
       id: itemId,
     });
+
     if (!responseItems.acknowledged)
       throw new Error('Could not delete this item.');
 
+    // ...and create a changeReview entry for all the changes
     const collectionChangeReview = db.collection<ChangeReview>('changeReview');
     await collectionChangeReview.insertOne(changesToReview);
 
