@@ -4,7 +4,6 @@ import { log } from '@mhgo/utils';
 import { mongoInstance } from '../../../api';
 import {
   ChangeReview,
-  Drop,
   Item,
   ItemAction,
   ItemCraftList,
@@ -115,7 +114,25 @@ export const adminDeleteItem = async (
     // - questsDaily
 
     // Delete item from ingridient list of other items
-    // await collectionItemCraft.deleteMany({ itemId });
+    const itemCrafts = await collectionItemCraft
+      .find({ 'craftList.craftType': 'item', 'craftList.id': itemId })
+      .toArray();
+
+    itemCrafts.forEach(craftedItem => {
+      const craftList = craftedItem.craftList.filter(
+        item => item.id !== itemId,
+      );
+      collectionItemCraft.updateOne(
+        { itemId: craftedItem.itemId },
+        { $set: { craftList } },
+      );
+
+      changesToReview.affectedEntities.push({
+        isApproved: false,
+        id: craftedItem.itemId,
+        type: 'itemCraft',
+      });
+    });
 
     // Delete item from monster drops
     const collectionDropsMonster = db.collection<MonsterDrop>('drops');
