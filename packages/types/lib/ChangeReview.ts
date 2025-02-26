@@ -50,8 +50,4 @@ export type ChangeReview = {
    * where the deleted entity was referenced by the affected entity.
    */
   relation: string;
-  /**
-   * Flag if the change was already reviewed and approved or not.
-   */
-  isApproved: boolean;
 };
