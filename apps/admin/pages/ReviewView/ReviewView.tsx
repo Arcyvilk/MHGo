@@ -93,7 +93,7 @@ const ChangeTile = ({ changes, onApproveChanges }: ChangeTileProps) => {
 
       <div className={s.sectionTitle}>Changes:</div>
 
-      <div>
+      <div className={s.changeTile__changes}>
         {changes.map(change => (
           <SingleChange change={change} />
         ))}

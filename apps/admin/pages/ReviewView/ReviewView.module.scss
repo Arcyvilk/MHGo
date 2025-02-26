@@ -30,10 +30,15 @@
     gap: $size-8;
   }
 
-  &__actions {
+  &__actions, &__changes {
     display: flex;
     flex-direction: column;
     gap: $size-4;
+  }
+
+  &__actions {
+    align-self: flex-end;
+    justify-self: flex-end;
   }
 }
 

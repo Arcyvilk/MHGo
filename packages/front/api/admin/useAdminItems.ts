@@ -239,6 +239,7 @@ export const useAdminDeleteItemApi = () => {
     if (response.status !== 200 && response.status !== 201)
       throw new Error((await response.json()).error ?? 'Did not work!');
     queryClient.invalidateQueries({ queryKey: ['items'] });
+    queryClient.invalidateQueries({ queryKey: ['admin', 'review', 'all'] });
   };
 
   const { mutate, error, status, isPending, isSuccess, isError } = useMutation({
