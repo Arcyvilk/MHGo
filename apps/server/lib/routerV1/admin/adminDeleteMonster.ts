@@ -56,7 +56,7 @@ export const adminDeleteMonster = async (
       addChangeReview(adventure, {
         affectedEntityId: habitat.id,
         affectedEntityType: 'habitats',
-        relation: "monster's habitat",
+        relation: 'spawn in habitat',
       });
     });
 
