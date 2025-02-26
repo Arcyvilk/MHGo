@@ -30,6 +30,7 @@ const allowedOrigins = [
   process.env.CORS_CLIENT ?? 'http://localhost:3091',
   process.env.CORS_VAULT ?? 'http://localhost:3092',
   process.env.CORS_ADMIN ?? 'http://localhost:3093',
+  'sentry.io',
 ];
 
 app.use(express.json({ limit: '5mb' }));
@@ -39,6 +40,15 @@ app.use(
     credentials: true,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     origin: allowedOrigins,
+    exposedHeaders: ['baggage', 'sentry-trace'], // Expose headers for frontend access
+    allowedHeaders: [
+      'Content-Type',
+      'Authorization',
+      'x-adventure',
+      'X-Adventure',
+      'baggage',
+      'sentry-trace',
+    ], // Allow Sentry headers
   }),
 );
 app.set('trust proxy', 1);
