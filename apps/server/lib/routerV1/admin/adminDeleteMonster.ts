@@ -3,60 +3,74 @@ import { log } from '@mhgo/utils';
 
 import { mongoInstance } from '../../../api';
 import { Habitat, Monster, MonsterDrop } from '@mhgo/types';
+import { changeReviewHelper } from '../../helpers/changeReviewHelper';
 
 export const adminDeleteMonster = async (
   req: Request,
   res: Response,
 ): Promise<void> => {
   try {
-    const { db } = mongoInstance.getDb(res?.locals?.adventure);
+    const adventure = res?.locals?.adventure;
+    const { db } = mongoInstance.getDb(adventure);
 
     const { monsterId } = req.params;
 
     if (!monsterId) throw new Error('Requested monster does not exist');
 
-    // Delete basic monster info
+    /**
+     * Get existing basic data of the monster
+     */
     const collectionMonsters = db.collection<Monster>('monsters');
+    const monster = await collectionMonsters.findOne({ id: monsterId });
+
+    /**
+     * Information about the change that will be shared between all of the change reviews.
+     */
+    const { addChangeReview } = changeReviewHelper({
+      changedEntityId: monster.id,
+      changedEntityType: 'monsters',
+      changedEntityName: monster.name,
+      changeType: 'delete',
+    });
+
+    /**
+     * Delete all monster drops
+     */
+    const collectionDrops = db.collection<MonsterDrop>('drops');
+    await collectionDrops.deleteMany({ monsterId });
+
+    /**
+     * Delete this monster from all habitats
+     */
+    const collectionHabitats = db.collection<Habitat>('habitats');
+    const responseHabitats = await collectionHabitats
+      .find({ 'monsters.id': monsterId })
+      .toArray();
+
+    responseHabitats.forEach(habitat => {
+      const updatedMonsters = normalizeSpawnRatio(habitat, monsterId);
+
+      collectionHabitats.updateOne(
+        { id: habitat.id },
+        { $set: { monsters: updatedMonsters } },
+      );
+
+      addChangeReview(adventure, {
+        affectedEntityId: habitat.id,
+        affectedEntityType: 'habitats',
+        relation: "monster's habitat",
+      });
+    });
+
+    /**
+     * At the very end:
+     * Delete basic monster info
+     */
     const responseMonster = await collectionMonsters.deleteOne({
       id: monsterId,
     });
     if (!responseMonster.acknowledged)
       throw new Error('Could not delete this monster.');
-
-    // Delete all monster drops
-    const collectionDrops = db.collection<MonsterDrop>('drops');
-    await collectionDrops.deleteMany({ monsterId });
-
-    // Delete this monster from all habitats
-    const collectionHabitats = db.collection<Habitat>('habitats');
-    const responseHabitats = await collectionHabitats.find().toArray();
-
-    responseHabitats
-      .filter(habitat =>
-        habitat.monsters.find(monster => monster.id === monsterId),
-      )
-      .forEach(habitat => {
-        const { monsters } = habitat;
-        const otherMonsters = monsters.filter(
-          monster => monster.id !== monsterId,
-        );
-        const deletedMonsterSpawnChance = monsters.find(
-          monster => monster.id === monsterId,
-        ).spawnChance;
-        const sharedSpawnChanceForOthers =
-          deletedMonsterSpawnChance / otherMonsters.length;
-        const otherMonstersWithBoostedSpawnChance = otherMonsters.map(
-          monster => ({
-            ...monster,
-            spawnChance: monster.spawnChance + sharedSpawnChanceForOthers,
-          }),
-        );
-
-        collectionHabitats.updateOne(
-          { id: habitat.id },
-          { $set: { monsters: otherMonstersWithBoostedSpawnChance } },
-        );
-      });
 
     // Fin!
     res.sendStatus(200);
@@ -64,4 +78,26 @@ export const adminDeleteMonster = async (
     log.WARN(err);
     res.status(500).send({ error: err.message ?? 'Internal server error' });
   }
+};
+
+const normalizeSpawnRatio = (habitat: Habitat, monsterId: string) => {
+  const { monsters } = habitat;
+  const otherMonsters = monsters.filter(monster => monster.id !== monsterId);
+
+  // Get the spawn chance of the deleted monster...
+  const deletedMonsterSpawnChance = monsters.find(
+    monster => monster.id === monsterId,
+  ).spawnChance;
+
+  // ...and share it evenly between the remaining monsters
+  const sharedSpawnChanceForOthers =
+    deletedMonsterSpawnChance / otherMonsters.length;
+
+  // And now update the list of monsters with the new spawn ratios!
+  const otherMonstersWithBoostedSpawnChance = otherMonsters.map(monster => ({
+    ...monster,
+    spawnChance: monster.spawnChance + sharedSpawnChanceForOthers,
+  }));
+
+  return otherMonstersWithBoostedSpawnChance;
 };
