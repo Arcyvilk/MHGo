@@ -24,8 +24,8 @@ const tableHeaders: TableHeader<Quest>[] = [
   { id: 'title', label: 'Title' },
   { id: 'levelRequirement', label: 'LVL req.' },
   { id: 'exp', label: 'Exp' },
-  { id: 'rewards', label: 'Admin' },
-  { id: 'payment', label: 'Awaiting approval' },
+  { id: 'rewards', label: 'Rewards' },
+  { id: 'payment', label: 'Payment' },
   { id: 'actions', label: 'Actions' },
 ];
 
