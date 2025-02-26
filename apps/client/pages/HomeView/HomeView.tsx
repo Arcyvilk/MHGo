@@ -172,7 +172,9 @@ const useUserQuestItems = () => {
     const questRequirements = userQuestsWithDetails
       ?.map(quest => {
         const { id, requirements, maxProgress, progress, isClaimed } = quest;
+
         if (isClaimed) return null;
+
         const userQuestItems = requirements
           .filter(requirement => requirement.type === 'item')
           .map(requirement => {
@@ -181,8 +183,11 @@ const useUserQuestItems = () => {
                 ?.amount ?? 0;
             return userItemAmount;
           });
-        const userProgress = userQuestItems[0];
+
+        // if quest items dont exist anymore then progress must be 0
+        const userProgress = userQuestItems[0] ?? 0;
         if (progress === userProgress) return null;
+
         // We can take first element, because currently there is only one requirement per array
         return { id, maxProgress, userProgress };
       })

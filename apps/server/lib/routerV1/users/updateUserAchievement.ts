@@ -11,6 +11,7 @@ export const updateUserAchievement = async (
   try {
     const { db } = mongoInstance.getDb(res?.locals?.adventure);
     const { userId } = req.params;
+
     const { achievementId, progress, newValue } = req.body as Pick<
       UserAchievement,
       'achievementId' | 'progress'
@@ -21,6 +22,12 @@ export const updateUserAchievement = async (
     const achievement = await collectionAchievements.findOne({
       id: achievementId,
     });
+
+    // Achievement does not exist in this adventure.
+    if (!achievement) {
+      res.sendStatus(410);
+      return;
+    }
 
     // Get user achievement
     const collectionUserAchievements =
