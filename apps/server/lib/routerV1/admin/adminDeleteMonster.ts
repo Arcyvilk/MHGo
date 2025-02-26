@@ -23,9 +23,7 @@ export const adminDeleteMonster = async (
     const collectionMonsters = db.collection<Monster>('monsters');
     const monster = await collectionMonsters.findOne({ id: monsterId });
 
-    /**
-     * Information about the change that will be shared between all of the change reviews.
-     */
+    // Information about the change that will be shared between all of the change reviews.
     const { addChangeReview } = changeReviewHelper({
       changedEntityId: monster.id,
       changedEntityType: 'monsters',
@@ -80,6 +78,14 @@ export const adminDeleteMonster = async (
   }
 };
 
+/**
+ * In a single habitat, all of the monsters spawn rations sum to 100.
+ * When a monster is deleted, its spawn ratio is also deleted, what means
+ * that the spawns don't sum to 100 anymore, so we have to distribute
+ * its spawn ratio between all the monsters remaining in the habitat.
+ *
+ * TODO: What happens if there is only one monster left and it's deleted?
+ */
 const normalizeSpawnRatio = (habitat: Habitat, monsterId: string) => {
   const { monsters } = habitat;
   const otherMonsters = monsters.filter(monster => monster.id !== monsterId);
