@@ -1,0 +1,33 @@
+@import '../../styles/index.scss';
+
+.badge {
+  display: flex;
+  flex-direction: row;
+  gap: $size-4;
+  align-items: center;
+  padding: 2px 4px;
+  border-radius: 8px;
+  font-size: $size-10;
+  font-weight: 600;
+  background-color: $color-white;
+  color: $color-primary-text;
+  border: 1px solid $color-primary-text;
+  box-shadow: none;
+    
+  &--default {
+    color: $color-primary-text;
+  }
+  
+  &--danger {
+    background-color: $color-danger;
+    color: $color-white;
+  }
+
+  &--success {
+    background-color: $color-action;
+  }
+
+  &--warning {
+    background-color: $color-warning;
+  }
+}

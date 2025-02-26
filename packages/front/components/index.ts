@@ -1,5 +1,6 @@
 export * from './Animations';
 
+export * from './Badge';
 export * from './Button';
 export * from './CloseButton';
 export * from './Dropdown';
