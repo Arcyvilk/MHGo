@@ -1,0 +1,1 @@
+export { getBiomes } from './getBiomes';

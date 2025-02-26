@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { v4 as uuid } from 'uuid';
 import { FormControlLabel, Switch } from '@mui/material';
-import { MapMarker, ResourceMarker, HabitatMarker } from '@mhgo/types';
+import { MapMarker, ResourceMarker, BiomeMarker } from '@mhgo/types';
 import {
   Button,
   Input,
@@ -18,7 +18,7 @@ import {
   useAdminUpdateResourceMarkerApi,
   useAdminDeleteResourceMarkerApi,
   useResourcesApi,
-  useHabitatsApi,
+  useBiomesApi,
 } from '@mhgo/front';
 import { ActionBar, IconInfo } from '../../../containers';
 import { Status } from '../../../utils/types';
@@ -62,7 +62,7 @@ const Load = ({
     setMonsterMarker,
     mapMarker,
     setMapMarker,
-    habitats,
+    biomes,
     resources,
     resourceMarker,
     setResourceMarker,
@@ -181,13 +181,13 @@ const Load = ({
               // Ugly hack but works lol
               key={uuid()}
               name="monster_marker"
-              label="Marker's habitat"
-              data={habitats.map(h => ({ id: h.id, name: h.name }))}
-              defaultSelected={monsterMarker?.habitatId}
-              setValue={habitatId =>
+              label="Marker's biome"
+              data={biomes.map(h => ({ id: h.id, name: h.name }))}
+              defaultSelected={monsterMarker?.biomeId}
+              setValue={biomeId =>
                 setMonsterMarker({
                   ...monsterMarker,
-                  habitatId,
+                  biomeId,
                 })
               }
             />
@@ -254,7 +254,7 @@ const Load = ({
 };
 
 type MapMarkerFixed = Omit<MapMarker, 'id'>;
-type MonsterMarkerFixed = Omit<HabitatMarker, 'id'>;
+type MonsterMarkerFixed = Omit<BiomeMarker, 'id'>;
 type ResourceMarkerFixed = Omit<ResourceMarker, 'id'>;
 
 // selectedMarker is in fact ObjectId from MongoDB
@@ -266,7 +266,7 @@ const useUpdateMonsterMarker = (
   setStatus: (status: Status) => void,
 ) => {
   const [markerType, setMarkerType] = useState(MarkerType.MONSTER);
-  const { data: habitats } = useHabitatsApi();
+  const { data: biomes } = useBiomesApi();
   const { data: resources } = useResourcesApi(true);
   const { data: monsterMarkers, isFetched: isMonstersFetched } =
     useAdminAllMonsterMarkersApi();
@@ -364,7 +364,7 @@ const useUpdateMonsterMarker = (
 
   return {
     markerType,
-    habitats,
+    biomes,
     monsterMarker,
     setMonsterMarker,
     resources,

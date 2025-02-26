@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import {
-  Habitat,
-  HabitatMarker,
+  Biome,
+  BiomeMarker,
   Monster,
   MonsterMarker,
   Setting,
@@ -28,9 +28,9 @@ export const getMonsterMarkersByUserId = async (
     const { db } = mongoInstance.getDb(res?.locals?.adventure);
     const { dbAuth } = mongoInstance.getDbAuth();
 
-    // Get all habitats
-    const collectionHabitats = db.collection<Habitat>('habitats');
-    const habitats = await collectionHabitats.find().toArray();
+    // Get all biomes
+    const collectionBiomes = db.collection<Biome>('biomes');
+    const biomes = await collectionBiomes.find().toArray();
 
     // Get the maximum level of monster that can spawn on random level spawns
     const collectionUsers = dbAuth.collection<User>('users');
@@ -74,7 +74,7 @@ export const getMonsterMarkersByUserId = async (
 
     // Apply all filters and get all visible markers
     const collectionMonsterMarkers =
-      db.collection<HabitatMarker>('markersMonster');
+      db.collection<BiomeMarker>('markersMonster');
     const monsterMarkers: MonsterMarker[] = [];
 
     // Aggregate all filters together
@@ -103,7 +103,7 @@ export const getMonsterMarkersByUserId = async (
     for await (const marker of cursorMonsterMarkers) {
       const spawnedMonster = await determineMonsterSpawn(
         marker,
-        habitats,
+        biomes,
         disabledMonsters,
         userLevel,
         globalSeed,

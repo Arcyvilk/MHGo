@@ -94,7 +94,7 @@ export const useAdminDeleteMonsterApi = () => {
     if (response.status !== 200 && response.status !== 201)
       throw new Error((await response.json()).error ?? 'Did not work!');
     queryClient.invalidateQueries({ queryKey: ['monsters'] });
-    queryClient.invalidateQueries({ queryKey: ['habitats'] });
+    queryClient.invalidateQueries({ queryKey: ['biomes'] });
   };
 
   const { mutate, error, status, isPending, isSuccess, isError } = useMutation({

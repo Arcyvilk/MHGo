@@ -12,7 +12,7 @@ export type Monster = IsDisabled & {
   description: string;
   img: string; // URL of the fight image
   thumbnail: string; // URL of the map marker
-  habitat: string;
+  biome: string;
   baseHP: number;
   baseDamage: number;
   baseAttackSpeed: number;

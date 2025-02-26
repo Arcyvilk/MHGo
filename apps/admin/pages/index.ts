@@ -1,4 +1,4 @@
-export * from './HabitatsView';
+export * from './BiomesView';
 export * from './HomeView';
 export * from './ItemsView';
 export * from './LoginView';

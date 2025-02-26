@@ -1,6 +1,6 @@
 @import '@mhgo/front/styles/index.scss';
 
-.singleHabitatView {
+.singleBiomeView {
   @include page-wrapper-admin;
 
   &__content {
@@ -38,7 +38,7 @@
   }
 }
 
-.habitatSpawns {
+.biomeSpawns {
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;

@@ -101,7 +101,7 @@ const MonsterTile = ({ monster }: { monster: Monster }) => {
           <div className={s.monster__table}>
             <div className={s.monster__detail}>
               Found in:{' '}
-              <span style={{ fontWeight: 400 }}>{monster.habitat}</span>
+              <span style={{ fontWeight: 400 }}>{monster.biome}</span>
             </div>
             <div className={s.monster__detail}>
               Weakness: <span style={{ fontWeight: 400 }}>getting killed</span>

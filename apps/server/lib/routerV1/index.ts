@@ -36,7 +36,7 @@ import {
   adminDeleteUser,
   adminUserEnableGodmode,
   // CREATE
-  adminCreateHabitat,
+  adminCreateBiome,
   adminCreateItem,
   adminCreateMaterial,
   adminCreateMonster,
@@ -44,7 +44,7 @@ import {
   adminCreateResourceMarker,
   adminCreateResource,
   // UPDATE
-  adminUpdateHabitat,
+  adminUpdateBiome,
   adminUpdateItem,
   adminUpdateItemAction,
   adminUpdateItemCrafts,
@@ -104,10 +104,10 @@ routerV1.delete(
 );
 
 routerV1.post(
-  '/admin/habitats/create',
+  '/admin/biomes/create',
   verifyAdminToken,
   validateAdventure,
-  adminCreateHabitat,
+  adminCreateBiome,
 );
 routerV1.post(
   '/admin/items/create',
@@ -135,10 +135,10 @@ routerV1.post(
 );
 
 routerV1.put(
-  '/admin/habitats/habitat/:habitatId',
+  '/admin/biomes/biome/:biomeId',
   verifyAdminToken,
   validateAdventure,
-  adminUpdateHabitat,
+  adminUpdateBiome,
 );
 routerV1.put(
   '/admin/items/item/:itemId',
@@ -631,9 +631,9 @@ routerV1.get('/materials/list', verifyToken, validateAdventure, getMaterials);
  *         HABITATS         *
  ****************************/
 
-import { getHabitats } from './habitats';
+import { getBiomes } from './biomes';
 
-routerV1.get('/habitats/list', verifyToken, validateAdventure, getHabitats);
+routerV1.get('/biomes/list', verifyToken, validateAdventure, getBiomes);
 
 /**************************
  *         QUESTS         *

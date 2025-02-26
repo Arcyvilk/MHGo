@@ -31,13 +31,13 @@ const Load = () => {
   const { isTutorialDummyKilled } = useAppContext();
   const { isFinishedTutorialPartOne } = useTutorialProgress();
   const { markerId, monsterId, monster, inRange } = useMonsterMarker();
-  const { habitat, level, name, img } = monster;
+  const { biome, level, name, img } = monster;
 
   return (
     <div
       className={s.fightView}
       style={{
-        backgroundImage: `url("${addCdnUrl(`/habitats/${habitat}.jpg`)}")`,
+        backgroundImage: `url("${addCdnUrl(`/biomes/${biome}.jpg`)}")`,
       }}>
       <Tutorial
         stepFrom="part2_start"

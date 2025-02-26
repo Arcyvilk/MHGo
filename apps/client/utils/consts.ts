@@ -27,7 +27,7 @@ export const MONSTER_MISSING: Monster = {
   description: 'ERR',
   img: '',
   thumbnail: '',
-  habitat: '',
+  biome: '',
   baseDamage: 0,
   baseAttackSpeed: 0,
   baseWealth: [],

@@ -26,7 +26,7 @@ body, html {
 
 }
 .bgimg-1 {
-  background-image: url("https://cdn.arcyvilk.com/mhgo/habitats/swamp.jpg");
+  background-image: url("https://cdn.arcyvilk.com/mhgo/biomes/swamp.jpg");
   min-height: 100%;
   @media (max-width:666px) {
     min-height: 80%;
@@ -34,17 +34,17 @@ body, html {
 }
 
 .bgimg-2 {
-  background-image: url("https://cdn.arcyvilk.com/mhgo/habitats/forest.jpg");
+  background-image: url("https://cdn.arcyvilk.com/mhgo/biomes/forest.jpg");
   min-height: 70%;
 }
 
 .bgimg-3 {
-  background-image: url("https://cdn.arcyvilk.com/mhgo/habitats/cave.jpg");
+  background-image: url("https://cdn.arcyvilk.com/mhgo/biomes/cave.jpg");
   min-height: 70%;
 }
 
 .bgimg-4 {
-  background-image: url("https://cdn.arcyvilk.com/mhgo/habitats/desert.jpg");
+  background-image: url("https://cdn.arcyvilk.com/mhgo/biomes/desert.jpg");
   min-height: calc(100% - 9rem);
   margin-bottom: 9rem;
 }

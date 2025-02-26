@@ -7,24 +7,24 @@ import {
   Loader,
   QueryBoundary,
   Size,
-  useHabitatsApi,
+  useBiomesApi,
 } from '@mhgo/front';
-import { Habitat, HabitatMonster } from '@mhgo/types';
+import { Biome, BiomeMonster } from '@mhgo/types';
 
 import { ActionBar, Table, TableHeader } from '../../containers';
 import { useAppContext } from '../../utils/context';
 
-import s from './HabitatsView.module.scss';
+import s from './BiomesView.module.scss';
 import { CDN_URL } from '@mhgo/front/env';
 
-const tableHeaders: TableHeader<Habitat>[] = [
+const tableHeaders: TableHeader<Biome>[] = [
   { id: 'name', label: 'Name' },
   { id: 'monsters', label: 'Spawns' },
   { id: 'description', label: 'Description' },
   { id: 'actions', label: 'Actions' },
 ];
 
-export const HabitatsView = () => (
+export const BiomesView = () => (
   <QueryBoundary fallback={<Loader />}>
     <Load />
   </QueryBoundary>
@@ -32,21 +32,21 @@ export const HabitatsView = () => (
 
 const Load = () => {
   const {
-    orderHabitat: order,
-    setOrderHabitat: setOrder,
-    orderByHabitat: orderBy,
-    setOrderByHabitat: setOrderBy,
+    orderBiome: order,
+    setOrderBiome: setOrder,
+    orderByBiome: orderBy,
+    setOrderByBiome: setOrderBy,
   } = useAppContext();
   const navigate = useNavigate();
-  const { data: habitats } = useHabitatsApi();
+  const { data: biomes } = useBiomesApi();
 
-  const onHabitatEdit = (habitat: Habitat) => {
-    navigate(`/habitats/edit?id=${habitat.id}`);
+  const onBiomeEdit = (biome: Biome) => {
+    navigate(`/biomes/edit?id=${biome.id}`);
   };
 
-  const sortedHabitats = useMemo(() => {
+  const sortedBiomes = useMemo(() => {
     if (order && orderBy)
-      return habitats.sort((a, b) =>
+      return biomes.sort((a, b) =>
         order === 'asc'
           ? (a[orderBy] ?? 0) > (b[orderBy] ?? 0)
             ? 1
@@ -55,36 +55,36 @@ const Load = () => {
             ? 1
             : -1,
       );
-    else return habitats;
-  }, [habitats, order, orderBy]);
+    else return biomes;
+  }, [biomes, order, orderBy]);
 
-  const tableRows = sortedHabitats.map(habitat => [
-    <HabitatCell habitat={habitat} />,
-    <SpawnCell monsters={habitat.monsters} />,
-    <Table.CustomCell content={habitat.description} />,
+  const tableRows = sortedBiomes.map(biome => [
+    <BiomeCell biome={biome} />,
+    <SpawnCell monsters={biome.monsters} />,
+    <Table.CustomCell content={biome.description} />,
     <Button
       label={<Icon icon="Edit" size={Size.MICRO} />}
-      onClick={() => onHabitatEdit(habitat)}
+      onClick={() => onBiomeEdit(biome)}
       style={{ width: '40px' }}
     />,
   ]);
 
   return (
-    <div className={s.habitatsView}>
-      <div className={s.habitatsView__header}>
-        <h1 className={s.habitatsView__title}>HABITATS</h1>
+    <div className={s.biomesView}>
+      <div className={s.biomesView__header}>
+        <h1 className={s.biomesView__title}>HABITATS</h1>
       </div>
       <ActionBar
         buttons={
           <>
             <Button
-              label="Create new habitat"
+              label="Create new biome"
               onClick={() => navigate('create')}
             />
           </>
         }
       />
-      <div className={s.habitatsView__content}>
+      <div className={s.biomesView__content}>
         <Table
           tableHeaders={tableHeaders}
           items={tableRows}
@@ -98,21 +98,21 @@ const Load = () => {
   );
 };
 
-const HabitatCell = ({ habitat }: { habitat: Habitat }) => {
+const BiomeCell = ({ biome }: { biome: Biome }) => {
   return (
-    <div className={s.habitatsView__detail}>
+    <div className={s.biomesView__detail}>
       <img
-        src={`${CDN_URL}${habitat.thumbnail}`}
-        className={s.habitatsView__icon}
+        src={`${CDN_URL}${biome.thumbnail}`}
+        className={s.biomesView__icon}
       />
-      {habitat.name}
+      {biome.name}
     </div>
   );
 };
 
-const SpawnCell = ({ monsters }: { monsters: HabitatMonster[] }) => {
+const SpawnCell = ({ monsters }: { monsters: BiomeMonster[] }) => {
   return (
-    <div className={s.habitatsView__spawn}>
+    <div className={s.biomesView__spawn}>
       {monsters.map(monster => (
         <span key={monster.id}>
           [{monster.spawnChance}%] {monster.id}

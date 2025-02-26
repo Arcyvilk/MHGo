@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { log } from '@mhgo/utils';
 
 import { mongoInstance } from '../../../api';
-import { Habitat, Monster, MonsterDrop } from '@mhgo/types';
+import { Biome, Monster, MonsterDrop } from '@mhgo/types';
 import { changeReviewHelper } from '../../helpers/changeReviewHelper';
 
 export const adminDeleteMonster = async (
@@ -38,25 +38,25 @@ export const adminDeleteMonster = async (
     await collectionDrops.deleteMany({ monsterId });
 
     /**
-     * Delete this monster from all habitats
+     * Delete this monster from all biomes
      */
-    const collectionHabitats = db.collection<Habitat>('habitats');
-    const responseHabitats = await collectionHabitats
+    const collectionBiomes = db.collection<Biome>('biomes');
+    const responseBiomes = await collectionBiomes
       .find({ 'monsters.id': monsterId })
       .toArray();
 
-    responseHabitats.forEach(habitat => {
-      const updatedMonsters = normalizeSpawnRatio(habitat, monsterId);
+    responseBiomes.forEach(biome => {
+      const updatedMonsters = normalizeSpawnRatio(biome, monsterId);
 
-      collectionHabitats.updateOne(
-        { id: habitat.id },
+      collectionBiomes.updateOne(
+        { id: biome.id },
         { $set: { monsters: updatedMonsters } },
       );
 
       addChangeReview(adventure, {
-        affectedEntityId: habitat.id,
-        affectedEntityType: 'habitats',
-        relation: 'spawn in habitat',
+        affectedEntityId: biome.id,
+        affectedEntityType: 'biomes',
+        relation: 'spawn in biome',
       });
     });
 
@@ -79,15 +79,15 @@ export const adminDeleteMonster = async (
 };
 
 /**
- * In a single habitat, all of the monsters spawn rations sum to 100.
+ * In a single biome, all of the monsters spawn rations sum to 100.
  * When a monster is deleted, its spawn ratio is also deleted, what means
  * that the spawns don't sum to 100 anymore, so we have to distribute
- * its spawn ratio between all the monsters remaining in the habitat.
+ * its spawn ratio between all the monsters remaining in the biome.
  *
  * TODO: What happens if there is only one monster left and it's deleted?
  */
-const normalizeSpawnRatio = (habitat: Habitat, monsterId: string) => {
-  const { monsters } = habitat;
+const normalizeSpawnRatio = (biome: Biome, monsterId: string) => {
+  const { monsters } = biome;
   const otherMonsters = monsters.filter(monster => monster.id !== monsterId);
 
   // Get the spawn chance of the deleted monster...

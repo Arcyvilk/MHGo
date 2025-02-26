@@ -1,10 +1,10 @@
-import { Habitat } from '@mhgo/types';
+import { Biome } from '@mhgo/types';
 import { toast } from 'react-toastify';
 
-export const validateHabitat = (habitat?: Habitat) => {
-  if (!habitat) return false;
+export const validateBiome = (biome?: Biome) => {
+  if (!biome) return false;
 
-  const spawnRatios = habitat.monsters.map(monster => monster.spawnChance);
+  const spawnRatios = biome.monsters.map(monster => monster.spawnChance);
   const sum = spawnRatios.reduce((a, b) => a + b, 0);
 
   if (sum !== 100) {

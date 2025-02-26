@@ -1,1 +1,0 @@
-export { getHabitats } from './getHabitats';

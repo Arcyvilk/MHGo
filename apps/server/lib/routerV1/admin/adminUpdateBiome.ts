@@ -1,25 +1,25 @@
 import { Request, Response } from 'express';
 import { WithId } from 'mongodb';
 import { log } from '@mhgo/utils';
-import { Habitat } from '@mhgo/types';
+import { Biome } from '@mhgo/types';
 
 import { mongoInstance } from '../../../api';
 
-export const adminUpdateHabitat = async (
+export const adminUpdateBiome = async (
   req: Request,
   res: Response,
 ): Promise<void> => {
   try {
     const { db } = mongoInstance.getDb(res?.locals?.adventure);
-    const { habitatId } = req.params;
+    const { biomeId } = req.params;
 
-    const collection = db.collection<Habitat>('habitats');
+    const collection = db.collection<Biome>('biomes');
     const { _id, id, image, thumbnail, ...updatedFields } = req.body as Partial<
-      WithId<Habitat>
+      WithId<Biome>
     >;
 
     const response = await collection.updateOne(
-      { id: habitatId },
+      { id: biomeId },
       {
         $set: {
           ...updatedFields,
@@ -31,7 +31,7 @@ export const adminUpdateHabitat = async (
     );
 
     if (!response.acknowledged) {
-      res.status(400).send({ error: 'Could not update this habitat.' });
+      res.status(400).send({ error: 'Could not update this biome.' });
     } else {
       res.status(200).send(response);
     }

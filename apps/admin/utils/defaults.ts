@@ -9,8 +9,8 @@ import {
   ResourceMarker,
   Stats,
   ItemEffect,
-  Habitat,
-  HabitatMarker,
+  Biome,
+  BiomeMarker,
 } from '@mhgo/types';
 
 export const DEFAULT_COORDS = [0, 0];
@@ -25,12 +25,12 @@ export const DEFAULT_STATS: Stats = {
   critDamage: 0,
 };
 
-export const DEFAULT_HABITAT: Habitat = {
+export const DEFAULT_HABITAT: Biome = {
   id: uuid(),
   name: '',
   description: '',
-  image: '/habitats/XXX.jpg',
-  thumbnail: '/habitats/thumbnail-XXX.jpg',
+  image: '/biomes/XXX.jpg',
+  thumbnail: '/biomes/thumbnail-XXX.jpg',
   monsters: [],
 };
 
@@ -38,7 +38,7 @@ export const DEFAULT_MONSTER: Monster = {
   id: uuid(),
   img: '/monsters/XXX.jpg',
   thumbnail: '/monsters/thumbnail-XXX.jpg',
-  habitat: 'swamp',
+  biome: 'swamp',
   name: '',
   description: '',
   hideInGuide: false,
@@ -99,10 +99,10 @@ export const DEFAULT_RESOURCE: Resource = {
 };
 
 export const DEFAULT_HABITAT_MARKER: Omit<
-  HabitatMarker,
+  BiomeMarker,
   'respawnTime' | 'id' | '_id'
 > = {
-  habitatId: '',
+  biomeId: '',
   level: null,
   coords: [],
 };

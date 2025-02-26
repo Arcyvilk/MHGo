@@ -47,7 +47,7 @@ const Load = () => {
     useUpdateUserHealthApi(userId);
 
   const { monster, isDummy } = useMonsterMarker();
-  const { habitat, level, baseHP = 0, name, img } = monster;
+  const { biome, level, baseHP = 0, name, img } = monster;
 
   const [revivalAttempts, setRevivalAttempts] = useState(1);
   const [dmgValues, setDmgValues] = useState<DmgValue[]>([]);
@@ -128,7 +128,7 @@ const Load = () => {
     <div
       className={s.fightView}
       style={{
-        backgroundImage: `url("${addCdnUrl(`/habitats/${habitat}.jpg`)}")`,
+        backgroundImage: `url("${addCdnUrl(`/biomes/${biome}.jpg`)}")`,
       }}>
       <Tutorial
         stepFrom="part3_start"

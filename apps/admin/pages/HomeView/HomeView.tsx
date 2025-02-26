@@ -22,7 +22,7 @@ const Load = () => {
           </li>
           <li>
             <a href="https://dreamstudio.ai/generate">
-              AI I used to generate monsters/habitats
+              AI I used to generate monsters/biomes
             </a>
           </li>
           <li>

@@ -2,7 +2,7 @@ export * from './admin';
 
 export * from './useAchievementsApi';
 export * from './useCompanionsApi';
-export * from './useHabitatsApi';
+export * from './useBiomesApi';
 export * from './useItemsApi';
 export * from './useLoadoutApi';
 export * from './useLoginApi';

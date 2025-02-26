@@ -4,7 +4,7 @@ export * from './Auth';
 export * from './ChangeReview';
 export * from './Companion';
 export * from './Drops';
-export * from './Habitats';
+export * from './Biomes';
 export * from './Items';
 export * from './ItemStats';
 export * from './Loadout';

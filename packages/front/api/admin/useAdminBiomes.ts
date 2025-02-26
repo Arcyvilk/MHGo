@@ -1,21 +1,21 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { Habitat } from '@mhgo/types';
+import { Biome } from '@mhgo/types';
 
 import { API_URL } from '../../env';
 import { fetcher, removeCdnUrl } from '../..';
 
-// Create habitat
-export const useAdminCreateHabitatApi = () => {
+// Create biome
+export const useAdminCreateBiomeApi = () => {
   const queryClient = useQueryClient();
 
-  const adminCreateHabitat = async (variables: Habitat): Promise<void> => {
-    const fixedHabitat = {
+  const adminCreateBiome = async (variables: Biome): Promise<void> => {
+    const fixedBiome = {
       ...variables,
       image: removeCdnUrl(variables.image),
     };
-    const response = await fetcher(`${API_URL}/admin/habitats/create`, {
+    const response = await fetcher(`${API_URL}/admin/biomes/create`, {
       method: 'POST',
-      body: JSON.stringify(fixedHabitat),
+      body: JSON.stringify(fixedBiome),
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
@@ -24,30 +24,30 @@ export const useAdminCreateHabitatApi = () => {
 
     if (response.status !== 201)
       throw new Error((await response.json()).error ?? 'Did not work!');
-    queryClient.invalidateQueries({ queryKey: ['habitats'] });
+    queryClient.invalidateQueries({ queryKey: ['biomes'] });
   };
 
   const { mutate, error, status, isPending, isSuccess, isError } = useMutation({
-    mutationKey: ['admin', 'habitat', 'create'],
-    mutationFn: adminCreateHabitat,
+    mutationKey: ['admin', 'biome', 'create'],
+    mutationFn: adminCreateBiome,
   });
 
   return { mutate, error, status, isPending, isSuccess, isError };
 };
 
-// Update habitat
-export const useAdminUpdateHabitatApi = () => {
+// Update biome
+export const useAdminUpdateBiomeApi = () => {
   const queryClient = useQueryClient();
 
-  const adminUpdateHabitat = async (variables: Habitat): Promise<void> => {
-    const { id, ...habitatProperties } = variables;
-    const fixedHabitatProperties = {
-      ...habitatProperties,
-      image: removeCdnUrl(habitatProperties.image),
+  const adminUpdateBiome = async (variables: Biome): Promise<void> => {
+    const { id, ...biomeProperties } = variables;
+    const fixedBiomeProperties = {
+      ...biomeProperties,
+      image: removeCdnUrl(biomeProperties.image),
     };
-    const response = await fetcher(`${API_URL}/admin/habitats/habitat/${id}`, {
+    const response = await fetcher(`${API_URL}/admin/biomes/biome/${id}`, {
       method: 'PUT',
-      body: JSON.stringify(fixedHabitatProperties),
+      body: JSON.stringify(fixedBiomeProperties),
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
@@ -56,12 +56,12 @@ export const useAdminUpdateHabitatApi = () => {
 
     if (response.status !== 200 && response.status !== 201)
       throw new Error((await response.json()).error ?? 'Did not work!');
-    queryClient.invalidateQueries({ queryKey: ['habitats'] });
+    queryClient.invalidateQueries({ queryKey: ['biomes'] });
   };
 
   const { mutate, error, status, isPending, isSuccess, isError } = useMutation({
-    mutationKey: ['admin', 'habitats', 'update'],
-    mutationFn: adminUpdateHabitat,
+    mutationKey: ['admin', 'biomes', 'update'],
+    mutationFn: adminUpdateBiome,
   });
 
   return { mutate, error, status, isPending, isSuccess, isError };

@@ -7,7 +7,7 @@ import {
   Item as TItem,
   Resource,
   AdminUser,
-  Habitat,
+  Biome,
   Quest,
 } from '@mhgo/types';
 
@@ -19,7 +19,7 @@ type ContextType = {
   setAdventure: (adventure: { id: string }) => void;
   // ORDERING
 
-  orderHabitat: Order;
+  orderBiome: Order;
   orderItem: Order;
   orderMaterial: Order;
   orderMonster: Order;
@@ -27,7 +27,7 @@ type ContextType = {
   orderResource: Order;
   orderUser: Order;
 
-  setOrderHabitat: (order: Order) => void;
+  setOrderBiome: (order: Order) => void;
   setOrderItem: (order: Order) => void;
   setOrderMaterial: (order: Order) => void;
   setOrderMonster: (order: Order) => void;
@@ -35,7 +35,7 @@ type ContextType = {
   setOrderResource: (order: Order) => void;
   setOrderUser: (order: Order) => void;
 
-  orderByHabitat: keyof Habitat;
+  orderByBiome: keyof Biome;
   orderByItem: keyof TItem;
   orderByMaterial: keyof Material;
   orderByMonster: keyof Monster | 'baseDPS';
@@ -43,7 +43,7 @@ type ContextType = {
   orderByResource: keyof Resource;
   orderByUser: keyof AdminUser;
 
-  setOrderByHabitat: (orderBy: keyof Habitat) => void;
+  setOrderByBiome: (orderBy: keyof Biome) => void;
   setOrderByItem: (orderBy: keyof TItem) => void;
   setOrderByMaterial: (orderBy: keyof Material) => void;
   setOrderByMonster: (orderBy: keyof Monster | 'baseDPS') => void;
@@ -73,8 +73,8 @@ export const AppContextProvider = ({
 
   // ORDERING
 
-  const [orderHabitat, setOrderHabitat] = useState<Order>('asc');
-  const [orderByHabitat, setOrderByHabitat] = useState<keyof Habitat>('name');
+  const [orderBiome, setOrderBiome] = useState<Order>('asc');
+  const [orderByBiome, setOrderByBiome] = useState<keyof Biome>('name');
   const [orderItem, setOrderItem] = useState<Order>('asc');
   const [orderByItem, setOrderByItem] = useState<keyof TItem>('rarity');
   const [orderMaterial, setOrderMaterial] = useState<Order>('asc');
@@ -101,7 +101,7 @@ export const AppContextProvider = ({
     setAdventure,
 
     // ORDERING
-    orderHabitat,
+    orderBiome,
     orderItem,
     orderMaterial,
     orderMonster,
@@ -109,7 +109,7 @@ export const AppContextProvider = ({
     orderResource,
     orderUser,
 
-    setOrderHabitat,
+    setOrderBiome,
     setOrderItem,
     setOrderMaterial,
     setOrderMonster,
@@ -117,7 +117,7 @@ export const AppContextProvider = ({
     setOrderResource,
     setOrderUser,
 
-    orderByHabitat,
+    orderByBiome,
     orderByItem,
     orderByMaterial,
     orderByMonster,
@@ -125,7 +125,7 @@ export const AppContextProvider = ({
     orderByResource,
     orderByUser,
 
-    setOrderByHabitat,
+    setOrderByBiome,
     setOrderByItem,
     setOrderByMaterial,
     setOrderByMonster,

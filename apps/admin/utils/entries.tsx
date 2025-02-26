@@ -1,7 +1,7 @@
 import { IconType } from '@mhgo/front';
 import { EntityIcon } from './entityIcon';
 import {
-  HabitatsView,
+  BiomesView,
   HomeView,
   ItemsView,
   MapView,
@@ -12,8 +12,8 @@ import {
   SettingsView,
   UsersView,
   //
-  HabitatCreateView,
-  HabitatEditView,
+  BiomeCreateView,
+  BiomeEditView,
   ItemCreateView,
   ItemEditView,
   MaterialCreateView,
@@ -72,12 +72,12 @@ export const entries: Entry[] = [
     component: <MaterialsView />,
   },
   {
-    id: 'habitats',
-    title: 'Habitats',
-    link: '/habitats',
+    id: 'biomes',
+    title: 'Biomes',
+    link: '/biomes',
     icon: EntityIcon.HABITATS,
     mainRoute: true,
-    component: <HabitatsView />,
+    component: <BiomesView />,
   },
   {
     id: 'monsters',
@@ -130,20 +130,20 @@ export const entries: Entry[] = [
 
   // SUBROUTES
   {
-    id: 'habitat_create',
-    title: 'Create habitat',
-    link: '/habitats/create',
+    id: 'biome_create',
+    title: 'Create biome',
+    link: '/biomes/create',
     icon: 'Tree',
     mainRoute: false,
-    component: <HabitatCreateView />,
+    component: <BiomeCreateView />,
   },
   {
-    id: 'habitat_edit',
-    title: 'Edit habitat',
-    link: '/habitats/edit',
+    id: 'biome_edit',
+    title: 'Edit biome',
+    link: '/biomes/edit',
     icon: 'Tree',
     mainRoute: false,
-    component: <HabitatEditView />,
+    component: <BiomeEditView />,
   },
   {
     id: 'item_create',

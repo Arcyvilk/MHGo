@@ -3,7 +3,7 @@ export type EntityType =
   | 'materials'
   | 'resources'
   | 'monsters'
-  | 'habitats'
+  | 'biomes'
   | 'quests'
   | 'questDaily';
 

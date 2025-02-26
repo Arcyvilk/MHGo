@@ -10,29 +10,29 @@ import {
   Tooltip,
   useMonstersApi,
 } from '@mhgo/front';
-import { Habitat, HabitatMonster } from '@mhgo/types';
+import { Biome, BiomeMonster } from '@mhgo/types';
 
-import s from './SingleHabitatView.module.scss';
+import s from './SingleBiomeView.module.scss';
 
-type HabitatSpawnsProps = {
-  habitat: Habitat;
-  setHabitat: (habitat: Habitat) => void;
+type BiomeSpawnsProps = {
+  biome: Biome;
+  setBiome: (biome: Biome) => void;
 };
-export const HabitatSpawns = (props: HabitatSpawnsProps) => (
+export const BiomeSpawns = (props: BiomeSpawnsProps) => (
   <QueryBoundary fallback={<Loader />}>
     <Load {...props} />
   </QueryBoundary>
 );
 
-const Load = ({ habitat, setHabitat }: HabitatSpawnsProps) => {
+const Load = ({ biome, setBiome }: BiomeSpawnsProps) => {
   const { data: monsters } = useMonstersApi();
-  const [spawns, setSpawns] = useState(habitat.monsters ?? []);
+  const [spawns, setSpawns] = useState(biome.monsters ?? []);
 
   useEffect(() => {
-    setHabitat({ ...habitat, monsters: spawns });
+    setBiome({ ...biome, monsters: spawns });
   }, [spawns]);
 
-  const getSelect = (spawn: HabitatMonster) => {
+  const getSelect = (spawn: BiomeMonster) => {
     return monsters.map(m => ({
       id: m.id,
       name: m.name,
@@ -44,13 +44,13 @@ const Load = ({ habitat, setHabitat }: HabitatSpawnsProps) => {
   };
 
   return (
-    <div className={s.habitatSpawns}>
-      <h3 className={s.habitatSpawns__title}>Spawns</h3>
+    <div className={s.biomeSpawns}>
+      <h3 className={s.biomeSpawns__title}>Spawns</h3>
       <div style={{ display: 'flex', gap: '8px' }}>
         <Button
           label="Add monster spawn"
           onClick={() => {
-            const newSpawn: HabitatMonster = {
+            const newSpawn: BiomeMonster = {
               // We fake this id because if we select first monster from list
               // it will duplicate if user creates more fields at once
               // Having a fake ID set as date ensures their uniqueness
@@ -63,7 +63,7 @@ const Load = ({ habitat, setHabitat }: HabitatSpawnsProps) => {
         />
       </div>
       {spawns.map((spawn, index) => (
-        <div className={s.habitatSpawns__monster} key={`spawn-${index}`}>
+        <div className={s.biomeSpawns__monster} key={`spawn-${index}`}>
           <div style={{ maxWidth: '250px', minWidth: '250px' }}>
             <Select
               defaultSelected={spawn.id}

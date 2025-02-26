@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { FormControlLabel, Switch } from '@mui/material';
-import { HabitatMarker, MapMarker, ResourceMarker } from '@mhgo/types';
+import { BiomeMarker, MapMarker, ResourceMarker } from '@mhgo/types';
 import {
   Button,
   Input,
@@ -10,7 +10,7 @@ import {
   modifiers,
   useAdminCreateMonsterMarkerApi,
   useAdminCreateResourceMarkerApi,
-  useHabitatsApi,
+  useBiomesApi,
   useMonstersApi,
   useResourcesApi,
 } from '@mhgo/front';
@@ -49,7 +49,7 @@ const Load = ({ selectedCoords, onCancel, setStatus }: MarkerProps) => {
     setMapMarker,
     resourceMarker,
     setResourceMarker,
-    habitats,
+    biomes,
     resources,
     onCreate,
   } = useUpdateMarker(selectedCoords, setStatus, onCancel);
@@ -156,13 +156,13 @@ const Load = ({ selectedCoords, onCancel, setStatus }: MarkerProps) => {
               })}>
               <Select
                 name="monster_marker"
-                label="Marker's habitat"
-                data={habitats.map(m => ({ id: m.id, name: m.name }))}
-                defaultSelected={monsterMarker?.habitatId ?? habitats[0].id}
-                setValue={habitatId =>
+                label="Marker's biome"
+                data={biomes.map(m => ({ id: m.id, name: m.name }))}
+                defaultSelected={monsterMarker?.biomeId ?? biomes[0].id}
+                setValue={biomeId =>
                   setMonsterMarker({
                     ...monsterMarker,
-                    habitatId,
+                    biomeId,
                   })
                 }
               />
@@ -239,7 +239,7 @@ const Load = ({ selectedCoords, onCancel, setStatus }: MarkerProps) => {
 };
 
 type MapMarkerFixed = Omit<MapMarker, 'id'>;
-type MonsterMarkerFixed = Omit<HabitatMarker, 'id'>;
+type MonsterMarkerFixed = Omit<BiomeMarker, 'id'>;
 type ResourceMarkerFixed = Omit<ResourceMarker, 'id'>;
 
 const useUpdateMarker = (
@@ -258,7 +258,7 @@ const useUpdateMarker = (
 
   const { mutateMarkerMonster, mutateResourceMarker } = useStatus(setStatus);
 
-  const { data: habitats } = useHabitatsApi();
+  const { data: biomes } = useBiomesApi();
   const { data: monsters } = useMonstersApi(true);
   const { data: resources } = useResourcesApi(true);
 
@@ -296,7 +296,7 @@ const useUpdateMarker = (
     setResourceMarker,
     mapMarker,
     setMapMarker,
-    habitats,
+    biomes,
     monsters,
     resources,
     onCreate,

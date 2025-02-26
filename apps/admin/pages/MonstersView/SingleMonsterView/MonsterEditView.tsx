@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { FormControlLabel, Switch } from '@mui/material';
 
 import { CDN_URL } from '@mhgo/front/env';
-import { BaseWealth, HabitatType, MonsterDrop } from '@mhgo/types';
+import { BaseWealth, BiomeType, MonsterDrop } from '@mhgo/types';
 import {
   Button,
   Input,
@@ -124,19 +124,19 @@ const Load = () => {
             />
             <Select
               data={(
-                ['swamp', 'forest', 'cave', 'desert'] as HabitatType[]
+                ['swamp', 'forest', 'cave', 'desert'] as BiomeType[]
               ).map(item => ({
                 id: item,
                 name: item,
               }))}
-              name="monster_habitat"
-              label="Monster's habitat"
-              defaultSelected={updatedMonster?.habitat}
-              setValue={habitat =>
+              name="monster_biome"
+              label="Monster's biome"
+              defaultSelected={updatedMonster?.biome}
+              setValue={biome =>
                 updatedMonster &&
                 setUpdatedMonster({
                   ...updatedMonster,
-                  habitat,
+                  biome,
                 })
               }
             />

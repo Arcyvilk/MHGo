@@ -1,4 +1,4 @@
-import { HabitatMarker, Setting } from '@mhgo/types';
+import { BiomeMarker, Setting } from '@mhgo/types';
 import { Db } from 'mongodb';
 import seedrandom from 'seedrandom';
 
@@ -59,10 +59,10 @@ const generateGlobalSeed = async (db: Db) => {
 };
 
 export const getMarkerSeed = async (
-  habitatMarker: HabitatMarker,
+  biomeMarker: BiomeMarker,
   globalSeed: number,
 ) => {
-  const markerId = String(habitatMarker._id);
+  const markerId = String(biomeMarker._id);
   const strToSeed = `${markerId}${globalSeed}}`;
 
   const seed = seedrandom(strToSeed).int32();

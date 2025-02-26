@@ -6,12 +6,12 @@ export type MapMarker = WithId<{
   respawnTime?: number; // in seconds?
 }>;
 
-export type HabitatMarker = MapMarker & {
-  habitatId: string;
+export type BiomeMarker = MapMarker & {
+  biomeId: string;
   level: number | null;
 };
 
-export type MonsterMarker = HabitatMarker & {
+export type MonsterMarker = BiomeMarker & {
   monsterId: string;
 };
 

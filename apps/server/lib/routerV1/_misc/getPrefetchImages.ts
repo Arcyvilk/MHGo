@@ -4,7 +4,7 @@ import { log } from '@mhgo/utils';
 import {
   Achievement,
   Companion,
-  Habitat,
+  Biome,
   Item,
   Material,
   Monster,
@@ -25,7 +25,7 @@ export const getPrefetchImages = async (
     // All collections including images
     const collectionAchievements = db.collection<Achievement>('achievements');
     const collectionCompanions = db.collection<Companion>('companions');
-    const collectionHabitats = db.collection<Habitat>('habitats');
+    const collectionBiomes = db.collection<Biome>('biomes');
     const collectionItems = db.collection<Item>('items');
     const collectionMaterials = db.collection<Material>('materials');
     const collectionMonsters = db.collection<Monster>('monsters');
@@ -34,7 +34,7 @@ export const getPrefetchImages = async (
 
     const cursorAchievements = collectionAchievements.find();
     const cursorCompanions = collectionCompanions.find();
-    const cursorHabitats = collectionHabitats.find();
+    const cursorBiomes = collectionBiomes.find();
     const cursorItems = collectionItems.find();
     const cursorMaterials = collectionMaterials.find();
     const cursorMonsters = collectionMonsters.find();
@@ -42,7 +42,7 @@ export const getPrefetchImages = async (
     const cursorTutorial = collectionTutorial.find({ img: { $ne: null } });
 
     for await (const el of cursorAchievements) images.push(el.img);
-    for await (const el of cursorHabitats) images.push(el.image);
+    for await (const el of cursorBiomes) images.push(el.image);
     for await (const el of cursorItems) images.push(el.img);
     for await (const el of cursorMaterials) images.push(el.img);
     for await (const el of cursorResources) images.push(el.img);
