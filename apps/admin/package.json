@@ -20,6 +20,7 @@
     "@mhgo/types": "*",
     "@mhgo/utils": "*",
     "@mui/material": "^5.15.2",
+    "@sentry/vite-plugin": "^3.2.1",
     "@tanstack/react-query": "^5.14.1",
     "@tippyjs/react": "^4.2.6",
     "leaflet": "^1.9.4",
