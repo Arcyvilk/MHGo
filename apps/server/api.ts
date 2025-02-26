@@ -55,9 +55,8 @@ app.set('trust proxy', 1);
 
 app.use('/api/v1', routerV1);
 
-app.get('/dupa', () => {
-  const dupa = true;
-  if (dupa) throw new Error('I am a client error!');
+app.get('/debug-sentry', function mainHandler(req, res) {
+  throw new Error('My first Sentry error!');
 });
 
 app.listen(process.env.PORT, async () => {
