@@ -15,13 +15,15 @@ import {
   UserItems,
   UserLoadout,
 } from '@mhgo/types';
+import { addChangeReview } from '../../helpers/addChangeReview';
 
 export const adminDeleteItem = async (
   req: Request,
   res: Response,
 ): Promise<void> => {
   try {
-    const { db } = mongoInstance.getDb(res?.locals?.adventure);
+    const adventure = res?.locals?.adventure;
+    const { db } = mongoInstance.getDb(adventure);
 
     const { itemId } = req.params;
 
@@ -31,15 +33,18 @@ export const adminDeleteItem = async (
     const collectionItems = db.collection<Item>('items');
     const item = await collectionItems.findOne({ id: itemId });
 
-    // Prepare object holding information about entities that will require review
-    // after deleting this item
-    const changesToReview: ChangeReview = {
-      date: new Date(),
+    // Information about the change that will be shared between all of the change reviews.
+    const basicChangeReviewData: Pick<
+      ChangeReview,
+      | 'changedEntityId'
+      | 'changedEntityType'
+      | 'changedEntityName'
+      | 'changeType'
+    > = {
+      changedEntityId: item.id,
+      changedEntityType: 'item',
+      changedEntityName: item.name,
       changeType: 'delete',
-      entityType: 'item',
-      entityName: item.name,
-      entityId: item.id,
-      affectedEntities: [],
     };
 
     // The records below can be altered without admin's review, because they are
@@ -113,7 +118,9 @@ export const adminDeleteItem = async (
     // - quests
     // - questsDaily
 
-    // Delete item from ingridient list of other items
+    /**
+     * Delete item from ingridient list of other items
+     */
     const itemCrafts = await collectionItemCraft
       .find({ 'craftList.craftType': 'item', 'craftList.id': itemId })
       .toArray();
@@ -127,14 +134,17 @@ export const adminDeleteItem = async (
         { $set: { craftList } },
       );
 
-      changesToReview.affectedEntities.push({
-        isApproved: false,
-        id: craftedItem.itemId,
-        type: 'itemCraft',
+      addChangeReview(adventure, {
+        affectedEntityId: craftedItem.itemId,
+        affectedEntityType: 'item',
+        relation: 'itemCraft',
+        ...basicChangeReviewData,
       });
     });
 
-    // Delete item from monster drops
+    /**
+     * Delete item from monster drops
+     */
     const collectionDropsMonster = db.collection<MonsterDrop>('drops');
     const dropsMonster = await collectionDropsMonster
       .find({ 'drops.drops.type': 'item', 'drops.drops.id': itemId })
@@ -155,14 +165,17 @@ export const adminDeleteItem = async (
         { $set: { drops } },
       );
 
-      changesToReview.affectedEntities.push({
-        isApproved: false,
-        id: monster.monsterId,
-        type: 'drops',
+      addChangeReview(adventure, {
+        affectedEntityId: monster.monsterId,
+        affectedEntityType: 'monster',
+        relation: 'drops',
+        ...basicChangeReviewData,
       });
     });
 
-    // Delete item from resource drops
+    /**
+     * Delete item from resource drops
+     */
     const collectionDropsResource =
       db.collection<ResourceDrop>('dropsResource');
     const dropsResource = await collectionDropsResource
@@ -176,14 +189,17 @@ export const adminDeleteItem = async (
         { $set: { drops } },
       );
 
-      changesToReview.affectedEntities.push({
-        isApproved: false,
-        id: resource.resourceId,
-        type: 'dropsResource',
+      addChangeReview(adventure, {
+        affectedEntityId: resource.resourceId,
+        affectedEntityType: 'resource',
+        relation: 'dropsResource',
+        ...basicChangeReviewData,
       });
     });
 
-    // Delete item from quest rewards and requirements
+    /**
+     * Delete item from quest rewards and requirements
+     */
     const collectionQuests = db.collection<Quest>('quests');
     const quests = await collectionQuests
       .find({
@@ -213,14 +229,17 @@ export const adminDeleteItem = async (
         { $set: { rewards, requirements } },
       );
 
-      changesToReview.affectedEntities.push({
-        isApproved: false,
-        id: quest.id,
-        type: 'quests',
+      addChangeReview(adventure, {
+        affectedEntityId: quest.id,
+        affectedEntityType: 'quest',
+        relation: 'quests',
+        ...basicChangeReviewData,
       });
     });
 
-    // Delete item from daily quest rewards (they have no requirements)
+    /**
+     * Delete item from daily quest rewards (they have no requirements)
+     */
     const collectionQuestsDaily = db.collection<Quest>('questsDaily');
     const questsDaily = await collectionQuestsDaily
       .find({ 'rewards.id': itemId, 'rewards.type': 'item' })
@@ -230,10 +249,11 @@ export const adminDeleteItem = async (
       const rewards = quest.rewards.filter(r => r.id !== itemId);
       collectionQuestsDaily.updateOne({ id: quest.id }, { $set: { rewards } });
 
-      changesToReview.affectedEntities.push({
-        isApproved: false,
-        id: quest.id,
-        type: 'questsDaily',
+      addChangeReview(adventure, {
+        affectedEntityId: quest.id,
+        affectedEntityType: 'questDaily',
+        relation: 'questsDaily',
+        ...basicChangeReviewData,
       });
     });
 
@@ -245,10 +265,6 @@ export const adminDeleteItem = async (
 
     if (!responseItems.acknowledged)
       throw new Error('Could not delete this item.');
-
-    // ...and create a changeReview entry for all the changes
-    const collectionChangeReview = db.collection<ChangeReview>('changeReview');
-    await collectionChangeReview.insertOne(changesToReview);
 
     // Fin!
     res.sendStatus(200);
