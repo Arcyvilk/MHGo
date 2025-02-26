@@ -30,6 +30,11 @@ export const determineMonsterSpawn = async (
   // Get marker's habitat
   const habitat = habitats.find(h => h.id === habitatMarker.habitatId);
 
+  // If there is no monsters in the habitat, obviously nothing spawns
+  if (habitat.monsters.length === 0) {
+    return { monsterId: null, monsterLevel: null, shouldSpawn: false };
+  }
+
   // Get marker's current seed
   const seed = await getMarkerSeed(habitatMarker, globalSeed);
 
@@ -40,7 +45,7 @@ export const determineMonsterSpawn = async (
   }));
   const monster = randomizeWithinBoundsSeeded(chances, seed);
 
-  const monsterId = monster!.id;
+  const monsterId = monster?.id;
 
   // Determine if monster should spawn of not
   const shouldSpawn = !disabledMonsterIds.includes(monsterId);
