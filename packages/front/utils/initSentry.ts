@@ -1,8 +1,8 @@
 import * as Sentry from '@sentry/react';
 
-export const initializeSentry = () => {
+export const initializeSentry = (dsn: string) => {
   Sentry.init({
-    dsn: 'https://b0a5a3d35f22680c565b117bfa8e2d35@o4508887880826880.ingest.de.sentry.io/4508887890722896',
+    dsn,
     integrations: [
       Sentry.browserTracingIntegration(),
       Sentry.replayIntegration(),

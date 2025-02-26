@@ -2,7 +2,7 @@ import * as Sentry from '@sentry/node';
 import { nodeProfilingIntegration } from '@sentry/profiling-node';
 
 Sentry.init({
-  dsn: 'https://a96c77d6e8faf8d2d8f4281f0f76b1ef@o4508887880826880.ingest.de.sentry.io/4508887908745296',
+  dsn: 'https://857647c693348409d88ca6537d7c1df4@o4508887880826880.ingest.de.sentry.io/4508888008425552',
   integrations: [nodeProfilingIntegration()],
   // Tracing
   tracesSampleRate: 1.0, //  Capture 100% of the transactions

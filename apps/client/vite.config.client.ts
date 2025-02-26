@@ -65,7 +65,7 @@ export default defineConfig({
     }),
     sentryVitePlugin({
       org: 'mhgo',
-      project: 'mhgo-client',
+      project: 'client',
     }),
   ],
 

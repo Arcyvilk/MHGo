@@ -26,7 +26,9 @@ const queryClient = new QueryClient({
   },
 });
 
-initializeSentry();
+initializeSentry(
+  'https://d2fff382c769403a6f9338a44a634137@o4508887880826880.ingest.de.sentry.io/4508888004493392',
+);
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   // Strict mode causes stuff to render twice and some endpoints get called twice

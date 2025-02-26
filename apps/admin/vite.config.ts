@@ -14,7 +14,7 @@ export default defineConfig({
     }),
     sentryVitePlugin({
       org: 'mhgo',
-      project: 'mhgo-admin',
+      project: 'admin',
     }),
   ],
 

@@ -24,7 +24,7 @@ export default defineConfig({
     }),
     sentryVitePlugin({
       org: 'mhgo',
-      project: 'mhgo-server',
+      project: 'server',
     }),
   ],
 });
