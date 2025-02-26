@@ -15,6 +15,7 @@ export * from './News';
 export * from './Quest';
 export * from './Resource';
 export * from './Settings';
+export * from './StarterPack';
 export * from './Tutorial';
 export * from './User';
 export * from './Wealth';
