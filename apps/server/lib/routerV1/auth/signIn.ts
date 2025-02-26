@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
-import { Request, Response } from 'express';
+import { Request, response, Response } from 'express';
 import { log } from '@mhgo/utils';
 
 import { mongoInstance } from '../../../api';
@@ -10,6 +10,7 @@ import {
   UserAuth,
   UserLoadout,
   UserWealth,
+  UserBan,
 } from '@mhgo/types';
 import { Db } from 'mongodb';
 
@@ -52,6 +53,12 @@ export const signIn = async (req: Request, res: Response): Promise<void> => {
       throw new Error('Could not register the new user!');
     }
 
+    // Create basic user data
+    const responseNewUser = await createNewUser(dbAuth, userId, userName);
+    if (!responseNewUser.acknowledged) {
+      throw new Error('Could not register the new user!');
+    }
+
     /**
      * User needs to be created separately for every adventure.
      * In the future it would be nice to allow user which adventures to join
@@ -62,12 +69,6 @@ export const signIn = async (req: Request, res: Response): Promise<void> => {
 
     adventures.forEach(async adventure => {
       const { db } = mongoInstance.getDb(adventure);
-
-      // Create basic user data
-      const responseNewUser = await createNewUser(db, userId, userName);
-      if (!responseNewUser.acknowledged) {
-        throw new Error('Could not register the new user!');
-      }
 
       // Give user the starter pack
       const responseStarterPack = await giveUserStarterPack(db, userId);
@@ -93,7 +94,7 @@ export const signIn = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-const createNewUser = async (db: Db, userId: string, userName: string) => {
+const createNewUser = async (dbAuth: Db, userId: string, userName: string) => {
   const newUser: User = {
     name: userName,
     avatar: '/misc/avatar.png',
@@ -102,10 +103,20 @@ const createNewUser = async (db: Db, userId: string, userName: string) => {
     wounds: 0,
     createdAt: new Date(),
   };
-  const collection = db.collection<Omit<User, 'progress'>>('users');
-  const response = await collection.insertOne(newUser);
+  const collectionUsers = dbAuth.collection<Omit<User, 'progress'>>('users');
+  const responseUsers = await collectionUsers.insertOne(newUser);
 
-  return response;
+  const newUserBanInfo: UserBan = {
+    userId,
+    banEndDate: new Date(),
+    banReason: 'Because yes',
+    isBanned: false,
+  };
+
+  const collectionBans = dbAuth.collection<UserBan>('userBans');
+  await collectionBans.insertOne(newUserBanInfo);
+
+  return responseUsers;
 };
 
 const giveUserStarterPack = async (db: Db, userId: string) => {
