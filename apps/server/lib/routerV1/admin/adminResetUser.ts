@@ -3,6 +3,7 @@ import { log } from '@mhgo/utils';
 import {
   User,
   UserAchievement,
+  UserGameData,
   UserItems,
   UserLoadout,
   UserMaterials,
@@ -21,7 +22,6 @@ export const adminResetUser = async (
 ): Promise<void> => {
   try {
     const { db } = mongoInstance.getDb(res?.locals?.adventure);
-    const { dbAuth } = mongoInstance.getDbAuth();
 
     const { userId } = req.params;
     const toReset = req.body as UserResetType;
@@ -30,7 +30,7 @@ export const adminResetUser = async (
 
     // Reset user's exp, wounds
     if (toReset.basic) {
-      const collectionUsers = dbAuth.collection<User>('users');
+      const collectionUsers = db.collection<UserGameData>('users');
       await collectionUsers.updateOne(
         { id: userId },
         { $set: { exp: 0, wounds: 0 } },

@@ -2,7 +2,7 @@ import {
   Currency,
   Quest,
   Setting,
-  User,
+  UserGameData,
   UserItems,
   UserMaterials,
   UserWealth,
@@ -156,7 +156,7 @@ export const giveUserMoney = async (userId: string, db: Db, quest: Quest) => {
 
 export const giveUserExp = async (userId: string, db: Db, quest: Quest) => {
   // Find user
-  const collectionUsers = db.collection<User>('users');
+  const collectionUsers = db.collection<UserGameData>('users');
   const user = await collectionUsers.findOne({ id: userId });
 
   // Calculate new experience and new level

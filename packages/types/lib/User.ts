@@ -2,9 +2,13 @@ export type User = {
   name: string;
   id: string;
   avatar: string;
+  createdAt: Date;
+};
+
+export type UserGameData = {
+  id: string;
   exp: number;
   wounds: number; // How much HP user lacks
-  createdAt: Date;
 };
 
 export type UserAchievement = {

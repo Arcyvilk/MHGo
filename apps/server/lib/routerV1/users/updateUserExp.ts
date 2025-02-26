@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { log } from '@mhgo/utils';
-import { Setting, User } from '@mhgo/types';
+import { Setting, UserGameData } from '@mhgo/types';
 
 import { mongoInstance } from '../../../api';
 
@@ -10,13 +10,12 @@ export const updateUserExp = async (
 ): Promise<void> => {
   try {
     const { db } = mongoInstance.getDb(res?.locals?.adventure);
-    const { dbAuth } = mongoInstance.getDbAuth();
 
     const { userId } = req.params;
     const { expChange } = req.body;
 
     // Get user
-    const collectionUsers = dbAuth.collection<User>('users');
+    const collectionUsers = db.collection<UserGameData>('users');
     const user = await collectionUsers.findOne({
       id: userId,
     });

@@ -3,7 +3,14 @@ import {
   useQueryClient,
   useMutation,
 } from '@tanstack/react-query';
-import { AdminUser, User, UserAuth, UserBan, UserResetType } from '@mhgo/types';
+import {
+  AdminUser,
+  User,
+  UserAuth,
+  UserBan,
+  UserGameData,
+  UserResetType,
+} from '@mhgo/types';
 
 import { API_URL } from '../../env';
 import { fetcher } from '../..';
@@ -34,11 +41,13 @@ export const useAdminUpdateUserApi = () => {
   const adminUpdateResource = async ({
     userId,
     user,
+    userGameData,
     userAuth,
     userBan,
   }: {
     userId: string;
     user?: Partial<User>;
+    userGameData?: Partial<UserGameData>;
     userBan?: Partial<UserBan>;
     userAuth?: Partial<
       Pick<UserAuth, 'isAdmin' | 'isAwaitingModApproval' | 'isModApproved'>
@@ -48,6 +57,7 @@ export const useAdminUpdateUserApi = () => {
       method: 'PUT',
       body: JSON.stringify({
         user,
+        userGameData,
         userBan,
         userAuth,
       }),

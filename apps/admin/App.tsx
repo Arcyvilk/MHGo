@@ -5,21 +5,18 @@ import { AdventureSelect, Loader, QueryBoundary, modifiers } from '@mhgo/front';
 
 import { Sidebar } from './containers';
 import { useMe } from './utils/useMe';
+import { useAppContext } from './utils/context';
 
 import s from './App.module.scss';
-import { useAppContext } from './utils/context';
-import { useQueryClient } from '@tanstack/react-query';
 
 export const App = () => {
   const { isLoggedIn, isAdmin } = useMe();
   const { adventure, setAdventure } = useAppContext();
-  const queryClient = useQueryClient();
 
   const isFullScreen = isLoggedIn === false || isAdmin === false;
 
   const onAdventureSwitch = (id: string) => {
     setAdventure({ id });
-    queryClient.invalidateQueries();
   };
 
   return (

@@ -11,6 +11,7 @@ import {
   User,
   UserAchievement,
   UserAmount,
+  UserGameData,
   UserLevelUpdate,
 } from '@mhgo/types';
 
@@ -18,15 +19,15 @@ import { API_URL } from '../env';
 import { fetcher } from '..';
 
 export const useUserApi = (userId: string | null | undefined) => {
-  const getUser = async (): Promise<User> => {
+  const getUser = async (): Promise<User & UserGameData> => {
     const res = await fetcher(`${API_URL}/users/user/${userId}`);
     return res.json();
   };
 
   const { data, isLoading, isFetched, isError } = useSuspenseQuery<
-    User,
+    User & UserGameData,
     unknown,
-    User,
+    User & UserGameData,
     string[]
   >({
     queryKey: ['user', userId!],

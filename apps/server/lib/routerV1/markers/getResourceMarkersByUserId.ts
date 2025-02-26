@@ -4,7 +4,7 @@ import {
   Resource,
   ResourceMarker,
   Setting,
-  User,
+  UserGameData,
   UserRespawn,
 } from '@mhgo/types';
 import { log } from '@mhgo/utils';
@@ -22,10 +22,9 @@ export const getResourceMarkersByUserId = async (
     const { lat, lng } = req.query;
 
     const { db } = mongoInstance.getDb(res?.locals?.adventure);
-    const { dbAuth } = mongoInstance.getDbAuth();
 
     // Get the maximum level of resource that can spawn on random level spawns
-    const collectionUsers = dbAuth.collection<User>('users');
+    const collectionUsers = db.collection<UserGameData>('users');
     const collectionSettings = db.collection<Setting<number>>('settings');
     const user = await collectionUsers.findOne({ id: userId });
     const expPerLevel =

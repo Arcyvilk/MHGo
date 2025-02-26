@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { log } from '@mhgo/utils';
-import { Setting, MonsterMarker, User } from '@mhgo/types';
+import { Setting, MonsterMarker, UserGameData } from '@mhgo/types';
 
 import { mongoInstance } from '../../../api';
 import { getUserLevel } from '../../helpers/getUserLevel';
@@ -14,9 +14,8 @@ export const getMonsterMarkerDrops = async (
   try {
     const { userId } = req.params;
     const { db } = mongoInstance.getDb(res?.locals?.adventure);
-    const { dbAuth } = mongoInstance.getDbAuth();
 
-    const collectionUsers = dbAuth.collection<User>('users');
+    const collectionUsers = db.collection<UserGameData>('users');
     const collectionSettings = db.collection<Setting<number>>('settings');
     const collectionMonsterMarkers =
       db.collection<MonsterMarker>('markersMonster');

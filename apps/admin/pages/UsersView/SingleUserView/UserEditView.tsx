@@ -153,6 +153,7 @@ const useUpdateUser = (setStatus: (status: Status) => void) => {
   const { data: user, isFetched: isUsersFetched } = useUserApi(id);
 
   const [updatedUser, setUpdatedUser] = useState(user);
+
   const [toReset, setToReset] = useState<UserResetType>({
     achievements: false,
     basic: false,
@@ -174,7 +175,11 @@ const useUpdateUser = (setStatus: (status: Status) => void) => {
 
   const onSave = () => {
     if (updatedUser)
-      mutateUpdateUser({ userId: updatedUser.id, user: updatedUser });
+      mutateUpdateUser({
+        userId: updatedUser.id,
+        user: { avatar: updatedUser.avatar, name: updatedUser.name },
+        userGameData: { exp: updatedUser.exp, wounds: updatedUser.wounds },
+      });
   };
 
   const onReset = () => {

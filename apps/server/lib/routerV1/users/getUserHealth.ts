@@ -1,6 +1,12 @@
 import { Request, Response } from 'express';
 import { log } from '@mhgo/utils';
-import { BaseStats, ItemStat, Setting, User, UserLoadout } from '@mhgo/types';
+import {
+  BaseStats,
+  ItemStat,
+  Setting,
+  UserGameData,
+  UserLoadout,
+} from '@mhgo/types';
 
 import { mongoInstance } from '../../../api';
 import { getSumOfStat } from '../../helpers/getSumOfStats';
@@ -10,8 +16,8 @@ export const getUserHealth = async (
   res: Response,
 ): Promise<void> => {
   try {
-    const { db } = mongoInstance.getDb(res?.locals?.adventure);
-    const { dbAuth } = mongoInstance.getDbAuth();
+    const adventure = res?.locals?.adventure;
+    const { db } = mongoInstance.getDb(adventure);
 
     const { userId } = req.params;
 
@@ -38,7 +44,7 @@ export const getUserHealth = async (
     const health = await getSumOfStat(db, baseStats, itemStats, 'health');
 
     // Get user's current wounds
-    const collectionUsers = dbAuth.collection<User>('users');
+    const collectionUsers = db.collection<UserGameData>('users');
     const user = await collectionUsers.findOne({ id: userId });
     const wounds = user.wounds;
 

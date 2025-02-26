@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { log } from '@mhgo/utils';
-import { User, UserAuth, UserBan } from '@mhgo/types';
+import { User, UserAuth, UserBan, UserGameData } from '@mhgo/types';
 
 import { mongoInstance } from '../../../api';
 import { WithId } from 'mongodb';
@@ -10,11 +10,14 @@ export const adminUpdateUser = async (
   res: Response,
 ): Promise<void> => {
   try {
+    const adventure = res?.locals?.adventure;
+    const { db } = mongoInstance.getDb(adventure);
     const { dbAuth } = mongoInstance.getDbAuth();
 
     const { userId } = req.params;
-    const { user, userBan, userAuth } = req.body as {
+    const { user, userGameData, userBan, userAuth } = req.body as {
       user?: Partial<WithId<User>>;
+      userGameData?: Partial<WithId<UserGameData>>;
       userBan?: Partial<WithId<UserBan>>;
       userAuth?: Partial<
         Pick<
@@ -36,6 +39,20 @@ export const adminUpdateUser = async (
 
       if (!response.acknowledged)
         throw new Error('Could not update this user.');
+    }
+
+    // Update user's adventure specific basic data
+    if (userGameData) {
+      const { _id, id, ...updatedFields } = userGameData;
+      const collectionUserGameData = db.collection<UserGameData>('users');
+      const response = await collectionUserGameData.updateOne(
+        { id: userId },
+        { $set: updatedFields },
+        { upsert: true },
+      );
+
+      if (!response.acknowledged)
+        throw new Error("Could not update this user's game data.");
     }
 
     // Update user auth info

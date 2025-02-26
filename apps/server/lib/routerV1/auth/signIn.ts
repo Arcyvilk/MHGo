@@ -98,9 +98,7 @@ const createNewUser = async (dbAuth: Db, userId: string, userName: string) => {
   const newUser: User = {
     name: userName,
     avatar: '/misc/avatar.png',
-    exp: 0,
     id: userId,
-    wounds: 0,
     createdAt: new Date(),
   };
   const collectionUsers = dbAuth.collection<Omit<User, 'progress'>>('users');
