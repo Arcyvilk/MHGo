@@ -20,9 +20,24 @@
 .changeTile {
   display: flex;
   flex-direction: column;
-  gap: $size-8;
   background-color: $admin-color-tertiary-bg;
+  gap: $size-8;
   padding: $size-12;
+  justify-content: space-between;
+  flex: 1 1 30%;
+  
+  &__title {
+    font-weight: 600;
+    font-size: $size-16;
+    text-transform: uppercase;
+    color: $color-white;
+  }
+
+  &__section {
+    display: flex;
+    flex-direction: column;
+    gap: $size-8;
+  }
 
   &__header {
     display: flex;
@@ -37,7 +52,7 @@
   }
 
   &__actions {
-    align-self: flex-end;
+    align-self: center;
     justify-self: flex-end;
   }
 }
@@ -48,6 +63,14 @@
   background-color: $admin-color-secondary-bg;
   padding: $size-8;
   gap: $size-4;
+  align-items: flex-start;
+
+  &__description {
+    display: flex;
+    flex-direction: row;
+    gap: $size-4;
+    align-items: center;
+  }
 }
 
 // Decorative styles
@@ -58,4 +81,5 @@
 
 .italic {
   font-style: italic;
+  font-size: $size-10;
 }

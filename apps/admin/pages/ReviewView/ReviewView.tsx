@@ -1,7 +1,8 @@
+import { useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
-
 import {
+  Badge,
   Button,
   Loader,
   QueryBoundary,
@@ -10,9 +11,9 @@ import {
 } from '@mhgo/front';
 import { ChangeReview } from '@mhgo/types';
 import { HeaderEdit } from '../../containers';
+import { EntityIcon } from '../../utils/entityIcon';
 
 import s from './ReviewView.module.scss';
-import { useNavigate } from 'react-router-dom';
 
 dayjs.extend(relativeTime);
 
@@ -77,39 +78,48 @@ const ChangeTile = ({ changes, onApproveChanges }: ChangeTileProps) => {
     navigate(link);
   };
 
+  const entityIcon =
+    basicInfo.affectedEntityType.toUpperCase() as keyof typeof EntityIcon;
+
   return (
     <div className={s.changeTile}>
-      <div className={s.changeTile__header}>
-        <span className={s.sectionTitle}>{basicInfo.affectedEntityType}:</span>
-        <span className={s.italic}>{basicInfo.affectedEntityId}</span>
-      </div>
-
-      <div>
-        <span className={s.sectionTitle}>Last change: </span>
+      <div className={s.changeTile__section}>
         <span className={s.italic}>
           {dayjs(basicInfo.date).format('DD/MM/YYYY, HH:mm:ss')}
         </span>
+
+        <div className={s.changeTile__header}>
+          <Badge
+            icon={EntityIcon[entityIcon]}
+            label={basicInfo.affectedEntityType.toUpperCase()}
+          />
+          <span className={s.changeTile__title}>
+            {basicInfo.affectedEntityId}
+          </span>
+        </div>
+
+        <div className={s.sectionTitle}>Changes:</div>
+
+        <div className={s.changeTile__changes}>
+          {changes.map(change => (
+            <SingleChange change={change} />
+          ))}
+        </div>
       </div>
 
-      <div className={s.sectionTitle}>Changes:</div>
-
-      <div className={s.changeTile__changes}>
-        {changes.map(change => (
-          <SingleChange change={change} />
-        ))}
-      </div>
-
-      <div className={s.changeTile__actions}>
-        <Button
-          onClick={onGoToAffectedEntity}
-          label="Review the affected entity"
-          variant={Button.Variant.ACTION}
-        />
-        <Button
-          onClick={() => onApproveChanges(basicInfo.affectedEntityId)}
-          label="Approve all changes"
-          variant={Button.Variant.DANGER}
-        />
+      <div className={s.changeTile__section}>
+        <div className={s.changeTile__actions}>
+          <Button
+            onClick={onGoToAffectedEntity}
+            label="Review the affected entity"
+            variant={Button.Variant.ACTION}
+          />
+          <Button
+            onClick={() => onApproveChanges(basicInfo.affectedEntityId)}
+            label="Approve all changes"
+            variant={Button.Variant.DANGER}
+          />
+        </div>
       </div>
     </div>
   );
@@ -117,15 +127,33 @@ const ChangeTile = ({ changes, onApproveChanges }: ChangeTileProps) => {
 
 type SingleChangeProps = { change: ChangeReview };
 const SingleChange = ({ change }: SingleChangeProps) => {
+  const entityIcon =
+    change.changedEntityType.toUpperCase() as keyof typeof EntityIcon;
+
   return (
     <div className={s.singleChange}>
-      <div>{dayjs(change.date).format('DD/MM/YYYY, HH:mm:ss')}</div>
-      <div>
-        {change.changedEntityType.toUpperCase()} "
-        {change.changedEntityName.toUpperCase()}" was{' '}
-        {change.changeType.toUpperCase()}
+      <div className={s.singleChange__description}>
+        <Badge
+          label={change.changedEntityName.toUpperCase()}
+          variant={Badge.Variant.WARNING}
+        />
+        <Badge
+          label={change.changeType.toUpperCase()}
+          variant={Badge.Variant.DANGER}
+        />
+        <Badge
+          icon={EntityIcon[entityIcon]}
+          label={change.changedEntityType.toUpperCase()}
+        />
       </div>
-      <div>Used as: {change.relation.toUpperCase()}</div>
+
+      <div className={s.sectionTitle}>
+        Used as: {change.relation.toUpperCase()}
+      </div>
+
+      <div className={s.italic}>
+        {dayjs(change.date).format('DD/MM/YYYY, HH:mm:ss')}
+      </div>
     </div>
   );
 };
