@@ -29,6 +29,12 @@
     align-items: center;
     gap: $size-8;
   }
+
+  &__actions {
+    display: flex;
+    flex-direction: column;
+    gap: $size-4;
+  }
 }
 
 .singleChange {

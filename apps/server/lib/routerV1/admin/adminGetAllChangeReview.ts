@@ -14,8 +14,6 @@ export const adminGetAllChangeReview = async (
     const collectionChangeReview = db.collection<ChangeReview>('changeReview');
     const changeReview = await collectionChangeReview
       .aggregate([
-        // Ignore changelogs that are already approved
-        { $match: { isApproved: false } },
         // Sort by newest
         { $sort: { date: -1 } },
         // Group by affectedEntityId

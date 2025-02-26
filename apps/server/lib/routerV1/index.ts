@@ -69,6 +69,7 @@ import {
   adminGetAllQuestsStory,
   // MISC
   adminGetAllChangeReview,
+  adminDeleteChangeReview,
 } from './admin';
 
 routerV1.get(
@@ -285,6 +286,12 @@ routerV1.get(
   verifyAdminToken,
   validateAdventure,
   adminGetAllChangeReview,
+);
+routerV1.delete(
+  '/admin/misc/review/:affectedEntityId',
+  verifyAdminToken,
+  validateAdventure,
+  adminDeleteChangeReview,
 );
 
 /*****************************
