@@ -7,21 +7,44 @@
   }
   &__content {
     @include page-content-admin;
+    display: flex;
+    gap: $size-16;
+    padding: $size-8;
+    flex-wrap: wrap;
   }
   &__title {
     @include page-title;
   }
+}
 
-  &__itemDetail {
+.changeTile {
+  display: flex;
+  flex-direction: column;
+  gap: $size-8;
+  background-color: $admin-color-tertiary-bg;
+  padding: $size-12;
+
+  &__header {
     display: flex;
     align-items: center;
     gap: $size-8;
-    font-weight: 600;
-    min-width: 200px;
   }
+}
 
-  &__itemIcon {
-    max-width: $size-24;
-    max-height: $size-24;
-  }
+.singleChange {
+  display: flex;
+  flex-direction: column;
+  background-color: $admin-color-secondary-bg;
+  padding: $size-8;
+  gap: $size-4;
+}
+
+// Decorative styles
+.sectionTitle {
+  text-transform: capitalize;
+  font-weight: 600;
+}
+
+.italic {
+  font-style: italic;
 }

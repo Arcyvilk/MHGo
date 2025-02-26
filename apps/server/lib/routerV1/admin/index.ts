@@ -51,4 +51,4 @@ export {
 
 // OTHER
 export { adminUpdateSettings } from './adminUpdateSettings';
-export { adminGetAllToReview } from './adminGetAllToReview';
+export { adminGetAllChangeReview } from './adminGetAllChangeReview';

@@ -68,7 +68,7 @@ import {
   adminGetAllQuestsDaily,
   adminGetAllQuestsStory,
   // MISC
-  adminGetAllToReview,
+  adminGetAllChangeReview,
 } from './admin';
 
 routerV1.get(
@@ -284,7 +284,7 @@ routerV1.get(
   '/admin/misc/review',
   verifyAdminToken,
   validateAdventure,
-  adminGetAllToReview,
+  adminGetAllChangeReview,
 );
 
 /*****************************

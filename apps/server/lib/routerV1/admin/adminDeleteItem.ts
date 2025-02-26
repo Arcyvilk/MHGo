@@ -42,7 +42,7 @@ export const adminDeleteItem = async (
       | 'changeType'
     > = {
       changedEntityId: item.id,
-      changedEntityType: 'item',
+      changedEntityType: 'items',
       changedEntityName: item.name,
       changeType: 'delete',
     };
@@ -136,8 +136,8 @@ export const adminDeleteItem = async (
 
       addChangeReview(adventure, {
         affectedEntityId: craftedItem.itemId,
-        affectedEntityType: 'item',
-        relation: 'itemCraft',
+        affectedEntityType: 'items',
+        relation: 'crafting ingridient',
         ...basicChangeReviewData,
       });
     });
@@ -167,8 +167,8 @@ export const adminDeleteItem = async (
 
       addChangeReview(adventure, {
         affectedEntityId: monster.monsterId,
-        affectedEntityType: 'monster',
-        relation: 'drops',
+        affectedEntityType: 'monsters',
+        relation: 'drop from monster',
         ...basicChangeReviewData,
       });
     });
@@ -191,8 +191,8 @@ export const adminDeleteItem = async (
 
       addChangeReview(adventure, {
         affectedEntityId: resource.resourceId,
-        affectedEntityType: 'resource',
-        relation: 'dropsResource',
+        affectedEntityType: 'resources',
+        relation: 'drop from resource',
         ...basicChangeReviewData,
       });
     });
@@ -231,8 +231,8 @@ export const adminDeleteItem = async (
 
       addChangeReview(adventure, {
         affectedEntityId: quest.id,
-        affectedEntityType: 'quest',
-        relation: 'quests',
+        affectedEntityType: 'quests',
+        relation: 'quest reward or requirement',
         ...basicChangeReviewData,
       });
     });
@@ -252,7 +252,7 @@ export const adminDeleteItem = async (
       addChangeReview(adventure, {
         affectedEntityId: quest.id,
         affectedEntityType: 'questDaily',
-        relation: 'questsDaily',
+        relation: 'quest reward',
         ...basicChangeReviewData,
       });
     });
