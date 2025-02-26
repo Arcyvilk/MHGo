@@ -1,7 +1,7 @@
 import './instrument.js';
 import * as dotenv from 'dotenv';
 
-import Sentry from '@sentry/node';
+import * as Sentry from '@sentry/node';
 import express from 'express';
 import cors from 'cors';
 
