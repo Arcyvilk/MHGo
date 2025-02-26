@@ -2,6 +2,7 @@ import ReactDOM from 'react-dom/client';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import { registerSW } from 'virtual:pwa-register';
 
+import { initializeSentry } from '@mhgo/front';
 import { AppContextProvider } from './utils/context';
 import { Router } from './Router';
 
@@ -24,6 +25,8 @@ const queryClient = new QueryClient({
     },
   },
 });
+
+initializeSentry();
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   // Strict mode causes stuff to render twice and some endpoints get called twice

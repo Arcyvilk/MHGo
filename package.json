@@ -18,6 +18,7 @@
     "packages/*"
   ],
   "dependencies": {
+    "@sentry/react": "^9.2.0",
     "dayjs": "^1.11.10",
     "react-router-dom": "^6.21.3",
     "uuid": "^9.0.1"
