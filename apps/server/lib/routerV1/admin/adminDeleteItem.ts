@@ -3,7 +3,6 @@ import { log } from '@mhgo/utils';
 
 import { mongoInstance } from '../../../api';
 import {
-  ChangeReview,
   Item,
   ItemAction,
   ItemCraftList,
@@ -15,7 +14,7 @@ import {
   UserItems,
   UserLoadout,
 } from '@mhgo/types';
-import { addChangeReview } from '../../helpers/addChangeReview';
+import { changeReviewHelper } from '../../helpers/changeReviewHelper';
 
 export const adminDeleteItem = async (
   req: Request,
@@ -34,18 +33,12 @@ export const adminDeleteItem = async (
     const item = await collectionItems.findOne({ id: itemId });
 
     // Information about the change that will be shared between all of the change reviews.
-    const basicChangeReviewData: Pick<
-      ChangeReview,
-      | 'changedEntityId'
-      | 'changedEntityType'
-      | 'changedEntityName'
-      | 'changeType'
-    > = {
+    const { addChangeReview } = changeReviewHelper({
       changedEntityId: item.id,
       changedEntityType: 'items',
       changedEntityName: item.name,
       changeType: 'delete',
-    };
+    });
 
     // The records below can be altered without admin's review, because they are
     // tied only to the deleted admin:
@@ -138,7 +131,6 @@ export const adminDeleteItem = async (
         affectedEntityId: craftedItem.itemId,
         affectedEntityType: 'items',
         relation: 'crafting ingridient',
-        ...basicChangeReviewData,
       });
     });
 
@@ -169,7 +161,6 @@ export const adminDeleteItem = async (
         affectedEntityId: monster.monsterId,
         affectedEntityType: 'monsters',
         relation: 'drop from monster',
-        ...basicChangeReviewData,
       });
     });
 
@@ -193,7 +184,6 @@ export const adminDeleteItem = async (
         affectedEntityId: resource.resourceId,
         affectedEntityType: 'resources',
         relation: 'drop from resource',
-        ...basicChangeReviewData,
       });
     });
 
@@ -233,7 +223,6 @@ export const adminDeleteItem = async (
         affectedEntityId: quest.id,
         affectedEntityType: 'quests',
         relation: 'quest reward or requirement',
-        ...basicChangeReviewData,
       });
     });
 
@@ -253,7 +242,6 @@ export const adminDeleteItem = async (
         affectedEntityId: quest.id,
         affectedEntityType: 'questDaily',
         relation: 'quest reward',
-        ...basicChangeReviewData,
       });
     });
 
