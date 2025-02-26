@@ -1,4 +1,5 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
+import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 
 import {
@@ -7,15 +8,16 @@ import {
   Loader,
   QueryBoundary,
   Size,
+  useAdminDeleteBiomeApi,
   useBiomesApi,
 } from '@mhgo/front';
+import { CDN_URL } from '@mhgo/front/env';
 import { Biome, BiomeMonster } from '@mhgo/types';
 
 import { ActionBar, Table, TableHeader } from '../../containers';
 import { useAppContext } from '../../utils/context';
 
 import s from './BiomesView.module.scss';
-import { CDN_URL } from '@mhgo/front/env';
 
 const tableHeaders: TableHeader<Biome>[] = [
   { id: 'name', label: 'Name' },
@@ -40,8 +42,26 @@ const Load = () => {
   const navigate = useNavigate();
   const { data: biomes } = useBiomesApi();
 
+  const {
+    mutate: mutateDelete,
+    isSuccess: isDeleteSuccess,
+    isError: isDeleteError,
+  } = useAdminDeleteBiomeApi();
+
+  useEffect(() => {
+    if (isDeleteError === true) toast.error('Could not delete biome!');
+    if (isDeleteSuccess === true) toast.success('Biome deleted successfully!');
+  }, [isDeleteSuccess, isDeleteError]);
+
   const onBiomeEdit = (biome: Biome) => {
     navigate(`/biomes/edit?id=${biome.id}`);
+  };
+
+  const onBiomeDelete = (biome: Biome) => {
+    const shouldDeleteBiome = confirm(
+      `Are you REALLY sure you want to delete biome ${biome.name}? THIS CANNOT BE UNDONE! `,
+    );
+    if (shouldDeleteBiome) mutateDelete(biome.id);
   };
 
   const sortedBiomes = useMemo(() => {
@@ -62,11 +82,21 @@ const Load = () => {
     <BiomeCell biome={biome} />,
     <SpawnCell monsters={biome.monsters} />,
     <Table.CustomCell content={biome.description} />,
-    <Button
-      label={<Icon icon="Edit" size={Size.MICRO} />}
-      onClick={() => onBiomeEdit(biome)}
-      style={{ width: '40px' }}
-    />,
+    <div style={{ display: 'flex', gap: '4px' }}>
+      <Button
+        label={<Icon icon="Edit" size={Size.MICRO} />}
+        onClick={() => onBiomeEdit(biome)}
+        style={{ width: '40px' }}
+      />
+      <Button
+        label={<Icon icon="Trash" size={Size.MICRO} />}
+        onClick={() => {
+          onBiomeDelete(biome);
+        }}
+        variant={Button.Variant.DANGER}
+        style={{ width: '40px' }}
+      />
+    </div>,
   ]);
 
   return (

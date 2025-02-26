@@ -59,6 +59,7 @@ import {
   adminUpdateResourceDrops,
   adminUpdateSettings,
   // DELETE
+  adminDeleteBiome,
   adminDeleteItem,
   adminDeleteMonster,
   adminDeleteMonsterMarker,
@@ -146,12 +147,6 @@ routerV1.put(
   validateAdventure,
   adminUpdateItem,
 );
-routerV1.delete(
-  '/admin/items/item/:itemId',
-  verifyAdminToken,
-  validateAdventure,
-  adminDeleteItem,
-);
 
 routerV1.put(
   '/admin/items/item/:itemId/action',
@@ -198,6 +193,12 @@ routerV1.put(
 );
 
 routerV1.delete(
+  '/admin/biomes/biome/:biomeId',
+  verifyAdminToken,
+  validateAdventure,
+  adminDeleteBiome,
+);
+routerV1.delete(
   '/admin/monsters/monster/:monsterId',
   verifyAdminToken,
   validateAdventure,
@@ -208,6 +209,12 @@ routerV1.delete(
   verifyAdminToken,
   validateAdventure,
   adminDeleteResource,
+);
+routerV1.delete(
+  '/admin/items/item/:itemId',
+  verifyAdminToken,
+  validateAdventure,
+  adminDeleteItem,
 );
 
 routerV1.post(

@@ -27,6 +27,7 @@ export { adminUpdateMonsterDrops } from './adminUpdateMonsterDrops';
 export { adminUpdateResourceDrops } from './adminUpdateResourceDrops';
 
 // DELETION
+export { adminDeleteBiome } from './adminDeleteBiome';
 export { adminDeleteItem } from './adminDeleteItem';
 export { adminDeleteMonster } from './adminDeleteMonster';
 export { adminDeleteResource } from './adminDeleteResource';

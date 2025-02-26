@@ -176,7 +176,6 @@ const Load = () => {
         onClick={() => onItemEdit(item)}
         style={{ width: '40px' }}
       />
-      ,
       <Button
         label={<Icon icon="Trash" size={Size.MICRO} />}
         onClick={() => {

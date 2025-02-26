@@ -66,3 +66,30 @@ export const useAdminUpdateBiomeApi = () => {
 
   return { mutate, error, status, isPending, isSuccess, isError };
 };
+
+// Delete biome
+export const useAdminDeleteBiomeApi = () => {
+  const queryClient = useQueryClient();
+
+  const adminDeleteBiome = async (biomeId: string): Promise<void> => {
+    const response = await fetcher(`${API_URL}/admin/biomes/biome/${biomeId}`, {
+      method: 'DELETE',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (response.status !== 200 && response.status !== 201)
+      throw new Error((await response.json()).error ?? 'Did not work!');
+    queryClient.invalidateQueries({ queryKey: ['biomes'] });
+    queryClient.invalidateQueries({ queryKey: ['admin', 'review', 'all'] });
+  };
+
+  const { mutate, error, status, isPending, isSuccess, isError } = useMutation({
+    mutationKey: ['admin', 'biome', 'delete'],
+    mutationFn: adminDeleteBiome,
+  });
+
+  return { mutate, error, status, isPending, isSuccess, isError };
+};
