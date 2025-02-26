@@ -55,6 +55,11 @@ app.set('trust proxy', 1);
 
 app.use('/api/v1', routerV1);
 
+app.get('/dupa', () => {
+  const dupa = true;
+  if (dupa) throw new Error('I am a client error!');
+});
+
 app.listen(process.env.PORT, async () => {
   log.INFO(`Server listening at port ${process.env.PORT}!`);
 });
