@@ -1,4 +1,5 @@
 export * from './useAdmin';
+export * from './useAdminChangeReview';
 export * from './useAdminDrops';
 export * from './useAdminHabitats';
 export * from './useAdminItems';

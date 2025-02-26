@@ -1,7 +1,6 @@
 import { useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-
 import { AdminUser, User } from '@mhgo/types';
 import { Switch } from '@mui/material';
 import { CDN_URL } from '@mhgo/front/env';
@@ -147,7 +146,11 @@ const Load = () => {
 
   return (
     <div className={s.usersView}>
-      <HeaderEdit status={{ isPending, isError, isSuccess }} title="USERS" />
+      <HeaderEdit
+        status={{ isPending, isError, isSuccess }}
+        title="USERS"
+        hasBackButton={false}
+      />
       <ActionBar
         buttons={<Button label="Create new user" onClick={onUserCreate} />}
       />

@@ -101,7 +101,7 @@ const Load = () => {
 
   return (
     <div className={s.questsView}>
-      <HeaderEdit status={status} title="Quests" />
+      <HeaderEdit status={status} title="Quests" hasBackButton={false} />
       <ActionBar
         buttons={
           <>

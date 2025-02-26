@@ -7,6 +7,7 @@ import {
   MaterialsView,
   MonstersView,
   ResourcesView,
+  ReviewView,
   SettingsView,
   UsersView,
   //
@@ -108,6 +109,14 @@ export const entries: Entry[] = [
     icon: 'Friends',
     mainRoute: true,
     component: <UsersView />,
+  },
+  {
+    id: 'review',
+    title: 'Review',
+    link: '/review',
+    icon: 'Warning',
+    mainRoute: true,
+    component: <ReviewView />,
   },
   {
     id: 'settings',

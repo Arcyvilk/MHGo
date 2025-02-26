@@ -40,7 +40,7 @@ const Load = () => {
 
   return (
     <div className={s.singleMonsterView}>
-      <HeaderEdit status={status} title="Create monster" />
+      <HeaderEdit status={status} title="Create monster" hasBackButton={true} />
       <ActionBar
         buttons={
           <>

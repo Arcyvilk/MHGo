@@ -9,6 +9,7 @@ import {
   Loader,
   QueryBoundary,
   Size,
+  useAdminDeleteItemApi,
   useAdminUpdateItemApi,
   useContextualRouting,
   useItemsApi,
@@ -59,7 +60,17 @@ const Load = () => {
   } = useAppContext();
   const navigate = useNavigate();
   const { data: items } = useItemsApi(true);
-  const { mutate, isSuccess, isError } = useAdminUpdateItemApi();
+  const { mutate: mutateUpdate, isSuccess, isError } = useAdminUpdateItemApi();
+  const {
+    mutate: mutateDelete,
+    isSuccess: isDeleteSuccess,
+    isError: isDeleteError,
+  } = useAdminDeleteItemApi();
+
+  useEffect(() => {
+    if (isDeleteError === true) toast.error('Could not delete item!');
+    if (isDeleteSuccess === true) toast.success('Item deleted successfully!');
+  }, [isDeleteSuccess, isDeleteError]);
 
   const { setRoute, route: filter } = useContextualRouting<string>({
     key: 'filter',
@@ -92,12 +103,19 @@ const Load = () => {
     navigate(`/items/edit?id=${item.id}`);
   };
 
+  const onItemDelete = (item: TItem) => {
+    const shouldDeleteItem = confirm(
+      `Are you REALLY sure you want to delete item ${item.name}? THIS CANNOT BE UNDONE! `,
+    );
+    if (shouldDeleteItem) mutateDelete(item.id);
+  };
+
   const onSwitch = (checked: boolean, item: TItem, property: keyof TItem) => {
     const updatedItem = {
       ...item,
       [property]: checked,
     };
-    mutate(updatedItem);
+    mutateUpdate(updatedItem);
   };
 
   // TODO Make those two into a hook
@@ -152,11 +170,22 @@ const Load = () => {
       onChange={(_, checked) => onSwitch(checked, item, 'quickUse')}
     />,
     item.levelRequirement,
-    <Button
-      label={<Icon icon="Edit" size={Size.MICRO} />}
-      onClick={() => onItemEdit(item)}
-      style={{ width: '40px' }}
-    />,
+    <div style={{ display: 'flex', gap: '4px' }}>
+      <Button
+        label={<Icon icon="Edit" size={Size.MICRO} />}
+        onClick={() => onItemEdit(item)}
+        style={{ width: '40px' }}
+      />
+      ,
+      <Button
+        label={<Icon icon="Trash" size={Size.MICRO} />}
+        onClick={() => {
+          onItemDelete(item);
+        }}
+        variant={Button.Variant.DANGER}
+        style={{ width: '40px' }}
+      />
+    </div>,
   ]);
 
   return (

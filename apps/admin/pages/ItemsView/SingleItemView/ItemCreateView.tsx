@@ -53,7 +53,7 @@ const Load = () => {
 
   return (
     <div className={s.singleItemView}>
-      <HeaderEdit status={status} title="Create item" />
+      <HeaderEdit status={status} title="Create item" hasBackButton={true} />
       <ActionBar
         title={`Item ID: ${item?.id}`}
         buttons={

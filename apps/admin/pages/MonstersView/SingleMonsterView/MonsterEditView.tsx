@@ -61,7 +61,7 @@ const Load = () => {
 
   return (
     <div className={s.singleMonsterView}>
-      <HeaderEdit status={status} title="Edit monster" />
+      <HeaderEdit status={status} title="Edit monster" hasBackButton={true} />
       <ActionBar
         title={`Monster ID: ${updatedMonster?.id}`}
         buttons={
