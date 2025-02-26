@@ -18,6 +18,8 @@
     "packages/*"
   ],
   "dependencies": {
+    "@sentry/node": "^9.2.0",
+    "@sentry/profiling-node": "^9.2.0",
     "@sentry/react": "^9.2.0",
     "dayjs": "^1.11.10",
     "react-router-dom": "^6.21.3",

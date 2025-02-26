@@ -1,4 +1,7 @@
+import './instrument.js';
 import * as dotenv from 'dotenv';
+
+import Sentry from '@sentry/node';
 import express from 'express';
 import cors from 'cors';
 
@@ -20,6 +23,8 @@ dayjs.extend(timezone);
 
 dotenv.config();
 const app = express();
+
+Sentry.setupExpressErrorHandler(app);
 
 const allowedOrigins = [
   process.env.CORS_CLIENT ?? 'http://localhost:3091',
