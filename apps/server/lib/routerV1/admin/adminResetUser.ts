@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
 import { log } from '@mhgo/utils';
 import {
-  User,
   UserAchievement,
   UserGameData,
   UserItems,
@@ -15,18 +14,39 @@ import {
 } from '@mhgo/types';
 
 import { mongoInstance } from '../../../api';
+import { getStarterPack } from '../../helpers/getStarterPack';
 
 export const adminResetUser = async (
   req: Request,
   res: Response,
 ): Promise<void> => {
   try {
-    const { db } = mongoInstance.getDb(res?.locals?.adventure);
+    const adventure = res?.locals?.adventure;
+    const { db } = mongoInstance.getDb(adventure);
 
     const { userId } = req.params;
     const toReset = req.body as UserResetType;
 
     if (!userId) throw new Error('No user ID provided!');
+
+    // Get starter pack
+    const starterPack = await getStarterPack(adventure, 'starter');
+    const starterPackItems = starterPack
+      .filter(entity => entity.entityType === 'item')
+      .map(entity => ({
+        id: entity.entityId,
+        amount: entity.amount,
+      }));
+
+    // Reset user's items
+    if (toReset.items) {
+      const collectionItems = db.collection<UserItems>('userItems');
+      await collectionItems.updateOne(
+        { userId },
+        { $set: { items: starterPackItems } },
+        { upsert: true },
+      );
+    }
 
     // Reset user's exp, wounds
     if (toReset.basic) {
@@ -34,23 +54,6 @@ export const adminResetUser = async (
       await collectionUsers.updateOne(
         { id: userId },
         { $set: { exp: 0, wounds: 0 } },
-      );
-    }
-
-    // Reset user's items
-    if (toReset.items) {
-      const collectionItems = db.collection<UserItems>('userItems');
-      await collectionItems.updateOne(
-        { userId },
-        {
-          $set: {
-            items: [
-              { id: 'bare_fist', amount: 1 },
-              { id: 'potion', amount: 10 },
-            ],
-          },
-        },
-        { upsert: true },
       );
     }
 
@@ -123,10 +126,19 @@ export const adminUserEnableGodmode = async (
   res: Response,
 ): Promise<void> => {
   try {
-    const { db } = mongoInstance.getDb(res?.locals?.adventure);
+    const adventure = res?.locals?.adventure;
+    const { db } = mongoInstance.getDb(adventure);
     const { userId } = req.params;
 
     if (!userId) throw new Error('No user ID provided!');
+
+    const godModePack = await getStarterPack(adventure, 'godmode');
+    const godModeItems = godModePack
+      .filter(entity => entity.entityType === 'item')
+      .map(entity => ({
+        id: entity.entityId,
+        amount: entity.amount,
+      }));
 
     // Give items
     const collectionUserItems = db.collection<UserItems>('userItems');
@@ -135,33 +147,7 @@ export const adminUserEnableGodmode = async (
 
     const responseUseritems = await collectionUserItems.updateOne(
       { userId },
-      {
-        $set: {
-          items: [
-            ...userItems,
-            {
-              id: 'soatt',
-              amount: 1,
-            },
-            {
-              id: 'potion',
-              amount: 999,
-            },
-            {
-              id: 'grimoire_page_craftable',
-              amount: 999,
-            },
-            {
-              id: 'grimoire_page_purchasable',
-              amount: 999,
-            },
-            {
-              id: 'grimoire_page_bossdrop',
-              amount: 999,
-            },
-          ],
-        },
-      },
+      { $set: { items: [...userItems, ...godModeItems] } },
       { upsert: true },
     );
 

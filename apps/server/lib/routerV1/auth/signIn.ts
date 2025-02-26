@@ -13,6 +13,7 @@ import {
   UserBan,
 } from '@mhgo/types';
 import { Db } from 'mongodb';
+import { getStarterPack } from '../../helpers/getStarterPack';
 
 const saltRounds = 10; //required by bcrypt
 
@@ -71,7 +72,11 @@ export const signIn = async (req: Request, res: Response): Promise<void> => {
       const { db } = mongoInstance.getDb(adventure);
 
       // Give user the starter pack
-      const responseStarterPack = await giveUserStarterPack(db, userId);
+      const responseStarterPack = await giveUserStarterPack(
+        db,
+        userId,
+        adventure,
+      );
       if (!responseStarterPack.acknowledged) {
         throw new Error('Could not give user the starter pack!');
       }
@@ -117,24 +122,24 @@ const createNewUser = async (dbAuth: Db, userId: string, userName: string) => {
   return responseUsers;
 };
 
-const giveUserStarterPack = async (db: Db, userId: string) => {
+const giveUserStarterPack = async (
+  db: Db,
+  userId: string,
+  adventure: string,
+) => {
+  // Get starter pack
+  const starterPack = await getStarterPack(adventure, 'starter');
+  const starterPackItems = starterPack
+    .filter(entity => entity.entityType === 'item')
+    .map(entity => ({
+      id: entity.entityId,
+      amount: entity.amount,
+    }));
+
   // Give items
   const userItems: UserItems = {
     userId,
-    items: [
-      {
-        id: 'treasure_map',
-        amount: 1,
-      },
-      {
-        id: 'bare_fist',
-        amount: 1,
-      },
-      {
-        id: 'potion',
-        amount: 20,
-      },
-    ],
+    items: starterPackItems,
   };
 
   const collectionItems = db.collection<UserItems>('userItems');
