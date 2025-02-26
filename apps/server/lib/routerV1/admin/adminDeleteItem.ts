@@ -137,7 +137,7 @@ export const adminDeleteItem = async (
     /**
      * Delete item from monster drops
      */
-    const collectionDropsMonster = db.collection<MonsterDrop>('drops');
+    const collectionDropsMonster = db.collection<MonsterDrop>('dropsMonster');
     const dropsMonster = await collectionDropsMonster
       .find({ 'drops.drops.type': 'item', 'drops.drops.id': itemId })
       .toArray();

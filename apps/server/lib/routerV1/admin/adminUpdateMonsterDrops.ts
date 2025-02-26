@@ -13,7 +13,7 @@ export const adminUpdateMonsterDrops = async (
     const { monsterId } = req.params;
     const drops = req.body as MonsterDrop['drops'];
 
-    const collection = db.collection<MonsterDrop>('drops');
+    const collection = db.collection<MonsterDrop>('dropsMonster');
 
     const response = await collection.updateOne(
       { monsterId },

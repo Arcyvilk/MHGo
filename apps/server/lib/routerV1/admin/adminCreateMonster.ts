@@ -37,7 +37,7 @@ export const adminCreateMonster = async (
     }
 
     // Create monster drops
-    const collectionMonsterDrops = db.collection<MonsterDrop>('drops');
+    const collectionMonsterDrops = db.collection<MonsterDrop>('dropsMonster');
     const responseDrops = await collectionMonsterDrops.insertOne(drops);
     if (!responseDrops.acknowledged) {
       res.status(400).send({ error: 'Could not create this monster.' });

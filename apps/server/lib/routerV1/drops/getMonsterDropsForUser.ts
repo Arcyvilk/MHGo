@@ -68,7 +68,7 @@ export const getMonsterDropsForUser = async (
     }
 
     // Get drops from the specified monster
-    const collectionMonsterDrops = db.collection<MonsterDrop>('drops');
+    const collectionMonsterDrops = db.collection<MonsterDrop>('dropsMonster');
     const allMonsterDrops = await collectionMonsterDrops.findOne({ monsterId });
     const monsterDropsPerLevel = allMonsterDrops.drops.find(
       drop => drop.level === monsterLevel,

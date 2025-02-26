@@ -34,7 +34,7 @@ export const adminDeleteMonster = async (
     /**
      * Delete all monster drops
      */
-    const collectionDrops = db.collection<MonsterDrop>('drops');
+    const collectionDrops = db.collection<MonsterDrop>('dropsMonster');
     await collectionDrops.deleteMany({ monsterId });
 
     /**

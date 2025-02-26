@@ -11,7 +11,7 @@ export const getDropsByMonsterId = async (
   try {
     const { monsterId } = req.params;
     const { db } = mongoInstance.getDb(res?.locals?.adventure);
-    const collection = db.collection<MonsterDrop>('drops');
+    const collection = db.collection<MonsterDrop>('dropsMonster');
 
     const monsterDrops = await collection.findOne({ monsterId });
 
