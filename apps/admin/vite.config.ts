@@ -1,26 +1,29 @@
 import { sentryVitePlugin } from '@sentry/vite-plugin';
-import { defineConfig } from 'vite';
+import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
 import svgr from 'vite-plugin-svgr';
-import { SENTRY_AUTH_TOKEN } from './env';
 
 // https://vitejs.dev/config/
-export default defineConfig({
-  plugins: [
-    react(),
-    svgr({
-      svgrOptions: {
-        // svgr options
-      },
-    }),
-    sentryVitePlugin({
-      org: 'mhgo',
-      project: 'admin',
-      authToken: SENTRY_AUTH_TOKEN,
-    }),
-  ],
+export default defineConfig(({ mode }) => {
+  const env = loadEnv(mode, process.cwd());
 
-  build: {
-    sourcemap: true,
-  },
+  return {
+    plugins: [
+      react(),
+      svgr({
+        svgrOptions: {
+          // svgr options
+        },
+      }),
+      sentryVitePlugin({
+        org: 'mhgo',
+        project: 'admin',
+        authToken: env.VITE_SENTRY_AUTH_TOKEN,
+      }),
+    ],
+
+    build: {
+      sourcemap: true,
+    },
+  };
 });
