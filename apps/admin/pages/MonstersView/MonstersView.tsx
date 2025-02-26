@@ -22,7 +22,7 @@ const tableHeaders: TableHeader<Monster & { baseDPS: number }>[] = [
   { id: 'disabled', label: '' },
   { id: 'name', label: 'Name' },
   { id: 'description', label: 'Description' },
-  { id: 'habitat', label: 'Habitat' },
+  { id: 'habitat', label: 'Background' },
   { id: 'baseHP', label: 'Base HP' },
   { id: 'baseDamage', label: 'Base damage' },
   { id: 'baseAttackSpeed', label: 'Base AS' },
