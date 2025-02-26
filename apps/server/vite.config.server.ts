@@ -1,4 +1,4 @@
-import { sentryVitePlugin } from "@sentry/vite-plugin";
+import { sentryVitePlugin } from '@sentry/vite-plugin';
 import { defineConfig } from 'vite';
 import { VitePluginNode } from 'vite-plugin-node';
 
@@ -13,15 +13,18 @@ export default defineConfig({
       input: './api.ts',
     },
 
-    sourcemap: true
+    sourcemap: true,
   },
-  plugins: [...VitePluginNode({
-    adapter: 'express',
-    appPath: './api.ts',
-    exportName: 'mhgoServer',
-    tsCompiler: 'esbuild',
-  }), sentryVitePlugin({
-    org: "mhgo",
-    project: "node-express"
-  })],
+  plugins: [
+    ...VitePluginNode({
+      adapter: 'express',
+      appPath: './api.ts',
+      exportName: 'mhgoServer',
+      tsCompiler: 'esbuild',
+    }),
+    sentryVitePlugin({
+      org: 'mhgo',
+      project: 'mhgo-server',
+    }),
+  ],
 });
