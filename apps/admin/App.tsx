@@ -15,9 +15,6 @@ export const App = () => {
 
   const isFullScreen = isLoggedIn === false || isAdmin === false;
 
-  const dupa = true;
-  if (dupa) throw new Error('I am an admin error!');
-
   const onAdventureSwitch = (id: string) => {
     setAdventure({ id });
   };

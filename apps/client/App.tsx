@@ -23,9 +23,6 @@ export const App = () => {
   const { setMusic, isMusicPlaying, setIsMusicPlaying } = useAppContext();
   const { changeMusic } = useSounds(setMusic);
 
-  const dupa = true;
-  if (dupa) throw new Error('I am a client error!');
-
   useEffect(() => {
     if (!isMusicPlaying) {
       changeMusic(SoundBG.SNOW_AND_CHILDREN);

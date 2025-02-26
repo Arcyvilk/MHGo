@@ -14,6 +14,12 @@ const Load = () => {
         <h1 className={s.homeView__title}>HOME</h1>
       </div>
       <div className={s.homeView__content}>
+        <button
+          onClick={() => {
+            throw new Error('This is your first error!');
+          }}>
+          Break the world
+        </button>
         <ul>
           <li>
             <a href="https://fanonmonsterhunter.fandom.com/wiki/Other_Icons">
