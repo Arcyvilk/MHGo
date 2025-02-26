@@ -21,7 +21,6 @@ export const signIn = async (req: Request, res: Response): Promise<void> => {
 
     if (!userName || !pwd) throw new Error('User credentials missing!');
 
-    const { db } = mongoInstance.getDb(res?.locals?.adventure);
     const { dbAuth } = mongoInstance.getDbAuth();
 
     // Create new user login
@@ -53,17 +52,29 @@ export const signIn = async (req: Request, res: Response): Promise<void> => {
       throw new Error('Could not register the new user!');
     }
 
-    // Create basic user data
-    const responseNewUser = await createNewUser(db, userId, userName);
-    if (!responseNewUser.acknowledged) {
-      throw new Error('Could not register the new user!');
-    }
+    /**
+     * User needs to be created separately for every adventure.
+     * In the future it would be nice to allow user which adventures to join
+     * instead of automatically creating one for all of them.
+     */
 
-    // Give user the starter pack
-    const responseStarterPack = await giveUserStarterPack(db, userId);
-    if (!responseStarterPack.acknowledged) {
-      throw new Error('Could not give user the starter pack!');
-    }
+    const adventures = Object.keys(mongoInstance.adventureDbs);
+
+    adventures.forEach(async adventure => {
+      const { db } = mongoInstance.getDb(adventure);
+
+      // Create basic user data
+      const responseNewUser = await createNewUser(db, userId, userName);
+      if (!responseNewUser.acknowledged) {
+        throw new Error('Could not register the new user!');
+      }
+
+      // Give user the starter pack
+      const responseStarterPack = await giveUserStarterPack(db, userId);
+      if (!responseStarterPack.acknowledged) {
+        throw new Error('Could not give user the starter pack!');
+      }
+    });
 
     const token = await jwt.sign({ userId, isAdmin: false }, privateKey, {
       expiresIn: '7d',
