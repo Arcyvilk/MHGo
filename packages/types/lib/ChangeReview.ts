@@ -1,10 +1,10 @@
 export type EntityType =
-  | 'item'
-  | 'material'
-  | 'resource'
-  | 'monster'
-  | 'habitat'
-  | 'quest'
+  | 'items'
+  | 'materials'
+  | 'resources'
+  | 'monsters'
+  | 'habitats'
+  | 'quests'
   | 'questDaily';
 
 export type ChangeType = 'delete' | 'update';
