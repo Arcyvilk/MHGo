@@ -50,7 +50,7 @@ export const useSingleMonsterMarkerApi = (
     home: [0, 0],
   });
 
-  const getMonsterMarker = async (): Promise<MonsterMarker> => {
+  const getMonsterMarker = async (): Promise<Omit<MonsterMarker, '_id'>> => {
     if (isTutorial)
       return {
         id: 'tutorial',
@@ -73,9 +73,9 @@ export const useSingleMonsterMarkerApi = (
   };
 
   const { data, isLoading, isFetched, isError } = useSuspenseQuery<
-    MonsterMarker,
+    Omit<MonsterMarker, '_id'>,
     unknown,
-    MonsterMarker,
+    Omit<MonsterMarker, '_id'>,
     string[]
   >({
     queryKey: ['markers', 'monster', markerId!],
