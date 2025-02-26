@@ -25,6 +25,7 @@ export default defineConfig({
     sentryVitePlugin({
       org: 'mhgo',
       project: 'server',
+      authToken: process.env.SENTRY_AUTH_TOKEN,
     }),
   ],
 });

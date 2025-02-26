@@ -3,6 +3,7 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import svgr from 'vite-plugin-svgr';
 import { VitePWA } from 'vite-plugin-pwa';
+import { SENTRY_AUTH_TOKEN } from './env';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -66,6 +67,7 @@ export default defineConfig({
     sentryVitePlugin({
       org: 'mhgo',
       project: 'client',
+      authToken: SENTRY_AUTH_TOKEN,
     }),
   ],
 
