@@ -11,6 +11,7 @@ import {
   MonsterDrop,
   Quest,
   ResourceDrop,
+  StarterPack,
   UserItems,
   UserLoadout,
 } from '@mhgo/types';
@@ -48,6 +49,7 @@ export const adminDeleteItem = async (
     // - itemStats
     // - userItems (might be nice to inform user that they don't have item anymore)
     // - userLoadout (might be nice to inform user that they don't have item anymore)
+    // - starterPack
 
     // Delete item's actions
     const collectionItemActions = db.collection<ItemAction>('itemActions');
@@ -64,6 +66,13 @@ export const adminDeleteItem = async (
     // Delete all item stats
     const collectionItemStats = db.collection<ItemStat>('itemStats');
     await collectionItemStats.deleteMany({ itemId });
+
+    // Delete item from any starter packs
+    const collectionStarterPacks = db.collection<StarterPack>('starterPack');
+    await collectionStarterPacks.deleteMany({
+      entityId: itemId,
+      entityType: 'item',
+    });
 
     // Delete item from all users' inventory
     const collectionUserItems = db.collection<UserItems>('userItems');
