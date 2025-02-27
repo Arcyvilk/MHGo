@@ -1,4 +1,4 @@
-import { Db, MongoClient, Logger } from 'mongodb';
+import { Db, MongoClient } from 'mongodb';
 import { log } from '@mhgo/utils';
 import { Adventure } from '@mhgo/types';
 
@@ -17,9 +17,6 @@ export class MongoInstance {
         throw new Error('No database URL provided');
       }
       this.client = new MongoClient(url, { monitorCommands: true });
-
-      Logger.setLevel('debug'); // Log all commands, useful for debugging
-      Logger.filter('class', ['Server']); // Only log server errors
 
       this.dbAuth = this.client.db(DB_AUTH);
       this.populateAdventureDbs();
