@@ -21,6 +21,12 @@ export const PaintballView = () => {
         <div className={s.header__title}>Paintballs</div>
         <Paintballs amount={paintballs} />
       </div>
+      <button
+        onClick={() => {
+          throw new Error('This is your first error!');
+        }}>
+        Break the world
+      </button>
       {paintballs === 0 && <NoPaintballs />}
       <CloseButton />
     </div>
