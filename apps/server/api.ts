@@ -53,18 +53,7 @@ app.set('trust proxy', 1);
 
 app.use('/api/v1', routerV1);
 
-app.get('/debug-sentry', function mainHandler(req, res) {
-  throw new Error('My first Sentry error!');
-});
-
 Sentry.setupExpressErrorHandler(app);
-
-// Optional fallthrough error handler
-app.use(function onError(err, req, res, next) {
-  // The error id is attached to `res.sentry` to be returned
-  // and optionally displayed to the user for support.
-  res.end(res.sentry + '\n');
-});
 
 app.listen(process.env.PORT, async () => {
   log.INFO(`Server listening at port ${process.env.PORT}!`);
