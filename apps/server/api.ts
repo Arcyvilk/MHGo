@@ -24,8 +24,6 @@ dayjs.extend(timezone);
 dotenv.config();
 const app = express();
 
-Sentry.setupExpressErrorHandler(app);
-
 const allowedOrigins = [
   process.env.CORS_CLIENT ?? 'http://localhost:3091',
   process.env.CORS_VAULT ?? 'http://localhost:3092',
@@ -57,6 +55,15 @@ app.use('/api/v1', routerV1);
 
 app.get('/debug-sentry', function mainHandler(req, res) {
   throw new Error('My first Sentry error!');
+});
+
+Sentry.setupExpressErrorHandler(app);
+
+// Optional fallthrough error handler
+app.use(function onError(err, req, res, next) {
+  // The error id is attached to `res.sentry` to be returned
+  // and optionally displayed to the user for support.
+  res.end(res.sentry + '\n');
 });
 
 app.listen(process.env.PORT, async () => {
